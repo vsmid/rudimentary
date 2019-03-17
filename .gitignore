@@ -1,0 +1,13 @@
+/target/
+.classpath
+.project
+.settings/
+**/.DS_Store
+.factorypath
+.idea
+.metadata
+.settings
+*.iml
+RemoteSystemsTempFiles
+/.apt_generated/
+/nb-configuration.xml
