@@ -12,3 +12,4 @@ RemoteSystemsTempFiles
 /.apt_generated/
 /nb-configuration.xml
 /nbactions.xml
+/nbproject/
