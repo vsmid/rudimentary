@@ -12,6 +12,7 @@ This framework is also opinionated and promotes flat application/service design.
 
 This framework also promotes static access to various resources such as sql, email and object instances by using Java's ServiceLoader utility to reduce boilerplate code as much as possible. The goal is to not have object instances as properties in classes. If you want to use something, it should be available in a static way.
 
+
 #### Notable features
 
 * Easy and simple configuration via properties file, environment and system properties
@@ -22,6 +23,8 @@ This framework also promotes static access to various resources such as sql, ema
 * Simple MVC framework
 * Simple application/service security configuration
 * It is easy to extends framework with your own custom stuff (look at the exts module)
+
+Majority of features are a work in progress but are usable and show the intent.
 
 ## Roadmap
 
