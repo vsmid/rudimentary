@@ -14,3 +14,4 @@ RemoteSystemsTempFiles
 /nbactions.xml
 /nbproject/
 **/dependency-reduced-pom.xml
+/rudimentary-demo/:memory:[?]cache=shared
