@@ -13,4 +13,4 @@ RemoteSystemsTempFiles
 /nb-configuration.xml
 /nbactions.xml
 /nbproject/
-/dependency-reduced-pom.xml
+**/dependency-reduced-pom.xml
