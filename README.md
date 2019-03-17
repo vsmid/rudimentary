@@ -1,9 +1,12 @@
 # Rudimentary framework
 
-## Introduction
 A small an simple flat web services/applications framework. 
 
-The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions are libraries dealing with JSON conversions). 
+## Introduction
+
+It all started as a playground for the new Java module system.
+
+The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions are libraries dealing with JSON conversions). It avoides using annotations and reflection as much as possible.
 
 This framework is also opinionated and promotes flat application/service design. This means there is no strict separation on controller, service and repository layers. One web method implementation is contained within a single Java file. Of course, there is nothing preventing you to do it your own way :)
 
