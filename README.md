@@ -1,7 +1,8 @@
-# Rudimanetary framework
+# Rudimentary framework
 
 ## Introduction
-A small an simple flat web services/applications framework. Flat means no separation on controller, service, repository layers.
+A small an simple flat web services/applications framework. 
+Flat means no strict separation on controller, service and repository layers.
 One web method implementation is contained within a single Java file.
 
 ## Roadmap
