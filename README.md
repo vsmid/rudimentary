@@ -2,8 +2,23 @@
 
 ## Introduction
 A small an simple flat web services/applications framework. 
-Flat means no strict separation on controller, service and repository layers.
-One web method implementation is contained within a single Java file.
+
+The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions are libraries dealing with JSON conversions). 
+
+This framework is also opinionated and promotes flat application/service design. This means there is no strict separation on controller, service and repository layers. One web method implementation is contained within a single Java file. Of course, there is nothing preventing you to do it your own way :)
+
+This framework also promotes static access to various resources such as sql, email and object instances by using Java's ServiceLoader utility to reduce boilerplate code as much as possible. The goal is to not have object instances as properties in classes. If you want to use something, it should be available in a static way.
+
+#### Notable features
+
+* Easy and simple configuration via properties file, environment and system properties
+* Simple dependency injection mechanism
+* Simple and efficient validation pattern
+* Simple SQL access
+* Simple email access
+* Simple MVC framework
+* Simple application/service security configuration
+* It is easy to extends framework with your own custom stuff (look at the exts module)
 
 ## Roadmap
 
