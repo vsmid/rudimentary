@@ -87,7 +87,7 @@ public class HttpEndpointContextProvider implements Instance {
     Predicate pattern = URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(uri).toString(), ":.*").asPredicate();
 
     boolean match = HTTP_ENDPOINTS.entrySet().stream()
-        .map(httpEndpoint -> httpEndpoint.getValue().path().toString())
+        .map(httpEndpoint -> URIUtils.removeSlashPrefix(httpEndpoint.getValue().path()).toString())
         .anyMatch(pattern);
 
     if (match) {
