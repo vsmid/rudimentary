@@ -41,3 +41,4 @@ Majority of features are a work in progress but are usable and show the intent.
 * Finish tests and README docs
 * Add environment to Instance and implement loading based on environment variable in configuration
 * Create test utilities (see Context tests for creating mock context)
+* Add Array as new content type (Json can be used but it would better to have Array structure)
