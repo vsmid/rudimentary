@@ -11,6 +11,7 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
+import java.util.Optional;
 
 // TODO Maybe move to extension?
 public class StaticResourceEndpoint implements HttpEndpoint<Empty, StaticResource> {
@@ -49,6 +50,11 @@ public class StaticResourceEndpoint implements HttpEndpoint<Empty, StaticResourc
     return new StaticResource(staticResource, mediaType);
   }
 
+  @Override
+  public Optional<String> description() {
+    return Optional.of("Serves static files such as javascript and css.");
+  }
+  
   @Override
   public ExceptionInfo onException(Exception e) {
     return new ExceptionInfo(404, "Could not load resource " + e.getMessage() + ".");
