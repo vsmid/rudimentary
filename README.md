@@ -39,3 +39,4 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add ApiDoc - read OpenApi
 * Add Tracing - read OpenTracing
 * Finish tests and README docs
+* Add environment to Instance and implement loading based on environment variable in configuration
