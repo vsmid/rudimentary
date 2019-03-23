@@ -2,11 +2,11 @@ package hr.yeti.rudimentary.server.http;
 
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
-import hr.yeti.rudimentary.server.http.URIUtils;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,11 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class HttpEndpointContextProvider implements Instance {
 
-  private final Map<URI, HttpEndpoint> HTTP_ENDPOINTS = new ConcurrentHashMap<>();
+  private final Map<String, HttpEndpoint> HTTP_ENDPOINTS = new ConcurrentHashMap<>();
   private final Map<Pattern, URI> PATTERN_PATHS_MAPPING = new ConcurrentHashMap<>();
   private Optional<ViewEngine> viewEngine = Optional.empty();
 
@@ -27,10 +26,13 @@ public class HttpEndpointContextProvider implements Instance {
 
     Instance.providersOf(HttpEndpoint.class)
         .forEach((httpEndpoint) -> {
-          duplicateURI(URIUtils.removeSlashPrefix(httpEndpoint.path()));
+          duplicateURI(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint.httpMethod());
 
-          HTTP_ENDPOINTS.put(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint);
-          PATTERN_PATHS_MAPPING.put(URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path()));
+          HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), httpEndpoint);
+          PATTERN_PATHS_MAPPING.put(
+              URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(),
+                  "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path())
+          );
         });
 
     // TODO Should have only one engine provider, throw exception
@@ -46,21 +48,7 @@ public class HttpEndpointContextProvider implements Instance {
     HTTP_ENDPOINTS.clear();
   }
 
-  public void registerHttpEndpoints(Class<HttpEndpoint>... endpoints) {
-    Stream.of(endpoints).forEach(httpEndpoint -> {
-      HttpEndpoint httpEndpointInstance;
-      try {
-        httpEndpointInstance = httpEndpoint.getDeclaredConstructor().newInstance();
-        if (!HTTP_ENDPOINTS.containsKey(URIUtils.removeSlashPrefix(httpEndpointInstance.path()))) {
-          HTTP_ENDPOINTS.put(URIUtils.removeSlashPrefix(httpEndpointInstance.path()), httpEndpointInstance);
-        }
-      } catch (SecurityException | IllegalArgumentException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-
-      }
-    });
-  }
-
-  public Optional<HttpEndpoint> getHttpEndpoint(URI path) {
+  public Optional<HttpEndpoint> getHttpEndpoint(URI path, HttpMethod httpMethod) {
     URI resolvedURI = URIUtils.removeSlashPrefix(path);
 
     Optional<Map.Entry<Pattern, URI>> match = PATTERN_PATHS_MAPPING.entrySet().stream()
@@ -72,21 +60,26 @@ public class HttpEndpointContextProvider implements Instance {
       resolvedURI = match.get().getValue();
     }
 
-    return Optional.ofNullable(HTTP_ENDPOINTS.get(resolvedURI));
+    return Optional.ofNullable(HTTP_ENDPOINTS.get(httpMethod + "@" + resolvedURI.toString()));
   }
 
   public List<HttpEndpoint> getRegisteredUris() {
-    return HTTP_ENDPOINTS.values().stream().collect(Collectors.toList());
+    return HTTP_ENDPOINTS.values().stream()
+        .sorted(Comparator.comparing((httpEndpoint) -> {
+          return httpEndpoint.path().toString();
+        }))
+        .collect(Collectors.toList());
   }
 
   public Optional<ViewEngine> getViewEngine() {
     return viewEngine;
   }
 
-  private void duplicateURI(URI uri) {
+  private void duplicateURI(URI uri, HttpMethod httpMethod) {
     Predicate pattern = URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(uri).toString(), ":.*").asPredicate();
 
     boolean match = HTTP_ENDPOINTS.entrySet().stream()
+        .filter(httpEndpoint -> httpEndpoint.getValue().httpMethod() == httpMethod)
         .map(httpEndpoint -> URIUtils.removeSlashPrefix(httpEndpoint.getValue().path()).toString())
         .anyMatch(pattern);
 

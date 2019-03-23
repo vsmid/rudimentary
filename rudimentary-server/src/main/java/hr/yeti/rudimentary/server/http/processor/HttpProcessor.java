@@ -62,7 +62,7 @@ public class HttpProcessor implements HttpHandler {
         URI path = exchange.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(exchange.getRequestMethod());
 
-        Optional<HttpEndpoint> httpEndpoint = Instance.of(HttpEndpointContextProvider.class).getHttpEndpoint(path);
+        Optional<HttpEndpoint> httpEndpoint = Instance.of(HttpEndpointContextProvider.class).getHttpEndpoint(path, httpMethod);
 
         if (httpEndpoint.isPresent()) {
 
