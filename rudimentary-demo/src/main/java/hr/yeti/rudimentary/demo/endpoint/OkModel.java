@@ -36,4 +36,9 @@ public class OkModel extends Model {
     this.description = description;
   }
 
+  @Override
+  public String toString() {
+    return "OkModel{" + "name=" + name + ", description=" + description + '}';
+  }
+
 }

@@ -1,16 +1,17 @@
 package hr.yeti.rudimentary.http.content;
 
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.json.JsonValue;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 
 /**
  * <pre>
  * Class used to describe http request/response type when declaring
- * new {@link HttpEndpoint} provider.
- *
- * This class marks http request which would have
+ * new {@link HttpEndpoint} provider.This class marks http request which would have
  * content type header (request) set to application/json
  * or accept header (response) set to application/json.
  * </pre>
@@ -49,6 +50,47 @@ public final class Json extends Model implements Value<JsonValue> {
   @Override
   public JsonValue getValue() {
     return value;
+  }
+
+  /**
+   * Cast single JSON object to a typed POJO.
+   *
+   * @param <T> Type of class.
+   * @param type Class to which JSON object is converted.
+   * @return POJO.
+   */
+  public <T> T asType(Class<T> type) {
+    if (isArray()) {
+      throw new RuntimeException("Json value is an array and can not be converted to POJO.");
+    }
+    return JsonbBuilder.create().fromJson(this.value.toString(), type);
+  }
+
+  /**
+   * Cast JSON array to a list of typed POJOs.
+   *
+   * @param <T> Type of class.
+   * @param type Class to which JSON object is converted.
+   * @return A list of POJOs.
+   */
+  public <T> List<T> asTypeList(Class<T> type) {
+    if (!isArray()) {
+      throw new RuntimeException("Json value is not an array.");
+    }
+    final List<T> typedList = new ArrayList();
+    Jsonb builder = JsonbBuilder.create();
+    this.value.asJsonArray().forEach((json) -> {
+      T typedJson = builder.fromJson(json.toString(), type);
+      typedList.add(typedJson);
+    });
+    return typedList;
+  }
+
+  /**
+   * @return true if this JSON is array, false otherwise.
+   */
+  public boolean isArray() {
+    return this.value.getValueType() == JsonValue.ValueType.ARRAY;
   }
 
 }
