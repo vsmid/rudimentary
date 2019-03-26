@@ -6,14 +6,13 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArrayEndpoint implements HttpEndpoint<Json, Text> {
+public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
 
   @Override
   public HttpMethod httpMethod() {
@@ -32,15 +31,11 @@ public class ArrayEndpoint implements HttpEndpoint<Json, Text> {
 
   @Override
   public Constraints constraints(Json body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
-    return new Constraints() {
-      {
+    return new Constraints(
         body.asTypeList(OkModel.class)
-            .forEach(okModel -> {
-              o(okModel.getName(), Constraint.NOT_NULL);
-              o(okModel.getDescription(), Constraint.NOT_NULL);
-            });
-      }
-    };
+            .stream()
+            .map(OkModel::constraints)
+    );
   }
 
   @Override
@@ -49,7 +44,8 @@ public class ArrayEndpoint implements HttpEndpoint<Json, Text> {
     List<OkModel> okModels = null;
 
     if (isArray) {
-      okModels = request.getBody().get().asTypeList(OkModel.class);
+      okModels = request.getBody().get().asTypeList(OkModel.class
+      );
     } else {
       throw new RuntimeException("JSON sent is not an array.");
     }

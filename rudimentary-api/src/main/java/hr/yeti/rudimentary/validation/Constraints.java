@@ -5,6 +5,8 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class holding defined constraints. Each constraint is defined as a {@link ConstraintTuple}.
@@ -44,6 +46,12 @@ public class Constraints {
 
   public Constraints() {
     this.constraints = new LinkedList<>();
+  }
+
+  public Constraints(Stream<Constraints> constraints) {
+    this.constraints = constraints.map(Constraints::getConstraints)
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
   }
 
   /**
