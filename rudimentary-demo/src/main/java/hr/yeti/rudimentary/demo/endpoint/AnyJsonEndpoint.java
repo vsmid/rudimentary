@@ -39,6 +39,9 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
       Map<String, String> pathVariables,
       Map<String, String> queryParameters,
       Headers httpHeaders) {
+
+    // If you would have an exact type to map json to e.g. OkModel you would simply
+    // use new Constraints(body, OkModel.class);
     return new Constraints() {
       {
         o(body.getValue().asJsonObject().getString("name"), Constraint.NOT_NULL);

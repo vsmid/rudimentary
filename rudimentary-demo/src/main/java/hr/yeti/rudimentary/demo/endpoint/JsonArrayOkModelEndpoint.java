@@ -31,11 +31,20 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
 
   @Override
   public Constraints constraints(Json body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
-    return new Constraints(
-        body.asTypeList(OkModel.class)
-            .stream()
-            .map(OkModel::constraints)
-    );
+    //Manually define constraints for raw JSON array if you do not have a type
+    /*new Constraints() {
+      {
+        body.getValue()
+            .asJsonArray()
+            .forEach(
+                json -> {
+                  o(json.asJsonObject().getString("name"), Constraint.NOT_NULL);
+                  o(json.asJsonObject().getString("description"), Constraint.NOT_NULL);
+                });
+      }
+    };*/
+
+    return new Constraints(body, OkModel.class);
   }
 
   @Override
@@ -44,8 +53,7 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
     List<OkModel> okModels = null;
 
     if (isArray) {
-      okModels = request.getBody().get().asTypeList(OkModel.class
-      );
+      okModels = request.getBody().get().asTypeList(OkModel.class);
     } else {
       throw new RuntimeException("JSON sent is not an array.");
     }

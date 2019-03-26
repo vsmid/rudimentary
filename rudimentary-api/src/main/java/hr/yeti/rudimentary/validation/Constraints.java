@@ -1,12 +1,12 @@
 package hr.yeti.rudimentary.validation;
 
+import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Class holding defined constraints. Each constraint is defined as a {@link ConstraintTuple}.
@@ -48,10 +48,27 @@ public class Constraints {
     this.constraints = new LinkedList<>();
   }
 
-  public Constraints(Stream<Constraints> constraints) {
-    this.constraints = constraints.map(Constraints::getConstraints)
-        .flatMap(List::stream)
-        .collect(Collectors.toList());
+  /**
+   * This constructor should be used when you have {@link Json} request body type and you have an
+   * exact type to which you can convert receiving json data. Works for both json arrays and
+   * objects.
+   *
+   * @param json Json data.
+   * @param type Type to which json will be converted.
+   */
+  public Constraints(Json json, Class<? extends Model> type) {
+    if (json.isArray()) {
+      constraints = json.asTypeList(type)
+          .stream()
+          .map(Model::constraints)
+          .map(Constraints::getConstraints)
+          .flatMap(List::stream)
+          .collect(Collectors.toList());
+    } else {
+      constraints = json.asType(type)
+          .constraints()
+          .getConstraints();
+    }
   }
 
   /**
