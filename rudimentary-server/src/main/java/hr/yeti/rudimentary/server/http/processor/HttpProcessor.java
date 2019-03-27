@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -102,7 +103,12 @@ public class HttpProcessor implements HttpHandler {
               value = new Form(URIUtils.parseQueryParameters(form));
             } else {
               // POJO assumed
-              value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
+              try {
+                value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
+              } catch (JsonbException | NoSuchElementException ex) {
+                respond(405, "Invalid request body.".getBytes(), exchange);
+                return;
+              }
               constraintsList.add(((Model) value).constraints());
             }
 
@@ -178,7 +184,7 @@ public class HttpProcessor implements HttpHandler {
               responseTransformed = "".getBytes();
             } else if (response instanceof Json) {
               exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
-              responseTransformed = JsonbBuilder.create().toJson(((Json) response).getValue()).getBytes();
+              responseTransformed = ((Json) response).getValue().toString().getBytes();
             } else if (response instanceof Text) {
               exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_PLAIN));
               responseTransformed = ((Text) response).getValue().getBytes();
