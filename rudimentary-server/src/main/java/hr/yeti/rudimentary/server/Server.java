@@ -10,6 +10,8 @@ import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.http.session.HttpSessionCreatingFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.InetSocketAddress;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -75,6 +77,7 @@ public class Server {
     server.httpServer.start();
 
     printRegisteredUriInfo();
+    printConfigProperties();
 
     LOGGER.log(Level.INFO, "Server started in {0} ms, listening on port {1}", new Object[]{
       (String.valueOf(System.currentTimeMillis() - start)), String.valueOf(server.port)
@@ -102,6 +105,19 @@ public class Server {
       .append(e.description().map(desc -> " -> " + desc).orElse(""))
       .toString())
       .collect(Collectors.joining(System.lineSeparator()))
+    });
+  }
+
+  private static void printConfigProperties() {
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+
+    Config.provider().rawProperties().list(printWriter);
+
+    LOGGER.log(Level.INFO, "{0} {1} {2}", new Object[]{
+      "Configuration properties",
+      System.lineSeparator(),
+      stringWriter.toString()
     });
   }
 }
