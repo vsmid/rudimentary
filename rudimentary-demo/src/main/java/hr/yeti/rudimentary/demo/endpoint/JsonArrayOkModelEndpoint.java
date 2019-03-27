@@ -49,14 +49,7 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
 
   @Override
   public Text response(Request<Json> request) {
-    boolean isArray = request.getBody().get().isArray();
-    List<OkModel> okModels = null;
-
-    if (isArray) {
-      okModels = request.getBody().get().asTypeList(OkModel.class);
-    } else {
-      throw new RuntimeException("JSON sent is not an array.");
-    }
+    List<OkModel> okModels = request.getBody().get().asTypeList(OkModel.class);
 
     return new Text(
         okModels.stream()
