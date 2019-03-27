@@ -52,6 +52,11 @@
     </dependency>
     <dependency>
       <groupId>hr.yeti.rudimentary.exts</groupId>
+      <artifactId>rudimentary-apidocs-ext</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>hr.yeti.rudimentary.exts</groupId>
       <artifactId>rudimentary-security-identitystore-embedded-ext</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
