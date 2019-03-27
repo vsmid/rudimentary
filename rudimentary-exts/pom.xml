@@ -17,5 +17,6 @@
     <module>rudimentary-security-auth-basic-ext</module>
     <module>rudimentary-sql-sqlite-ext</module>
     <module>rudimentary-email-smtp-ext</module>
+    <module>rudimentary-apidocs-ext</module>
   </modules>
 </project>
