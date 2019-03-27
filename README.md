@@ -36,7 +36,7 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add Sql rollback options
 * Add HttpEndpoint async() method for async execution
 * Add Metrics (Time, Gauge, Count)
-* Add ApiDoc - read OpenApi
+* Add ApiDoc - read OpenApi - added very basic opinionated extension
 * Add Tracing - read OpenTracing
 * Finish tests and README docs
 * Add environment to Instance and implement loading based on environment variable in configuration
