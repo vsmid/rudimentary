@@ -49,7 +49,7 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
 
   @Override
   public Text response(Request<Json> request) {
-    List<OkModel> okModels = request.getBody().get().asTypeList(OkModel.class);
+    List<OkModel> okModels = request.getBody().get().asListOf(OkModel.class);
 
     return new Text(
         okModels.stream()

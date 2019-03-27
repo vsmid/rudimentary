@@ -58,14 +58,14 @@ public class Constraints {
    */
   public Constraints(Json json, Class<? extends Model> type) {
     if (json.isArray()) {
-      constraints = json.asTypeList(type)
+      constraints = json.asListOf(type)
           .stream()
           .map(Model::constraints)
           .map(Constraints::getConstraints)
           .flatMap(List::stream)
           .collect(Collectors.toList());
     } else {
-      constraints = json.asType(type)
+      constraints = json.as(type)
           .constraints()
           .getConstraints();
     }

@@ -59,7 +59,7 @@ public final class Json extends Model implements Value<JsonValue> {
    * @param type Class to which JSON object is converted.
    * @return POJO.
    */
-  public <T> T asType(Class<T> type) {
+  public <T> T as(Class<T> type) {
     if (isArray()) {
       throw new RuntimeException("Json value is an array and can not be converted to POJO.");
     }
@@ -73,7 +73,7 @@ public final class Json extends Model implements Value<JsonValue> {
    * @param type Class to which JSON object is converted.
    * @return A list of POJOs.
    */
-  public <T> List<T> asTypeList(Class<T> type) {
+  public <T> List<T> asListOf(Class<T> type) {
     if (!isArray()) {
       throw new RuntimeException("Json value is not an array.");
     }
