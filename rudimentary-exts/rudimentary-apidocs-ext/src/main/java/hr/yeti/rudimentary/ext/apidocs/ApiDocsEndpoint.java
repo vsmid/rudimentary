@@ -47,7 +47,9 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
   @Override
   public Html response(Request<Empty> request) {
     return new Html(
-        String.format(apiDocsHTML, rowsHTMLGenerator())
+        String.format(apiDocsHTML,
+            rowsHTMLGenerator()
+        )
     );
   }
 
