@@ -6,11 +6,28 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
+
+  private String apiDocsHTML;
+
+  @Override
+  public void initialize() {
+    try {
+      this.apiDocsHTML = new String(
+          Thread.currentThread()
+              .getContextClassLoader()
+              .getResourceAsStream("templates/apidocs.html")
+              .readAllBytes()
+      );
+    } catch (IOException ex) {
+      logger().log(System.Logger.Level.ERROR, "Failed to load apidocs.html template.");
+    }
+  }
 
   @Override
   public HttpMethod httpMethod() {
@@ -29,23 +46,27 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
 
   @Override
   public Html response(Request<Empty> request) {
-    String titleHTML = "<h2>Rudimentary ApiDocs</h2>";
-    String tableHTML = "<table><tr><td>HTTP Method</td><td>URI</td><td>HTTP Status</td><td>Description</td></tr>%s</table>";
-    String rowHTML = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
-
-    String rowsHTML = Instance.providersOf(HttpEndpoint.class)
-        .stream()
-        .map(endpoint -> String.format(rowHTML, endpoint.httpMethod(), endpoint.path(), endpoint.httpStatus(), endpoint.description().orElse("")))
-        .collect(Collectors.joining(System.lineSeparator()));
-
     return new Html(
-        titleHTML + String.format(tableHTML, rowsHTML)
+        String.format(apiDocsHTML, rowsHTMLGenerator())
     );
   }
 
   @Override
   public Optional<String> description() {
     return Optional.of("Shows API documentation in HTML format.");
+  }
+
+  private String rowsHTMLGenerator() {
+    String rowsHTML = Instance.providersOf(HttpEndpoint.class)
+        .stream()
+        .map(endpoint
+            -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+            endpoint.httpMethod(), endpoint.path(), endpoint.httpStatus(), endpoint.description().orElse("")))
+        .collect(
+            Collectors.joining(System.lineSeparator())
+        );
+
+    return rowsHTML;
   }
 
 }
