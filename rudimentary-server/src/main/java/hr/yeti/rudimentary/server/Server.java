@@ -91,6 +91,8 @@ public class Server {
   }
 
   private static void printRegisteredUriInfo() {
+    System.out.println(System.lineSeparator());
+
     LOGGER.log(Level.INFO, "Registered uris: {0} {1}", new Object[]{
       System.lineSeparator(),
       Instance.of(HttpEndpointContextProvider.class).getRegisteredUris()
@@ -113,6 +115,8 @@ public class Server {
     PrintWriter printWriter = new PrintWriter(stringWriter);
 
     Config.provider().rawProperties().list(printWriter);
+
+    System.out.println(System.lineSeparator());
 
     LOGGER.log(Level.INFO, "{0} {1} {2}", new Object[]{
       "Configuration properties",
