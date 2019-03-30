@@ -12,9 +12,6 @@ import java.util.ServiceLoader;
  * Other parts of request processing already have their own, standardized
  * way of reporting exceptions depending on the processing phase.
  *
- * In the future this may(and is very likely) be extended to the whole request processing part to
- * enable full customization of exception handling through provider of this SPI.
- *
  * Since this interface extends {@link Instance} it means it is loaded automatically via
  * {@link ServiceLoader} on application startup.
  * There should be only one ExceptionHandler provider per application and you can register it in

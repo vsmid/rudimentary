@@ -155,7 +155,7 @@ public class HttpProcessor implements HttpHandler {
               if (Objects.nonNull(globalExceptionHandler)) {
                 exceptionInfo = globalExceptionHandler.onException(e);
               } else if (Objects.isNull(globalExceptionHandler)) {
-                // Print stack trace if no custom exception handler is provider.
+                // Print stack trace if no custom exception handler is provided.
                 e.printStackTrace();
               }
             }
