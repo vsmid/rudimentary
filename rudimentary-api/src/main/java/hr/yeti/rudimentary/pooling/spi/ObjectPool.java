@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.sql.spi.JdbcConnectionPool;
 import java.sql.Connection;
+import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
@@ -32,6 +33,13 @@ import java.util.ServiceLoader;
  * @param <T> A type managed by the pool e.g. {@link Connection}.
  */
 public abstract class ObjectPool<T> implements Instance {
+
+  /**
+   * Object pool's status.
+   */
+  public enum PoolStatus {
+    UP, DOWN
+  }
 
   private ConcurrentLinkedQueue<T> pool;
   private ScheduledExecutorService executorService;
@@ -63,17 +71,7 @@ public abstract class ObjectPool<T> implements Instance {
     if (object == null) {
       return;
     }
-    this.pool.offer(object);
-  }
-
-  /**
-   * Do not call this method unless you know what you are doing. It will be called by the framework
-   * on application shutdown via {@link ObjectPool#destroy()} method.
-   */
-  public void shutdown() {
-    if (executorService != null) {
-      executorService.shutdown();
-    }
+    pool.offer(object);
   }
 
   /**
@@ -132,13 +130,28 @@ public abstract class ObjectPool<T> implements Instance {
   @Override
   public void destroy() {
     try {
-      executorService.awaitTermination(15, TimeUnit.SECONDS);
+      executorService.awaitTermination(settings.getAwaitTerminationInterval(), TimeUnit.SECONDS);
       executorService.shutdown();
-      this.settings = null;
-      this.pool = null;
+      settings = null;
+      pool = null;
     } catch (InterruptedException ex) {
       Logger.getLogger(ObjectPool.class.getName()).log(Level.SEVERE, null, ex);
     }
+  }
+
+  /**
+   * @return Current number of objects contained within the object pool.
+   */
+  public int objectCount() {
+    return pool.size();
+  }
+
+  /**
+   * @return Current status of the pool, up or down.
+   */
+  public PoolStatus status() {
+    return executorService.isShutdown() && Objects.isNull(settings) && Objects.isNull(pool)
+        ? PoolStatus.DOWN : PoolStatus.UP;
   }
 
 }

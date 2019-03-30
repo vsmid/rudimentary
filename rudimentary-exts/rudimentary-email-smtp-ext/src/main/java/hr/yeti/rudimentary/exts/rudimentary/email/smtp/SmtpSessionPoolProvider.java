@@ -36,9 +36,10 @@ import javax.mail.Session;
 public class SmtpSessionPoolProvider extends EmailSessionPool {
 
   // Session pool settings
-  private ConfigProperty minSize = new ConfigProperty("email.minSize", "25");
-  private ConfigProperty maxSize = new ConfigProperty("email.maxSize", "50");
-  private ConfigProperty validationInterval = new ConfigProperty("email.validationInterval", "30");
+  private ConfigProperty minSize = new ConfigProperty("email.pool.minSize", "25");
+  private ConfigProperty maxSize = new ConfigProperty("email.pool.maxSize", "50");
+  private ConfigProperty validationInterval = new ConfigProperty("email.pool.validationInterval", "30");
+  private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.pool.awaitTerminationInterval", "10");
 
   // Email properties
   private ConfigProperty host = new ConfigProperty("email.host");
@@ -59,7 +60,12 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
 
   @Override
   protected ObjectPoolSettings settings() {
-    return new ObjectPoolSettings(minSize.asInt(), maxSize.asInt(), validationInterval.asInt());
+    return new ObjectPoolSettings(
+        minSize.asInt(),
+        maxSize.asInt(),
+        validationInterval.asInt(),
+        awaitTerminationInterval.asInt()
+    );
   }
 
   @Override

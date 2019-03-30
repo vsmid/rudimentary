@@ -17,9 +17,10 @@ public final class SqliteJdbcConnectionPool extends JdbcConnectionPool {
   private ConfigProperty user = new ConfigProperty("jdbc.user");
   private ConfigProperty password = new ConfigProperty("jdbc.password");
 
-  private ConfigProperty minSize = new ConfigProperty("jdbc.minSize");
-  private ConfigProperty maxSize = new ConfigProperty("jdbc.maxSize");
-  private ConfigProperty validationInterval = new ConfigProperty("jdbc.validationInterval");
+  private ConfigProperty minSize = new ConfigProperty("jdbc.pool.minSize");
+  private ConfigProperty maxSize = new ConfigProperty("jdbc.pool.maxSize");
+  private ConfigProperty validationInterval = new ConfigProperty("jdbc.pool.validationInterval");
+  private ConfigProperty awaitTerminationInterval = new ConfigProperty("jdbc.pool.awaitTerminationInterval");
 
   @Override
   public Connection createObject() throws ObjectPoolException {
@@ -34,7 +35,12 @@ public final class SqliteJdbcConnectionPool extends JdbcConnectionPool {
 
   @Override
   protected ObjectPoolSettings settings() {
-    return new ObjectPoolSettings(minSize.asInt(), maxSize.asInt(), validationInterval.asInt());
+    return new ObjectPoolSettings(
+        minSize.asInt(),
+        maxSize.asInt(),
+        validationInterval.asInt(),
+        awaitTerminationInterval.asInt()
+    );
   }
 
 }
