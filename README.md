@@ -1,6 +1,6 @@
 # Rudimentary framework
 
-A small an simple flat web services/applications framework. 
+A small and simple flat web services/applications framework. 
 
 ## Introduction
 
