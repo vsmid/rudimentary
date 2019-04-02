@@ -43,3 +43,5 @@ Majority of features are a work in progress but are usable and show the intent.
 * Create test utilities (see Context tests for creating mock context)
 * Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
 * Add Admin module
+* Add observer pattern for events
+* More validation constraint definitions and implementations
