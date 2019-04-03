@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author vedransmid@yeti-it.hr
  */
-public class Sql {
+public final class Sql {
 
   private Connection conn;
   private boolean tx = false;
