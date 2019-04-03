@@ -11,6 +11,8 @@ import hr.yeti.rudimentary.security.spi.IdentityStore;
 import hr.yeti.rudimentary.sql.spi.JdbcConnectionPool;
 import java.util.ServiceLoader;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.events.spi.EventListener;
+import hr.yeti.rudimentary.events.spi.EventPublisher;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
@@ -29,6 +31,8 @@ public class ContextProvider extends Context {
       AfterInterceptor.class,
       BeforeInterceptor.class,
       ExceptionHandler.class,
+      EventListener.class,
+      EventPublisher.class,
       HealthCheck.class,
       HttpEndpoint.class,
       HttpEndpointContextProvider.class,

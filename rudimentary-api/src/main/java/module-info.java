@@ -7,6 +7,9 @@ module hr.yeti.rudimentary.api {
   exports hr.yeti.rudimentary.email;
   exports hr.yeti.rudimentary.email.spi;
 
+  exports hr.yeti.rudimentary.events;
+  exports hr.yeti.rudimentary.events.spi;
+
   exports hr.yeti.rudimentary.exception;
   exports hr.yeti.rudimentary.exception.spi;
 
