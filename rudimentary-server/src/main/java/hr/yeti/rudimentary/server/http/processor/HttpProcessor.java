@@ -42,6 +42,7 @@ import java.util.concurrent.Executors;
 import javax.json.JsonValue;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
+import javax.json.stream.JsonParsingException;
 
 public class HttpProcessor implements HttpHandler {
 
@@ -105,7 +106,7 @@ public class HttpProcessor implements HttpHandler {
               // POJO assumed
               try {
                 value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
-              } catch (JsonbException | NoSuchElementException ex) {
+              } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                 respond(405, "Invalid request body.".getBytes(), exchange);
                 return;
               }

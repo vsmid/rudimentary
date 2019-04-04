@@ -10,3 +10,4 @@ hr.yeti.rudimentary.demo.endpoint.RedirectEndpoint
 hr.yeti.rudimentary.demo.endpoint.UserInfoEndpoint
 hr.yeti.rudimentary.demo.endpoint.SqlEndpoint
 hr.yeti.rudimentary.demo.endpoint.JsonArrayOkModelEndpoint
+hr.yeti.rudimentary.demo.endpoint.EventEndpoint

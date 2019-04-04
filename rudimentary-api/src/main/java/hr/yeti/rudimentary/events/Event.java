@@ -3,13 +3,13 @@ package hr.yeti.rudimentary.events;
 import hr.yeti.rudimentary.context.spi.Instance;
 
 /**
- * Extend this class if you want to give a class event publishing feature.
+ * Implement this class if you want to give a class event publishing feature.
  *
  * <pre>
  * {@code
  * // imports...
  *
- * public class BlogPost extends Event {
+ * public class BlogPost implements Event {
  *
  *  private String text;
  *
@@ -30,14 +30,15 @@ import hr.yeti.rudimentary.context.spi.Instance;
  *
  * @author vedransmid@yeti-it.hr
  */
-public abstract class Event {
+public interface Event {
 
   /**
-   * Publishes this object instance as an event.
+   * Publishes this object instance as an event. Default implementation should generally not be
+   * overridden.
    *
    * @param type Should event be published synchronously or asynchronously.
    */
-  public void publish(EventPublisher.Type type) {
+  default void publish(EventPublisher.Type type) {
     Instance.of(EventPublisher.class).publish(this, type);
   }
 

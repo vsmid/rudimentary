@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.demo.endpoint;
+package hr.yeti.rudimentary.demo.model;
 
 import hr.yeti.rudimentary.http.content.Model;
 import static hr.yeti.rudimentary.validation.Constraint.NOT_EMPTY;

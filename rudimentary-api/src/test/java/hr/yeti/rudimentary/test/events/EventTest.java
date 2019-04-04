@@ -66,7 +66,7 @@ public class EventTest {
 
   }
 
-  public class BlogPost extends Event {
+  public class BlogPost implements Event {
 
     private String text;
 

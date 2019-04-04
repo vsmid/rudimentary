@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.demo.endpoint;
 
+import hr.yeti.rudimentary.demo.model.OkModel;
 import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
