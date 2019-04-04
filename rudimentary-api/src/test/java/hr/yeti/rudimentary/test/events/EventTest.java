@@ -19,7 +19,7 @@ public class EventTest {
         new EventPublisher()
     );
 
-    when: // Each class extending Event can publish an event
+    when: // Each class extending Event can publish an event.
     new BlogPost("Post 1.").publish(EventPublisher.Type.SYNC);
 
     then:
@@ -41,8 +41,8 @@ public class EventTest {
     private String lastMessage;
 
     @Override
-    public void onEvent(BlogPost message) {
-      lastMessage = message.toString();
+    public void onEvent(BlogPost event) {
+      lastMessage = event.toString();
     }
 
     public String getLastMessage() {
@@ -56,8 +56,8 @@ public class EventTest {
     private String lastMessage;
 
     @Override
-    public void onEvent(BlogPost message) {
-      lastMessage = message.toString();
+    public void onEvent(BlogPost event) {
+      lastMessage = event.toString();
     }
 
     public String getLastMessage() {

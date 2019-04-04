@@ -16,7 +16,7 @@ import hr.yeti.rudimentary.events.Event;
  * Implement this class if you would like to execute some business logic when certain event occurs.
  *
  * @author vedransmid@yeti-it.hr
- * @param <T> Type of event message.
+ * @param <T> Type of event.
  */
 public interface EventListener<T extends Event> extends Instance {
 
