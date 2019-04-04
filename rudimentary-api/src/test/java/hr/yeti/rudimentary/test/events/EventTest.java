@@ -1,12 +1,12 @@
 package hr.yeti.rudimentary.test.events;
 
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.events.Event;
-import hr.yeti.rudimentary.events.EventMessage;
+import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.test.context.mock.ContextMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+import hr.yeti.rudimentary.events.Event;
 
 public class EventTest {
 
@@ -16,11 +16,11 @@ public class EventTest {
     ContextMock context = new ContextMock(
         new BlogReaderOne(),
         new BlogReaderTwo(),
-        new Event()
+        new EventPublisher()
     );
 
-    when:
-    Event.publish(new BlogPost("Post 1."));
+    when: // Each class extending Event can publish an event
+    new BlogPost("Post 1.").publish(EventPublisher.Type.SYNC);
 
     then:
     assertEquals("BlogPost{text=Post 1.}", Instance.of(BlogReaderOne.class).lastMessage);
@@ -28,8 +28,8 @@ public class EventTest {
 
     and:
 
-    when:
-    Event.publish(new BlogPost("Post 2."));
+    when: // Event can be published using EventPublisher via Instance.
+    Instance.of(EventPublisher.class).publish(new BlogPost("Post 2."), EventPublisher.Type.SYNC);
 
     then:
     assertEquals("BlogPost{text=Post 2.}", Instance.of(BlogReaderOne.class).lastMessage);
@@ -41,7 +41,7 @@ public class EventTest {
     private String lastMessage;
 
     @Override
-    public void onMessage(BlogPost message) {
+    public void onEvent(BlogPost message) {
       lastMessage = message.toString();
     }
 
@@ -56,7 +56,7 @@ public class EventTest {
     private String lastMessage;
 
     @Override
-    public void onMessage(BlogPost message) {
+    public void onEvent(BlogPost message) {
       lastMessage = message.toString();
     }
 
@@ -66,7 +66,7 @@ public class EventTest {
 
   }
 
-  public class BlogPost implements EventMessage {
+  public class BlogPost extends Event {
 
     private String text;
 

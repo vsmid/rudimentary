@@ -1,8 +1,8 @@
 package hr.yeti.rudimentary.events.spi;
 
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.events.EventMessage;
 import java.util.ServiceLoader;
+import hr.yeti.rudimentary.events.Event;
 
 /**
  * Since this interface inherently extends {@link Instance} it means it is loaded automatically via
@@ -18,13 +18,13 @@ import java.util.ServiceLoader;
  * @author vedransmid@yeti-it.hr
  * @param <T> Type of event message.
  */
-public interface EventListener<T extends EventMessage> extends Instance {
+public interface EventListener<T extends Event> extends Instance {
 
   /**
    * Method executed when event of type T occurs.
    *
-   * @param message Event message containing some data.
+   * @param event Event containing some data.
    */
-  public void onMessage(T message);
+  public void onEvent(T event);
 
 }
