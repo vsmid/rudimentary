@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.events;
 
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.spi.EventListener;
-import hr.yeti.rudimentary.events.spi.EventPublisher;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class Event implements EventPublisher {
+public final class Event implements Instance {
 
   private static final Map<Class<?>, List<EventListener<EventMessage>>> LISTENERS = new ConcurrentHashMap<>();
 
