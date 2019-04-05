@@ -19,14 +19,13 @@ public class HttpEndpointContextProvider implements Instance {
 
   private final Map<String, HttpEndpoint> HTTP_ENDPOINTS = new ConcurrentHashMap<>();
   private final Map<Pattern, URI> PATTERN_PATHS_MAPPING = new ConcurrentHashMap<>();
-  private Optional<ViewEngine> viewEngine = Optional.empty();
 
   @Override
   public void initialize() {
 
     Instance.providersOf(HttpEndpoint.class)
         .forEach((httpEndpoint) -> {
-          duplicateURI(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint.httpMethod());
+          checkForDuplicateMapping(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint.httpMethod());
 
           HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), httpEndpoint);
           PATTERN_PATHS_MAPPING.put(
@@ -34,14 +33,9 @@ public class HttpEndpointContextProvider implements Instance {
                   "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path())
           );
         });
-
-    // TODO Should have only one engine provider, throw exception
-    Instance.providersOf(ViewEngine.class)
-        .forEach((engine) -> {
-          viewEngine = Optional.of(engine);
-        });
   }
 
+  @Override
   public void destroy() {
     Config.provider().destroy();
 
@@ -71,11 +65,7 @@ public class HttpEndpointContextProvider implements Instance {
         .collect(Collectors.toList());
   }
 
-  public Optional<ViewEngine> getViewEngine() {
-    return viewEngine;
-  }
-
-  private void duplicateURI(URI uri, HttpMethod httpMethod) {
+  private void checkForDuplicateMapping(URI uri, HttpMethod httpMethod) {
     Predicate pattern = URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(uri).toString(), ":.*").asPredicate();
 
     boolean match = HTTP_ENDPOINTS.entrySet().stream()
