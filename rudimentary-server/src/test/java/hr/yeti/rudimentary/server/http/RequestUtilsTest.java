@@ -16,7 +16,7 @@ public class RequestUtilsTest {
     Map<String, String> pathVariables;
 
     when:
-    pathVariables = RequestUtils.parsePathVariables(URI.create("/cars/:id/type/:name"), URI.create("/cars/1/type/bmw"));
+    pathVariables = HttpRequestUtils.parsePathVariables(URI.create("/cars/:id/type/:name"), URI.create("/cars/1/type/bmw"));
 
     then:
     assertNotNull(pathVariables);
@@ -33,7 +33,7 @@ public class RequestUtilsTest {
     Map<String, Object> queryParameters;
 
     when:
-    queryParameters = RequestUtils.parseQueryParameters(URI.create("/cars?name=Martina&dob=09.06.1986").getQuery());
+    queryParameters = HttpRequestUtils.parseQueryParameters(URI.create("/cars?name=Martina&dob=09.06.1986").getQuery());
 
     then:
     assertNotNull(queryParameters);
@@ -51,7 +51,7 @@ public class RequestUtilsTest {
     Map<String, Object> queryParameters;
 
     when:
-    queryParameters = RequestUtils.parseQueryParameters(URI.create(uris).getQuery());
+    queryParameters = HttpRequestUtils.parseQueryParameters(URI.create(uris).getQuery());
 
     then:
     assertNotNull(queryParameters);

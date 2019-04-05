@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static hr.yeti.rudimentary.server.http.URIUtils.convertToRegex;
 
-public class RequestUtils {
+public class HttpRequestUtils {
 
   public static Map<String, HttpCookie> parseCookies(Headers headers) {
     if (!headers.containsKey("Cookie")) {

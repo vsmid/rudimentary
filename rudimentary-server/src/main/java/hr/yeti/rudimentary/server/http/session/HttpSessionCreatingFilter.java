@@ -4,7 +4,7 @@ import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.server.http.RequestUtils;
+import hr.yeti.rudimentary.server.http.HttpRequestUtils;
 import hr.yeti.rudimentary.session.Session;
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -16,7 +16,7 @@ public class HttpSessionCreatingFilter extends Filter implements Instance {
 
   @Override
   public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
-    Map<String, HttpCookie> cookies = RequestUtils.parseCookies(exchange.getRequestHeaders());
+    Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());
     if (createSession.asBoolean() && !cookies.containsKey("RSID")) {
       Session newSession = Instance.of(HttpSessionManager.class).openNew();
       String rsid = newSession.getRsid();
