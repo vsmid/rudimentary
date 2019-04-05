@@ -6,18 +6,14 @@ import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
-import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.http.session.HttpSessionCreatingFilter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.InetSocketAddress;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class Server {
 
@@ -31,9 +27,10 @@ public class Server {
   private boolean createSession;
 
   private Server() throws IOException {
-    LogManager.getLogManager().readConfiguration(
-        this.getClass().getClassLoader().getResourceAsStream("server-logging.properties")
-    );
+    LogManager.getLogManager()
+        .readConfiguration(
+            this.getClass().getClassLoader().getResourceAsStream("server-logging.properties")
+        );
 
     ServiceLoader.load(Context.class)
         .findFirst()
@@ -70,14 +67,15 @@ public class Server {
 
     // Load filters
     if (server.createSession) {
-      context.getFilters().add(new HttpSessionCreatingFilter());
+      context.getFilters()
+          .add(Instance.of(HttpSessionCreatingFilter.class));
     }
 
     // Start server
     server.httpServer.start();
 
-    printRegisteredUriInfo();
-    printConfigProperties();
+    ServerInfo.printRegisteredUriInfo(LOGGER);
+    ServerInfo.printConfigProperties(LOGGER);
 
     LOGGER.log(Level.INFO, "Server started in {0} ms, listening on port {1}", new Object[]{
       (String.valueOf(System.currentTimeMillis() - start)), String.valueOf(server.port)
@@ -90,38 +88,4 @@ public class Server {
     this.httpServer.stop(stopDelay);
   }
 
-  private static void printRegisteredUriInfo() {
-    System.out.println(System.lineSeparator());
-
-    LOGGER.log(Level.INFO, "Registered uris: {0} {1}", new Object[]{
-      System.lineSeparator(),
-      Instance.of(HttpEndpointContextProvider.class).getRegisteredUris()
-      .stream()
-      .map(e -> new StringBuilder()
-      .append("\t")
-      .append(e.httpMethod().toString())
-      .append(" ")
-      .append(!e.path().toString().startsWith("/") ? "/" : "")
-      .append(e.path().toString())
-      .append(" ")
-      .append(e.description().map(desc -> " -> " + desc).orElse(""))
-      .toString())
-      .collect(Collectors.joining(System.lineSeparator()))
-    });
-  }
-
-  private static void printConfigProperties() {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-
-    Config.provider().rawProperties().list(printWriter);
-
-    System.out.println(System.lineSeparator());
-
-    LOGGER.log(Level.INFO, "{0} {1} {2}", new Object[]{
-      "Configuration properties",
-      System.lineSeparator(),
-      stringWriter.toString()
-    });
-  }
 }

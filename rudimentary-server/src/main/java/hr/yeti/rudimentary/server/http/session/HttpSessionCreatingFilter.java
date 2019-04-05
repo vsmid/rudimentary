@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.Map;
 
-public class HttpSessionCreatingFilter extends Filter {
+public class HttpSessionCreatingFilter extends Filter implements Instance {
 
   private ConfigProperty createSession = new ConfigProperty("session.create");
 
