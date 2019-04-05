@@ -22,6 +22,7 @@ This framework also promotes static access to various resources such as sql, ema
 * Simple email access
 * Simple MVC framework
 * Simple application/service security configuration
+* Simple event system (sync only for now)
 * It is easy to extends framework with your own custom stuff (look at the exts module)
 
 Majority of features are a work in progress but are usable and show the intent.
@@ -43,5 +44,4 @@ Majority of features are a work in progress but are usable and show the intent.
 * Create test utilities (see Context tests for creating mock context)
 * Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
 * Add Admin module
-* Add observer pattern for events
 * More validation constraint definitions and implementations
