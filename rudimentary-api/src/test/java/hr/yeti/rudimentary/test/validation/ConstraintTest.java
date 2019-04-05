@@ -61,4 +61,20 @@ public class ConstraintTest {
     assertNotNull(result);
     assertTrue(result.isValid());
   }
+
+  @Test
+  public void test_MIN_constraint() {
+    expect:
+    assertFalse(Constraint.MIN(2).apply(1).isValid());
+    assertTrue(Constraint.MIN(2).apply(5).isValid());
+    assertTrue(Constraint.MIN(2).apply(2).isValid());
+  }
+  
+  @Test
+  public void test_MAX_constraint() {
+    expect:
+    assertTrue(Constraint.MAX(2).apply(1).isValid());
+    assertFalse(Constraint.MAX(2).apply(5).isValid());
+    assertTrue(Constraint.MAX(2).apply(2).isValid());
+  }
 }
