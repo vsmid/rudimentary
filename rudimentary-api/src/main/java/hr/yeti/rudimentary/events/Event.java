@@ -26,7 +26,6 @@ import hr.yeti.rudimentary.context.spi.Instance;
  * ...
  * // Publish event synchronously
  * new BlogPost("This my first blog post event.").publish(EventPublisher.Type.SYNC);
- * }
  * </pre>
  *
  * @author vedransmid@yeti-it.hr
@@ -34,7 +33,8 @@ import hr.yeti.rudimentary.context.spi.Instance;
 public interface Event {
 
   /**
-   * Publishes this object instance as an event. Default implementation should generally not be overridden.
+   * Publishes this object instance as an event. Default implementation should generally not be
+   * overridden.
    *
    * @param type Should event be published synchronously or asynchronously.
    */
