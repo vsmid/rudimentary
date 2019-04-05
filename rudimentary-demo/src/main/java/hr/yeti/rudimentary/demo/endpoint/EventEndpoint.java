@@ -30,9 +30,9 @@ public class EventEndpoint implements HttpEndpoint<BlogPost, Text> {
   public Text response(Request<BlogPost> request) {
     // Imagine saving blog post to database
     // Publish received blogpost as event
-    request.getBody().get().publish(EventPublisher.Type.SYNC);
+    request.getBody().publish(EventPublisher.Type.SYNC);
 
-    return new Text(request.getBody().get().getText());
+    return new Text(request.getBody().getText());
   }
 
   @Override

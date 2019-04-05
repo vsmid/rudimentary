@@ -32,7 +32,7 @@ public class OkEndpoint implements HttpEndpoint<OkModel, Text> {
   public Text response(Request<OkModel> request) {
     logger().log(Level.INFO, Thread.currentThread().getName() + ":: PV ::" + request.getPathVariables().get("id") + ":: QP ::" + request.getQueryParameters().get("name"));
 
-    return new Text("Hello " + request.getBody().orElse(new OkModel()).getName());
+    return new Text("Hello " + request.getBody().getName());
   }
 
 }

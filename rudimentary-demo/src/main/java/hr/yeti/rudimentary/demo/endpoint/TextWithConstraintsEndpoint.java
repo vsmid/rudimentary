@@ -46,7 +46,7 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
   @Override
   public Text response(Request<Text> request) {
-    return new Text("Hello " + request.getBody().get().getValue());
+    return new Text("Hello " + request.getBody().getValue());
   }
 
 }

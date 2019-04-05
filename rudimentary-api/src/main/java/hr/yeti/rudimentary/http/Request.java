@@ -7,7 +7,6 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -79,8 +78,8 @@ public class Request<T> {
     return httpHeaders;
   }
 
-  public Optional<T> getBody() {
-    return Optional.ofNullable(body);
+  public T getBody() {
+    return body;
   }
 
   public Map<String, String> getPathVariables() {

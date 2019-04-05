@@ -15,7 +15,7 @@ public class CustomViewEndpoint implements ViewEndpoint<Form> {
 
   @Override
   public View response(Request<Form> request) {
-    return new View("dynamicView.html", request.getBody().get().getValue());
+    return new View("dynamicView.html", request.getBody().getValue());
   }
 
 }
