@@ -16,7 +16,7 @@ public class HttpSessionCreatingFilter extends Filter implements Instance {
 
   @Override
   public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
-    Map<String, HttpCookie> cookies = RequestUtils.cookies(exchange.getRequestHeaders());
+    Map<String, HttpCookie> cookies = RequestUtils.parseCookies(exchange.getRequestHeaders());
     if (createSession.asBoolean() && !cookies.containsKey("RSID")) {
       Session newSession = Instance.of(HttpSessionManager.class).openNew();
       String rsid = newSession.getRsid();

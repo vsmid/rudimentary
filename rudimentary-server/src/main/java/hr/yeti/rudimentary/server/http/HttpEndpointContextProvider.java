@@ -29,7 +29,7 @@ public class HttpEndpointContextProvider implements Instance {
 
           HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), httpEndpoint);
           PATTERN_PATHS_MAPPING.put(
-              URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(),
+              URIUtils.convertToRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(),
                   "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path())
           );
         });
@@ -66,7 +66,7 @@ public class HttpEndpointContextProvider implements Instance {
   }
 
   private void checkForDuplicateMapping(URI uri, HttpMethod httpMethod) {
-    Predicate pattern = URIUtils.uriAsRegex(URIUtils.removeSlashPrefix(uri).toString(), ":.*").asPredicate();
+    Predicate pattern = URIUtils.convertToRegex(URIUtils.removeSlashPrefix(uri).toString(), ":.*").asPredicate();
 
     boolean match = HTTP_ENDPOINTS.entrySet().stream()
         .filter(httpEndpoint -> httpEndpoint.getValue().httpMethod() == httpMethod)

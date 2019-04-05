@@ -22,7 +22,7 @@ import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
-import hr.yeti.rudimentary.server.http.URIUtils;
+import hr.yeti.rudimentary.server.http.RequestUtils;
 import hr.yeti.rudimentary.validation.ConstraintViolations;
 import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
@@ -84,8 +84,8 @@ public class HttpProcessor implements HttpHandler {
           }
 
           // Path & query parsing
-          Map<String, String> pathVariables = URIUtils.parsePathVariables(httpEndpoint.get().path(), path);
-          Map<String, Object> queryParameters = URIUtils.parseQueryParameters(path.getQuery());
+          Map<String, String> pathVariables = RequestUtils.parsePathVariables(httpEndpoint.get().path(), path);
+          Map<String, Object> queryParameters = RequestUtils.parseQueryParameters(path.getQuery());
 
           try {
 
@@ -101,7 +101,7 @@ public class HttpProcessor implements HttpHandler {
               value = new Html(new String(exchange.getRequestBody().readAllBytes()));
             } else if (requestBodyModelType.isAssignableFrom(Form.class)) {
               String form = new String(exchange.getRequestBody().readAllBytes());
-              value = new Form(URIUtils.parseQueryParameters(form));
+              value = new Form(RequestUtils.parseQueryParameters(form));
             } else {
               // POJO assumed
               try {
