@@ -16,7 +16,7 @@ This framework also promotes static access to various resources such as sql, ema
 #### Notable features
 
 * Easy and simple configuration via properties file, environment and system properties
-* Simple dependency injection mechanism
+* Simple IoC container mechanism
 * Simple and efficient validation pattern
 * Simple SQL access
 * Simple email access
