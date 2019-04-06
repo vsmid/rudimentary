@@ -51,10 +51,10 @@ public class StaticResourceEndpoint implements HttpEndpoint<Empty, StaticResourc
   }
 
   @Override
-  public Optional<String> description() {
-    return Optional.of("Serves static files such as javascript and css.");
+  public String description() {
+    return "Serves static files such as javascript and css.";
   }
-  
+
   @Override
   public ExceptionInfo onException(Exception e) {
     return new ExceptionInfo(404, "Could not load resource " + e.getMessage() + ".");

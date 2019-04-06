@@ -36,7 +36,7 @@ public class EventEndpoint implements HttpEndpoint<BlogPost, Text> {
   }
 
   @Override
-  public Optional<String> description() {
-    return Optional.of("Receives blog post and chnages its content through event listener.");
+  public String description() {
+    return "Receives blog post and chnages its content through event listener.";
   }
 }

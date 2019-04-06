@@ -57,8 +57,8 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
   }
 
   @Override
-  public Optional<String> description() {
-    return Optional.of("Endpoint which receives any json in request body.");
+  public String description() {
+    return "Endpoint which receives any json in request body.";
   }
 
 }

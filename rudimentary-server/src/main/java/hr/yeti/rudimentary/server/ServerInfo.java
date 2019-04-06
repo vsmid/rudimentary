@@ -5,6 +5,7 @@ import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class ServerInfo {
               .append(!e.path().toString().startsWith("/") ? "/" : "")
               .append(e.path().toString())
               .append(" ")
-              .append(e.description().map(desc -> " -> " + desc).orElse(""))
+              .append(Optional.ofNullable(e.description()).map(desc -> " -> " + desc).orElse(""))
               .toString())
               .collect(Collectors.joining(System.lineSeparator()))
         });

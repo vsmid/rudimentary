@@ -54,8 +54,8 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
   }
 
   @Override
-  public Optional<String> description() {
-    return Optional.of("Shows API documentation in HTML format.");
+  public String description() {
+    return "Shows API documentation in HTML format.";
   }
 
   private String rowsHTMLGenerator() {
@@ -63,7 +63,7 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
         .stream()
         .map(endpoint
             -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
-            endpoint.httpMethod(), endpoint.path(), endpoint.httpStatus(), endpoint.description().orElse("")))
+            endpoint.httpMethod(), endpoint.path(), endpoint.httpStatus(), Optional.ofNullable(endpoint.description()).orElse("")))
         .collect(
             Collectors.joining(System.lineSeparator())
         );

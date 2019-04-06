@@ -12,7 +12,6 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckReport> {
@@ -58,8 +57,8 @@ public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckRepor
   }
 
   @Override
-  public Optional<String> description() {
-    return Optional.of("Show service's health status like memory consumption.");
+  public String description() {
+    return "Show service's health status like memory consumption.";
   }
 
 }
