@@ -1,7 +1,7 @@
 package hr.yeti.rudimentary.server.http.session;
 
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.session.Session;
+import hr.yeti.rudimentary.http.session.Session;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

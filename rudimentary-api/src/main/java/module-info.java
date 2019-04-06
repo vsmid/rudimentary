@@ -14,6 +14,7 @@ module hr.yeti.rudimentary.api {
   exports hr.yeti.rudimentary.exception.spi;
 
   exports hr.yeti.rudimentary.http;
+  exports hr.yeti.rudimentary.http.session;
   exports hr.yeti.rudimentary.http.spi;
   exports hr.yeti.rudimentary.http.content;
 
@@ -30,8 +31,6 @@ module hr.yeti.rudimentary.api {
 
   exports hr.yeti.rudimentary.security;
   exports hr.yeti.rudimentary.security.spi;
-
-  exports hr.yeti.rudimentary.session;
 
   exports hr.yeti.rudimentary.sql;
   exports hr.yeti.rudimentary.sql.spi;

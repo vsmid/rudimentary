@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.session;
+package hr.yeti.rudimentary.http.session;
 
 import java.util.Map;
 
