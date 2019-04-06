@@ -25,7 +25,7 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
               .readAllBytes()
       );
     } catch (IOException ex) {
-      logger().log(System.Logger.Level.ERROR, "Failed to load apidocs.html template.");
+      logger().log(System.Logger.Level.ERROR, "Failed to load apidocs.html template.", ex);
     }
   }
 
