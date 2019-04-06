@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
-import java.util.Optional;
 
 public class EventEndpoint implements HttpEndpoint<BlogPost, Text> {
 

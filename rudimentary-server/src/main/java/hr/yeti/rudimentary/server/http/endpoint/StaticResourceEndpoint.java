@@ -11,7 +11,6 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
-import java.util.Optional;
 
 // TODO Maybe move to extension?
 public class StaticResourceEndpoint implements HttpEndpoint<Empty, StaticResource> {

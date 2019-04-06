@@ -12,7 +12,6 @@ import hr.yeti.rudimentary.validation.Constraints;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.util.Map;
-import java.util.Optional;
 
 public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
 
