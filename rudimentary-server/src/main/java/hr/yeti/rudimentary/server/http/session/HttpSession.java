@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.server.http.session;
 
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.session.Session;
+import hr.yeti.rudimentary.security.crypto.Hash;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +13,8 @@ public class HttpSession implements Session {
   private long lastAccessedTime;
   private Map<String, Object> attributes;
 
-  public HttpSession(String rsid) {
-    this.rsid = rsid;
+  public HttpSession() {
+    this.rsid = Hash.generateRandomSHA256();
     this.creationTime = System.currentTimeMillis();
     this.attributes = new HashMap<>();
   }
