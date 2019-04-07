@@ -19,7 +19,8 @@ public class HttpSessionManager implements Instance {
   }
 
   public Session create() {
-    Session newSession = new HttpSession();
+    HttpSession newSession = new HttpSession();
+
     sessions.put(newSession.getRsid(), newSession);
     return newSession;
   }

@@ -6,6 +6,7 @@ import java.util.Objects;
 public class Cookie {
 
   private HttpCookie httpCookie;
+  private boolean sameSiteStrict;
 
   public Cookie(HttpCookie httpCookie) {
     this.httpCookie = httpCookie;
@@ -17,7 +18,7 @@ public class Cookie {
         + pair("Path", httpCookie.getPath())
         + pair("Expires", httpCookie.getMaxAge())
         + pair("Domain", httpCookie.getDomain())
-        + pair("sameSite", "Strict")
+        + pair("sameSite", sameSiteStrict ? "strict" : "lax")
         + (httpCookie.isHttpOnly() ? " HttpOnly;" : "")
         + (httpCookie.getSecure() ? " Secured;" : "");
   }
@@ -25,4 +26,9 @@ public class Cookie {
   private String pair(String name, Object value) {
     return String.format("%s=%s; ", name, Objects.isNull(value) ? "" : value.toString());
   }
+
+  public void setSameSiteStrict(boolean strict) {
+    this.sameSiteStrict = strict;
+  }
+
 }

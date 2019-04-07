@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.server.security.csrf;
 
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
@@ -33,27 +34,43 @@ public class CsrfTokenValidationFilter extends HttpFilter {
   public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
     if (csrfEnabled.asBoolean()) {
 
+      // If session.create=true and security.csrf.stateless=false, 
+      // create CSRF token in the same request when RSID is generated and continue.
+      // If session is created for the first time, it should be set in a 
+      // response cookie with name RSID by the HttpSessionCreatingFilter.
+      List<String> rsidResponseCookieList = exchange.getResponseHeaders().get("Set-Cookie");
+      if (!csrfStateless.asBoolean() && Objects.nonNull(rsidResponseCookieList) && rsidResponseCookieList.get(0).contains("RSID")) {
+        CsrfToken csrfToken = Instance.of(CsrfTokenStore.class).create();
+
+        HttpCookie cookie = new HttpCookie(
+            Config.provider().property("security.csrf.tokenCookieName").value(),
+            csrfToken.getValue()
+        );
+        cookie.setHttpOnly(false);
+        cookie.setMaxAge(-1);
+
+        exchange.getResponseHeaders().add("Set-Cookie", new Cookie(cookie).toString());
+        chain.doFilter(exchange);
+        return;
+      }
+
       boolean csrfValid = false;
       Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());
 
-      //If CSRF token cookie is absent from the request then we provide one 
-      //in response but we stop the process at this stage.
-      //Using this way we implement the first providing of token.
+      // If CSRF token cookie is absent from the request then we provide one 
+      // in response but we stop the process at this stage.
+      // Using this way we implement the first providing of token.
       if (!cookies.containsKey(csrfTokenCookieName.value())) {
-        if (!createSession.asBoolean()) {
-          exchange.getResponseHeaders().put("Reason", List.of("CSRF token not provided."));
+        CsrfToken csrfToken = Instance.of(CsrfTokenStore.class).create();
 
-          CsrfToken csrfToken = Instance.of(CsrfTokenStore.class).create();
+        HttpCookie cookie = new HttpCookie(csrfTokenCookieName.value(), csrfToken.getValue());
+        cookie.setHttpOnly(false);
+        cookie.setMaxAge(-1);
 
-          HttpCookie cookie = new HttpCookie(csrfTokenCookieName.value(), csrfToken.getValue());
-          cookie.setHttpOnly(false);
-          cookie.setMaxAge(-1);
-
-          exchange.getResponseHeaders().add("Set-Cookie", new Cookie(cookie).toString());
-          //clearly identify an initial response providing the initial CSRF token.
-          exchange.sendResponseHeaders(204, 0);
-          return;
-        }
+        exchange.getResponseHeaders().add("Set-Cookie", new Cookie(cookie).toString());
+        //clearly identify an initial response providing the initial CSRF token.
+        exchange.sendResponseHeaders(204, 0);
+        return;
       }
 
       // Skip for non state changing requests.
@@ -63,14 +80,12 @@ public class CsrfTokenValidationFilter extends HttpFilter {
         return;
       }
 
-      // For SPAs.
       if (csrfStateless.asBoolean()) {
         List<String> csrfHttpHeader = exchange.getRequestHeaders().get(csrfTokenHttpHeaderName.value());
 
         if (Objects.nonNull(csrfHttpHeader) || !csrfHttpHeader.isEmpty()) {
           csrfValid = csrfHttpHeader.get(0).equals(cookies.get(csrfTokenCookieName.value()).getValue());
         }
-        // For MVCs.
       } else {
         if (!cookies.containsKey("RSID")) {
           exchange.sendResponseHeaders(403, 0);
