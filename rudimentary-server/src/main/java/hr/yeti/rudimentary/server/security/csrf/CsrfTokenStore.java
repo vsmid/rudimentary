@@ -22,9 +22,10 @@ public class CsrfTokenStore implements Instance {
     store.remove(csrfToken);
   }
 
-  public void create() {
+  public CsrfToken create() {
     CsrfToken csrfToken = new CsrfToken();
     store.put(csrfToken.getValue(), csrfToken);
+    return csrfToken;
   }
 
   public boolean contains(String csrfToken) {

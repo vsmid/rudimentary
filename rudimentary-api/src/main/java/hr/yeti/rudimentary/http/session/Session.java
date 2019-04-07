@@ -45,4 +45,11 @@ public interface Session {
    */
   void invalidate();
 
+  /**
+   * Get csrf token value.
+   *
+   * @return Csrf token value.
+   */
+  String getCsrfToken();
+
 }

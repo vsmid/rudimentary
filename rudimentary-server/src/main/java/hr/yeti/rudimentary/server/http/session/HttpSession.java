@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.server.http.session;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.security.crypto.Hash;
+import hr.yeti.rudimentary.server.security.csrf.CsrfToken;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public class HttpSession implements Session {
   private long creationTime;
   private long lastAccessedTime;
   private Map<String, Object> attributes;
+  private CsrfToken csrfToken;
 
   public HttpSession() {
     this.rsid = Hash.generateRandomSHA256();
@@ -47,6 +49,15 @@ public class HttpSession implements Session {
   public void invalidate() {
     attributes.clear();
     Instance.of(HttpSessionManager.class).remove(rsid);
+  }
+
+  @Override
+  public String getCsrfToken() {
+    return csrfToken.getValue();
+  }
+
+  public void setCsrfToken(CsrfToken csrfToken) {
+    this.csrfToken = csrfToken;
   }
 
 }
