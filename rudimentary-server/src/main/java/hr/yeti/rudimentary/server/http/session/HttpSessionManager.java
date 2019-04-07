@@ -18,7 +18,7 @@ public class HttpSessionManager implements Instance {
     sessions = new ConcurrentHashMap<>();
   }
 
-  public Session openNew() {
+  public Session create() {
     Session newSession = new HttpSession();
     sessions.put(newSession.getRsid(), newSession);
     return newSession;
