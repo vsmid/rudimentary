@@ -5,9 +5,9 @@ import com.sun.net.httpserver.HttpServer;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
-import hr.yeti.rudimentary.server.http.session.HttpSessionCreatingFilter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ServiceLoader;
@@ -66,10 +66,12 @@ public class Server {
         });
 
     // Load filters
-    if (server.createSession) {
-      context.getFilters()
-          .add(Instance.of(HttpSessionCreatingFilter.class));
-    }
+    Instance.providersOf(HttpFilter.class)
+        .stream()
+        .filter(HttpFilter::activatingCondition)
+        .forEach((filter) -> {
+          context.getFilters().add(filter);
+        });
 
     // Start server
     server.httpServer.start();

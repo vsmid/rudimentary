@@ -13,6 +13,7 @@ import java.util.ServiceLoader;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
+import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
@@ -34,6 +35,7 @@ public class ContextProvider extends Context {
       HealthCheck.class,
       HttpEndpoint.class,
       HttpEndpointContextProvider.class,
+      HttpFilter.class,
       HttpSessionManager.class,
       IdentityDetails.class,
       IdentityStore.class,

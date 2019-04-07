@@ -16,7 +16,6 @@ import hr.yeti.rudimentary.validation.Constraints;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ServiceLoader;
 
 // TODO Write about how to include single http endpoint via jar and module-info.jar.

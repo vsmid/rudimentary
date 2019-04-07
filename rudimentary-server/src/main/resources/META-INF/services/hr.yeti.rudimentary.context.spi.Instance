@@ -1,4 +1,3 @@
 hr.yeti.rudimentary.server.http.session.HttpSessionManager
 hr.yeti.rudimentary.server.http.HttpEndpointContextProvider
 hr.yeti.rudimentary.events.EventPublisher
-hr.yeti.rudimentary.server.http.session.HttpSessionCreatingFilter

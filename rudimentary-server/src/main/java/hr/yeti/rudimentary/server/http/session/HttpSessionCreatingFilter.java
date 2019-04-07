@@ -1,16 +1,16 @@
 package hr.yeti.rudimentary.server.http.session;
 
-import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.server.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.session.Session;
 import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.Map;
 
-public class HttpSessionCreatingFilter extends Filter implements Instance {
+public class HttpSessionCreatingFilter extends HttpFilter {
 
   private ConfigProperty createSession = new ConfigProperty("session.create");
 
@@ -31,6 +31,11 @@ public class HttpSessionCreatingFilter extends Filter implements Instance {
   @Override
   public String description() {
     return "Filter which creates session.";
+  }
+
+  @Override
+  public boolean activatingCondition() {
+    return createSession.asBoolean();
   }
 
 }
