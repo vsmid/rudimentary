@@ -37,6 +37,8 @@ public class HttpSessionManager implements Instance {
   }
 
   public void remove(String rsid) {
+    Session session = sessions.get(rsid);
+    session.invalidate();
     sessions.remove(rsid);
   }
 
