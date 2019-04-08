@@ -19,7 +19,6 @@ import java.util.Objects;
 
 public class CsrfTokenValidationFilter extends HttpFilter {
 
-  private ConfigProperty createSession = new ConfigProperty("session.create");
   private ConfigProperty csrfEnabled = new ConfigProperty("security.csrf.enabled");
   private ConfigProperty csrfStateless = new ConfigProperty("security.csrf.stateless");
   private ConfigProperty csrfTokenHttpHeaderName = new ConfigProperty("security.csrf.tokenHttpHeaderName");
