@@ -24,6 +24,7 @@ This framework also promotes static access to various resources such as sql, ema
 * Simple application/service security configuration
 * Simple event system (sync only for now)
 * It is easy to extends framework with your own custom stuff (look at the exts module)
+* Simple, extensible security model + CSRF and CORS handling.
 
 Majority of features are a work in progress but are usable and show the intent.
 
@@ -33,7 +34,8 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add MVC escaping strategies, e.g. html, js, css, attributes, read OWASP
 * Add Security LoginForm authentication option
 * Add Security JWT authentication option - jose4j
-* Add Security CSRF protection
+* Add Security CSRF protection - Basic, draft version available
+* Add Security CORS handling - Basic, draft version available
 * Add Sql rollback options
 * Add HttpEndpoint async() method for async execution
 * Add Metrics (Time, Gauge, Count)
