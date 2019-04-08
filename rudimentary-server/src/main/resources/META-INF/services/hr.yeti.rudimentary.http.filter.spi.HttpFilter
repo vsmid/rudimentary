@@ -1,2 +1,3 @@
 hr.yeti.rudimentary.server.http.session.HttpSessionCreatingFilter
 hr.yeti.rudimentary.server.security.csrf.CsrfTokenValidationFilter
+hr.yeti.rudimentary.server.security.cors.CorsFilter
