@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.server.http.processor;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
@@ -16,6 +17,7 @@ import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.content.StaticResource;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.View;
+import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
@@ -23,11 +25,13 @@ import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.HttpRequestUtils;
+import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
 import hr.yeti.rudimentary.validation.ConstraintViolations;
 import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +48,7 @@ import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
 import javax.json.stream.JsonParsingException;
 
+// TODO Convert to Instance pattern.
 public class HttpProcessor implements HttpHandler {
 
   private final ExecutorService executorService;
@@ -130,15 +135,33 @@ public class HttpProcessor implements HttpHandler {
             return;
           }
 
-          Request request = new Request((Identity) exchange.getPrincipal(), exchange.getRequestHeaders(), value, pathVariables, queryParameters, exchange.getRequestURI());
+          // Set session if possible
+          Session session = null;
+          if (Config.provider().property("session.create").asBoolean()) {
+            HttpCookie rsidCookie = HttpRequestUtils.parseCookies(exchange.getRequestHeaders()).get("RSID");
+            if (Objects.nonNull(rsidCookie)) {
+              session = Instance.of(HttpSessionManager.class).get(rsidCookie.getValue());
+            }
+          }
+
+          // Construct request object
+          Request request = new Request(
+              (Identity) exchange.getPrincipal(),
+              exchange.getRequestHeaders(),
+              value,
+              pathVariables,
+              queryParameters,
+              exchange.getRequestURI(),
+              session
+          );
 
           // Global before interceptor
           List<BeforeInterceptor> globalBeforeInterceptors = Instance.providersOf(BeforeInterceptor.class);
           globalBeforeInterceptors.sort(Comparator.comparing(BeforeInterceptor::order));
 
-          for (BeforeInterceptor globalBeforeInterceptor : globalBeforeInterceptors) {
+          globalBeforeInterceptors.forEach((globalBeforeInterceptor) -> {
             globalBeforeInterceptor.intercept(request);
-          }
+          });
 
           // Local http endpoint before interceptor
           httpEndpoint.get().before(request);

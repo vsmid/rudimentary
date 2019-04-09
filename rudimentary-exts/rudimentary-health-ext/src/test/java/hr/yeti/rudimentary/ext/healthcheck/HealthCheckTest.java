@@ -37,7 +37,7 @@ public class HealthCheckTest {
     HealthCheckReport health;
 
     when:
-    health = healthCheckEndpoint.response(new Request<>(null, null, new Empty(), null, null, null));
+    health = healthCheckEndpoint.response(new Request<>(null, null, new Empty(), null, null, null, null));
 
     then:
     assertNotNull(health);

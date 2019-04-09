@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.http;
 
 import com.sun.net.httpserver.Headers;
+import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.security.Identity;
 import java.net.HttpCookie;
@@ -28,6 +29,7 @@ public class Request<T> {
   private Map<String, String> pathVariables;
   private Map<String, String> queryParameters;
   private URI uri;
+  private Session session;
 
   public Request(
       Identity identity,
@@ -35,13 +37,15 @@ public class Request<T> {
       T body,
       Map<String, String> pathVariables,
       Map<String, String> queryParameters,
-      URI uri) {
+      URI uri,
+      Session session) {
     this.identity = identity;
     this.httpHeaders = httpHeaders;
     this.body = body;
     this.pathVariables = pathVariables;
     this.queryParameters = queryParameters;
     this.uri = uri;
+    this.session = session;
   }
 
   /**
@@ -92,6 +96,10 @@ public class Request<T> {
 
   public URI getUri() {
     return uri;
+  }
+
+  public Session getSession() {
+    return session;
   }
 
 }

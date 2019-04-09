@@ -28,12 +28,10 @@ public class HttpSessionManager implements Instance {
   public Session get(String rsid) {
     if (sessions.containsKey(rsid)) {
       Session session = sessions.get(rsid);
-      // TODO Check this out for something better.
       ((HttpSession) session).setLastAccessedTime(System.currentTimeMillis());
       return session;
     }
-    // TODO Throw better exception.
-    throw new IllegalStateException("Invalid or missing RSID!");
+    throw new NoHttpSessionFoundException("No session found for RSID=" + rsid + ".");
   }
 
   public void remove(String rsid) {
