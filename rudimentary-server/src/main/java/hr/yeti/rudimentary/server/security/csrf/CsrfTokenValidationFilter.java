@@ -38,7 +38,7 @@ public class CsrfTokenValidationFilter extends HttpFilter {
       // If session is created for the first time, it should be set in a 
       // response cookie with name RSID by the HttpSessionCreatingFilter.
       List<String> rsidResponseCookieList = exchange.getResponseHeaders().get("Set-Cookie");
-      if (!csrfStateless.asBoolean() && Objects.nonNull(rsidResponseCookieList) && rsidResponseCookieList.get(0).contains("RSID")) {
+      if (!csrfStateless.asBoolean() && Objects.nonNull(rsidResponseCookieList) && rsidResponseCookieList.get(0).contains(Session.COOKIE)) {
         CsrfToken csrfToken = Instance.of(CsrfTokenStore.class).create();
 
         HttpCookie cookie = new HttpCookie(
@@ -86,11 +86,11 @@ public class CsrfTokenValidationFilter extends HttpFilter {
           csrfValid = csrfHttpHeader.get(0).equals(cookies.get(csrfTokenCookieName.value()).getValue());
         }
       } else {
-        if (!cookies.containsKey("RSID")) {
+        if (!cookies.containsKey(Session.COOKIE)) {
           exchange.sendResponseHeaders(403, 0);
           return;
         } else {
-          String rsid = cookies.get("RSID").getValue();
+          String rsid = cookies.get(Session.COOKIE).getValue();
           Session session = Instance.of(HttpSessionManager.class).get(rsid);
           csrfValid = cookies.get(csrfTokenCookieName.value()).getValue().equals(session.getCsrfToken());
         }

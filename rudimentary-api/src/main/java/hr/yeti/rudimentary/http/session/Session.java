@@ -13,6 +13,11 @@ import java.util.Map;
 public interface Session {
 
   /**
+   * Http cookie name used to identify user's session.
+   */
+  public static final String COOKIE = "RSID";
+
+  /**
    * Get unique session id value which uniquely identifies session.
    *
    * @return Unique session id value.

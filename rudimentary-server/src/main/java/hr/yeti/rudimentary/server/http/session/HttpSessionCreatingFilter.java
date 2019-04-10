@@ -9,6 +9,7 @@ import hr.yeti.rudimentary.server.http.Cookie;
 import hr.yeti.rudimentary.server.http.HttpRequestUtils;
 import java.io.IOException;
 import java.net.HttpCookie;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -24,10 +25,12 @@ public class HttpSessionCreatingFilter extends HttpFilter {
     Session session = null;
     Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());
 
+    // This part handles RSID tokens which are not stored in server's memory
+    // by creating new session and overwriting unknown RSID cookie.
     boolean overwriteRsidCookie = false;
-    if (cookies.containsKey("RSID")) {
+    if (cookies.containsKey(Session.COOKIE)) {
       try {
-        session = Instance.of(HttpSessionManager.class).get(cookies.get("RSID").getValue());
+        session = Instance.of(HttpSessionManager.class).get(cookies.get(Session.COOKIE).getValue());
       } catch (NoHttpSessionFoundException e) {
         overwriteRsidCookie = true;
         LOGGER.warning(e.getMessage());
@@ -38,15 +41,16 @@ public class HttpSessionCreatingFilter extends HttpFilter {
       HttpSession newSession = (HttpSession) Instance.of(HttpSessionManager.class).create();
       String rsid = newSession.getRsid();
 
-      HttpCookie rsidCookie = new HttpCookie("RSID", rsid);
+      HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, rsid);
       rsidCookie.setHttpOnly(true);
       rsidCookie.setMaxAge(-1);
 
       exchange.getResponseHeaders().add("Set-Cookie", new Cookie(rsidCookie).toString());
 
+      List<String> rawRequestCookies = exchange.getRequestHeaders().get("Cookie");
       if (overwriteRsidCookie) {
-        exchange.getRequestHeaders().get("Cookie").remove("RSID=" + cookies.get("RSID").getValue());
-        exchange.getRequestHeaders().get("Cookie").add("RSID=" + rsid);
+        rawRequestCookies.remove(Session.COOKIE + "=" + cookies.get(Session.COOKIE).getValue());
+        rawRequestCookies.add(Session.COOKIE + "=" + rsid);
 
       }
     }

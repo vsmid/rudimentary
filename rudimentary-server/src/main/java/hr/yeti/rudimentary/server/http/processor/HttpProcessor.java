@@ -138,7 +138,7 @@ public class HttpProcessor implements HttpHandler {
           // Set session if possible
           Session session = null;
           if (Config.provider().property("session.create").asBoolean()) {
-            HttpCookie rsidCookie = HttpRequestUtils.parseCookies(exchange.getRequestHeaders()).get("RSID");
+            HttpCookie rsidCookie = HttpRequestUtils.parseCookies(exchange.getRequestHeaders()).get(Session.COOKIE);
             if (Objects.nonNull(rsidCookie)) {
               session = Instance.of(HttpSessionManager.class).get(rsidCookie.getValue());
             }
