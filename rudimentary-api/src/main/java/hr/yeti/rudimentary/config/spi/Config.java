@@ -236,7 +236,7 @@ public abstract class Config implements Instance {
    */
   public Properties rawProperties() {
     Properties props = new Properties();
-    propertiesg.forEach((key, value) -> {
+    properties.forEach((key, value) -> {
       props.put(key, value);
     });
     return props;
