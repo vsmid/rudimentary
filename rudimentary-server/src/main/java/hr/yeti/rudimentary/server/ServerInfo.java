@@ -3,9 +3,8 @@ package hr.yeti.rudimentary.server;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -34,17 +33,19 @@ public class ServerInfo {
   }
 
   public static void printConfigProperties(Logger logger) {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
+    StringBuilder propertiesList = new StringBuilder();
+    TreeMap props = new TreeMap(Config.provider().rawProperties());
 
-    Config.provider().rawProperties().list(printWriter);
+    props.forEach((key, value) -> {
+      propertiesList.append(key).append("=").append(value).append(System.lineSeparator());
+    });
 
     System.out.println(System.lineSeparator());
 
-    logger.log(Level.INFO, "{0} {1} {2}", new Object[]{
-      "Configuration properties",
-      System.lineSeparator(),
-      stringWriter.toString()
+    logger.log(Level.INFO, "{0} {1}{2}", new Object[]{
+      "Configuration properties:",
+      System.lineSeparator() + System.lineSeparator(),
+      propertiesList.toString()
     });
   }
 }

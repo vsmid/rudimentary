@@ -235,6 +235,10 @@ public abstract class Config implements Instance {
    * @return Full set of configuration properties in raw format.
    */
   public Properties rawProperties() {
-    return new Properties(properties);
+    Properties props = new Properties();
+    propertiesg.forEach((key, value) -> {
+      props.put(key, value);
+    });
+    return props;
   }
 }
