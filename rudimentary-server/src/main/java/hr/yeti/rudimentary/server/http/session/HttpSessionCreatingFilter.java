@@ -49,7 +49,7 @@ public class HttpSessionCreatingFilter extends HttpFilter {
 
       List<String> rawRequestCookies = exchange.getRequestHeaders().get("Cookie");
       if (overwriteRsidCookie) {
-        rawRequestCookies.remove(Session.COOKIE + "=" + cookies.get(Session.COOKIE).getValue());
+        rawRequestCookies.clear();
         rawRequestCookies.add(Session.COOKIE + "=" + rsid);
 
       }
