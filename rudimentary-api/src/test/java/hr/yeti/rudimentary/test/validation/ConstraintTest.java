@@ -69,7 +69,7 @@ public class ConstraintTest {
     assertTrue(Constraint.MIN(2).apply(5).isValid());
     assertTrue(Constraint.MIN(2).apply(2).isValid());
   }
-  
+
   @Test
   public void test_MAX_constraint() {
     expect:

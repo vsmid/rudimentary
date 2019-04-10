@@ -1,3 +1,4 @@
+
 import hr.yeti.rudimentary.ext.healthcheck.HealthCheckEndpoint;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 

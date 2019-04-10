@@ -10,8 +10,8 @@ import java.sql.Connection;
  * Since this abstract class inherently extends {@link Instance} it means it is loaded automatically
  * via {@link ServiceLoader} on application startup.
  *
- * You can have as many different JdbcConnectionPool providers as you want and you can register
- * them in
+ * You can have as many different JdbcConnectionPool providers as you want and you can register them
+ * in
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.JdbcConnectionPool</i>
  * file. Currently however, the one marked as priority one or the first one listed will used.
  *

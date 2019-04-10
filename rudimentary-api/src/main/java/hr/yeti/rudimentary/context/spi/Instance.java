@@ -78,7 +78,6 @@ public interface Instance {
     }
 
     // TODO throw exception on null instead null?
-    
     return instance;
   }
 
