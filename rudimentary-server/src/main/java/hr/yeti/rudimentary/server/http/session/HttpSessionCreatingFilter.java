@@ -9,7 +9,6 @@ import hr.yeti.rudimentary.server.http.Cookie;
 import hr.yeti.rudimentary.server.http.HttpRequestUtils;
 import java.io.IOException;
 import java.net.HttpCookie;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
