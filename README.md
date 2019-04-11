@@ -6,7 +6,7 @@ A small and simple flat web services/applications framework.
 
 It all started as a playground for the new Java module system.
 
-The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions are libraries dealing with JSON conversions). It avoides using annotations and reflection as much as possible.
+The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions for now are libraries dealing with JSON conversions). It avoids using annotations and reflection as much as possible.
 
 This framework is also opinionated and promotes flat application/service design. This means there is no strict separation on controller, service and repository layers. One web method implementation is contained within a single Java file. Of course, there is nothing preventing you to do it your own way :)
 
@@ -47,3 +47,4 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
 * Add Admin module
 * More validation constraint definitions and implementations
+* JDBC - mayne use HikariCP or implement jdbc pool seriously.
