@@ -24,7 +24,6 @@ public class Server {
   private int stopDelay;
   private int port;
   private int threadPoolSize;
-  private boolean createSession;
 
   private Server() throws IOException {
     LogManager.getLogManager()
