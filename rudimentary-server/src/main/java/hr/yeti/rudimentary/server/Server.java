@@ -47,7 +47,6 @@ public class Server {
     server.port = Config.provider().property("server.port").asInt();
     server.threadPoolSize = Config.provider().property("server.threadPoolSize").asInt();
     server.stopDelay = Config.provider().property("server.stopDelay").asInt();
-    server.createSession = Config.provider().property("session.create").asBoolean();
 
     // Create server instance
     server.httpServer = HttpServer.create(new InetSocketAddress(server.port), server.threadPoolSize);
