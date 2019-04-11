@@ -17,8 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class used for static access to database communication. Main goal of this class to reduce
- * boilerplate code as much as possible and just write Sql queries on the fly.
+ * Class used for static access to database communication. Main goal of this class to reduce boilerplate code as much as possible and just write Sql queries on the fly.
  *
  * @author vedransmid@yeti-it.hr
  */
@@ -76,7 +75,7 @@ public final class Sql {
           statement.close();
         }
         if (!tx) {
-          conn.close();
+          Instance.of(JdbcConnectionPool.class).release(conn);
         }
       } catch (SQLException ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,7 +129,7 @@ public final class Sql {
           statement.close();
         }
         if (!tx) {
-          conn.close();
+          Instance.of(JdbcConnectionPool.class).release(conn);
         }
       } catch (SQLException ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,7 +164,7 @@ public final class Sql {
           preparedStatement.close();
         }
         if (!tx) {
-          conn.close();
+          Instance.of(JdbcConnectionPool.class).release(conn);
         }
       } catch (SQLException ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
@@ -212,8 +211,8 @@ public final class Sql {
       throw new TxException(ex);
     } finally {
       try {
-        sql.conn.close();
-      } catch (SQLException ex) {
+        Instance.of(JdbcConnectionPool.class).release(sql.conn);
+      } catch (Exception ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
         throw new TxException(ex);
       }
@@ -238,8 +237,8 @@ public final class Sql {
       throw new SqlException(ex);
     } finally {
       try {
-        sql.conn.close();
-      } catch (SQLException ex) {
+        Instance.of(JdbcConnectionPool.class).release(sql.conn);
+      } catch (Exception ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
         throw new SqlException(ex);
       }
