@@ -47,4 +47,5 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
 * Add Admin module
 * More validation constraint definitions and implementations
-* JDBC - mayne use HikariCP or implement jdbc pool seriously.
+* JDBC - mayne use HikariCP or implement jdbc pool a bit more seriously.
+* Add fallback, bulkead, retry, backpressure handlers.
