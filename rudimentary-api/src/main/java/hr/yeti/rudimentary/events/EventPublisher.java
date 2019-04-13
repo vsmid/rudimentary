@@ -7,18 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * A little bit custom implementation of observer pattern.
  *
- * Since this class implements {@link Instance} it means it is loaded automatically via
- * {@link ServiceLoader} on application startup.
+ * Since this class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
  *
- * In practice, the only time you could use an instance of this class if you would want to publish
- * an event. Preferred way of publishing events is shown in {@link Event}.
+ * In practice, the only time you could use an instance of this class if you would want to publish an event. Preferred way of publishing events is shown in {@link Event}.
  *
  * <pre>
  * {@code
@@ -33,18 +34,21 @@ import java.util.logging.Logger;
 public final class EventPublisher implements Instance {
 
   /**
-   * Enumerated type of how event should be published. This has an effect on the way how listeners
-   * process published event.
+   * Enumerated type of how event should be published. This has an effect on the way how listeners process published event.
    */
   public enum Type {
     SYNC, ASYNC
   }
 
   /**
-   * A map of all registered {@link EventListener}. One event class type can have multiple listeners
-   * registered.
+   * A map of all registered {@link EventListener}. One event class type can have multiple listeners registered.
    */
   private static final Map<Class<? extends Event>, List<EventListener<Event>>> LISTENERS = new ConcurrentHashMap<>();
+
+  /**
+   * Thread pool for asynchronous listener execution.
+   */
+  private static final ExecutorService ASYNC_EXECUTOR = Executors.newCachedThreadPool();
 
   /**
    * <pre>
@@ -55,15 +59,28 @@ public final class EventPublisher implements Instance {
    * </pre>
    *
    * @param event Event instance to be published.
-   * @param type How event will be published. Currently only Type.SYNC is supported.
+   * @param type How event will be published.
    */
   public void publish(Event event, Type type) {
     if (LISTENERS.containsKey(event.getClass())) {
-      LISTENERS.get(event.getClass())
-          .stream()
-          .forEach((t) -> { // synchronous only for now.
-            t.onEvent(event);
-          });
+      if (type == Type.SYNC) {
+        LISTENERS.get(event.getClass())
+            .stream()
+            .forEach((t) -> {
+              t.onEvent(event);
+            });
+      } else {
+        LISTENERS.get(event.getClass())
+            .stream()
+            .map(listener -> {
+              return (Runnable) () -> {
+                listener.onEvent(event);
+              };
+            })
+            .forEach((runnable) -> {
+              CompletableFuture.runAsync(runnable, ASYNC_EXECUTOR);
+            });
+      }
     }
   }
 
