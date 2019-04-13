@@ -49,3 +49,6 @@ Majority of features are a work in progress but are usable and show the intent.
 * More validation constraint definitions and implementations
 * JDBC - mayne use HikariCP or implement jdbc pool a bit more seriously.
 * Add fallback, bulkead, retry, backpressure handlers.
+* Logger should be moved from HttpEndpoint to allow access from anywhere
+* System properties listed are missing ones from system and environment
+* HttpEndpoint#requestType() method should be moved to utility class
