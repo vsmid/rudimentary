@@ -22,7 +22,7 @@ This framework also promotes static access to various resources such as sql, ema
 * Simple email access
 * Simple MVC framework
 * Simple application/service security configuration
-* Simple event system (sync only for now)
+* Simple event system
 * It is easy to extends framework with your own custom stuff (look at the exts module)
 * Simple, extensible security model + CSRF and CORS handling.
 
