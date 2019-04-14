@@ -47,4 +47,4 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add fallback, bulkead, retry, backpressure handlers.
 * Logger should be moved from HttpEndpoint to allow access from anywhere
 * System properties listed are missing ones from system and environment
-* HttpEndpoint#requestType() method should be moved to utility class
+* Add internationalization for messages etc.
