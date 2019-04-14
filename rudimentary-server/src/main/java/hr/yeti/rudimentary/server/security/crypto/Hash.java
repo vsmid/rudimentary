@@ -8,16 +8,7 @@ import java.util.logging.Logger;
 
 public class Hash {
 
-  private static SecureRandom random;
-
-  static {
-    try {
-      random = SecureRandom.getInstance("SHA1PRNG");
-    } catch (NoSuchAlgorithmException ex) {
-      Logger.getLogger(Hash.class.getName()).log(Level.SEVERE, null, ex);
-      throw new IllegalArgumentException(ex);
-    }
-  }
+  private static SecureRandom random = new SecureRandom();
 
   public static String generateRandomSHA256() {
     try {
