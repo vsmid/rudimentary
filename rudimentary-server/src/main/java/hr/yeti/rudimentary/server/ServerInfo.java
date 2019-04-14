@@ -34,7 +34,7 @@ public class ServerInfo {
 
   public static void printConfigProperties(Logger logger) {
     StringBuilder propertiesList = new StringBuilder();
-    TreeMap props = new TreeMap(Config.provider().rawProperties());
+    TreeMap props = new TreeMap(Config.provider().applicationProperties());
 
     props.forEach((key, value) -> {
       propertiesList.append(key).append("=").append(value).append(System.lineSeparator());

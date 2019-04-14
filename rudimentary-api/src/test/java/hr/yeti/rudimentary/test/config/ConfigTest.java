@@ -210,4 +210,12 @@ public class ConfigTest {
     expect:
     assertTrue(config.isSealed());
   }
+
+  @Test
+  public void test_application_properties_is_cloned_instance_of_config_properties_values() {
+    expect:
+    config.applicationProperties().forEach((key, value) -> {
+      assertEquals(config.property(key.toString()), value.toString());
+    });
+  }
 }
