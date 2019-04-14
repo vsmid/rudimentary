@@ -52,13 +52,6 @@ public class HttpEndpointTest {
   }
 
   @Test
-  @DisplayName("Default requestType() should return class of inferred generic")
-  public void test_requestType_method() throws ClassNotFoundException {
-    expect:
-    assertEquals(OkModel.class, okEndpoint.requestType());
-  }
-
-  @Test
   @DisplayName("Default responseHttpHeaders() should return empty instance of Map")
   public void test_responseHttpHeaders_method() {
     expect:

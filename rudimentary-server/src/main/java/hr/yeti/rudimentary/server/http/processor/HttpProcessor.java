@@ -31,6 +31,7 @@ import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.ArrayList;
@@ -73,6 +74,8 @@ public class HttpProcessor implements HttpHandler {
 
         if (httpEndpoint.isPresent()) {
 
+          String className = ((ParameterizedType) httpEndpoint.get().getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
+
           if (httpMethod != httpEndpoint.get().httpMethod()) {
             respond(405, ("Http method " + httpMethod + " is not supported.").getBytes(), exchange);
             return;
@@ -82,7 +85,7 @@ public class HttpProcessor implements HttpHandler {
           Object value = null;
           Class requestBodyModelType;
           try {
-            requestBodyModelType = httpEndpoint.get().requestType();
+            requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.get().getClass());
           } catch (ClassNotFoundException e) {
             respond(405, "Invalid request body.".getBytes(), exchange);
             return;
@@ -232,7 +235,7 @@ public class HttpProcessor implements HttpHandler {
 
               exchange.getResponseHeaders().put("Content-Type", Arrays.asList(staticResource.getMediaType()));
 
-              try (InputStream is = staticResource.getValue()) {
+              try ( InputStream is = staticResource.getValue()) {
                 responseTransformed = is.readAllBytes();
               }
 

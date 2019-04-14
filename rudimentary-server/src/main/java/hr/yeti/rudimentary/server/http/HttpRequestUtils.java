@@ -1,6 +1,8 @@
 package hr.yeti.rudimentary.server.http;
 
 import com.sun.net.httpserver.Headers;
+import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.content.Model;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static hr.yeti.rudimentary.server.http.URIUtils.convertToRegex;
+import java.lang.reflect.ParameterizedType;
 
 public class HttpRequestUtils {
 
@@ -73,4 +76,12 @@ public class HttpRequestUtils {
     return queryParameters;
   }
 
+  public static Class<? extends Request<? extends Model>> getRequestBodyType(Class<?> clazz) throws ClassNotFoundException {
+    try {
+      String className = ((ParameterizedType) clazz.getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
+      return (Class<? extends Request<? extends Model>>) Class.forName(className);
+    } catch (ClassNotFoundException e) {
+      throw new IllegalStateException("Class is not parametrized with generic type.", e);
+    }
+  }
 }

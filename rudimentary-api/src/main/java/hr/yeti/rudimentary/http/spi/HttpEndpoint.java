@@ -13,7 +13,6 @@ import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.validation.Constraints;
 
-import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -22,11 +21,9 @@ import java.util.ServiceLoader;
 /**
  * This is a central SPI for exposing functionalities over HTTP.
  *
- * Since this interface extends {@link Instance} it means it is loaded automatically via
- * {@link ServiceLoader} on application startup.
+ * Since this interface extends {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
  *
- * You can have as many different HttpEndpoint implementations as you want and you can register them
- * in <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint</i>
+ * You can have as many different HttpEndpoint implementations as you want and you can register them in <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint</i>
  * file.
  *
  * @author vedransmid@yeti-it.hr
@@ -34,24 +31,6 @@ import java.util.ServiceLoader;
  * @param <O> Type of outgoing response.
  */
 public interface HttpEndpoint<I extends Model, O extends Model> extends Instance {
-
-  /**
-   * This method is not intended to be used except internally. This is a helper method to help
-   * processing engine determine which type of incoming request body is expected so it can perform
-   * conversion.
-   *
-   * @return Type of the incoming request body. Since reflection is discouraged, this is the only
-   * place where this framework actually uses reflection.
-   * @throws ClassNotFoundException
-   */
-  default Class<? extends Request<? extends Model>> requestType() throws ClassNotFoundException {
-    try {
-      String className = ((ParameterizedType) this.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
-      return (Class<? extends Request<? extends Model>>) Class.forName(className);
-    } catch (ClassNotFoundException e) {
-      throw new IllegalStateException("Class is not parametrized with generic type.", e);
-    }
-  }
 
   /**
    * Sets HTTP method. Defaults to GET.
@@ -64,7 +43,7 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Sets URI. Defaults to implementing class name with starting letter lowercased.
+   * Sets URI. Defaults to implementing class name with starting letter lower cased.
    *
    * @return URI on which implementing class will be available.
    */
@@ -83,10 +62,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Local before interceptor. This interceptor will apply only to implementing class. Implement
-   * this method to execute any kind of logic before
-   * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed. Also, this
-   * method will be executed after global {@link AfterInterceptor}.
+   * Local before interceptor. This interceptor will apply only to implementing class. Implement this method to execute any kind of logic before
+   * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed. Also, this method will be executed after global {@link AfterInterceptor}.
    *
    * @param request Incoming HTTP request abstraction.
    */
@@ -95,9 +72,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * This is the single most important method of this interface. This is also the only method which
-   * requires implementation upon declaration. This is basically a place where you implement
-   * business logic exposed by implementing class.
+   * This is the single most important method of this interface. This is also the only method which requires implementation upon declaration. This is basically a place where you implement business
+   * logic exposed by implementing class.
    *
    * @param request Incoming HTTP request abstraction.
    * @return Response type depending on the inferred generic type.
@@ -115,10 +91,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Local after interceptor. This interceptor will apply only to implementing class. Implement this
-   * method to execute any kind of logic after
-   * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed and no
-   * exception is thrown. Also, this method will be executed after global {@link AfterInterceptor}.
+   * Local after interceptor. This interceptor will apply only to implementing class. Implement this method to execute any kind of logic after
+   * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed and no exception is thrown. Also, this method will be executed after global {@link AfterInterceptor}.
    *
    * @param request Incoming HTTP request abstraction.
    * @param response Outgoing response.
@@ -128,12 +102,10 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Local exception handler. This interceptor will apply only to implementing class. If this method
-   * is implemented it will have greater priority that the global {@link ExceptionHandler} when
-   * handling exceptions.
+   * Local exception handler. This interceptor will apply only to implementing class. If this method is implemented it will have greater priority that the global {@link ExceptionHandler} when handling
+   * exceptions.
    *
-   * @param e Exception thrown during
-   * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method execution.
+   * @param e Exception thrown during {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method execution.
    * @return Exception information.
    */
   default ExceptionInfo onException(Exception e) {
@@ -141,10 +113,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Convenience method to have a logger available out-of-the box. By default, this logger will use
-   * standard Java logger unless a different provider is configured. In both cases, use this logger
-   * to log. In most cases, there should be no need to override this method whether you choose to
-   * log with custom logging provider or with default Java logging provider.
+   * Convenience method to have a logger available out-of-the box. By default, this logger will use standard Java logger unless a different provider is configured. In both cases, use this logger to
+   * log. In most cases, there should be no need to override this method whether you choose to log with custom logging provider or with default Java logging provider.
    *
    * @return System logger.
    */
@@ -153,29 +123,22 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Sets validation constraints for data received via incoming HTTP request. This goes for request
-   * body, request parameters, URI path variables and HTTP headers.
+   * Sets validation constraints for data received via incoming HTTP request. This goes for request body, request parameters, URI path variables and HTTP headers.
    *
-   * For request content types of {@link Form}, {@link Json}, {@link Html} and {@link Text} you can
-   * freely define constraints on body without any considerations. Moreover, for those this is the
-   * only place where you can define constraints. However, in case of custom {@link Model} body
-   * content type you have a couple of options:
+   * For request content types of {@link Form}, {@link Json}, {@link Html} and {@link Text} you can freely define constraints on body without any considerations. Moreover, for those this is the only
+   * place where you can define constraints. However, in case of custom {@link Model} body content type you have a couple of options:
    *
    * <ul>
-   * <li>Define constraints for body on the custom content type level using
-   * {@link Model#constraints()} method.</li>
+   * <li>Define constraints for body on the custom content type level using {@link Model#constraints()} method.</li>
    * <li>Define constraints for body on the HttpEndpoint level using
-   * {@link HttpEndpoint#constraints(hr.yeti.rudimentary.http.content.Model, java.util.Map, java.util.Map, com.sun.net.httpserver.Headers)}
-   * method.</li>
+   * {@link HttpEndpoint#constraints(hr.yeti.rudimentary.http.content.Model, java.util.Map, java.util.Map, com.sun.net.httpserver.Headers)} method.</li>
    * <li>Define constraints for body on both of the above levels.</li>
    * </ul>
    *
-   * Important thing to remember is that constraints defined on any level will be executed. Nothing
-   * gets excluded. So keep that in mind when you want to define constraints for custom
-   * {@link Model} body on both levels.
+   * Important thing to remember is that constraints defined on any level will be executed. Nothing gets excluded. So keep that in mind when you want to define constraints for custom {@link Model}
+   * body on both levels.
    *
-   * General advice for custom {@link Model} body constraints would be to keep all the constraint
-   * definitions inside the custom model itself.
+   * General advice for custom {@link Model} body constraints would be to keep all the constraint definitions inside the custom model itself.
    *
    * @param body Request body.
    * @param pathVariables Path variables.
@@ -202,8 +165,7 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
-   * Sets information about what this endpoint is suppose to be doing. This will be printed out on
-   * startup and will also be used in auto generated docs.
+   * Sets information about what this endpoint is suppose to be doing. This will be printed out on startup and will also be used in auto generated docs.
    *
    * @return Endpoint description.
    */

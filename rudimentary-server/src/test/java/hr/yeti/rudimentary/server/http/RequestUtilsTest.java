@@ -1,5 +1,9 @@
 package hr.yeti.rudimentary.server.http;
 
+import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.content.Empty;
+import hr.yeti.rudimentary.http.content.Text;
+import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,5 +60,20 @@ public class RequestUtilsTest {
     then:
     assertNotNull(queryParameters);
     assertTrue(queryParameters.isEmpty());
+  }
+
+  @Test
+  public void test_requestBodyType_method() throws ClassNotFoundException {
+    expect:
+    assertEquals(Empty.class, HttpRequestUtils.getRequestBodyType(new CustomEndpoint().getClass()));
+  }
+
+  public static class CustomEndpoint implements HttpEndpoint<Empty, Text> {
+
+    @Override
+    public Text response(Request<Empty> request) {
+      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
   }
 }
