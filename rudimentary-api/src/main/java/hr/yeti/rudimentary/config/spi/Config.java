@@ -211,7 +211,7 @@ public abstract class Config implements Instance {
   /**
    * Convenience method to be used to access {@link Config} properties without having to initialize a dedicated class field using {@link Instance#of(java.lang.Class)}.
    *
-   * @return
+   * @return An instance of Config class.
    */
   public static Config provider() {
     return Instance.of(Config.class);
@@ -222,9 +222,7 @@ public abstract class Config implements Instance {
    */
   public Properties applicationProperties() {
     Properties props = new Properties();
-    properties.forEach((key, value) -> {
-      props.put(key, value);
-    });
+    properties.forEach(props::put);
     return props;
   }
 }
