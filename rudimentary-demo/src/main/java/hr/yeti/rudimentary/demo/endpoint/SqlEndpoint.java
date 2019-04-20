@@ -27,7 +27,7 @@ public class SqlEndpoint implements HttpEndpoint<Text, Json> {
       return sql.rows("select * from users;");
     });
 
-    return new Json(Sql.query(USER.getById(1)));
+    return new Json(Sql.query().rows("select * from users;"));
   }
 
   // Repository example :-)

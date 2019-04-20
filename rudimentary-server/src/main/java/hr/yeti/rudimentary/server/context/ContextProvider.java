@@ -8,7 +8,6 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.security.spi.IdentityStore;
-import hr.yeti.rudimentary.sql.spi.JdbcConnectionPool;
 import java.util.ServiceLoader;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.spi.EventListener;
@@ -22,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
+import javax.sql.DataSource;
 
 public class ContextProvider extends Context {
 
@@ -40,7 +40,7 @@ public class ContextProvider extends Context {
       IdentityDetails.class,
       IdentityStore.class,
       AuthMechanism.class,
-      JdbcConnectionPool.class,
+      DataSource.class,
       ViewEndpoint.class,
       ViewEngine.class,
       ObjectPool.class,

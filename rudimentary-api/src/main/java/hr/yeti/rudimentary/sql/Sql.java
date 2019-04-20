@@ -1,7 +1,6 @@
 package hr.yeti.rudimentary.sql;
 
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.sql.spi.JdbcConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
 
 /**
  * Class used for static access to database communication. Main goal of this class to reduce boilerplate code as much as possible and just write Sql queries on the fly.
@@ -27,9 +27,13 @@ public final class Sql {
   private boolean tx = false;
 
   private Sql(boolean tx) {
-    // TODO Add filter when there will be multiple pools, for now use only one provider.
-    // TODO Throw exception explaining how jdbc conn. pool is not configured if conn == null
-    this.conn = Instance.of(JdbcConnectionPool.class).borrow();
+    try {
+      // TODO Add filter when there will be multiple pools, for now use only one provider.
+      // TODO Throw exception explaining how jdbc conn. pool is not configured if conn == null
+      this.conn = Instance.of(DataSource.class).getConnection();
+    } catch (SQLException ex) {
+      Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+    }
     this.tx = tx;
   }
 
@@ -75,7 +79,7 @@ public final class Sql {
           statement.close();
         }
         if (!tx) {
-          Instance.of(JdbcConnectionPool.class).release(conn);
+          conn.close();
         }
       } catch (SQLException ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
@@ -129,7 +133,7 @@ public final class Sql {
           statement.close();
         }
         if (!tx) {
-          Instance.of(JdbcConnectionPool.class).release(conn);
+          conn.close();
         }
       } catch (SQLException ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,7 +168,7 @@ public final class Sql {
           preparedStatement.close();
         }
         if (!tx) {
-          Instance.of(JdbcConnectionPool.class).release(conn);
+          conn.close();
         }
       } catch (SQLException ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,7 +215,7 @@ public final class Sql {
       throw new TxException(ex);
     } finally {
       try {
-        Instance.of(JdbcConnectionPool.class).release(sql.conn);
+        sql.conn.close();
       } catch (Exception ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
         throw new TxException(ex);
@@ -237,7 +241,7 @@ public final class Sql {
       throw new SqlException(ex);
     } finally {
       try {
-        Instance.of(JdbcConnectionPool.class).release(sql.conn);
+       sql.conn.close();
       } catch (Exception ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
         throw new SqlException(ex);

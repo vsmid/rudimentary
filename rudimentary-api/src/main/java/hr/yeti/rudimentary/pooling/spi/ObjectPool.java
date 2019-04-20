@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.sql.spi.JdbcConnectionPool;
 import java.sql.Connection;
 import java.util.Objects;
 import java.util.ServiceLoader;

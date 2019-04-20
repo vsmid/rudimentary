@@ -2,6 +2,8 @@ module hr.yeti.rudimentary.server {
   requires jdk.httpserver;
   requires hr.yeti.rudimentary.api;
   requires java.logging;
+  requires java.sql;
+  requires com.zaxxer.hikari;
 
   exports hr.yeti.rudimentary.server;
 

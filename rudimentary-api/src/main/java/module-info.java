@@ -34,7 +34,6 @@ module hr.yeti.rudimentary.api {
   exports hr.yeti.rudimentary.security.spi;
 
   exports hr.yeti.rudimentary.sql;
-  exports hr.yeti.rudimentary.sql.spi;
 
   exports hr.yeti.rudimentary.validation;
 
