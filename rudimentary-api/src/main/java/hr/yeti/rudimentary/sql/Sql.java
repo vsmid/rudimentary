@@ -17,7 +17,13 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 /**
- * Class used for static access to database communication. Main goal of this class to reduce boilerplate code as much as possible and just write Sql queries on the fly.
+ * Class used for static access to database communication. Main goal of this class to reduce
+ * boilerplate code as much as possible and just write Sql queries on the fly. Connection pool used
+ * is HikariCP.
+ *
+ * @see
+ * <a href="https://brettwooldridge.github.io/HikariCP">https://brettwooldridge.github.io/HikariCP</a>
+ * for configuration options.
  *
  * @author vedransmid@yeti-it.hr
  */
@@ -241,7 +247,7 @@ public final class Sql {
       throw new SqlException(ex);
     } finally {
       try {
-       sql.conn.close();
+        sql.conn.close();
       } catch (Exception ex) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
         throw new SqlException(ex);
