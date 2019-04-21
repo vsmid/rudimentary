@@ -43,8 +43,9 @@ Majority of features are a work in progress but are usable and show the intent.
 * Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
 * Add Admin module
 * More validation constraint definitions and implementations
-* JDBC - mayne use HikariCP or implement jdbc pool a bit more seriously.
+* JDBC - mayne use HikariCP or implement jdbc pool a bit more seriously - basic impl, done.
 * Add fallback, bulkead, retry, backpressure handlers.
 * Logger should be moved from HttpEndpoint to allow access from anywhere
 * System properties listed are missing ones from system and environment
 * Add internationalization for messages etc.
+* Create test module to help when writing tests, e.g. start server, load sql script utility, context mock etc.
