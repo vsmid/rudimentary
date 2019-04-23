@@ -66,7 +66,6 @@ public class Server {
     // Load filters
     Instance.providersOf(HttpFilter.class)
         .stream()
-        .filter(HttpFilter::activatingCondition)
         .forEach((filter) -> {
           context.getFilters().add(filter);
         });

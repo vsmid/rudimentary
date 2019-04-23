@@ -25,7 +25,7 @@ public class CsrfTokenValidationFilter extends HttpFilter {
   private ConfigProperty csrfTokenCookieName = new ConfigProperty("security.csrf.tokenCookieName");
 
   @Override
-  public boolean activatingCondition() {
+  public boolean conditional() {
     return csrfEnabled.asBoolean();
   }
 

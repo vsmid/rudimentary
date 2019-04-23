@@ -154,4 +154,14 @@ public interface Instance {
   default boolean primary() {
     return false;
   }
+
+  /**
+   * Indicates whether an instance of this class should be created and put into application/service
+   * context or not.
+   *
+   * @return True if an instance should be created, otherwise false.
+   */
+  default boolean conditional() {
+    return true;
+  }
 }

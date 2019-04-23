@@ -16,7 +16,7 @@ public class CorsFilter extends HttpFilter {
   private ConfigProperty corsMaxAge = new ConfigProperty("security.cors.maxAge");
 
   @Override
-  public boolean activatingCondition() {
+  public boolean conditional() {
     return corsEnabled.asBoolean();
   }
 

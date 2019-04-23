@@ -1,4 +1,3 @@
-
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 
 module hr.yeti.rudimentary.demo {

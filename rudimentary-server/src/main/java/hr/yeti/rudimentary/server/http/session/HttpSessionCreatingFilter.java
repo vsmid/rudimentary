@@ -63,7 +63,7 @@ public class HttpSessionCreatingFilter extends HttpFilter {
   }
 
   @Override
-  public boolean activatingCondition() {
+  public boolean conditional() {
     return createSession.asBoolean();
   }
 

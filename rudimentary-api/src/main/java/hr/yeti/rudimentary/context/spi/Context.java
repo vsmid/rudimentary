@@ -84,7 +84,9 @@ public abstract class Context implements Instance {
    * @param instance An instance to be added to context.
    */
   protected void add(Instance instance) {
-    CONTEXT.put(instance.getClass().getCanonicalName(), instance);
+    if (instance.conditional()) {
+      CONTEXT.put(instance.getClass().getCanonicalName(), instance);
+    }
   }
 
   /**

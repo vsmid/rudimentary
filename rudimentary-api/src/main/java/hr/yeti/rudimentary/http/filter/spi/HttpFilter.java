@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.http.filter.spi;
 
 import com.sun.net.httpserver.Filter;
 import hr.yeti.rudimentary.context.spi.Instance;
+import java.util.ServiceLoader;
 
 /**
  * Class used to register custom http filter. Use this to enrich incoming request or outgoing
@@ -17,14 +18,5 @@ import hr.yeti.rudimentary.context.spi.Instance;
  * @author vedransmid@yeti-it.hr
  */
 public abstract class HttpFilter extends Filter implements Instance {
-
-  /**
-   * Condition on which this filter addition depends on. If the condition is true, filter will be
-   * added to the executing context, otherwise not. To be more exact, if condition value is true,
-   * filter will be used, otherwise it will not be used.
-   *
-   * @return true if condition is true, otherwise false.
-   */
-  public abstract boolean activatingCondition();
 
 }

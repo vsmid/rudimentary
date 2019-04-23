@@ -19,15 +19,16 @@ public class RDataSource implements DataSource, Instance {
 
   @Override
   public void initialize() {
-    HikariConfig config = new HikariConfig();
-    
-    config.setJdbcUrl(Config.provider().property("dataSource.jdbcUrl").value());
-    config.setDriverClassName(Config.provider().property("dataSource.driverClassName").value());
-    config.setUsername(Config.provider().property("dataSource.username").value());
-    config.setPassword(Config.provider().property("dataSource.password").value());
-    config.setMaximumPoolSize(Config.provider().property("dataSource.maximumPoolSize").asInt());
+    if (Config.provider().contains("dataSource.jdbcUrl")) {
+      HikariConfig config = new HikariConfig();
+      config.setJdbcUrl(Config.provider().property("dataSource.jdbcUrl").value());
+      config.setDriverClassName(Config.provider().property("dataSource.driverClassName").value());
+      config.setUsername(Config.provider().property("dataSource.username").value());
+      config.setPassword(Config.provider().property("dataSource.password").value());
+      config.setMaximumPoolSize(Config.provider().property("dataSource.maximumPoolSize").asInt());
 
-    dataSource = new HikariDataSource(config);
+      dataSource = new HikariDataSource(config);
+    }
   }
 
   @Override
