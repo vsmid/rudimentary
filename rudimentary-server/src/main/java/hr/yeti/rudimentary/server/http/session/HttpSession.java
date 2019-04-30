@@ -47,10 +47,10 @@ public class HttpSession implements Session {
 
   @Override
   public void invalidate() {
-    attributes = null;
-    rsid = null;
-    csrfToken = null;
     Instance.of(HttpSessionManager.class).remove(rsid);
+    attributes = null;
+    csrfToken = null;
+    rsid = null;
   }
 
   @Override

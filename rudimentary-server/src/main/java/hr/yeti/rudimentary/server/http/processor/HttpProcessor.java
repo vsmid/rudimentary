@@ -31,7 +31,6 @@ import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.ParameterizedType;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.ArrayList;
@@ -73,8 +72,6 @@ public class HttpProcessor implements HttpHandler {
         Optional<HttpEndpoint> httpEndpoint = Instance.of(HttpEndpointContextProvider.class).getHttpEndpoint(path, httpMethod);
 
         if (httpEndpoint.isPresent()) {
-
-          String className = ((ParameterizedType) httpEndpoint.get().getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
 
           if (httpMethod != httpEndpoint.get().httpMethod()) {
             respond(405, ("Http method " + httpMethod + " is not supported.").getBytes(), exchange);
