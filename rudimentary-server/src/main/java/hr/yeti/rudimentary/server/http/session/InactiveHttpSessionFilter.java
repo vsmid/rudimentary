@@ -46,9 +46,9 @@ public class InactiveHttpSessionFilter extends HttpFilter {
     Session session = Instance.of(HttpSessionManager.class).get(RSID);
 
     long lastAccessedTime = session.getLastAccessedTime();
-    long currentTime = System.nanoTime();
+    long currentTime = System.currentTimeMillis();
 
-    if ((currentTime - lastAccessedTime) * 1_000 * 60 > inactivityPeriodAllowed.asInt()) {
+    if ((currentTime - lastAccessedTime) / (1_000 * 60) > inactivityPeriodAllowed.asInt()) {
       LOGGER.log(Level.WARNING, "Session with RSID={0} has expired after period of inactivity.", RSID);
 
       // Inavlidate and remove session.
