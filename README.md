@@ -26,6 +26,7 @@ Majority of features are a work in progress but are usable and show the intent.
 
 ## Roadmap
 
+* Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
 * Add MVC caching policy settings
 * Add MVC escaping strategies, e.g. html, js, css, attributes, read OWASP
 * Add Security LoginForm authentication option
