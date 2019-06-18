@@ -12,6 +12,7 @@ import java.net.HttpCookie;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HttpSessionCreatingFilter extends HttpFilter {
@@ -33,7 +34,7 @@ public class HttpSessionCreatingFilter extends HttpFilter {
         session = Instance.of(HttpSessionManager.class).get(cookies.get(Session.COOKIE).getValue());
       } catch (NoHttpSessionFoundException e) {
         overwriteRsidCookie = true;
-        LOGGER.warning(e.getMessage());
+        LOGGER.log(Level.INFO, "{0} Creating new http session with new RSID overwriting the incoming one.", e.getMessage());
       }
     }
 
