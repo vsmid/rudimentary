@@ -37,7 +37,7 @@ public class InactiveHttpSessionFilter extends HttpFilter {
     String RSID;
 
     // Try response headers
-    if (cookies.isEmpty()) {
+    if (cookies.isEmpty() || !cookies.containsKey(Session.COOKIE)) {
       RSID = exchange.getResponseHeaders().get("Set-Cookie").get(0).substring(5).split(";")[0];
     } else {
       RSID = cookies.get(Session.COOKIE).getValue();
