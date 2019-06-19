@@ -31,11 +31,11 @@ Majority of features are a work in progress but are usable and show the intent.
 
 #### Hello World
 
-Since there are no publicly available artifacts of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
+Since there are no publicly available artifacts in jcenter or maven central of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
 
 1. Clone this repository from your terminal
 2. Go to the root of cloned project
-3. Execute `mvn clean package`
+3. Execute `mvn clean install`
 4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new --name hello-world`
 5. Open created project in your favourite IDE
 
