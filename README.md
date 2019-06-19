@@ -39,6 +39,10 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new --name hello-world`
 5. Open created project in your favourite IDE
 
+#### [rudimentary-demo](./rudimentary-demo) module
+
+This is a module which is basically a rudimentary framework showcase so make sure to check it out for code examples.
+
 #### Roadmap
 
 * Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
