@@ -38,6 +38,28 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 3. Execute `mvn clean install`
 4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new --name hello-world`
 5. Open created project in your favourite IDE
+6. Go to **src/main/java/app** directory and create Java class **HelloWorldEndpoint** like this:
+
+```java
+package app;
+
+import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.content.Empty;
+import hr.yeti.rudimentary.http.content.Text;
+import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+
+public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
+
+  @Override
+  public Text response(Request<Empty> request) {
+    return new Text("Hello World!");
+  }
+
+}
+```
+7. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
+8. Right click on **src/main/java/app/Application.java** and run
+9. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
 #### [rudimentary-demo](./rudimentary-demo) module
 
