@@ -1,11 +1,11 @@
-# Rudimentary framework
+# Rudimentary framework (Documentation in progress...)
 
-A small and simple flat web services/applications framework. 
+A small and simple JAVA based web services/applications framework. 
 
 ## Introduction
 
 It all started as a playground for the new Java module system and practicing some good old patterns.
-The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions for now are libraries dealing with JSON conversions). It avoids using annotations and reflection as much as possible.
+The goal of this framework it to produce the simplest possible Java framework by trying to use only JDK (notable exceptions for now are libraries dealing with JSON conversions and default HikariCP connection pooling). It avoids using annotations and reflection as much as possible.
 This framework is also opinionated and promotes flat application/service design. This means there is no strict separation on controller, service and repository layers. One web method implementation is contained within a single Java file. Of course, there is nothing preventing you to do it your own way :)
 This framework also promotes static access to various resources such as sql, email and object instances by using Java's ServiceLoader utility to reduce boilerplate code as much as possible. The goal is to not have object instances as properties in classes. If you want to use something, it should be available in a static way.
 
@@ -24,27 +24,40 @@ This framework also promotes static access to various resources such as sql, ema
 
 Majority of features are a work in progress but are usable and show the intent.
 
-## Roadmap
+#### Prerequisites
+
+* Java 11+
+* Maven
+
+#### Hello World
+
+Since there are no publicly available artifacts of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
+
+1. Clone this repository from your terminal
+2. Go to the root of cloned project
+3. Execute `mvn clean package`
+4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new --name hello-world`
+5. Open created project in your favourite IDE
+
+#### Roadmap
 
 * Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
 * Add MVC caching policy settings
 * Add MVC escaping strategies, e.g. html, js, css, attributes, read OWASP
 * Add Security LoginForm authentication option
-* Add Security JWT authentication option - jose4j
+* Add Security JWT authentication option
 * Add Security CSRF protection - Basic, draft version available
 * Add Security CORS handling - Basic, draft version available
-* Add Sql rollback options
+* Add Sql rollback options - rollback on exception type
 * Add HttpEndpoint async() method for async execution
 * Add Metrics (Time, Gauge, Count)
 * Add ApiDoc - read OpenApi - added very basic opinionated extension
 * Add Tracing - read OpenTracing
 * Finish tests and README docs
-* Add environment to Instance and implement loading based on environment variable in configuration
 * Create test utilities (see Context tests for creating mock context)
 * Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
-* Add Admin module
 * More validation constraint definitions and implementations
-* JDBC - mayne use HikariCP or implement jdbc pool a bit more seriously - basic impl, done.
+* JDBC - use HikariCP - basic impl, done.
 * Add fallback, bulkead, retry, backpressure handlers.
 * Logger should be moved from HttpEndpoint to allow access from anywhere
 * System properties listed are missing ones from system and environment
