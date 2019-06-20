@@ -41,8 +41,7 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 2. Go to the root of cloned project
 3. Execute `mvn clean install`
 4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new --name hello-world`
-5. Open created project in your favourite IDE
-6. Go to **src/main/java/app** directory and create Java class **HelloWorldEndpoint** like this:
+5. Go to **src/main/java/app** directory and create Java class **HelloWorldEndpoint** like this:
 
 ```java
 package app;
@@ -61,9 +60,21 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 
 }
 ```
-7. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
-8. Right click on **src/main/java/app/Application.java** and run
-9. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
+6. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
+7. In the root of the project execute command:
+  * plain run mode
+
+  `mvn exec:exec -Dexec.executable="java" -Dexec.args="-classpath %classpath app.Application"`
+
+  * debug mode (attach debugger on port 1044)
+
+  `mvn exec:exec -Dexec.executable="java" -Dexec.args="-classpath %classpath -Xdebug   -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 app.Application"`
+
+*Note*
+
+**app.Application** is the default class containing static main method. If you created project with different package name change that value accordingly.
+
+8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
 #### HttpEndpoint interface
 
