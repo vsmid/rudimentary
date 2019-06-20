@@ -1,4 +1,4 @@
-# Rudimentary framework (Documentation in progress...)
+# Rudimentary framework (Development & Documentation in progress...)
 
 A small and simple JAVA based web services/applications framework. 
 
