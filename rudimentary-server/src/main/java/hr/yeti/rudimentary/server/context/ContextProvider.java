@@ -99,7 +99,6 @@ public class ContextProvider extends Context {
               initializeCaller(dependencyInstance);
             }
           } else {
-            // TODO Should be only one, make sure
             List providers = Instance.providersOf(c);
             if (Objects.nonNull(providers) && providers.size() > 0) {
               for (Object provider : providers) {
