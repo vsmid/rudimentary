@@ -71,8 +71,8 @@ public class ContextProvider extends Context {
 
     // Check for cyclomatic dependencies.
     buildInstanceDependenciesGraph();
-    instanceDependencyGraph.keySet().forEach((dependency) -> {
-      checkForCyclomaticDependencies(dependency, null);
+    instanceDependencyGraph.keySet().forEach((instance) -> {
+      checkForCyclomaticDependencies(instance, null);
     });
 
     // TODO Prevent multiple primary instances for the same provider.
