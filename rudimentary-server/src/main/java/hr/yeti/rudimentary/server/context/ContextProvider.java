@@ -135,11 +135,11 @@ public class ContextProvider extends Context {
     if (Objects.nonNull(dependencies)) {
       if (dependencies.contains(rootInstance)) {
         throw new ContextException("Cyclomatic dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
-      } else {
-        dependencies.forEach((dependency) -> {
-          checkForCyclomaticDependencies(rootInstance, dependency);
-        });
       }
+      
+      dependencies.forEach((dependency) -> {
+        checkForCyclomaticDependencies(rootInstance, dependency);
+      });
     }
 
   }
