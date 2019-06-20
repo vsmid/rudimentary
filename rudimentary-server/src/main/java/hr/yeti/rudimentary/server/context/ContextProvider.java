@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Objects;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 public class ContextProvider extends Context {
@@ -47,6 +50,8 @@ public class ContextProvider extends Context {
       Instance.class
   );
 
+  private Map<String, List<String>> instanceDependencyGraph = new HashMap();
+
   @Override
   public void initialize() {
     // Config before any instance is loaded.
@@ -64,6 +69,12 @@ public class ContextProvider extends Context {
           });
     });
 
+    // Check for cyclomatic dependencies.
+    buildinstanceDependenciesGraph();
+    instanceDependencyGraph.keySet().forEach((dependency) -> {
+      checkForCyclomaticDependencies(dependency, null);
+    });
+
     // TODO Prevent multiple primary instances for the same provider.
     // Initialize instances.
     getContext().values()
@@ -71,7 +82,11 @@ public class ContextProvider extends Context {
           this.initializeCaller(instance);
         });
 
-    // TODO Prevent cyclic dependencies
+  }
+
+  @Override
+  public boolean primary() {
+    return true;
   }
 
   public void initializeCaller(Instance instance) {
@@ -102,9 +117,31 @@ public class ContextProvider extends Context {
     }
   }
 
-  @Override
-  public boolean primary() {
-    return true;
+  public void buildinstanceDependenciesGraph() {
+    getContext().forEach((key, value) -> {
+      instanceDependencyGraph.put(key, List.of(value.dependsOn()).stream().map(Class::getCanonicalName).collect(Collectors.toList()));
+    });
+  }
+
+  public void checkForCyclomaticDependencies(String rootInstance, String dependencyInstance) {
+    List<String> dependencies;
+
+    if (Objects.isNull(dependencyInstance)) {
+      dependencies = instanceDependencyGraph.get(rootInstance);
+    } else {
+      dependencies = instanceDependencyGraph.get(dependencyInstance);
+    }
+
+    if (Objects.nonNull(dependencies)) {
+      if (dependencies.contains(rootInstance)) {
+        throw new ContextException("Cyclomatic dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
+      } else {
+        dependencies.forEach((dependency) -> {
+          checkForCyclomaticDependencies(rootInstance, dependency);
+        });
+      }
+    }
+
   }
 
 }
