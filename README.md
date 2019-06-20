@@ -2,6 +2,10 @@
 
 A small and simple JAVA based web services/applications framework. 
 
+## Before anything
+
+This is very much a work in progress,
+
 ## Introduction
 
 It all started as a playground for the new Java module system and practicing some good old patterns.
