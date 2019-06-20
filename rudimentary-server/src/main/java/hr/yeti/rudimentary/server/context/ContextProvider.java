@@ -70,7 +70,7 @@ public class ContextProvider extends Context {
     });
 
     // Check for cyclomatic dependencies.
-    buildinstanceDependenciesGraph();
+    buildInstanceDependenciesGraph();
     instanceDependencyGraph.keySet().forEach((dependency) -> {
       checkForCyclomaticDependencies(dependency, null);
     });
@@ -117,7 +117,7 @@ public class ContextProvider extends Context {
     }
   }
 
-  public void buildinstanceDependenciesGraph() {
+  public void buildInstanceDependenciesGraph() {
     getContext().forEach((key, value) -> {
       instanceDependencyGraph.put(key, List.of(value.dependsOn()).stream().map(Class::getCanonicalName).collect(Collectors.toList()));
     });
