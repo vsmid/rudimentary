@@ -75,7 +75,6 @@ public class ContextProvider extends Context {
       checkForCyclomaticDependencies(instance, null);
     });
 
-    // TODO Prevent multiple primary instances for the same provider.
     // Initialize instances.
     getContext().values()
         .forEach((instance) -> {
@@ -136,7 +135,7 @@ public class ContextProvider extends Context {
       if (dependencies.contains(rootInstance)) {
         throw new ContextException("Cyclomatic dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
       }
-      
+
       dependencies.forEach((dependency) -> {
         checkForCyclomaticDependencies(rootInstance, dependency);
       });

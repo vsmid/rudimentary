@@ -147,6 +147,8 @@ public interface Instance {
    * <pre>
    * An indicator that this instance is to be returned when there are multiple providers
    * of the same SPI and the above {@link Instance#of(java.lang.Class)} method is called.
+   * If there are multiple primary providers, the first one encountered is returned. This however is a bad
+   * practice, there should only be one primary provider. Use this with caution.
    * </pre>
    *
    * @return true if this instance is primary, otherwise false by default.
