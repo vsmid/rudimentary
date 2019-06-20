@@ -40,6 +40,7 @@ public class HttpEndpointContextProvider implements Instance {
     Config.provider().destroy();
 
     HTTP_ENDPOINTS.clear();
+    PATTERN_PATHS_MAPPING.clear();
   }
 
   public Optional<HttpEndpoint> getHttpEndpoint(URI path, HttpMethod httpMethod) {
