@@ -4,7 +4,7 @@ A small and simple JAVA based web services/applications framework.
 
 ## Before anything
 
-This is very much a work in progress,
+This is very much a work in progress.
 
 ## Introduction
 
