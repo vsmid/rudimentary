@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
 
-// TODO Maybe move to extension?
 public class StaticResourceEndpoint implements HttpEndpoint<Empty, StaticResource> {
 
   private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
