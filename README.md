@@ -29,7 +29,7 @@ Majority of features are a work in progress but are usable and show the intent.
 * Java 11+
 * Maven
 
-#### Hello World
+#### Writing Hello World
 
 Since there are no publicly available artifacts in jcenter or maven central of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
 
@@ -60,6 +60,23 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 7. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
 8. Right click on **src/main/java/app/Application.java** and run
 9. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
+
+#### HttpEndpoint interface
+
+This is the interface you need to implement when you want to expose some functionality via http.
+Interface allows you to override default methods such as http method, path, response etc.
+After you are done with implementation, make sure to add fully qualified class name of your new HttpEndpoint to 
+**src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file (just like in Hello World example).
+
+#### Config
+#### IoC
+#### Validation
+#### Security
+#### Sql
+#### Email
+#### Events
+#### MVC
+
 
 #### [rudimentary-demo](./rudimentary-demo) module
 
