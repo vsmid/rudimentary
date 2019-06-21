@@ -1,0 +1,1 @@
+mvn compile exec:exec -Dexec.executable="java" -Dexec.args="-classpath %classpath hr.yeti.rudimentary.demo.Application"
