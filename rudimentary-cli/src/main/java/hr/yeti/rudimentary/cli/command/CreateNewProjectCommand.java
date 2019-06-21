@@ -34,7 +34,7 @@ public class CreateNewProjectCommand implements Command {
   @Override
   public void execute(Map<String, String> arguments) {
     if (!arguments.containsKey("name")) {
-      System.out.println("Please set project name by using option -> --name.");
+      System.out.println("Please set project name by using option --name.");
       return;
     }
 
@@ -57,6 +57,9 @@ public class CreateNewProjectCommand implements Command {
 
       Files.createDirectory(projectDir);
       Files.write(projectDir.resolve("pom.xml"), pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
+
+      Files.write(projectDir.resolve("run.sh"), runShScript(rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
+      Files.write(projectDir.resolve("debug.sh"), debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
 
       Files.createDirectories(projectDir.resolve("src").resolve("main").resolve("java"));
       Files.write(
@@ -200,4 +203,11 @@ public class CreateNewProjectCommand implements Command {
         + "</project>";
   }
 
+  public String runShScript(String rootPackage) {
+    return "mvn compile exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath " + rootPackage + ".Application\"";
+  }
+
+  public String debugShScript(String rootPackage) {
+    return "mvn compile exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 " + rootPackage + ".Application\"";
+  }
 }
