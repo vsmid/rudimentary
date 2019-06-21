@@ -13,7 +13,7 @@ The goal of this framework it to produce the simplest possible Java framework by
 This framework is also opinionated and promotes flat application/service design. This means there is no strict separation on controller, service and repository layers. One web method implementation is contained within a single Java file. Of course, there is nothing preventing you to do it your own way :)
 This framework also promotes static access to various resources such as sql, email and object instances by using Java's ServiceLoader utility to reduce boilerplate code as much as possible. The goal is to not have object instances as properties in classes. If you want to use something, it should be available in a static way.
 
-#### Notable features
+## Notable features
 
 * Easy and simple configuration via properties file, environment and system properties
 * Simple IoC container mechanism
@@ -28,12 +28,12 @@ This framework also promotes static access to various resources such as sql, ema
 
 Majority of features are a work in progress but are usable and show the intent.
 
-#### Prerequisites
+## Prerequisites
 
 * Java 11+
 * Maven
 
-#### Writing Hello World
+## Writing Hello World
 
 Since there are no publicly available artifacts in jcenter or maven central of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
 
@@ -64,7 +64,7 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 7. To run your application, you can execute either `sh run.sh` or `sh debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
-#### HttpEndpoint interface
+## HttpEndpoint interface
 
 This is the interface you need to implement when you want to expose some functionality via http.
 Interface allows you to override default methods such as http method, path, response etc.
@@ -81,11 +81,11 @@ After you are done with implementation, make sure to add fully qualified class n
 #### MVC
 
 
-#### [rudimentary-demo](./rudimentary-demo) module
+## [rudimentary-demo](./rudimentary-demo) module
 
 This is a module which is basically a rudimentary framework showcase so make sure to check it out for code examples.
 
-#### Roadmap
+## Roadmap
 
 * Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
 * Add MVC caching policy settings
