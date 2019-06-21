@@ -69,10 +69,10 @@ public class ContextProvider extends Context {
           });
     });
 
-    // Check for cyclomatic dependencies.
+    // Check for circular dependencies.
     buildInstanceDependenciesGraph();
     instanceDependencyGraph.keySet().forEach((instance) -> {
-      checkForCyclomaticDependencies(instance, null);
+      checkForCircularDependencies(instance, null);
     });
 
     // Initialize instances.
@@ -121,7 +121,7 @@ public class ContextProvider extends Context {
     });
   }
 
-  public void checkForCyclomaticDependencies(String rootInstance, String dependencyInstance) {
+  public void checkForCircularDependencies(String rootInstance, String dependencyInstance) {
     List<String> dependencies;
 
     if (Objects.isNull(dependencyInstance)) {
@@ -132,11 +132,11 @@ public class ContextProvider extends Context {
 
     if (Objects.nonNull(dependencies)) {
       if (dependencies.contains(rootInstance)) {
-        throw new ContextException("Cyclomatic dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
+        throw new ContextException("Circular dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
       }
 
       dependencies.forEach((dependency) -> {
-        checkForCyclomaticDependencies(rootInstance, dependency);
+        checkForCircularDependencies(rootInstance, dependency);
       });
     }
 
