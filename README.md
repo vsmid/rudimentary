@@ -61,7 +61,7 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 }
 ```
 6. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
-7. To run your application, you can execute either `sh run.sh` or `sh debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
+7. To run your application, you can execute either `run.sh` or `debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
 ## HttpEndpoint interface
@@ -80,10 +80,14 @@ After you are done with implementation, make sure to add fully qualified class n
 #### Events
 #### MVC
 
+## Javadoc
 
-## [rudimentary-demo](./rudimentary-demo) module
+Check [rudimentary-api](./rudimentary-api) module for Javadoc.
 
-This is a module which is basically a rudimentary framework showcase so make sure to check it out for code examples.
+## Showcase module
+
+Make sure to check [rudimentary-demo](./rudimentary-demo) for code examples.
+Showcase can be run by executing `run.sh` script found in the root of the rudimentary-demo module.
 
 ## Roadmap
 
