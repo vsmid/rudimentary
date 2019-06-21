@@ -64,6 +64,15 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 7. To run your application, you can execute either `run.sh` or `debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
+## Javadoc
+
+Check [rudimentary-api](./rudimentary-api) module for Javadoc.
+
+## Showcase module
+
+Make sure to check [rudimentary-demo](./rudimentary-demo) for code examples.
+Showcase can be run by executing `run.sh` script found in the root of the rudimentary-demo module.
+
 ## HttpEndpoint interface
 
 This is the interface you need to implement when you want to expose some functionality via http.
@@ -79,15 +88,6 @@ After you are done with implementation, make sure to add fully qualified class n
 #### Email
 #### Events
 #### MVC
-
-## Javadoc
-
-Check [rudimentary-api](./rudimentary-api) module for Javadoc.
-
-## Showcase module
-
-Make sure to check [rudimentary-demo](./rudimentary-demo) for code examples.
-Showcase can be run by executing `run.sh` script found in the root of the rudimentary-demo module.
 
 ## Roadmap
 
