@@ -61,19 +61,7 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 }
 ```
 6. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
-7. In the root of the project execute command:
-  * plain run mode
-
-  `mvn exec:exec -Dexec.executable="java" -Dexec.args="-classpath %classpath app.Application"`
-
-  * debug mode (attach debugger on port 1044)
-
-  `mvn exec:exec -Dexec.executable="java" -Dexec.args="-classpath %classpath -Xdebug   -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 app.Application"`
-
-*Note*
-
-**app.Application** is the default class containing static main method. If you created project with different package name change that value accordingly.
-
+7. To run your application, you can execute either `sh run.sh` or `sh debug.sh` script. Debug listens on port 1044 in case you want to attach debugger..
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
 #### HttpEndpoint interface
