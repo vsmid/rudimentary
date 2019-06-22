@@ -73,22 +73,6 @@ Check [rudimentary-api](./rudimentary-api) module for Javadoc.
 Make sure to check [rudimentary-demo](./rudimentary-demo) for code examples.
 Showcase can be run by executing `run.sh` script found in the root of the rudimentary-demo module.
 
-## HttpEndpoint interface
-
-This is the interface you need to implement when you want to expose some functionality via http.
-Interface allows you to override default methods such as http method, path, response etc.
-After you are done with implementation, make sure to add fully qualified class name of your new HttpEndpoint to 
-**src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file (just like in Hello World example).
-
-#### Config
-#### IoC
-#### Validation
-#### Security
-#### Sql
-#### Email
-#### Events
-#### MVC
-
 ## Roadmap
 
 * Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
@@ -104,8 +88,6 @@ After you are done with implementation, make sure to add fully qualified class n
 * Add ApiDoc - read OpenApi - added very basic opinionated extension
 * Add Tracing - read OpenTracing
 * Finish tests and README docs
-* Create test utilities (see Context tests for creating mock context)
-* Add Array as new content type - Json content type can currently handle it but this will some refactor to be more efficient. Consider giving Json inferred type?
 * More validation constraint definitions and implementations
 * JDBC - use HikariCP - basic impl, done.
 * Add fallback, bulkead, retry, backpressure handlers.
