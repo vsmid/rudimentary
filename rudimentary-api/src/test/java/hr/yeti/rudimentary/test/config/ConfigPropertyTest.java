@@ -1,8 +1,8 @@
 package hr.yeti.rudimentary.test.config;
 
 import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.test.config.mock.ConfigMock;
-import hr.yeti.rudimentary.test.context.mock.ContextMock;
+import hr.yeti.rudimentary.test.ConfigMock;
+import hr.yeti.rudimentary.test.ContextMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;

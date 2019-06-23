@@ -18,12 +18,8 @@ import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import hr.yeti.rudimentary.pooling.spi.ObjectPool;
 import java.util.List;
-import java.util.Objects;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 public class ContextProvider extends Context {
@@ -50,14 +46,12 @@ public class ContextProvider extends Context {
       Instance.class
   );
 
-  private Map<String, List<String>> instanceDependencyGraph = new HashMap();
-
   @Override
   public void initialize() {
     // Config before any instance is loaded.
     ServiceLoader.load(Config.class).
         forEach(instance -> {
-          this.initializeCaller((Instance) instance);
+          this.initializeInstance((Instance) instance);
           add((Instance) instance);
         });
 
@@ -71,6 +65,7 @@ public class ContextProvider extends Context {
 
     // Check for circular dependencies.
     buildInstanceDependenciesGraph();
+    
     instanceDependencyGraph.keySet().forEach((instance) -> {
       checkForCircularDependencies(instance, null);
     });
@@ -78,7 +73,7 @@ public class ContextProvider extends Context {
     // Initialize instances.
     getContext().values()
         .forEach((instance) -> {
-          this.initializeCaller(instance);
+          this.initializeInstance(instance);
         });
 
   }
@@ -86,60 +81,6 @@ public class ContextProvider extends Context {
   @Override
   public boolean primary() {
     return true;
-  }
-
-  public void initializeCaller(Instance instance) {
-    if (Objects.nonNull(instance)) {
-      Class[] dependsOn = instance.dependsOn();
-      for (Class c : dependsOn) {
-        if (!isInstanceInitialized(c)) {
-          Instance dependencyInstance = (Instance) Instance.of(c);
-          if (Objects.nonNull(dependencyInstance)) {
-            if (!isInstanceInitialized(dependencyInstance.getClass())) {
-              initializeCaller(dependencyInstance);
-            }
-          } else {
-            List providers = Instance.providersOf(c);
-            if (Objects.nonNull(providers) && providers.size() > 0) {
-              for (Object provider : providers) {
-                initializeCaller((Instance) provider);
-              }
-            }
-          }
-        }
-      }
-      if (!isInstanceInitialized(instance.getClass())) {
-        instance.initialize();
-        setInitialized(instance);
-      }
-    }
-  }
-
-  public void buildInstanceDependenciesGraph() {
-    getContext().forEach((key, value) -> {
-      instanceDependencyGraph.put(key, List.of(value.dependsOn()).stream().map(Class::getCanonicalName).collect(Collectors.toList()));
-    });
-  }
-
-  public void checkForCircularDependencies(String rootInstance, String dependencyInstance) {
-    List<String> dependencies;
-
-    if (Objects.isNull(dependencyInstance)) {
-      dependencies = instanceDependencyGraph.get(rootInstance);
-    } else {
-      dependencies = instanceDependencyGraph.get(dependencyInstance);
-    }
-
-    if (Objects.nonNull(dependencies)) {
-      if (dependencies.contains(rootInstance)) {
-        throw new ContextException("Circular dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
-      }
-
-      dependencies.forEach((dependency) -> {
-        checkForCircularDependencies(rootInstance, dependency);
-      });
-    }
-
   }
 
 }

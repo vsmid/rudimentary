@@ -1,8 +1,8 @@
-package hr.yeti.rudimentary.test.config.mock;
+package hr.yeti.rudimentary.test;
 
 import hr.yeti.rudimentary.config.spi.Config;
 
-public class ConfigMock extends Config {
+public final class ConfigMock extends Config {
 
   public ConfigMock() {
     super.destroy();

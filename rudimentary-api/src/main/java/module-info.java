@@ -37,6 +37,8 @@ module hr.yeti.rudimentary.api {
 
   exports hr.yeti.rudimentary.validation;
 
+  exports hr.yeti.rudimentary.test;
+
   requires transitive java.json.bind;
   requires transitive java.json;
 

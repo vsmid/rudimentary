@@ -3,7 +3,7 @@ package hr.yeti.rudimentary.test.events;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.events.spi.EventListener;
-import hr.yeti.rudimentary.test.context.mock.ContextMock;
+import hr.yeti.rudimentary.test.ContextMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import hr.yeti.rudimentary.events.Event;

@@ -1,10 +1,13 @@
 package hr.yeti.rudimentary.context.spi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -35,6 +38,11 @@ public abstract class Context implements Instance {
    * Map holding already initialized SPI providers.
    */
   protected static final List<String> INITIALIZED_INSTANCES = new ArrayList<>();
+
+  /**
+   * Map containing graph of dependent instances.
+   */
+  protected Map<String, List<String>> instanceDependencyGraph = new HashMap();
 
   /**
    * <pre>
@@ -73,6 +81,7 @@ public abstract class Context implements Instance {
   public void destroy() {
     CONTEXT.clear();
     INITIALIZED_INSTANCES.clear();
+    instanceDependencyGraph.clear();
   }
 
   /**
@@ -113,6 +122,79 @@ public abstract class Context implements Instance {
    */
   protected boolean isInstanceInitialized(Class<?> clazz) {
     return INITIALIZED_INSTANCES.contains(clazz.getCanonicalName());
+  }
+
+  /**
+   * Initializes instance and all its instance dependencies stated in {@link Instance#dependsOn()}
+   * method.
+   *
+   * @param instance An instance to be initialized.
+   */
+  protected void initializeInstance(Instance instance) {
+    if (Objects.nonNull(instance)) {
+      Class[] dependsOn = instance.dependsOn();
+      for (Class c : dependsOn) {
+        if (!isInstanceInitialized(c)) {
+          Instance dependencyInstance = (Instance) Instance.of(c);
+          if (Objects.nonNull(dependencyInstance)) {
+            if (!isInstanceInitialized(dependencyInstance.getClass())) {
+              initializeInstance(dependencyInstance);
+            }
+          } else {
+            List providers = Instance.providersOf(c);
+            if (Objects.nonNull(providers) && providers.size() > 0) {
+              providers.forEach((provider) -> {
+                initializeInstance((Instance) provider);
+              });
+            }
+          }
+        }
+      }
+      if (!isInstanceInitialized(instance.getClass())) {
+        instance.initialize();
+        setInitialized(instance);
+      }
+    }
+  }
+
+  /**
+   * Builds graph of dependent instances in form of map.
+   */
+  protected void buildInstanceDependenciesGraph() {
+    getContext().forEach((key, value) -> {
+      instanceDependencyGraph.put(
+          key,
+          List.of(value.dependsOn()).stream()
+              .map(Class::getCanonicalName)
+              .collect(Collectors.toList())
+      );
+    });
+  }
+
+  /**
+   * Recursively checks whether there are any circular dependencies for each {@link Instance}.
+   *
+   * @param rootInstance Starting instance.
+   * @param dependencyInstance Current dependency instance of root instance.
+   */
+  protected void checkForCircularDependencies(String rootInstance, String dependencyInstance) {
+    List<String> dependencies;
+
+    if (Objects.isNull(dependencyInstance)) {
+      dependencies = instanceDependencyGraph.get(rootInstance);
+    } else {
+      dependencies = instanceDependencyGraph.get(dependencyInstance);
+    }
+
+    if (Objects.nonNull(dependencies)) {
+      if (dependencies.contains(rootInstance)) {
+        throw new ContextException("Circular dependency detected, " + rootInstance + " -> " + dependencyInstance + " -> " + dependencies.toString());
+      }
+
+      dependencies.forEach((dependency) -> {
+        checkForCircularDependencies(rootInstance, dependency);
+      });
+    }
   }
 
 }

@@ -1,7 +1,7 @@
 package hr.yeti.rudimentary.test.context;
 
 import hr.yeti.rudimentary.test.context.mock.MockInstance1;
-import hr.yeti.rudimentary.test.context.mock.ContextMock;
+import hr.yeti.rudimentary.test.ContextMock;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.test.context.mock.MockInstance2;
 import hr.yeti.rudimentary.test.context.mock.MockInstance3;
