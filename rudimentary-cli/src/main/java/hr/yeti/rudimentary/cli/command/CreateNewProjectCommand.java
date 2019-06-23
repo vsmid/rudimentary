@@ -1,13 +1,10 @@
 package hr.yeti.rudimentary.cli.command;
 
 import hr.yeti.rudimentary.cli.Command;
+import hr.yeti.rudimentary.cli.ProjectLayout;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Map;
 
 public class CreateNewProjectCommand implements Command {
@@ -38,59 +35,20 @@ public class CreateNewProjectCommand implements Command {
       return;
     }
 
-    String location = arguments.getOrDefault("location", new File("").getAbsolutePath());
+    String projectLocation = arguments.getOrDefault("location", new File("").getAbsolutePath());
     String rootPackage = arguments.getOrDefault("package", "app");
 
-    Path locationPath = Paths.get(location);
-
-    if (!Files.exists(locationPath)) {
-      try {
-        Files.createDirectories(locationPath);
-      } catch (IOException ex) {;
-        ex.printStackTrace();
-        return;
-      }
-    }
+    ProjectLayout projectLayout = new ProjectLayout(projectLocation + "/" + arguments.get("name"), rootPackage);
 
     try {
-      Path projectDir = locationPath.resolve(arguments.get("name"));
-
-      Files.createDirectory(projectDir);
-      Files.write(projectDir.resolve("pom.xml"), pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
-
-      Files.write(projectDir.resolve("run.sh"), runShScript(rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
-      Files.write(projectDir.resolve("debug.sh"), debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
-
-      Files.createDirectories(projectDir.resolve("src").resolve("main").resolve("java"));
-      Files.write(
-          projectDir.resolve("src").resolve("main").resolve("java").resolve("module-info.java"), moduleInfo(rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW
-      );
-
-      Path rootPackagePath = projectDir.resolve("src").resolve("main").resolve("java");
-      if (rootPackage.contains(".")) {
-        String[] paths = rootPackage.split("\\.");
-        for (String path : paths) {
-          rootPackagePath = rootPackagePath.resolve(path);
-        }
-      } else {
-        rootPackagePath = rootPackagePath.resolve(rootPackage);
-      }
-
-      Files.createDirectories(rootPackagePath);
-      Files.write(rootPackagePath.resolve("Application.java"), mainClass(rootPackage).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
-
-      Path mainResourcesPath = projectDir.resolve("src").resolve("main").resolve("resources");
-      Path servicesPath = mainResourcesPath.resolve("META-INF").resolve("services");
-
-      Files.createDirectories(servicesPath);
-      Files.createFile(servicesPath.resolve("hr.yeti.rudimentary.http.spi.HttpEndpoint"));
-      Files.createFile(servicesPath.resolve("hr.yeti.rudimentary.context.spi.Instance"));
-
-      Files.write(mainResourcesPath.resolve("config.properties"), config().getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE_NEW);
-
-      Files.createDirectories(projectDir.resolve("src").resolve("test").resolve("java"));
-      Files.createDirectories(projectDir.resolve("src").resolve("test").resolve("resources"));
-
+      projectLayout.createNewFile(projectLayout.getProjectRootPath(), "pom.xml", pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectRootPath(), "run.sh", runShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectRootPath(), "debug.sh", debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getRootPackagePath(), "Application.java", mainClass(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getSrcDir(), "module-info.java", moduleInfo(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getResourcesDir(), "config.properties", config().getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.http.spi.HttpEndpoint", null);
+      projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.context.spi.Instance", null);
     } catch (IOException ex) {
       ex.printStackTrace();
     }
