@@ -54,7 +54,7 @@ public class InstanceTest {
   }
 
   @Test
-  public void test_should_return_an_instance_initialized_bofre_when_there_are_no_primary_instances() {
+  public void test_should_return_first_instance_initialized_when_there_are_no_primary_instances() {
     // setup:
     MockInstance2 mockInstance2 = new MockInstance2();
     MockInstance4 mockInstance4 = new MockInstance4();
