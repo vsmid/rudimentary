@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class ProjectLayout {
 
-  private Path projectRootDir;
+  private Path projectDir;
   private Path rootPackageDir;
   private Path srcDir;
   private Path resourcesDir;
@@ -22,27 +22,27 @@ public class ProjectLayout {
   }
 
   public ProjectLayout(String projectLocation, String rootPackage) {
-    this.projectRootDir = Paths.get(projectLocation);
+    this.projectDir = Paths.get(projectLocation);
 
-    this.srcDir = projectRootDir.resolve(Paths.get("src", "main", "java"));
-    this.testDir = projectRootDir.resolve(Paths.get("src", "test", "java"));
+    this.srcDir = projectDir.resolve(Paths.get("src", "main", "java"));
+    this.testDir = projectDir.resolve(Paths.get("src", "test", "java"));
 
-    this.resourcesDir = projectRootDir.resolve(Paths.get("src", "main", "resources"));
-    this.testResourcesDir = projectRootDir.resolve(Paths.get("src", "test", "resources"));
+    this.resourcesDir = projectDir.resolve(Paths.get("src", "main", "resources"));
+    this.testResourcesDir = projectDir.resolve(Paths.get("src", "test", "resources"));
 
     this.metaInfDir = resourcesDir.resolve("META-INF");
     this.servicesDir = metaInfDir.resolve("services");
 
-    this.rootPackageDir = projectRootDir.resolve(srcDir).resolve(parsePackage(rootPackage));
+    this.rootPackageDir = projectDir.resolve(srcDir).resolve(parsePackage(rootPackage));
 
     createProjectLayout();
   }
 
   private void createProjectLayout() {
-    if (!Files.exists(projectRootDir)) {
+    if (!Files.exists(projectDir)) {
       try {
-        Files.createDirectories(projectRootDir.resolve(srcDir).resolve(rootPackageDir));
-        Files.createDirectories(projectRootDir.resolve(resourcesDir));
+        Files.createDirectories(projectDir.resolve(srcDir).resolve(rootPackageDir));
+        Files.createDirectories(projectDir.resolve(resourcesDir));
       } catch (IOException ex) {;
         ex.printStackTrace();
       }
@@ -75,8 +75,8 @@ public class ProjectLayout {
 
   }
 
-  public Path getProjectRootDir() {
-    return projectRootDir;
+  public Path getProjectDir() {
+    return projectDir;
   }
 
   public Path getRootPackageDir() {

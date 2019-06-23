@@ -41,9 +41,9 @@ public class CreateNewProjectCommand implements Command {
     ProjectLayout projectLayout = new ProjectLayout(projectLocation + "/" + arguments.get("name"), rootPackage);
 
     try {
-      projectLayout.createNewFile(projectLayout.getProjectRootDir(), "pom.xml", pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
-      projectLayout.createNewFile(projectLayout.getProjectRootDir(), "run.sh", runShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
-      projectLayout.createNewFile(projectLayout.getProjectRootDir(), "debug.sh", debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectDir(), "pom.xml", pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectDir(), "run.sh", runShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectDir(), "debug.sh", debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getRootPackageDir(), "Application.java", mainClass(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getSrcDir(), "module-info.java", moduleInfo(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getResourcesDir(), "config.properties", config().getBytes(StandardCharsets.UTF_8));
