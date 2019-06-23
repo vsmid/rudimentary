@@ -9,9 +9,8 @@ import java.util.Objects;
 
 public class ProjectLayout {
 
-  private Path projectRootPath;
-  private Path rootPackagePath;
-
+  private Path projectRootDir;
+  private Path rootPackageDir;
   private Path srcDir;
   private Path resourcesDir;
   private Path testDir;
@@ -23,27 +22,27 @@ public class ProjectLayout {
   }
 
   public ProjectLayout(String projectLocation, String rootPackage) {
-    this.projectRootPath = Paths.get(projectLocation);
+    this.projectRootDir = Paths.get(projectLocation);
 
-    this.srcDir = projectRootPath.resolve(Paths.get("src", "main", "java"));
-    this.testDir = projectRootPath.resolve(Paths.get("src", "test", "java"));
+    this.srcDir = projectRootDir.resolve(Paths.get("src", "main", "java"));
+    this.testDir = projectRootDir.resolve(Paths.get("src", "test", "java"));
 
-    this.resourcesDir = projectRootPath.resolve(Paths.get("src", "main", "resources"));
-    this.testResourcesDir = projectRootPath.resolve(Paths.get("src", "test", "resources"));
+    this.resourcesDir = projectRootDir.resolve(Paths.get("src", "main", "resources"));
+    this.testResourcesDir = projectRootDir.resolve(Paths.get("src", "test", "resources"));
 
     this.metaInfDir = resourcesDir.resolve("META-INF");
     this.servicesDir = metaInfDir.resolve("services");
 
-    this.rootPackagePath = projectRootPath.resolve(srcDir).resolve(parsePackage(rootPackage));
+    this.rootPackageDir = projectRootDir.resolve(srcDir).resolve(parsePackage(rootPackage));
 
     createProjectLayout();
   }
 
   private void createProjectLayout() {
-    if (!Files.exists(projectRootPath)) {
+    if (!Files.exists(projectRootDir)) {
       try {
-        Files.createDirectories(projectRootPath.resolve(srcDir).resolve(rootPackagePath));
-        Files.createDirectories(projectRootPath.resolve(resourcesDir));
+        Files.createDirectories(projectRootDir.resolve(srcDir).resolve(rootPackageDir));
+        Files.createDirectories(projectRootDir.resolve(resourcesDir));
       } catch (IOException ex) {;
         ex.printStackTrace();
       }
@@ -76,12 +75,12 @@ public class ProjectLayout {
 
   }
 
-  public Path getProjectRootPath() {
-    return projectRootPath;
+  public Path getProjectRootDir() {
+    return projectRootDir;
   }
 
-  public Path getRootPackagePath() {
-    return rootPackagePath;
+  public Path getRootPackageDir() {
+    return rootPackageDir;
   }
 
   public Path getSrcDir() {

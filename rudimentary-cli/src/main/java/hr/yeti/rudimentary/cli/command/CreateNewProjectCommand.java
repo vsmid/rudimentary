@@ -41,10 +41,10 @@ public class CreateNewProjectCommand implements Command {
     ProjectLayout projectLayout = new ProjectLayout(projectLocation + "/" + arguments.get("name"), rootPackage);
 
     try {
-      projectLayout.createNewFile(projectLayout.getProjectRootPath(), "pom.xml", pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
-      projectLayout.createNewFile(projectLayout.getProjectRootPath(), "run.sh", runShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
-      projectLayout.createNewFile(projectLayout.getProjectRootPath(), "debug.sh", debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
-      projectLayout.createNewFile(projectLayout.getRootPackagePath(), "Application.java", mainClass(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectRootDir(), "pom.xml", pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectRootDir(), "run.sh", runShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectRootDir(), "debug.sh", debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getRootPackageDir(), "Application.java", mainClass(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getSrcDir(), "module-info.java", moduleInfo(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getResourcesDir(), "config.properties", config().getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.http.spi.HttpEndpoint", null);
