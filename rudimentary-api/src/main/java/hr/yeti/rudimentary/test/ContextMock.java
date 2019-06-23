@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.test;
 
+import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
 import java.util.List;
@@ -12,21 +13,21 @@ public final class ContextMock extends Context {
     this.setup(null, instances);
   }
 
-  public ContextMock(ConfigMock config, Instance... instances) {
+  public ContextMock(Config config, Instance... instances) {
     this.setup(config, instances);
   }
 
-  private void setup(ConfigMock config, Instance... instances) {
+  private void setup(Config config, Instance... instances) {
     // Used to test destroy method.
     super.destroy();
 
     if (Objects.nonNull(config)) {
       super.initializeInstance(config);
-      add(config);
+      super.add(config);
     }
 
     for (Instance instance : instances) {
-      add(instance);
+      super.add(instance);
     }
 
     super.buildInstanceDependenciesGraph();

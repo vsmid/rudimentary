@@ -1,6 +1,9 @@
 package hr.yeti.rudimentary.test.context;
 
+import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.ContextException;
+import hr.yeti.rudimentary.test.ConfigMock;
 import hr.yeti.rudimentary.test.ContextMock;
 import hr.yeti.rudimentary.test.context.mock.MockInstance1;
 import hr.yeti.rudimentary.test.context.mock.MockInstance2;
@@ -127,5 +130,19 @@ public class ContextTest {
     expect:
     ex = assertThrows(ContextException.class, () -> new ContextMock(new MockInstance9a(), new MockInstance9b(), new MockInstance9c()));
     assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
+  }
+
+  @Test
+  public void test_config_context_injection() {
+    ContextMock ctx;
+    Config config = new ConfigMock();
+
+    when:
+    config = config.load(new ConfigProperty("val", "Hello World"));
+    config.seal();
+    ctx = new ContextMock(config, new MockInstance2());
+
+    then:
+    assertEquals("Hello World", ((MockInstance2) ContextMock.getContext().get(MockInstance2.class.getCanonicalName())).getVal());
   }
 }
