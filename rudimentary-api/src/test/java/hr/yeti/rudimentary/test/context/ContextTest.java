@@ -6,6 +6,7 @@ import hr.yeti.rudimentary.context.spi.ContextException;
 import hr.yeti.rudimentary.test.ConfigMock;
 import hr.yeti.rudimentary.test.ContextMock;
 import hr.yeti.rudimentary.test.context.mock.MockInstance1;
+import hr.yeti.rudimentary.test.context.mock.MockInstance10;
 import hr.yeti.rudimentary.test.context.mock.MockInstance2;
 import hr.yeti.rudimentary.test.context.mock.MockInstance5;
 import hr.yeti.rudimentary.test.context.mock.MockInstance6;
@@ -140,9 +141,9 @@ public class ContextTest {
     when:
     config = config.load(new ConfigProperty("val", "Hello World"));
     config.seal();
-    ctx = new ContextMock(config, new MockInstance2());
+    ctx = new ContextMock(config, new MockInstance10());
 
     then:
-    assertEquals("Hello World", ((MockInstance2) ContextMock.getContext().get(MockInstance2.class.getCanonicalName())).getVal());
+    assertEquals("Hello World", ((MockInstance10) ContextMock.getContext().get(MockInstance10.class.getCanonicalName())).getVal());
   }
 }
