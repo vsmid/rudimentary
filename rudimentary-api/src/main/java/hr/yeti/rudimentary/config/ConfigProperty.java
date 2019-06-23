@@ -77,7 +77,9 @@ public class ConfigProperty {
     }
 
     if (Objects.isNull(property)) {
-      property = Config.provider().value(name);
+      if (Objects.nonNull(Config.provider())) {
+        property = Config.provider().value(name);
+      }
     }
 
     if (Objects.isNull(property)) {
