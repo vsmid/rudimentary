@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class ServerInfo {
+public class ServerInfoConsolePrinter {
 
   public static void printRegisteredUriInfo(Logger logger) {
     System.out.println(System.lineSeparator());
