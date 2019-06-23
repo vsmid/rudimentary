@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.server.security.crypto;
+package hr.yeti.rudimentary.server.crypto;
 
 import hr.yeti.rudimentary.config.ConfigProperty;
 import java.security.NoSuchAlgorithmException;

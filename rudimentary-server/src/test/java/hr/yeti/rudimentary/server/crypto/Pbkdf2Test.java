@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.server.crypto;
 
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.server.ContextMock;
-import hr.yeti.rudimentary.server.security.crypto.Pbkdf2;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

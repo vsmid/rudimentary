@@ -1,6 +1,6 @@
 package hr.yeti.rudimentary.server.security.csrf;
 
-import hr.yeti.rudimentary.server.security.crypto.Hash;
+import hr.yeti.rudimentary.server.crypto.Hash;
 import java.time.Instant;
 
 public class CsrfToken {
