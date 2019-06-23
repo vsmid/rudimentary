@@ -134,7 +134,7 @@ public class ContextTest {
   }
 
   @Test
-  public void test_config_context_injection() {
+  public void test_config_to_mock_context_injection() {
     ContextMock ctx;
     Config config = new ConfigMock();
 
