@@ -15,6 +15,7 @@ import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.content.StaticResource;
+import hr.yeti.rudimentary.http.content.StreamIn;
 import hr.yeti.rudimentary.http.content.StreamOut;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.View;
@@ -108,6 +109,8 @@ public class HttpProcessor implements HttpHandler {
             } else if (requestBodyModelType.isAssignableFrom(Form.class)) {
               String form = new String(exchange.getRequestBody().readAllBytes());
               value = new Form(HttpRequestUtils.parseQueryParameters(form));
+            } else if (requestBodyModelType.isAssignableFrom(StreamIn.class)) {
+              value = new StreamIn(exchange.getRequestBody());
             } else {
               // POJO assumed
               try {
