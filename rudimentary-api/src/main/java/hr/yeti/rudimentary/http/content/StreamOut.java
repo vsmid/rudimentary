@@ -7,7 +7,8 @@ import hr.yeti.rudimentary.http.stream.StreamOutDef;
  * <pre>
  * Class used to describe http response type when declaring
  * new {@link HttpEndpoint} provider. This type of response is
- * used for streaming response. Typicall uses would be streaming infinite data or downloading a document.
+ * used for streaming response.
+ * Typical use cases would be streaming infinite data out or downloading a document.
  *
  * </pre>
  *

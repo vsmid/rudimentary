@@ -36,4 +36,10 @@ public class StreamOutEndpoint implements HttpEndpoint<Empty, StreamOut> {
     headers.put("Content-Disposition", Arrays.asList("attachment;filename=streamOut.txt"));
     return headers;
   }
+
+  @Override
+  public String description() {
+    return "Stream data out.";
+  }  
+  
 }
