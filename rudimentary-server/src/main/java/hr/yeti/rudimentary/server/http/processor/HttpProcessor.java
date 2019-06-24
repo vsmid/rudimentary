@@ -15,6 +15,7 @@ import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.content.StaticResource;
+import hr.yeti.rudimentary.http.content.StreamOut;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.http.session.Session;
@@ -203,6 +204,9 @@ public class HttpProcessor implements HttpHandler {
 
             byte[] responseTransformed;
 
+            // Set http endpoint defined http headers
+            exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders());
+
             if (response instanceof Empty) {
               exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.ALL));
               responseTransformed = "".getBytes();
@@ -232,10 +236,14 @@ public class HttpProcessor implements HttpHandler {
 
               exchange.getResponseHeaders().put("Content-Type", Arrays.asList(staticResource.getMediaType()));
 
-              try ( InputStream is = staticResource.getValue()) {
+              try (InputStream is = staticResource.getValue()) {
                 responseTransformed = is.readAllBytes();
               }
 
+            } else if (response instanceof StreamOut) {
+              StreamOut streamOut = (StreamOut) response;
+              respondWithStream(httpEndpoint.get().httpStatus(), streamOut, exchange);
+              return;
             } else {
               // POJO assumed
               exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
@@ -265,6 +273,16 @@ public class HttpProcessor implements HttpHandler {
     if (Objects.nonNull(message)) {
       httpExchange.getResponseBody().write(message);
       httpExchange.getResponseBody().flush();
+    }
+    httpExchange.close();
+  }
+
+  private void respondWithStream(int httpStatus, StreamOut stream, HttpExchange httpExchange) throws IOException {
+    if (Objects.nonNull(stream)) {
+      httpExchange.sendResponseHeaders(httpStatus, 0);
+      stream.getStreamOutDef().startStreaming(httpExchange.getResponseBody());
+      httpExchange.getResponseBody().flush();
+      httpExchange.getResponseBody().close();
     }
     httpExchange.close();
   }

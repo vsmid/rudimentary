@@ -12,3 +12,4 @@ hr.yeti.rudimentary.demo.endpoint.SqlEndpoint
 hr.yeti.rudimentary.demo.endpoint.JsonArrayOkModelEndpoint
 hr.yeti.rudimentary.demo.endpoint.EventEndpoint
 hr.yeti.rudimentary.demo.endpoint.SessionEndpoint
+hr.yeti.rudimentary.demo.endpoint.StreamOutEndpoint
