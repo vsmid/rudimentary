@@ -95,3 +95,4 @@ Showcase can be run by executing `run.sh` script found in the root of the rudime
 * System properties listed are missing ones from system and environment
 * Add internationalization for messages etc.
 * Create test package within api moudule to help when writing tests, e.g. start server, load sql script utility, context mock etc. - Basic config and context mocks for now.
+* Add https server
