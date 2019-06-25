@@ -4,12 +4,12 @@ import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.http.MediaType;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
-import hr.yeti.rudimentary.http.content.StreamOut;
+import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 import java.util.Arrays;
 
-public class StreamOutEndpoint implements HttpEndpoint<Empty, StreamOut> {
+public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
 
   @Override
   public URI path() {
@@ -17,8 +17,8 @@ public class StreamOutEndpoint implements HttpEndpoint<Empty, StreamOut> {
   }
 
   @Override
-  public StreamOut response(Request<Empty> request) {
-    return new StreamOut((outputStream) -> {
+  public ByteStream response(Request<Empty> request) {
+    return new ByteStream((outputStream) -> {
       for (int i = 0; i < 100000; i++) {
         outputStream.write((String.valueOf(i) + System.lineSeparator()).getBytes());
         // Flush after each write.

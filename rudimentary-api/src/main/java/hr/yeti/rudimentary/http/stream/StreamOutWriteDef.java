@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Define writing response to output stream as a function.
+ * Defines writing to output stream as a function.
  *
  * @author vedransmid@yeti-it.hr
  */
 @FunctionalInterface
-public interface StreamOutDef {
+public interface StreamOutWriteDef {
 
   void startStreaming(OutputStream outputStream) throws IOException;
 }
