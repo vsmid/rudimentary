@@ -50,9 +50,7 @@ public class Server {
 
     // Create server instance
     server.httpServer = HttpServer.create(new InetSocketAddress(server.port), server.threadPoolSize);
-    HttpContext context = server.httpServer.createContext("/", new HttpProcessor(
-        server.threadPoolSize
-    ));
+    HttpContext context = server.httpServer.createContext("/", Instance.of(HttpProcessor.class));
 
     // Load authentication mechanism
     Instance.providersOf(AuthMechanism.class).stream()

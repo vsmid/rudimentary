@@ -49,15 +49,16 @@ import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
 import javax.json.stream.JsonParsingException;
 
-// TODO Convert to Instance pattern.
-public class HttpProcessor implements HttpHandler {
+public class HttpProcessor implements HttpHandler, Instance {
 
-  private final ExecutorService executorService;
-
+  private ExecutorService executorService;
   private ExceptionHandler globalExceptionHandler = Instance.of(ExceptionHandler.class);
 
-  public HttpProcessor(int threadPoolSize) {
-    this.executorService = Executors.newFixedThreadPool(threadPoolSize);
+  @Override
+  public void initialize() {
+    this.executorService = Executors.newFixedThreadPool(
+        Config.provider().property("server.threadPoolSize").asInt()
+    );
   }
 
   @Override
@@ -287,6 +288,11 @@ public class HttpProcessor implements HttpHandler {
       httpExchange.getResponseBody().close();
     }
     httpExchange.close();
+  }
+
+  @Override
+  public Class[] dependsOn() {
+    return new Class[]{ Config.class };
   }
 
 }
