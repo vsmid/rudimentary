@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.test.validation;
 
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.ValidationResult;
+import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -76,5 +77,12 @@ public class ConstraintTest {
     assertTrue(Constraint.MAX(2).apply(1).isValid());
     assertFalse(Constraint.MAX(2).apply(5).isValid());
     assertTrue(Constraint.MAX(2).apply(2).isValid());
+  }
+  
+  @Test
+  public void test_PATTERN_constraint() {
+    expect:
+    assertTrue(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("B_WORD_E").isValid());
+    assertFalse(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("Test123").isValid());
   }
 }

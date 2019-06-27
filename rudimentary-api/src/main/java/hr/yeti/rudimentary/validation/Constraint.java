@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.validation;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * Definition of the constraint as a function. Each constraint definition must return
@@ -24,5 +25,9 @@ public interface Constraint extends Function<Object, ValidationResult> {
 
   static Constraint MAX(int value) {
     return (o) -> new ValidationResult(Objects.nonNull(o) && Integer.valueOf(o.toString()) <= value, Optional.of(o + " > " + value + "."));
+  }
+
+  static Constraint REGEX(Pattern pattern) {
+    return (o) -> new ValidationResult(pattern.matcher(o.toString()).matches(), Optional.of(o + " does not match pattern of " + pattern.pattern()));
   }
 }
