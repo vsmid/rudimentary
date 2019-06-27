@@ -25,6 +25,8 @@ public class Server {
   private int port;
   private int threadPoolSize;
 
+  private Context context;
+
   private Server() throws IOException {
     LogManager.getLogManager()
         .readConfiguration(
@@ -33,8 +35,10 @@ public class Server {
 
     ServiceLoader.load(Context.class)
         .findFirst()
-        .get()
-        .initialize();
+        .ifPresent((ctx) -> {
+          this.context = ctx;
+          this.context.initialize();
+        });
   }
 
   public static Server start() throws IOException {
@@ -81,8 +85,14 @@ public class Server {
     return server;
   }
 
+  // TODO Add shutdown hook. on server stop.
   public void stop() {
+    LOGGER.log(Level.INFO, "Stopping server...");
+    
     this.httpServer.stop(stopDelay);
+    this.context.destroy();
+    
+    LOGGER.log(Level.INFO, "Server stopped.");
   }
 
 }

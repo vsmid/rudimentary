@@ -79,6 +79,16 @@ public abstract class Context implements Instance {
    */
   @Override
   public void destroy() {
+    CONTEXT
+        .values()
+        .stream()
+        .forEach((instance) -> {
+          try {
+            instance.destroy();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        });
     CONTEXT.clear();
     INITIALIZED_INSTANCES.clear();
     instanceDependencyGraph.clear();
