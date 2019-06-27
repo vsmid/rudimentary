@@ -7,6 +7,7 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.IOException;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
               .readAllBytes()
       );
     } catch (IOException ex) {
-      logger().log(System.Logger.Level.ERROR, "Failed to load apidocs.html template.", ex);
+      logger().log(Level.ERROR, "Failed to load apidocs.html template.", ex);
     }
   }
 
