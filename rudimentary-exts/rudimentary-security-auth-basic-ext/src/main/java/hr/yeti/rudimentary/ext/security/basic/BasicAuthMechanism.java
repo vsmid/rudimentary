@@ -17,6 +17,7 @@ public final class BasicAuthMechanism extends AuthMechanism {
   private ConfigProperty realm = new ConfigProperty("security.realm");
   private ConfigProperty enabled = new ConfigProperty("security.basic.enabled");
   private ConfigProperty urisRequiringAuthentication = new ConfigProperty("security.urisRequiringAuthentication");
+  private ConfigProperty urisNotRequiringAuthentication = new ConfigProperty("security.urisNotRequiringAuthentication");
 
   private IdentityStore identityStore;
 
@@ -76,19 +77,24 @@ public final class BasicAuthMechanism extends AuthMechanism {
   }
 
   @Override
+  public String[] urisNotRequiringAuthentication() {
+    return urisNotRequiringAuthentication.asArray();
+  }
+
+  @Override
   public Class[] dependsOn() {
     return new Class[]{ IdentityStore.class };
   }
 
   @Override
   public void initialize() {
-    // For now, use first identity store you can find.
+    super.initialize();
     this.identityStore = Instance.of(IdentityStore.class);
   }
 
   @Override
   public void destroy() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
   }
 
 }

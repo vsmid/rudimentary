@@ -37,7 +37,12 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
   /**
    * A list of secured URI's in Pattern format.
    */
-  private List<Pattern> urisRequiringAuthenticationPatterns = new ArrayList<>();
+  protected List<Pattern> urisRequiringAuthenticationCache = new ArrayList<>();
+
+  /**
+   * A list of non secured URI's in Pattern format.
+   */
+  protected List<Pattern> urisNotRequiringAuthenticationCache = new ArrayList<>();
 
   /**
    * Set whether authentication mechanism be enabled or not.
@@ -49,12 +54,22 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
   /**
    * Set an array of string based URI's which require authentication. URI's should be in
    * {@link Pattern} compatible format. Internally, during authentication each URI is treated as
-   * Pattern to see whether it matches incoming \HTTP request URI. If match, authentication is
+   * Pattern to see whether it matches incoming HTTP request URI. If match, authentication is
    * performed.
    *
    * @return An array of strings representing URI's which require authentication.
    */
   public abstract String[] urisRequiringAuthentication();
+
+  /**
+   * Set an array of string based URI's which do not require authentication. URI's should be in
+   * {@link Pattern} compatible format. Internally, during authentication each URI is treated as
+   * Pattern to see whether it matches incoming HTTP request URI. If match, no authentication will
+   * be executed.
+   *
+   * @return An array of strings representing URI's which require authentication.
+   */
+  public abstract String[] urisNotRequiringAuthentication();
 
   /**
    * Implement authentication mechanism.
@@ -94,10 +109,6 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
   @Override
   public Result authenticate(HttpExchange exchange) {
     if (enabled()) {
-
-      // TODO Handle this better, populte on application initialization.
-      cacheUrisRequiringAuthenticationAsPatterns();
-
       if (requiresAuthentication(exchange.getRequestURI())) {
         Result result = doAuth(exchange);
 
@@ -123,19 +134,39 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    * @return true if URI requires authentication, otherwise false.
    */
   protected boolean requiresAuthentication(URI uri) {
-    return urisRequiringAuthenticationPatterns.stream().anyMatch((pattern) -> {
-      return pattern.asPredicate().test(uri.getPath());
-    });
+    return uriFoundInCache(uri, urisRequiringAuthenticationCache) && !uriFoundInCache(uri, urisNotRequiringAuthenticationCache);
   }
 
   /**
-   * Creates cache out of URI's requiring authentication by converting them to {@link Pattern}.
+   * Creates cache out of URI's by converting them to {@link Pattern}.
    */
-  protected void cacheUrisRequiringAuthenticationAsPatterns() {
-    if (urisRequiringAuthenticationPatterns.isEmpty()) {
-      Stream.of(urisRequiringAuthentication())
+  protected void cacheUrisAsPatterns(String[] uris, List<Pattern> cache) {
+    if (cache.isEmpty()) {
+      Stream.of(uris)
           .map(Pattern::compile)
-          .forEach(urisRequiringAuthenticationPatterns::add);
+          .forEach(cache::add);
     }
   }
+
+  /**
+   * Checks whether @param uri is contained within @param cache.
+   *
+   * @param uri
+   * @param cache List containing uris as {@link Pattern}.
+   * @return
+   */
+  protected boolean uriFoundInCache(URI uri, List<Pattern> cache) {
+    return cache
+        .stream()
+        .anyMatch((pattern) -> {
+          return pattern.asPredicate().test(uri.getPath());
+        });
+  }
+
+  @Override
+  public void initialize() {
+    cacheUrisAsPatterns(urisRequiringAuthentication(), urisRequiringAuthenticationCache);
+    cacheUrisAsPatterns(urisNotRequiringAuthentication(), urisNotRequiringAuthenticationCache);
+  }
+
 }
