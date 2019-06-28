@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.security.spi;
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
+import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
@@ -34,6 +35,10 @@ import java.util.stream.Stream;
  */
 public abstract class AuthMechanism extends Authenticator implements Instance {
 
+  protected ConfigProperty realm = new ConfigProperty("security.realm");
+  protected ConfigProperty urisRequiringAuthentication = new ConfigProperty("security.urisRequiringAuthentication");
+  protected ConfigProperty urisNotRequiringAuthentication = new ConfigProperty("security.urisNotRequiringAuthentication");
+
   /**
    * A list of secured URI's in Pattern format.
    */
@@ -59,7 +64,9 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    *
    * @return An array of strings representing URI's which require authentication.
    */
-  public abstract String[] urisRequiringAuthentication();
+  public String[] urisRequiringAuthentication() {
+    return urisRequiringAuthentication.asArray();
+  }
 
   /**
    * Set an array of string based URI's which do not require authentication. URI's should be in
@@ -69,7 +76,9 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    *
    * @return An array of strings representing URI's which require authentication.
    */
-  public abstract String[] urisNotRequiringAuthentication();
+  public String[] urisNotRequiringAuthentication() {
+    return urisNotRequiringAuthentication.asArray();
+  }
 
   /**
    * Implement authentication mechanism.

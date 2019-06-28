@@ -14,10 +14,7 @@ import java.util.Base64;
 
 public final class BasicAuthMechanism extends AuthMechanism {
 
-  private ConfigProperty realm = new ConfigProperty("security.realm");
   private ConfigProperty enabled = new ConfigProperty("security.basic.enabled");
-  private ConfigProperty urisRequiringAuthentication = new ConfigProperty("security.urisRequiringAuthentication");
-  private ConfigProperty urisNotRequiringAuthentication = new ConfigProperty("security.urisNotRequiringAuthentication");
 
   private IdentityStore identityStore;
 
@@ -69,16 +66,6 @@ public final class BasicAuthMechanism extends AuthMechanism {
   @Override
   public boolean enabled() {
     return enabled.asBoolean();
-  }
-
-  @Override
-  public String[] urisRequiringAuthentication() {
-    return urisRequiringAuthentication.asArray();
-  }
-
-  @Override
-  public String[] urisNotRequiringAuthentication() {
-    return urisNotRequiringAuthentication.asArray();
   }
 
   @Override
