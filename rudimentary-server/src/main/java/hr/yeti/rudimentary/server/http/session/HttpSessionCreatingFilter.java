@@ -29,7 +29,7 @@ public class HttpSessionCreatingFilter extends HttpFilter {
     // This part handles RSID tokens which are not stored in server's memory
     // by creating new session and overwriting unknown RSID cookie.
     boolean overwriteRsidCookie = false;
-    if (cookies.containsKey(Session.COOKIE)) {
+    if (cookies.containsKey(Session.COOKIE)) {    
       try {
         session = Instance.of(HttpSessionManager.class).get(cookies.get(Session.COOKIE).getValue());
       } catch (NoHttpSessionFoundException e) {

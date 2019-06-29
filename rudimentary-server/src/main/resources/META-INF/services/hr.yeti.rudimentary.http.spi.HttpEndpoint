@@ -1,1 +1,3 @@
 hr.yeti.rudimentary.server.http.endpoint.StaticResourceEndpoint
+hr.yeti.rudimentary.server.healthcheck.HealthCheckEndpoint
+hr.yeti.rudimentary.server.apidocs.ApiDocsEndpoint
