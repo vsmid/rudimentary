@@ -17,13 +17,14 @@ public class HttpSession implements Session {
   private boolean authenticated;
 
   private HttpExchange httpExchange;
-  
+
   public HttpSession(HttpExchange httpExchange) {
     this.httpExchange = httpExchange;
     this.rsid = Hash.generateRandomSHA256();
     this.creationTime = System.currentTimeMillis();
     this.lastAccessedTime = this.creationTime;
     this.attributes = new HashMap<>();
+    this.authenticated = false;
   }
 
   @Override
@@ -56,6 +57,7 @@ public class HttpSession implements Session {
     attributes = null;
     csrfToken = null;
     rsid = null;
+    authenticated = false;
   }
 
   @Override

@@ -4,35 +4,22 @@ import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
 import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.events.EventPublisher;
+import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.security.Identity;
+import hr.yeti.rudimentary.security.event.AuthenticatedSessionEvent;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-/**
- * SPI providing user authentication mechanism.
- *
- * Since this interface implements {@link Instance} it means it is loaded automatically via
- * {@link ServiceLoader} on application startup.
- *
- * There should be only one AuthMechanism provider per application.
- *
- * You can register it in
- * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.AuthMechanism</i>
- * file.
- *
- * Rudimentary currently provides BasicAuth extension module where you can see how to implement
- * custom authentication provider. You can find it under
- * <b>rudimentary/rudimentary-exts/rudimentary-security-auth-basic-ext</b>.
- *
- * @author vedransmid@yeti-it.hr
- */
 public abstract class AuthMechanism extends Authenticator implements Instance {
 
   protected ConfigProperty realm = new ConfigProperty("security.realm");
@@ -103,11 +90,13 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    */
   public abstract Identity getIdentity(HttpPrincipal principal);
 
-  // TODO Add sessions to exchange?, use it to prevent auth on every call for session apps, use RSID as validation mechanism
   /**
    * A method which is being called internally to execute authentication. This method should not be
    * used unless you really know what you are doing. This method internally calls
    * {@link AuthMechanism#doAuth(com.sun.net.httpserver.HttpExchange)} method.
+   *
+   * Upon successful authentication for session based applications, a new
+   * {@link AuthenticatedSessionEvent} is published.
    *
    * If URI does not require authentication or authentication is disabled, a user with default name
    * of 'anonymous' is used as principal.
@@ -118,13 +107,20 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
   @Override
   public Result authenticate(HttpExchange exchange) {
     if (enabled()) {
-      if (requiresAuthentication(exchange.getRequestURI())) {
+      if (requiresAuthentication(exchange.getRequestURI()) && !authenticatedSession(exchange)) {
         Result result = doAuth(exchange);
 
         if (result instanceof Success) {
           // Set principal as identity with full identity info
           Identity identity = getIdentity(((Success) result).getPrincipal());
           result = new Authenticator.Success(identity);
+
+          if (Config.provider().property("session.create").asBoolean()) {
+            HttpRequestUtils.getSession(exchange).ifPresent((session) -> {
+              new AuthenticatedSessionEvent(session).publish(EventPublisher.Type.SYNC);
+            });
+
+          }
         }
 
         return result;
@@ -148,6 +144,9 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
 
   /**
    * Creates cache out of URI's by converting them to {@link Pattern}.
+   *
+   * @param uris Configured list of URIs to be cached.
+   * @param cache List containing URIs as {@link Pattern}.
    */
   protected void cacheUrisAsPatterns(String[] uris, List<Pattern> cache) {
     if (cache.isEmpty()) {
@@ -158,10 +157,29 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
   }
 
   /**
+   * If sessions are created and user has successfully authenticated, subsequent request should not
+   * be authenticated. This method checks if that is the case for the current request. This is used
+   * if authentication method reuqires from user to authenticate only once, e.g. login to web
+   * application.
+   *
+   * @param exchange
+   * @return Whether user is already successfully authenticated or not.
+   */
+  protected boolean authenticatedSession(HttpExchange exchange) {
+    Optional<Session> session = HttpRequestUtils.getSession(exchange);
+    if (session.isPresent()) {
+      if (session.get().isAuthenticated()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Checks whether @param uri is contained within @param cache.
    *
-   * @param uri
-   * @param cache List containing uris as {@link Pattern}.
+   * @param uri Request URI.
+   * @param cache List containing URIs as {@link Pattern}.
    * @return
    */
   protected boolean uriFoundInCache(URI uri, List<Pattern> cache) {

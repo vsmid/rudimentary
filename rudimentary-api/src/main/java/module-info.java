@@ -32,6 +32,7 @@ module hr.yeti.rudimentary.api {
   exports hr.yeti.rudimentary.pooling.spi;
 
   exports hr.yeti.rudimentary.security;
+  exports hr.yeti.rudimentary.security.event;
   exports hr.yeti.rudimentary.security.spi;
 
   exports hr.yeti.rudimentary.sql;
