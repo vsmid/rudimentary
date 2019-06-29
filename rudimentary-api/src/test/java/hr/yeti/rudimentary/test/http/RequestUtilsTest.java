@@ -1,5 +1,6 @@
-package hr.yeti.rudimentary.server.http;
+package hr.yeti.rudimentary.test.http;
 
+import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Text;

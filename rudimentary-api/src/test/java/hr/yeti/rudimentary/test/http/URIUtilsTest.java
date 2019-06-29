@@ -1,5 +1,6 @@
-package hr.yeti.rudimentary.server.http;
+package hr.yeti.rudimentary.test.http;
 
+import hr.yeti.rudimentary.http.URIUtils;
 import java.net.URI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;

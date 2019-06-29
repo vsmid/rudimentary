@@ -1,8 +1,10 @@
-package hr.yeti.rudimentary.server.http;
+package hr.yeti.rudimentary.http;
 
 import com.sun.net.httpserver.Headers;
-import hr.yeti.rudimentary.http.Request;
+import com.sun.net.httpserver.HttpExchange;
+import static hr.yeti.rudimentary.http.URIUtils.convertToRegex;
 import hr.yeti.rudimentary.http.content.Model;
+import hr.yeti.rudimentary.http.session.Session;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -16,8 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import static hr.yeti.rudimentary.server.http.URIUtils.convertToRegex;
 import java.lang.reflect.ParameterizedType;
+import java.util.Optional;
 
 public class HttpRequestUtils {
 
@@ -82,6 +84,16 @@ public class HttpRequestUtils {
       return (Class<? extends Request<? extends Model>>) Class.forName(className);
     } catch (ClassNotFoundException e) {
       throw new IllegalStateException("Class is not parametrized with generic type.", e);
+    }
+  }
+
+  public static Optional<Session> getSession(HttpExchange exchange) {
+    Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());
+    if (cookies.isEmpty()) {
+      return Optional.empty();
+    } else {
+      Session session = (Session) exchange.getAttribute(cookies.get(Session.COOKIE).getValue());
+      return Optional.ofNullable(session);
     }
   }
 }

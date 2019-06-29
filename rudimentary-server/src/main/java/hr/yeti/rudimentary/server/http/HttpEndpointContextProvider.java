@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.server.http;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.HttpMethod;
+import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import java.net.URI;

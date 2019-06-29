@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.server.http;
+package hr.yeti.rudimentary.http;
 
 import java.net.URI;
 import java.util.regex.Pattern;

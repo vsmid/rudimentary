@@ -2,10 +2,10 @@ package hr.yeti.rudimentary.server.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.http.Cookie;
+import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.session.Session;
-import hr.yeti.rudimentary.server.http.Cookie;
-import hr.yeti.rudimentary.server.http.HttpRequestUtils;
 import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.Map;
