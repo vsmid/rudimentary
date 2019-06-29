@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.server.http.endpoint;
+package hr.yeti.rudimentary.server.http.staticresources;
 
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
 
-public class StaticResourceEndpoint implements HttpEndpoint<Empty, StaticResource> {
+public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResource> {
 
   private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
 
