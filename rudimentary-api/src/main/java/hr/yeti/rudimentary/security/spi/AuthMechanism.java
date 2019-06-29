@@ -119,7 +119,6 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
             HttpRequestUtils.getSession(exchange).ifPresent((session) -> {
               new AuthenticatedSessionEvent(session).publish(EventPublisher.Type.SYNC);
             });
-
           }
         }
 
