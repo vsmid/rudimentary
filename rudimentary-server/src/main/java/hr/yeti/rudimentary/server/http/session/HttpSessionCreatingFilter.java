@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.server.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.http.Cookie;
@@ -29,17 +28,20 @@ public class HttpSessionCreatingFilter extends HttpFilter {
     // This part handles RSID tokens which are not stored in server's memory
     // by creating new session and overwriting unknown RSID cookie.
     boolean overwriteRsidCookie = false;
-    if (cookies.containsKey(Session.COOKIE)) {    
-      try {
-        session = Instance.of(HttpSessionManager.class).get(cookies.get(Session.COOKIE).getValue());
-      } catch (NoHttpSessionFoundException e) {
+    if (cookies.containsKey(Session.COOKIE)) {
+
+      session = (Session) exchange.getAttribute(cookies.get(Session.COOKIE).getValue());
+
+      if (Objects.isNull(session)) {
         overwriteRsidCookie = true;
-        LOGGER.log(Level.INFO, "{0} Creating new http session with new RSID overwriting the incoming one.", e.getMessage());
+        LOGGER.log(Level.INFO, "Creating new http session with new RSID overwriting the incoming one.");
       }
     }
 
     if (createSession.asBoolean() && Objects.isNull(session)) {
-      HttpSession newSession = (HttpSession) Instance.of(HttpSessionManager.class).create();
+      HttpSession newSession = new HttpSession(exchange);
+      exchange.setAttribute(newSession.getRsid(), newSession);
+
       String rsid = newSession.getRsid();
 
       HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, rsid);

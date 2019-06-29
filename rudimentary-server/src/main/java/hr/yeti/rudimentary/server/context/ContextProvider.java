@@ -19,7 +19,6 @@ import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import hr.yeti.rudimentary.pooling.spi.ObjectPool;
 import java.util.List;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
-import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
 import javax.sql.DataSource;
 
 public class ContextProvider extends Context {
@@ -35,7 +34,6 @@ public class ContextProvider extends Context {
       HttpEndpoint.class,
       HttpEndpointContextProvider.class,
       HttpFilter.class,
-      HttpSessionManager.class,
       IdentityDetails.class,
       IdentityStore.class,
       AuthMechanism.class,
@@ -65,7 +63,7 @@ public class ContextProvider extends Context {
 
     // Check for circular dependencies.
     buildInstanceDependenciesGraph();
-    
+
     instanceDependencyGraph.keySet().forEach((instance) -> {
       checkForCircularDependencies(instance, null);
     });

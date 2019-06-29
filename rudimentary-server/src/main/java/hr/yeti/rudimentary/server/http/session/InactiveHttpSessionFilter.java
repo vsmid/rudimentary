@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.server.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.http.Cookie;
@@ -43,7 +42,7 @@ public class InactiveHttpSessionFilter extends HttpFilter {
       RSID = cookies.get(Session.COOKIE).getValue();
     }
 
-    Session session = Instance.of(HttpSessionManager.class).get(RSID);
+    Session session = (Session) exchange.getAttribute(RSID);
 
     long lastAccessedTime = session.getLastAccessedTime();
     long currentTime = System.currentTimeMillis();

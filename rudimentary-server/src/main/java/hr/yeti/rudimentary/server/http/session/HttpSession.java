@@ -1,6 +1,6 @@
 package hr.yeti.rudimentary.server.http.session;
 
-import hr.yeti.rudimentary.context.spi.Instance;
+import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.crypto.Hash;
 import hr.yeti.rudimentary.server.security.csrf.CsrfToken;
@@ -14,10 +14,15 @@ public class HttpSession implements Session {
   private long lastAccessedTime;
   private Map<String, Object> attributes;
   private CsrfToken csrfToken;
+  private boolean authenticated;
 
-  public HttpSession() {
+  private HttpExchange httpExchange;
+  
+  public HttpSession(HttpExchange httpExchange) {
+    this.httpExchange = httpExchange;
     this.rsid = Hash.generateRandomSHA256();
     this.creationTime = System.currentTimeMillis();
+    this.lastAccessedTime = this.creationTime;
     this.attributes = new HashMap<>();
   }
 
@@ -47,7 +52,7 @@ public class HttpSession implements Session {
 
   @Override
   public void invalidate() {
-    Instance.of(HttpSessionManager.class).remove(rsid);
+    httpExchange.setAttribute(rsid, null);
     attributes = null;
     csrfToken = null;
     rsid = null;
@@ -60,6 +65,15 @@ public class HttpSession implements Session {
 
   public void setCsrfToken(CsrfToken csrfToken) {
     this.csrfToken = csrfToken;
+  }
+
+  @Override
+  public boolean isAuthenticated() {
+    return this.authenticated;
+  }
+
+  public void setAuthenticated(boolean authenticated) {
+    this.authenticated = authenticated;
   }
 
 }

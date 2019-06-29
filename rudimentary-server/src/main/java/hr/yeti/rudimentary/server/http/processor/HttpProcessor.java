@@ -26,7 +26,6 @@ import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.HttpRequestUtils;
-import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
 import hr.yeti.rudimentary.validation.ConstraintViolations;
 import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
@@ -144,7 +143,7 @@ public class HttpProcessor implements HttpHandler, Instance {
           if (Config.provider().property("session.create").asBoolean()) {
             HttpCookie rsidCookie = HttpRequestUtils.parseCookies(exchange.getRequestHeaders()).get(Session.COOKIE);
             if (Objects.nonNull(rsidCookie)) {
-              session = Instance.of(HttpSessionManager.class).get(rsidCookie.getValue());
+              session = (Session) exchange.getAttribute(rsidCookie.getValue());
             }
           }
 

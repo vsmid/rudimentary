@@ -56,5 +56,11 @@ public interface Session {
    * @return Csrf token value.
    */
   String getCsrfToken();
+  
+  /**
+   *
+   * @return Whether or not user request has been successfully authenticated.
+   */
+  boolean isAuthenticated();
 
 }

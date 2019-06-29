@@ -9,7 +9,6 @@ import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.http.Cookie;
 import hr.yeti.rudimentary.server.http.HttpRequestUtils;
-import hr.yeti.rudimentary.server.http.session.HttpSessionManager;
 import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.EnumSet;
@@ -91,7 +90,7 @@ public class CsrfTokenValidationFilter extends HttpFilter {
           return;
         } else {
           String rsid = cookies.get(Session.COOKIE).getValue();
-          Session session = Instance.of(HttpSessionManager.class).get(rsid);
+          Session session = (Session) exchange.getAttribute(rsid);
           csrfValid = cookies.get(csrfTokenCookieName.value()).getValue().equals(session.getCsrfToken());
         }
       }
