@@ -69,10 +69,7 @@ public class ProjectLayout {
       Files.createDirectories(where);
     }
 
-    if (Objects.nonNull(content)) {
-      Files.write(fullNewFilePath, content, StandardOpenOption.CREATE_NEW);
-    }
-
+    Files.write(fullNewFilePath, Objects.nonNull(content) ? content : "".getBytes(), StandardOpenOption.CREATE_NEW);
   }
 
   public Path getProjectDir() {
