@@ -22,6 +22,7 @@ public class CreateNewProjectCommand implements Command {
   @Override
   public Map<String, String> options() {
     return Map.of(
+        "groupId", "Set project's Maven groupId. If not set, --package value is used as a default.",
         "location", "Set absolute path to location where the project will be created. If omitted, current directory will be used.",
         "name", "Set project name.",
         "package", "Create project's root package. If omitted, app root package will be created."
@@ -37,11 +38,12 @@ public class CreateNewProjectCommand implements Command {
 
     String projectLocation = arguments.getOrDefault("location", new File("").getAbsolutePath());
     String rootPackage = arguments.getOrDefault("package", "app");
+    String groupId = arguments.getOrDefault("groupId", rootPackage);
 
     ProjectLayout projectLayout = new ProjectLayout(projectLocation + "/" + arguments.get("name"), rootPackage);
 
     try {
-      projectLayout.createNewFile(projectLayout.getProjectDir(), "pom.xml", pom(arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
+      projectLayout.createNewFile(projectLayout.getProjectDir(), "pom.xml", pom(groupId, arguments.get("name"), rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getProjectDir(), "run.sh", runShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getProjectDir(), "debug.sh", debugShScript(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getRootPackageDir(), "Application.java", mainClass(rootPackage).getBytes(StandardCharsets.UTF_8));
@@ -89,15 +91,11 @@ public class CreateNewProjectCommand implements Command {
         + "server.stopDelay=0";
   }
 
-  private String pom(String projectName, String rootPackage) {
+  private String pom(String groupId, String projectName, String rootPackage) {
     return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         + "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n"
         + "  <modelVersion>4.0.0</modelVersion>\n"
-        + "  <parent>\n"
-        + "    <groupId>hr.yeti.rudimentary</groupId>\n"
-        + "    <artifactId>rudimentary</artifactId>\n"
-        + "    <version>1.0-SNAPSHOT</version>\n"
-        + "  </parent>\n"
+        + "  <groupId>" + groupId + "</groupId>\n"
         + "  <artifactId>" + projectName + "</artifactId>\n"
         + "  <version>1.0-SNAPSHOT</version>\n"
         + "  <packaging>jar</packaging>\n"
@@ -142,8 +140,8 @@ public class CreateNewProjectCommand implements Command {
         + "        <artifactId>maven-compiler-plugin</artifactId>\n"
         + "        <version>3.8.0</version>\n"
         + "        <configuration>\n"
-        + "          <source>10</source>\n"
-        + "          <target>10</target>\n"
+        + "          <source>11</source>\n"
+        + "          <target>11</target>\n"
         + "        </configuration>\n"
         + "      </plugin> \n"
         + "    </plugins>\n"
