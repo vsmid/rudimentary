@@ -61,9 +61,7 @@ public class Server {
         .filter(AuthMechanism::enabled)
         .findFirst()
         .ifPresent((authMechanism) -> {
-          if (authMechanism.enabled()) {
-            context.setAuthenticator(authMechanism);
-          }
+          context.setAuthenticator(authMechanism);
         });
 
     // Load filters
@@ -89,10 +87,10 @@ public class Server {
   // TODO Add shutdown hook. on server stop.
   public void stop() {
     LOGGER.log(Level.INFO, "Stopping server...");
-    
+
     this.httpServer.stop(stopDelay);
     this.context.destroy();
-    
+
     LOGGER.log(Level.INFO, "Server stopped.");
   }
 
