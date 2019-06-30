@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.http.session;
 
+import com.sun.net.httpserver.HttpExchange;
 import java.util.Map;
 
 /**
@@ -47,8 +48,10 @@ public interface Session {
 
   /**
    * Destroy current session.
+   *
+   * @param httpExchange {@link HttpExchange}
    */
-  void invalidate();
+  void invalidate(HttpExchange httpExchange);
 
   /**
    * Get csrf token value.

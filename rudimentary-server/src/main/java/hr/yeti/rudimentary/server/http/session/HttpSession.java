@@ -1,9 +1,11 @@
 package hr.yeti.rudimentary.server.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
+import hr.yeti.rudimentary.http.Cookie;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.crypto.Hash;
 import hr.yeti.rudimentary.server.security.csrf.CsrfToken;
+import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,10 +18,7 @@ public class HttpSession implements Session {
   private CsrfToken csrfToken;
   private boolean authenticated;
 
-  private HttpExchange httpExchange;
-
-  public HttpSession(HttpExchange httpExchange) {
-    this.httpExchange = httpExchange;
+  public HttpSession() {
     this.rsid = Hash.generateRandomSHA256();
     this.creationTime = System.currentTimeMillis();
     this.lastAccessedTime = this.creationTime;
@@ -52,12 +51,17 @@ public class HttpSession implements Session {
   }
 
   @Override
-  public void invalidate() {
-    httpExchange.setAttribute(rsid, null);
-    attributes = null;
-    csrfToken = null;
-    rsid = null;
-    authenticated = false;
+  public void invalidate(HttpExchange exchange) {
+    this.active = false;
+    this.attributes = null;
+    this.csrfToken = null;
+    this.authenticated = false;
+
+    HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, this.rsid);
+    rsidCookie.setMaxAge(0);
+
+    exchange.getResponseHeaders().add("Set-Cookie", new Cookie(rsidCookie).toString());
+    exchange.setAttribute(rsid, null);
   }
 
   @Override
