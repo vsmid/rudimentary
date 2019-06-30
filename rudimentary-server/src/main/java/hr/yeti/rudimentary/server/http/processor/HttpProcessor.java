@@ -17,6 +17,7 @@ import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.content.StaticResource;
 import hr.yeti.rudimentary.http.content.ByteStream;
+import hr.yeti.rudimentary.http.content.Redirect;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.http.session.Session;
@@ -202,64 +203,61 @@ public class HttpProcessor implements HttpHandler, Instance {
           // Local http endpoint before interceptor
           httpEndpoint.get().after(request, (Model) response);
 
-          if (Objects.nonNull(response)) {
+          byte[] responseTransformed = null;
 
-            byte[] responseTransformed;
+          // Set http endpoint defined http headers
+          exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders());
 
-            // Set http endpoint defined http headers
-            exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders());
+          if (response instanceof Empty) {
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.ALL));
+            responseTransformed = "".getBytes();
+          } else if (response instanceof Json) {
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
+            responseTransformed = ((Json) response).getValue().toString().getBytes();
+          } else if (response instanceof Text) {
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_PLAIN));
+            responseTransformed = ((Text) response).getValue().getBytes();
+          } else if (response instanceof Html) {
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_HTML));
+            responseTransformed = ((Html) response).getValue().getBytes();
+          } else if (response instanceof View) {
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_HTML));
 
-            if (response instanceof Empty) {
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.ALL));
-              responseTransformed = "".getBytes();
-            } else if (response instanceof Json) {
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
-              responseTransformed = ((Json) response).getValue().toString().getBytes();
-            } else if (response instanceof Text) {
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_PLAIN));
-              responseTransformed = ((Text) response).getValue().getBytes();
-            } else if (response instanceof Html) {
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_HTML));
-              responseTransformed = ((Html) response).getValue().getBytes();
-            } else if (response instanceof View) {
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_HTML));
+            View view = (View) response;
 
-              View view = (View) response;
-
-              if (Objects.nonNull(Instance.of(ViewEngine.class))) {
-                responseTransformed = view.getValue().getBytes();
-              } else {
-                respond(500, "Could not resolve view.".getBytes(), exchange);
-                return;
-              }
-
-            } else if (response instanceof StaticResource) {
-              StaticResource staticResource = (StaticResource) response;
-
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(staticResource.getMediaType()));
-
-              try (InputStream is = staticResource.getValue()) {
-                responseTransformed = is.readAllBytes();
-              }
-
-            } else if (response instanceof ByteStream) {
-              ByteStream streamOut = (ByteStream) response;
-              respondWithStream(httpEndpoint.get().httpStatus(), streamOut, exchange);
-              return;
+            if (Objects.nonNull(Instance.of(ViewEngine.class))) {
+              responseTransformed = view.getValue().getBytes();
             } else {
-              // POJO assumed
-              exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
-              responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
+              respond(500, "Could not resolve view.".getBytes(), exchange);
+              return;
             }
 
-            respond(httpEndpoint.get().httpStatus(), responseTransformed, exchange);
-          } else {
-            URI redirectUri = httpEndpoint.get().redirect();
-            if (Objects.nonNull(redirectUri)) {
-              exchange.getResponseHeaders().add("location", redirectUri.toString());
-              respond(302, null, exchange);
+          } else if (response instanceof StaticResource) {
+            StaticResource staticResource = (StaticResource) response;
+
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(staticResource.getMediaType()));
+
+            try (InputStream is = staticResource.getValue()) {
+              responseTransformed = is.readAllBytes();
             }
+
+          } else if (response instanceof ByteStream) {
+            ByteStream streamOut = (ByteStream) response;
+            respondWithStream(httpEndpoint.get().httpStatus(), streamOut, exchange);
+            return;
+          } else if (response instanceof Redirect) {
+            Redirect redirect = (Redirect) response;
+            if (Objects.nonNull(redirect)) {
+              exchange.getResponseHeaders().add("location", redirect.getValue().toString());
+              respond(redirect.getHttpStatus(), null, exchange);
+            }
+          } else {
+            // POJO assumed
+            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
+            responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
           }
+
+          respond(httpEndpoint.get().httpStatus(), responseTransformed, exchange);
 
         } else {
           respond(404, null, exchange);
