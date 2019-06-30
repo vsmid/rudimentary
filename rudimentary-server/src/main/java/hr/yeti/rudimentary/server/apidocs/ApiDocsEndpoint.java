@@ -37,7 +37,7 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
 
   @Override
   public URI path() {
-    return URI.create("/apidocs");
+    return URI.create("/_apidocs");
   }
 
   @Override
