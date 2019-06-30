@@ -33,7 +33,7 @@ public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckRepor
 
   @Override
   public URI path() {
-    return URI.create("/health");
+    return URI.create("/_health");
   }
 
   @Override
