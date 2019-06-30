@@ -52,7 +52,6 @@ public class HttpSession implements Session {
 
   @Override
   public void invalidate(HttpExchange exchange) {
-    this.active = false;
     this.attributes = null;
     this.csrfToken = null;
     this.authenticated = false;
