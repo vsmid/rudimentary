@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.server.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.http.Cookie;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.session.Session;
@@ -35,11 +34,11 @@ public class InactiveHttpSessionFilter extends HttpFilter {
 
     String RSID;
 
-    // Try response headers
-    if (cookies.isEmpty() || !cookies.containsKey(Session.COOKIE)) {
-      RSID = exchange.getResponseHeaders().get("Set-Cookie").get(0).substring(5).split(";")[0];
-    } else {
+    if (!cookies.isEmpty() || cookies.containsKey(Session.COOKIE)) {
       RSID = cookies.get(Session.COOKIE).getValue();
+    } else {
+      // Try response headers in case session was just created by HttpSessionCreatingFilter
+      RSID = exchange.getResponseHeaders().get("Set-Cookie").get(0).substring(5).split(";")[0];
     }
 
     Session session = (Session) exchange.getAttribute(RSID);
@@ -47,18 +46,13 @@ public class InactiveHttpSessionFilter extends HttpFilter {
     long lastAccessedTime = session.getLastAccessedTime();
     long currentTime = System.currentTimeMillis();
 
-    if ((currentTime - lastAccessedTime) / (1_000 * 60) > inactivityPeriodAllowed.asInt()) {
+    if ((currentTime - lastAccessedTime) / 1_000 > inactivityPeriodAllowed.asInt()) {
       LOGGER.log(Level.WARNING, "Session with RSID={0} has expired after period of inactivity.", RSID);
 
-      // Inavlidate and remove session.
-      session.invalidate();
-
-      // Delete RSID cookie
-      HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, exchange.getResponseHeaders().get("Set-Cookie").get(0));
-      rsidCookie.setMaxAge(0);
+      // Invalidate and remove session.
+      session.invalidate(exchange);
 
       exchange.sendResponseHeaders(440, 0);
-      exchange.getResponseHeaders().add("Set-Cookie", new Cookie(rsidCookie).toString());
       exchange.close();
 
       return;
