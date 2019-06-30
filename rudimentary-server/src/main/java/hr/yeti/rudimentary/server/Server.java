@@ -58,7 +58,7 @@ public class Server {
 
     // Load authentication mechanism
     Instance.providersOf(AuthMechanism.class).stream()
-        .filter(AuthMechanism::enabled)
+        .filter(AuthMechanism::conditional)
         .findFirst()
         .ifPresent((authMechanism) -> {
           context.setAuthenticator(authMechanism);

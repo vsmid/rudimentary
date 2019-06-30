@@ -29,7 +29,7 @@ public class LoginFormAuthMechanism extends AuthMechanism {
   private IdentityStore identityStore;
 
   @Override
-  public boolean enabled() {
+  public boolean conditional() {
     return enabled.asBoolean();
   }
 

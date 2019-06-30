@@ -64,7 +64,7 @@ public final class BasicAuthMechanism extends AuthMechanism {
   }
 
   @Override
-  public boolean enabled() {
+  public boolean conditional() {
     return enabled.asBoolean();
   }
 

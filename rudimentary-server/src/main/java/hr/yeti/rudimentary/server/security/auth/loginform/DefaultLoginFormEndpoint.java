@@ -9,6 +9,7 @@ import java.net.URI;
 
 public class DefaultLoginFormEndpoint implements HttpEndpoint<Empty, Html> {
 
+  private ConfigProperty enabled = new ConfigProperty("security.loginform.enabled");
   private ConfigProperty loginURI = new ConfigProperty("security.loginform.loginURI");
   private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginform.redirectAfterSuccessfulLoginURI");
   private ConfigProperty usernameFieldName = new ConfigProperty("security.loginform.usernameFieldName");
@@ -35,6 +36,11 @@ public class DefaultLoginFormEndpoint implements HttpEndpoint<Empty, Html> {
         + "    </form>\n"
         + "  </body>\n"
         + "</html>");
+  }
+
+  @Override
+  public boolean conditional() {
+    return enabled.asBoolean();
   }
 
 }

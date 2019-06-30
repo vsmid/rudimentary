@@ -10,6 +10,7 @@ import java.net.URI;
 
 public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, Redirect> {
 
+  private ConfigProperty enabled = new ConfigProperty("security.loginform.enabled");
   private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginform.redirectAfterSuccessfulLoginURI");
   private ConfigProperty landingViewURI = new ConfigProperty("security.loginform.landingViewURI");
 
@@ -28,6 +29,11 @@ public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, 
     String redirectToURI = landingViewURI.value().length() == 0
         ? request.getSession().getAttributes().getOrDefault("sessionCreatingURI", "/").toString() : landingViewURI.value();
     return new Redirect(URI.create(redirectToURI));
+  }
+
+  @Override
+  public boolean conditional() {
+    return enabled.asBoolean();
   }
 
 }

@@ -37,13 +37,6 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
   protected List<Pattern> urisNotRequiringAuthenticationCache = new ArrayList<>();
 
   /**
-   * Set whether authentication mechanism be enabled or not.
-   *
-   * @return true if authentication mechanism is enabled, otherwise false.
-   */
-  public abstract boolean enabled();
-
-  /**
    * Set an array of string based URI's which require authentication. URI's should be in
    * {@link Pattern} compatible format. Internally, during authentication each URI is treated as
    * Pattern to see whether it matches incoming HTTP request URI. If match, authentication is
@@ -106,7 +99,7 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    */
   @Override
   public Result authenticate(HttpExchange exchange) {
-    if (enabled()) {
+    if (conditional()) {
       if (requiresAuthentication(exchange.getRequestURI()) && !authenticatedSession(exchange)) {
         Result result = doAuth(exchange);
 
