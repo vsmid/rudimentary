@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.http;
 
 import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.security.Identity;
@@ -30,6 +31,7 @@ public class Request<T> {
   private Map<String, String> queryParameters;
   private URI uri;
   private Session session;
+  private HttpExchange httpExchange;
 
   public Request(
       Identity identity,
@@ -38,7 +40,8 @@ public class Request<T> {
       Map<String, String> pathVariables,
       Map<String, String> queryParameters,
       URI uri,
-      Session session) {
+      Session session,
+      HttpExchange httpExchange) {
     this.identity = identity;
     this.httpHeaders = httpHeaders;
     this.body = body;
@@ -46,6 +49,7 @@ public class Request<T> {
     this.queryParameters = queryParameters;
     this.uri = uri;
     this.session = session;
+    this.httpExchange = httpExchange;
   }
 
   /**
@@ -100,6 +104,10 @@ public class Request<T> {
 
   public Session getSession() {
     return session;
+  }
+
+  public HttpExchange getHttpExchange() {
+    return httpExchange;
   }
 
 }

@@ -27,6 +27,7 @@ import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
+import hr.yeti.rudimentary.server.http.session.HttpSession;
 import hr.yeti.rudimentary.validation.ConstraintViolations;
 import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
@@ -145,6 +146,7 @@ public class HttpProcessor implements HttpHandler, Instance {
             HttpCookie rsidCookie = HttpRequestUtils.parseCookies(exchange.getRequestHeaders()).get(Session.COOKIE);
             if (Objects.nonNull(rsidCookie)) {
               session = (Session) exchange.getAttribute(rsidCookie.getValue());
+              ((HttpSession) session).setLastAccessedTime(System.currentTimeMillis());
             }
           }
 
@@ -156,7 +158,8 @@ public class HttpProcessor implements HttpHandler, Instance {
               pathVariables,
               queryParameters,
               exchange.getRequestURI(),
-              session
+              session,
+              exchange
           );
 
           // Global before interceptor
