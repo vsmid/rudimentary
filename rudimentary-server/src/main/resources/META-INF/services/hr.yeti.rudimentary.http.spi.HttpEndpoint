@@ -1,3 +1,5 @@
 hr.yeti.rudimentary.server.http.staticresources.StaticResourcesEndpoint
 hr.yeti.rudimentary.server.healthcheck.HealthCheckEndpoint
 hr.yeti.rudimentary.server.apidocs.ApiDocsEndpoint
+hr.yeti.rudimentary.server.security.auth.loginform.DefaultLoginFormEndpoint
+hr.yeti.rudimentary.server.security.auth.loginform.RedirectAfterSuccessfulLoginEndpoint

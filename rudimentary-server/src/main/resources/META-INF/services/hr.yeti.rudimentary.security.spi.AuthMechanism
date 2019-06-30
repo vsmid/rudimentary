@@ -1,1 +1,2 @@
 hr.yeti.rudimentary.server.security.auth.basic.BasicAuthMechanism
+hr.yeti.rudimentary.server.security.auth.loginform.LoginFormAuthMechanism
