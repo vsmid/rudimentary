@@ -39,7 +39,7 @@ public class HttpSessionCreatingFilter extends HttpFilter {
     }
 
     if (createSession.asBoolean() && Objects.isNull(session)) {
-      HttpSession newSession = new HttpSession(exchange);
+      HttpSession newSession = new HttpSession();
       exchange.setAttribute(newSession.getRsid(), newSession);
 
       String rsid = newSession.getRsid();
@@ -54,8 +54,11 @@ public class HttpSessionCreatingFilter extends HttpFilter {
       if (overwriteRsidCookie) {
         rawRequestCookies.clear();
         rawRequestCookies.add(Session.COOKIE + "=" + rsid);
-
       }
+      // This is the first URI triggered by user which crated session. Useful for login form
+      // authentication to know to which page to land after successful login. 
+      // This is true if requested URI is secured.
+      newSession.getAttributes().put("sessionCreatingURI", exchange.getRequestURI().toString());
     }
     chain.doFilter(exchange);
   }
