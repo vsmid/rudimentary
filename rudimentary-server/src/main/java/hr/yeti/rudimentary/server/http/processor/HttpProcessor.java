@@ -250,6 +250,7 @@ public class HttpProcessor implements HttpHandler, Instance {
             if (Objects.nonNull(redirect)) {
               exchange.getResponseHeaders().add("location", redirect.getValue().toString());
               respond(redirect.getHttpStatus(), null, exchange);
+              return;
             }
           } else {
             // POJO assumed
