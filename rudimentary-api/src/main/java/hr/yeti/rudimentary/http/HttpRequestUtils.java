@@ -87,7 +87,7 @@ public class HttpRequestUtils {
     }
   }
 
-  public static Optional<Session> getSession(HttpExchange exchange) {
+  public static Optional<Session> extractSession(HttpExchange exchange) {
     Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());
     if (cookies.isEmpty()) {
       return Optional.empty();

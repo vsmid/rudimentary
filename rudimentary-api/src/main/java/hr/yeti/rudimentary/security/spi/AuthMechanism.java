@@ -109,7 +109,7 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
           result = new Authenticator.Success(identity);
 
           if (Config.provider().property("session.create").asBoolean()) {
-            HttpRequestUtils.getSession(exchange).ifPresent((session) -> {
+            HttpRequestUtils.extractSession(exchange).ifPresent((session) -> {
               new AuthenticatedSessionEvent(session).publish(EventPublisher.Type.SYNC);
             });
           }
@@ -158,7 +158,7 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    * @return Whether user is already successfully authenticated or not.
    */
   protected boolean authenticatedSession(HttpExchange exchange) {
-    Optional<Session> session = HttpRequestUtils.getSession(exchange);
+    Optional<Session> session = HttpRequestUtils.extractSession(exchange);
     if (session.isPresent()) {
       if (session.get().isAuthenticated()) {
         return true;
