@@ -19,4 +19,12 @@ public class URIUtils {
       return URI.create(uri.getPath());
     }
   }
+
+  public static URI prependSlashPrefix(URI uri) {
+    if (!uri.getPath().startsWith("/")) {
+      return URI.create("/" + uri.toString());
+    } else {
+      return uri;
+    }
+  }
 }

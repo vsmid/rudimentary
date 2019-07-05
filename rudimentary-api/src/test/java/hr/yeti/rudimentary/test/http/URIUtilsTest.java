@@ -19,7 +19,7 @@ public class URIUtilsTest {
   }
 
   @Test
-  public void test_uri_path_should_remove_prefix_slash() {
+  public void test_remove_prefix_slash() {
     // setup:
     URI uri1 = URI.create("uri1");
     URI uri2 = URI.create("/uri2");
@@ -29,6 +29,17 @@ public class URIUtilsTest {
     assertEquals("uri1", URIUtils.removeSlashPrefix(uri1).toString());
     assertEquals("uri2", URIUtils.removeSlashPrefix(uri2).toString());
     assertEquals("uri3", URIUtils.removeSlashPrefix(uri3).toString());
+  }
+
+  @Test
+  public void test_prepend_slash() {
+    // setup:
+    URI uri1 = URI.create("uri1");
+    URI uri2 = URI.create("/uri2");
+
+    expect:
+    assertEquals("/uri1", URIUtils.prependSlashPrefix(uri1).toString());
+    assertEquals("/uri2", URIUtils.prependSlashPrefix(uri2).toString());
   }
 
 }
