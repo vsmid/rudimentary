@@ -4,6 +4,7 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.mvc.ViewEngineException;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
+import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ServiceLoader;
@@ -20,7 +21,7 @@ public class DefaultStaticHTMLViewEngine implements ViewEngine {
   @Override
   public String render(View view) throws ViewEngineException {
     try {
-      InputStream html = Thread.currentThread().getContextClassLoader().getResourceAsStream(getTemplatesDirectory() + "/" + view.getTemplatePath());
+      InputStream html = new ClasspathResource(getTemplatesDirectory() + "/" + view.getTemplatePath()).get();
       return new String(html.readAllBytes());
     } catch (IOException ex) {
       LOGGER.log(Level.SEVERE, null, ex);

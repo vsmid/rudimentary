@@ -3,9 +3,11 @@ package hr.yeti.rudimentary.server.apidocs;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.lang.System.Logger.Level;
 import java.net.URI;
@@ -20,9 +22,8 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
   public void initialize() {
     try {
       this.apiDocsHTML = new String(
-          Thread.currentThread()
-              .getContextClassLoader()
-              .getResourceAsStream("templates/apidocs.html")
+          new ClasspathResource("/templates/apidocs.html")
+              .get()
               .readAllBytes()
       );
     } catch (IOException ex) {
@@ -64,7 +65,11 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
         .stream()
         .map(endpoint
             -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
-            endpoint.httpMethod(), endpoint.path(), endpoint.httpStatus(), Optional.ofNullable(endpoint.description()).orElse("")))
+            endpoint.httpMethod(),
+            URIUtils.prependSlashPrefix(endpoint.path()),
+            endpoint.httpStatus(),
+            Optional.ofNullable(endpoint.description()).orElse(""))
+        )
         .collect(
             Collectors.joining(System.lineSeparator())
         );

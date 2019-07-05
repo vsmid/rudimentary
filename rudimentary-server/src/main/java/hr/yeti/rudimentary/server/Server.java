@@ -8,6 +8,7 @@ import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
+import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ServiceLoader;
@@ -30,7 +31,7 @@ public class Server {
   private Server() throws IOException {
     LogManager.getLogManager()
         .readConfiguration(
-            this.getClass().getClassLoader().getResourceAsStream("server-logging.properties")
+            new ClasspathResource("server-logging.properties").get()
         );
 
     ServiceLoader.load(Context.class)

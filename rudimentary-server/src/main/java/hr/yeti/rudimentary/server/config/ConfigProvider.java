@@ -1,14 +1,15 @@
 package hr.yeti.rudimentary.server.config;
 
 import hr.yeti.rudimentary.config.spi.Config;
+import hr.yeti.rudimentary.server.resources.ClasspathResource;
 
 public class ConfigProvider extends Config {
 
   @Override
   public void initialize() {
     load(
-        ConfigProvider.class.getClassLoader().getResourceAsStream("default-config.properties"),
-        ConfigProvider.class.getClassLoader().getResourceAsStream("config.properties")
+        new ClasspathResource("default-config.properties").get(),
+        new ClasspathResource("config.properties").get()
     );
   }
 

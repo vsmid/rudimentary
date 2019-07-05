@@ -8,6 +8,7 @@ import hr.yeti.rudimentary.http.ResourceNotFoundException;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.StaticResource;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
@@ -18,12 +19,12 @@ public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResour
 
   @Override
   public URI path() {
-    return URI.create("/" + staticResourcesDir.value() + "/.*");
+    return URI.create(staticResourcesDir.value() + "/.*");
   }
 
   @Override
   public StaticResource response(Request<Empty> request) {
-    InputStream staticResource = getClass().getClassLoader().getResourceAsStream(request.getUri().toString().substring(1));
+    InputStream staticResource = new ClasspathResource(request.getUri().toString()).get();
 
     if (Objects.isNull(staticResource)) {
       throw new ResourceNotFoundException(request.getUri().toString());
