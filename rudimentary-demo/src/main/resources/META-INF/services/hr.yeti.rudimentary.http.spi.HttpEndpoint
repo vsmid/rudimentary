@@ -5,7 +5,6 @@ hr.yeti.rudimentary.demo.endpoint.TextEndpoint
 hr.yeti.rudimentary.demo.endpoint.TextWithConstraintsEndpoint
 hr.yeti.rudimentary.demo.endpoint.HtmlEndpoint
 hr.yeti.rudimentary.demo.endpoint.FormEndpoint
-hr.yeti.rudimentary.demo.endpoint.CustomViewEndpoint
 hr.yeti.rudimentary.demo.endpoint.RedirectEndpoint
 hr.yeti.rudimentary.demo.endpoint.UserInfoEndpoint
 hr.yeti.rudimentary.demo.endpoint.SqlEndpoint
