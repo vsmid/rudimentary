@@ -136,6 +136,19 @@ public class CreateNewProjectCommand implements Command {
         + "        </configuration>\n"
         + "      </plugin>\n"
         + "      <plugin>\n"
+        + "        <groupId>hr.yeti.rudimentary</groupId>\n"
+        + "        <artifactId>rudimentary-autoregister-maven-plugin</artifactId>\n"
+        + "        <version>1.0-SNAPSHOT</version>\n"
+        + "        <executions>\n"
+        + "          <execution>\n"
+        + "            <phase>compile</phase>\n"
+        + "            <goals>\n"
+        + "              <goal>auto-register</goal>\n"
+        + "            </goals>\n"
+        + "          </execution>\n"
+        + "        </executions>\n"
+        + "      </plugin>"
+        + "      <plugin>\n"
         + "        <groupId>org.apache.maven.plugins</groupId>\n"
         + "        <artifactId>maven-compiler-plugin</artifactId>\n"
         + "        <version>3.8.0</version>\n"
@@ -150,10 +163,10 @@ public class CreateNewProjectCommand implements Command {
   }
 
   public String runShScript(String rootPackage) {
-    return "mvn compile exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath " + rootPackage + ".Application\"";
+    return "mvn package exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath " + rootPackage + ".Application\"";
   }
 
   public String debugShScript(String rootPackage) {
-    return "mvn compile exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 " + rootPackage + ".Application\"";
+    return "mvn package exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 " + rootPackage + ".Application\"";
   }
 }
