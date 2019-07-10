@@ -60,7 +60,7 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 
 }
 ```
-6. Add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file
+6. If you disabled/removed Maven auto-register plugin in project's pom.xml add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file.
 7. To run your application, you can execute either `run.sh` or `debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
