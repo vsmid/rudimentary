@@ -11,6 +11,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO Handle classes which extend framework's SPI's
+// TODO Handle interfaces which extend framework's SPI's
+// TODO Add other providers, e.g.EventListener, AuthMechanism, HttpFilter etc.
+
 public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
   private static final String HTTP_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.http.spi.HttpEndpoint";
