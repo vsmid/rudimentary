@@ -65,6 +65,6 @@
     <module>rudimentary-runner</module>
     <module>rudimentary-cli</module>
     <module>rudimentary-exts</module>
-    <module>rudimentary-autoregister-maven-plugin</module>
+    <module>rudimentary-maven-plugin</module>
   </modules>
 </project>
