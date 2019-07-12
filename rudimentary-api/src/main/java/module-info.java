@@ -48,5 +48,5 @@ module hr.yeti.rudimentary.api {
 
   requires transitive java.sql;
 
-  requires transitive javax.mail.api;
+  requires transitive jakarta.mail.api;
 }
