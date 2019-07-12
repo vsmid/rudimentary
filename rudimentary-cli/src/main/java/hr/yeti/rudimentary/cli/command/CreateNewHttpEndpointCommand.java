@@ -29,7 +29,7 @@ public class CreateNewHttpEndpointCommand implements Command {
         "request-body-type", "Allowed values are: Empty, Text, Json, ByteStream, Html, Form. Defaults to Empty.",
         "response-type", "Allowed values are: Empty, Text, Json, ByteStream, Html, Redirect, View. Defaults to Empty.",
         "http-method", "POST, GET, DELETE, PUT etc. Defaults to GET.",
-        "path", "Http endpoint path(uri). Defaults to lower cased class name."
+        "path", "Http endpoint path(uri). Defaults to class name with lowercase starting letter."
     );
   }
 
