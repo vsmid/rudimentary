@@ -11,7 +11,7 @@ public class CreateNewProjectCommand implements Command {
 
   @Override
   public String name() {
-    return "new";
+    return "new-project";
   }
 
   @Override
@@ -137,7 +137,7 @@ public class CreateNewProjectCommand implements Command {
         + "      </plugin>\n"
         + "      <plugin>\n"
         + "        <groupId>hr.yeti.rudimentary</groupId>\n"
-        + "        <artifactId>rudimentary-autoregister-maven-plugin</artifactId>\n"
+        + "        <artifactId>rudimentary-maven-plugin</artifactId>\n"
         + "        <version>1.0-SNAPSHOT</version>\n"
         + "        <executions>\n"
         + "          <execution>\n"

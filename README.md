@@ -40,7 +40,7 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 1. Clone this repository from your terminal
 2. Go to the root of cloned project
 3. Execute `mvn clean install`
-4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new --name hello-world`
+4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new-project --name hello-world`
 5. Go to **src/main/java/app** directory and create Java class **HelloWorldEndpoint** like this:
 
 ```java
