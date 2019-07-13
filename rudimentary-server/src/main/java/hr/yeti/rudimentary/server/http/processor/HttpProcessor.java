@@ -212,19 +212,19 @@ public class HttpProcessor implements HttpHandler, Instance {
           exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders());
 
           if (response instanceof Empty) {
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.ALL));
+            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
             responseTransformed = "".getBytes();
           } else if (response instanceof Json) {
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
+            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
             responseTransformed = ((Json) response).getValue().toString().getBytes();
           } else if (response instanceof Text) {
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_PLAIN));
+            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
             responseTransformed = ((Text) response).getValue().getBytes();
           } else if (response instanceof Html) {
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_HTML));
+            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
             responseTransformed = ((Html) response).getValue().getBytes();
           } else if (response instanceof View) {
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.TEXT_HTML));
+            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
 
             View view = (View) response;
 
@@ -238,7 +238,7 @@ public class HttpProcessor implements HttpHandler, Instance {
           } else if (response instanceof StaticResource) {
             StaticResource staticResource = (StaticResource) response;
 
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(staticResource.getMediaType()));
+            exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
             try (InputStream is = staticResource.getValue()) {
               responseTransformed = is.readAllBytes();
@@ -257,7 +257,7 @@ public class HttpProcessor implements HttpHandler, Instance {
             }
           } else {
             // POJO assumed
-            exchange.getResponseHeaders().put("Content-Type", Arrays.asList(MediaType.APPLICATION_JSON));
+            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
             responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
           }
 
