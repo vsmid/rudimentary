@@ -39,6 +39,8 @@ public class CreateNewProjectCommand implements Command {
     String projectLocation = arguments.getOrDefault("location", new File("").getAbsolutePath());
     String rootPackage = arguments.getOrDefault("package", "app");
     String groupId = arguments.getOrDefault("groupId", rootPackage);
+    
+    rootPackage = groupId;
 
     ProjectLayout projectLayout = new ProjectLayout(projectLocation + "/" + arguments.get("name"), rootPackage);
 
