@@ -3,7 +3,6 @@ package hr.yeti.rudimentary.cli;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
@@ -22,13 +21,13 @@ public class ProjectLayout {
   }
 
   public ProjectLayout(String projectLocation, String rootPackage) {
-    this.projectDir = Paths.get(projectLocation);
+    this.projectDir = Path.of(projectLocation);
 
-    this.srcDir = projectDir.resolve(Paths.get("src", "main", "java"));
-    this.testDir = projectDir.resolve(Paths.get("src", "test", "java"));
+    this.srcDir = projectDir.resolve(Path.of("src", "main", "java"));
+    this.testDir = projectDir.resolve(Path.of("src", "test", "java"));
 
-    this.resourcesDir = projectDir.resolve(Paths.get("src", "main", "resources"));
-    this.testResourcesDir = projectDir.resolve(Paths.get("src", "test", "resources"));
+    this.resourcesDir = projectDir.resolve(Path.of("src", "main", "resources"));
+    this.testResourcesDir = projectDir.resolve(Path.of("src", "test", "resources"));
 
     this.metaInfDir = resourcesDir.resolve("META-INF");
     this.servicesDir = metaInfDir.resolve("services");
@@ -50,7 +49,7 @@ public class ProjectLayout {
   }
 
   public Path parsePackage(String pckg) {
-    Path pckgPath = Paths.get("");
+    Path pckgPath = Path.of("");
     if (pckg.contains(".")) {
       String[] paths = pckg.split("\\.");
       for (String path : paths) {
