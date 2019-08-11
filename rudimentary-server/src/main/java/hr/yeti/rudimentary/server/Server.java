@@ -109,6 +109,15 @@ public class Server {
             context.getFilters().add(filter);
           });
 
+      ShutdownHook shutdownHook = Instance.of(ShutdownHook.class);
+      if (Objects.nonNull(shutdownHook)) {
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(() -> {
+              shutdownHook.onShutdown();
+            })
+        );
+      }
+
       // Start server
       server.httpServer.start();
 
@@ -131,23 +140,8 @@ public class Server {
     ShutdownHook shutdownHook = Instance.of(ShutdownHook.class);
 
     this.httpServer.stop(stopDelay);
-
-    Thread shutdownHookThread = null;
-    
-    if (Objects.nonNull(shutdownHook)) {
-      Runtime.getRuntime().addShutdownHook(
-          new Thread(() -> {
-            shutdownHook.onShutdown();
-            destroyContext();
-          })
-      );
-    } else {
-      destroyContext();
-    }
-  }
-
-  private void destroyContext() {
     this.context.destroy();
+
     LOGGER.log(Level.INFO, "Server stopped.");
   }
 
