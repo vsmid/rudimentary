@@ -38,6 +38,8 @@ module hr.yeti.rudimentary.api {
   exports hr.yeti.rudimentary.sql;
 
   exports hr.yeti.rudimentary.validation;
+  
+  exports hr.yeti.rudimentary.shutdown.spi;
 
   exports hr.yeti.rudimentary.test;
 

@@ -19,6 +19,7 @@ import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import hr.yeti.rudimentary.pooling.spi.ObjectPool;
 import java.util.List;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
+import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
 import javax.sql.DataSource;
 
 public class ContextProvider extends Context {
@@ -38,6 +39,7 @@ public class ContextProvider extends Context {
       IdentityStore.class,
       AuthMechanism.class,
       DataSource.class,
+      ShutdownHook.class,
       ViewEndpoint.class,
       ViewEngine.class,
       ObjectPool.class,

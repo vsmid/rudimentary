@@ -12,6 +12,7 @@ import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
+import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,13 +125,29 @@ public class Server {
     }
   }
 
-  // TODO Add shutdown hook. on server stop.
   public void stop() {
     LOGGER.log(Level.INFO, "Stopping server...");
 
-    this.httpServer.stop(stopDelay);
-    this.context.destroy();
+    ShutdownHook shutdownHook = Instance.of(ShutdownHook.class);
 
+    this.httpServer.stop(stopDelay);
+
+    Thread shutdownHookThread = null;
+    
+    if (Objects.nonNull(shutdownHook)) {
+      Runtime.getRuntime().addShutdownHook(
+          new Thread(() -> {
+            shutdownHook.onShutdown();
+            destroyContext();
+          })
+      );
+    } else {
+      destroyContext();
+    }
+  }
+
+  private void destroyContext() {
+    this.context.destroy();
     LOGGER.log(Level.INFO, "Server stopped.");
   }
 
