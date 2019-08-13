@@ -1,10 +1,6 @@
-# Rudimentary framework (Development & Documentation in progress...)
+# Rudimentary framework
 
-A small and simple JAVA based web services/applications framework. 
-
-## Before anything
-
-This is very much a work in progress.
+A small, simple and opinionated Java based web services/applications framework. 
 
 ## Introduction
 
@@ -33,11 +29,11 @@ Majority of features are a work in progress but are usable and show the intent.
 * Java 11+
 * Maven
 
-## Writing Hello World
+## Getting started - writing Hello World
 
 Since there are no publicly available artifacts in jcenter or maven central of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
 
-1. Clone this repository from your terminal
+1. Clone this repository from your terminal (git clone https://github.com/vsmid/rudimentary.git)
 2. Go to the root of cloned project
 3. Execute `mvn clean install`
 4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new-project --name hello-world`
@@ -60,7 +56,9 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 
 }
 ```
-6. If you disabled/removed rudimentary-maven-plugin in project's pom.xml add **app.HttpEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file.
+  *Hint: you can also use rudimentary-cli to create new http endpoint.*
+
+6. If you disabled/removed rudimentary-maven-plugin in project's pom.xml add **app.HelloWorldEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file.
 7. To run your application, you can execute either `run.sh` or `debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
