@@ -68,7 +68,7 @@ Check [rudimentary-api](./rudimentary-api) module for Javadoc.
 
 ## Showcase module
 
-Make sure to check [rudimentary-demo](./rudimentary-demo/src/main/java/hr/yeti/rudimentary/demo/endpoint) for code examples.
+Make sure to check [rudimentary-demo](./rudimentary-demo/src/main/java/hr/yeti/rudimentary/demo/endpoint) for code examples describing what is stated in **notable features** section.
 Showcase can be run by executing `run.sh` script found in the root of the rudimentary-demo module.
 
 ## Roadmap
