@@ -1,3 +1,5 @@
+import hr.yeti.rudimentary.context.spi.Context;
+
 module hr.yeti.rudimentary.server {
   requires jdk.httpserver;
   requires hr.yeti.rudimentary.api;
@@ -9,4 +11,5 @@ module hr.yeti.rudimentary.server {
 
   uses hr.yeti.rudimentary.http.spi.HttpEndpoint;
   uses hr.yeti.rudimentary.config.spi.Config;
+  uses Context;
 }

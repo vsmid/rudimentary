@@ -12,15 +12,33 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class used for testing purposes to create mocked context on the fly.
+ *
+ * @author vedransmid@yeti-it.hr
+ */
 public final class ContextMock extends Context {
 
   private List<Instance> instances = new ArrayList<>();
 
+  /**
+   * Create context from instances. Use this constructor if instances do not depend on some
+   * configuration properties.
+   *
+   * @param instances An instance of class implementing {@link Instance}.
+   */
   public ContextMock(Instance... instances) {
     this.instances.addAll(Arrays.asList(instances));
     initialize();
   }
 
+  /**
+   * Create context from classes.Use this constructor if instances do depend on some configuration
+   * properties.
+   *
+   * @param properties Configuration properties.
+   * @param instances An instance of class implementing {@link Instance}.
+   */
   public ContextMock(Map<String, String> properties, Class<? extends Instance>... instances) {
     Config config = new ConfigMock().load(properties);
     config.seal();
@@ -44,9 +62,7 @@ public final class ContextMock extends Context {
   @Override
   public void initialize() {
     super.destroy();
-    for (Instance instance : instances) {
-      super.add(instance);
-    }
+    instances.forEach(super::add);
 
     super.buildInstanceDependenciesGraph();
     instanceDependencyGraph.keySet().forEach((instance) -> {
