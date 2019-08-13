@@ -137,8 +137,6 @@ public class Server {
   public void stop() {
     LOGGER.log(Level.INFO, "Stopping server...");
 
-    ShutdownHook shutdownHook = Instance.of(ShutdownHook.class);
-
     this.httpServer.stop(stopDelay);
     this.context.destroy();
 
