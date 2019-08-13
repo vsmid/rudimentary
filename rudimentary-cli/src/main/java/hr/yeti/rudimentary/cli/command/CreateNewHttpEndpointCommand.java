@@ -52,7 +52,7 @@ public class CreateNewHttpEndpointCommand implements Command {
 
     try {
       Files.write(
-          Path.of(new File("").toPath().toAbsolutePath().toString(), "src/main/java", packageName, className + ".java"),
+          Path.of(new File("").toPath().toAbsolutePath().toString(), "src/main/java", packageName.replaceAll("\\.", "/"), className + ".java"),
           httpEndpointTemplate(
               arguments.get("http-method"),
               arguments.get("path"),

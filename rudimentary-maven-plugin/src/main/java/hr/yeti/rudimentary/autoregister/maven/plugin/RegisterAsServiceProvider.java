@@ -31,8 +31,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
   public RegisterAsServiceProvider() {
     try {
       this.projectRootDir = new File("").toPath().toAbsolutePath();
-      this.servicesDir = Path.of(projectRootDir.toString(), "/src/main/resources/META-INF/services");
-
+      this.servicesDir = this.projectRootDir.resolve("src/main/resources/META-INF/services");
       this.httpEndpointProvidersList = readProviders(servicesDir.resolve(HTTP_ENDPOINT_PROVIDERS));
       this.viewEndpointProvidersList = readProviders(servicesDir.resolve(VIEW_ENDPOINT_PROVIDERS));
       this.instanceProvidersList = readProviders(servicesDir.resolve(INSTANCE_PROVIDERS));
@@ -64,7 +63,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     if (!Files.exists(path)) {
       Files.createFile(path);
     }
-    return Files.readString(path);
+    return new String(Files.readAllBytes(path));
   }
 
   private String extractProvider(Path file) {
