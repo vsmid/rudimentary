@@ -62,7 +62,7 @@ public class ConfigProperty {
   }
 
   /**
-   * Sets the property value honoring priority loading mechanism.
+   * Sets the property value honouring priority loading mechanism.
    *
    * @see Config for more info about priority loading mechanism.
    *
