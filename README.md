@@ -80,7 +80,7 @@ Showcase can be run by executing `run.sh` script found in the root of the rudime
 * Add Security JWT authentication option
 * Add Security CSRF protection - Basic, draft version available
 * Add Security CORS handling - Basic, draft version available
-* Add Sql rollback options - rollback on exception type
+* Add Sql rollback options - basic draft done.
 * Add HttpEndpoint async() method for async execution
 * Add Metrics (Time, Gauge, Count)
 * Add ApiDoc - read OpenApi - added very basic opinionated extension

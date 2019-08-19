@@ -193,17 +193,35 @@ public final class Sql {
     return new Sql(false);
   }
 
-  // TODO Add rollbackOn options...
   /**
-   * Execute Sql transaction.
+   * Execute Sql transaction. By default, transaction will be rolled back for any {@link Exception}.
    *
    * @param <T> Type of result returned from transaction.
    * @param txDef Transaction definition as functional interface.
    * @return Transaction result.
+   * @throws TransactionException
    *
    * @see TxDef
    */
-  public static <T> T tx(TxDef<T> txDef) {
+  public static <T> T tx(TxDef<T> txDef) throws TransactionException {
+    return (T) tx(txDef, new Class[]{ Exception.class }, null);
+  }
+
+  /**
+   * Execute Sql transaction with transaction rollback options.
+   *
+   * @param <T> Type of result returned from transaction.
+   * @param txDef Transaction definition as functional interface.
+   * @param rollbackOn Exceptions for which transaction will be rolled back.
+   * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
+   * priority than @param rollbackOn.
+   * @return Transaction result.
+   * @throws TransactionException
+   *
+   * @see TxDef
+   */
+  public static <T> T tx(TxDef<T> txDef, Class<? extends Exception>[] rollbackOn, Class<? extends Exception>[] noRollbackOn)
+      throws TransactionException {
     Sql sql = new Sql(true);
     try {
       sql.conn.setAutoCommit(false);
@@ -213,7 +231,20 @@ public final class Sql {
     } catch (Throwable ex) {
       Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
       try {
-        sql.conn.rollback();
+
+        if (Objects.nonNull(rollbackOn)) {
+          boolean markedForRollback = List.<Class>of(rollbackOn).contains(ex.getClass());
+
+          if (Objects.nonNull(noRollbackOn)) {
+            markedForRollback &= !List.<Class>of(noRollbackOn).contains(ex.getClass());
+          }
+
+          if (markedForRollback) {
+            sql.conn.rollback();
+          } else {
+            sql.conn.commit();
+          }
+        }
       } catch (SQLException ex1) {
         Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex1);
         throw new TxException(ex);
