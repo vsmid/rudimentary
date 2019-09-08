@@ -1,10 +1,16 @@
 package hr.yeti.rudimentary.test.config;
 
+import hr.yeti.rudimentary.config.ConfigException;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.test.ConfigMock;
 import hr.yeti.rudimentary.test.ContextMock;
+import java.net.URI;
+import java.net.URL;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -90,6 +96,40 @@ public class ConfigPropertyTest {
     assertEquals("one", array[0]);
     assertEquals("one two", array[1]);
     assertEquals("three", array[2]);
+  }
+
+  @Test
+  public void test_asURI_method() {
+    // setup:
+    ConfigProperty value = new ConfigProperty("uri", "/api/v1");
+
+    then:
+    assertNotNull(value.asURI());
+    assertTrue(value.asURI() instanceof URI);
+    assertEquals(URI.create("/api/v1"), value.asURI());
+  }
+
+  @Test
+  public void test_asURL_method() {
+    // setup:
+    ConfigProperty value = new ConfigProperty("url", "http://localhost:8080/api/v1");
+
+    then:
+    assertNotNull(value.asURL());
+    assertTrue(value.asURL() instanceof URL);
+    assertEquals("http://localhost:8080/api/v1", value.asURL().toString());
+  }
+
+  @Test
+  public void test_asURL_method_throws_ConfigException() {
+    // setup:
+    ConfigProperty value = new ConfigProperty("url", "/api/v1");
+
+    expect:
+    assertThrows(ConfigException.class, () -> {
+      value.asURL();
+    });
+
   }
 
   @Test
