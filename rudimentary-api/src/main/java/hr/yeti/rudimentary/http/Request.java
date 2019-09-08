@@ -9,6 +9,7 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -75,10 +76,13 @@ public class Request<T> {
    * @return User identity with custom details.
    */
   public <D> Identity<D> getIdentity(Class<D> details) {
-    return identity;
+    return getIdentity();
   }
 
   public Identity getIdentity() {
+    if (Objects.nonNull(session) && session.isAuthenticated()) {
+      return session.getIdentity();
+    }
     return identity;
   }
 

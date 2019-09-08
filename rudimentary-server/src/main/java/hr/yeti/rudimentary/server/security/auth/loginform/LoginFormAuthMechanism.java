@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 public class LoginFormAuthMechanism extends AuthMechanism {
 
+  private ConfigProperty createSession = new ConfigProperty("session.create");
   private ConfigProperty enabled = new ConfigProperty("security.loginform.enabled");
   private ConfigProperty loginURI = new ConfigProperty("security.loginform.loginURI");
   private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginform.redirectAfterSuccessfulLoginURI");
@@ -30,12 +31,18 @@ public class LoginFormAuthMechanism extends AuthMechanism {
 
   @Override
   public boolean conditional() {
-    return enabled.asBoolean();
+    if (!createSession.asBoolean()) {
+      Logger.getLogger(LoginFormAuthMechanism.class.getName())
+          .log(
+              Level.WARNING,
+              "Property session.create must be set to true in order to activate {0}.",
+              LoginFormAuthMechanism.class.getName());
+    }
+    return createSession.asBoolean() && enabled.asBoolean();
   }
 
   @Override
   public Result doAuth(HttpExchange exchange) {
-
     Map<String, Object> formData = null;
 
     try {

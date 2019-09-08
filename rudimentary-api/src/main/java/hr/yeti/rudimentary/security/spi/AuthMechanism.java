@@ -110,12 +110,15 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
 
           if (Config.provider().property("session.create").asBoolean()) {
             HttpRequestUtils.extractSession(exchange).ifPresent((session) -> {
-              new AuthenticatedSessionEvent(session).publish(EventPublisher.Type.SYNC);
+              new AuthenticatedSessionEvent(session, identity).publish(EventPublisher.Type.SYNC);
             });
           }
         }
 
         return result;
+      } else if (requiresAuthentication(exchange.getRequestURI()) && authenticatedSession(exchange)) {
+        Identity identity = HttpRequestUtils.extractSession(exchange).get().getIdentity();
+        return new Success(identity);
       } else {
         return new Success(new Identity("anonymous", ""));
       }

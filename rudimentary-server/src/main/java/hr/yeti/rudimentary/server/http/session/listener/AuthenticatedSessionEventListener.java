@@ -9,6 +9,7 @@ public class AuthenticatedSessionEventListener implements EventListener<Authenti
   @Override
   public void onEvent(AuthenticatedSessionEvent event) {
     ((HttpSession) event.getSession()).setAuthenticated(true);
+    ((HttpSession) event.getSession()).setIdentity(event.getIdentity());
   }
 
 }

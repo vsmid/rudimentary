@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
+import hr.yeti.rudimentary.security.Identity;
 import java.util.Map;
 
 /**
@@ -59,11 +60,26 @@ public interface Session {
    * @return Csrf token value.
    */
   String getCsrfToken();
-  
+
   /**
    *
    * @return Whether or not user request has been successfully authenticated.
    */
   boolean isAuthenticated();
+
+  /**
+   *
+   * @return Authenticated user.
+   */
+  Identity getIdentity();
+
+  /**
+   * Gets user details with custom details.
+   *
+   * @param <D> Type of user details.
+   * @param details User details class.
+   * @return User identity with custom details.
+   */
+  public <D> Identity<D> getIdentity(Class<D> details);
 
 }

@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.server.http.session;
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.http.Cookie;
 import hr.yeti.rudimentary.http.session.Session;
+import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.crypto.Hash;
 import hr.yeti.rudimentary.server.security.csrf.CsrfToken;
 import java.net.HttpCookie;
@@ -17,6 +18,7 @@ public class HttpSession implements Session {
   private Map<String, Object> attributes;
   private CsrfToken csrfToken;
   private boolean authenticated;
+  private Identity identity;
 
   public HttpSession() {
     this.rsid = Hash.generateRandomSHA256();
@@ -54,7 +56,11 @@ public class HttpSession implements Session {
   public void invalidate(HttpExchange exchange) {
     this.attributes = null;
     this.csrfToken = null;
+    this.creationTime = 0;
+    this.lastAccessedTime = 0;
     this.authenticated = false;
+    this.identity = null;
+    this.attributes.clear();
 
     HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, this.rsid);
     rsidCookie.setMaxAge(0);
@@ -79,6 +85,20 @@ public class HttpSession implements Session {
 
   public void setAuthenticated(boolean authenticated) {
     this.authenticated = authenticated;
+  }
+
+  @Override
+  public Identity getIdentity() {
+    return identity;
+  }
+
+  @Override
+  public <D> Identity<D> getIdentity(Class<D> details) {
+    return identity;
+  }
+
+  public void setIdentity(Identity identity) {
+    this.identity = identity;
   }
 
 }
