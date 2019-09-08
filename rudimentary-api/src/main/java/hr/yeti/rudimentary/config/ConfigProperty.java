@@ -5,8 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
@@ -44,7 +42,8 @@ public class ConfigProperty {
   private final String value;
 
   /**
-   * Constructor used to set property value without setting the default value if the configuration property is missing.
+   * Constructor used to set property value without setting the default value if the configuration
+   * property is missing.
    *
    * @param name The name of the property.
    */
@@ -54,8 +53,8 @@ public class ConfigProperty {
   }
 
   /**
-   * Constructor used to set property value by also providing the default value if the configuration property is
-   * missing.
+   * Constructor used to set property value by also providing the default value if the configuration
+   * property is missing.
    *
    * @param name The name of the property.
    * @param defaultValue The default value of the property if the configuration property is missing.
@@ -165,7 +164,6 @@ public class ConfigProperty {
     try {
       return new URL(this.value);
     } catch (MalformedURLException ex) {
-      Logger.getLogger(ConfigProperty.class.getName()).log(Level.SEVERE, null, ex);
       throw new ConfigException(ex);
     }
   }
