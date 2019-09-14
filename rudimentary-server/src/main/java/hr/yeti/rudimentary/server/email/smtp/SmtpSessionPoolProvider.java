@@ -55,7 +55,7 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
 
   @Override
   protected Session createObject() throws ObjectPoolException {
-    return Session.getDefaultInstance(sessionProperties, authenticator);
+    return Session.getInstance(sessionProperties, authenticator);
   }
 
   @Override
@@ -70,9 +70,6 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
 
   @Override
   public void initialize() {
-    // This call is required, do not remove.
-    super.initialize();
-
     // Set authenticator.
     authenticator = new Authenticator() {
       @Override
@@ -88,6 +85,9 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
     sessionProperties.put("mail.smtp.auth", auth.value());
     sessionProperties.put("mail.smtp.starttls.enable", enableStartTls.value());
     sessionProperties.put("mail.smtp.starttls.required", requiredStartTls.value());
+
+    // This call is required, do not remove.
+    super.initialize();
   }
 
 }

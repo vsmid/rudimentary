@@ -2,3 +2,4 @@ hr.yeti.rudimentary.server.http.processor.HttpProcessor
 hr.yeti.rudimentary.server.http.HttpEndpointContextProvider
 hr.yeti.rudimentary.events.EventPublisher
 hr.yeti.rudimentary.server.security.csrf.CsrfTokenStore
+hr.yeti.rudimentary.server.email.smtp.SmtpSessionPoolProvider
