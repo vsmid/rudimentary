@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.http.session;
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.security.Identity;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * An abstraction of HTTP session. Mostly used in MVC.
@@ -39,6 +40,14 @@ public interface Session {
    * @return Map of session attributes.
    */
   Map<String, Object> getAttributes();
+
+  /**
+   * Get session attribute by name.
+   *
+   * @param name Name of the session attribute.
+   * @return Session attribute.
+   */
+  Optional<Object> getAttribute(String name);
 
   /**
    * Get time of last session access.

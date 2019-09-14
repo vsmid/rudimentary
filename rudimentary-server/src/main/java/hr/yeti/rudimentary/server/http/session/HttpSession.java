@@ -9,6 +9,8 @@ import hr.yeti.rudimentary.server.security.csrf.CsrfToken;
 import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 public class HttpSession implements Session {
 
@@ -41,6 +43,17 @@ public class HttpSession implements Session {
   @Override
   public Map<String, Object> getAttributes() {
     return attributes;
+  }
+
+  @Override
+  public Optional<Object> getAttribute(String name) {
+    Object attribute = null;
+    
+    if (Objects.nonNull(attributes)) {
+      attribute = attributes.get(name);
+    }
+
+    return Optional.ofNullable(attribute);
   }
 
   @Override
