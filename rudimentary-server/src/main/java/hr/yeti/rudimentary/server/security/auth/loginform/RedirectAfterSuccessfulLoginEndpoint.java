@@ -28,7 +28,7 @@ public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, 
   public Redirect response(Request<Form> request) {
     String redirectToURI = landingViewURI.value().length() == 0
         ? request.getSession().getAttributes().getOrDefault("sessionCreatingURI", "/").toString() : landingViewURI.value();
-    return new Redirect(URI.create(redirectToURI));
+    return new Redirect(redirectToURI);
   }
 
   @Override
