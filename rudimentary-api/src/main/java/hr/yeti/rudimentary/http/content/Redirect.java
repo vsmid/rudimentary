@@ -18,8 +18,8 @@ public class Redirect extends Model implements Value<URI> {
   private URI redirectUri;
   private int httpStatus;
 
-  public Redirect(URI redirectUri) {
-    this.redirectUri = redirectUri;
+  public Redirect(String redirectUri) {
+    this.redirectUri = URI.create(redirectUri);
     this.httpStatus = 302;
   }
 
