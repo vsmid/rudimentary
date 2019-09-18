@@ -1,7 +1,6 @@
-package hr.yeti.rudimentary.server.jdbc;
+package hr.yeti.rudimentary.sql.spi;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import java.io.PrintWriter;
@@ -10,25 +9,34 @@ import java.sql.ConnectionBuilder;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.ShardingKeyBuilder;
+import java.util.Objects;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
-public class RDataSource implements DataSource, Instance {
+// TODO Add Javadoc
+public abstract class BasicDataSource implements DataSource, Instance {
 
-  private HikariDataSource dataSource;
+  public static final String DEFAULT_DATASOURCE_ID = "";
+
+  protected DataSource dataSource;
 
   @Override
   public void initialize() {
-    if (Config.provider().contains("dataSource.jdbcUrl")) {
-      HikariConfig config = new HikariConfig();
-      config.setJdbcUrl(Config.provider().property("dataSource.jdbcUrl").value());
-      config.setDriverClassName(Config.provider().property("dataSource.driverClassName").value());
-      config.setUsername(Config.provider().property("dataSource.username").value());
-      config.setPassword(Config.provider().property("dataSource.password").value());
-      config.setMaximumPoolSize(Config.provider().property("dataSource.maximumPoolSize").asInt());
+    this.dataSource = dataSource();
+  }
 
-      dataSource = new HikariDataSource(config);
-    }
+  @Override
+  public boolean conditional() {
+    ConfigProperty enabled = Config.provider()
+        .property("dataSource" + (id().length() == 0 ? "" : ".") + id() + ".enabled");
+
+    return Objects.nonNull(enabled) && enabled.asBoolean();
+  }
+
+  public abstract DataSource dataSource();
+
+  public String propertyName(String property) {
+    return "dataSource." + (id().length() == 0 ? "" : id() + ".") + property;
   }
 
   @Override

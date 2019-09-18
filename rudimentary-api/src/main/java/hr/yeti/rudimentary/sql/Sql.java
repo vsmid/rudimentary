@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.sql;
 
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
 
 /**
  * Class used for static access to database communication. Main goal of this class to reduce
@@ -32,14 +32,18 @@ public final class Sql {
   private Connection conn;
   private boolean tx = false;
 
-  private Sql(boolean tx) {
-    try {
-      // TODO Add filter when there will be multiple pools, for now use only one provider.
-      // TODO Throw exception explaining how jdbc conn. pool is not configured if conn == null
-      this.conn = Instance.of(DataSource.class).getConnection();
-    } catch (SQLException ex) {
-      Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
-    }
+  private Sql(String dataSourceId, boolean tx) {
+    Instance.providersOf(BasicDataSource.class).stream()
+        .filter(ds -> ds.id().equals(dataSourceId))
+        .findAny()
+        .ifPresent(ds -> {
+          try {
+            this.conn = ds.getConnection();
+          } catch (SQLException ex) {
+            Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        });
+
     this.tx = tx;
   }
 
@@ -190,7 +194,32 @@ public final class Sql {
    * @return A new Sql instance.
    */
   public static Sql query() {
-    return new Sql(false);
+    return new Sql(BasicDataSource.DEFAULT_DATASOURCE_ID, false);
+  }
+
+  /**
+   * Static access to Sql features.
+   *
+   * @param dataSourceId Id of the dataSource you want to use for the query.
+   * @return A new Sql instance with specific underlying dataSource.
+   */
+  public static Sql query(String dataSourceId) {
+    return new Sql(dataSourceId, false);
+  }
+
+  /**
+   * Execute Sql transaction.By default, transaction will be rolled back for any {@link Exception}.
+   *
+   * @param <T> Type of result returned from transaction.
+   * @param dataSourceId Id of the dataSource you want to use for the transactional query.
+   * @param txDef Transaction definition as functional interface.
+   * @return Transaction result.
+   * @throws TransactionException
+   *
+   * @see TxDef
+   */
+  public static <T> T tx(String dataSourceId, TxDef<T> txDef) throws TransactionException {
+    return (T) tx(dataSourceId, txDef, new Class[]{ Exception.class }, null);
   }
 
   /**
@@ -204,13 +233,16 @@ public final class Sql {
    * @see TxDef
    */
   public static <T> T tx(TxDef<T> txDef) throws TransactionException {
-    return (T) tx(txDef, new Class[]{ Exception.class }, null);
+    return (T) tx(
+        BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, new Class[]{ Exception.class }, null
+    );
   }
 
   /**
    * Execute Sql transaction with transaction rollback options.
    *
    * @param <T> Type of result returned from transaction.
+   * @param dataSourceId Id of the dataSource you want to use for the transactional query.
    * @param txDef Transaction definition as functional interface.
    * @param rollbackOn Exceptions for which transaction will be rolled back.
    * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
@@ -220,9 +252,13 @@ public final class Sql {
    *
    * @see TxDef
    */
-  public static <T> T tx(TxDef<T> txDef, Class<? extends Exception>[] rollbackOn, Class<? extends Exception>[] noRollbackOn)
-      throws TransactionException {
-    Sql sql = new Sql(true);
+  public static <T> T tx(
+      String dataSourceId,
+      TxDef<T> txDef,
+      Class<? extends Exception>[] rollbackOn,
+      Class<? extends Exception>[] noRollbackOn
+  ) {
+    Sql sql = new Sql(dataSourceId, true);
     try {
       sql.conn.setAutoCommit(false);
       T result = txDef.execute(sql);
@@ -261,18 +297,37 @@ public final class Sql {
   }
 
   /**
+   * Execute Sql transaction with transaction rollback options.
+   *
+   * @param <T> Type of result returned from transaction.
+   * @param txDef Transaction definition as functional interface.
+   * @param rollbackOn Exceptions for which transaction will be rolled back.
+   * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
+   * priority than @param rollbackOn.
+   * @return Transaction result.
+   * @throws TransactionException
+   *
+   * @see TxDef
+   */
+  public static <T> T tx(TxDef<T> txDef, Class<? extends Exception>[] rollbackOn, Class<? extends Exception>[] noRollbackOn)
+      throws TransactionException {
+    return tx(BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, rollbackOn, noRollbackOn);
+  }
+
+  /**
    * Execute single Sql.
    *
    * @param <T> Type of result returned.
+   * @param dataSourceId Id of the dataSource you want to use for the query.
    * @param sqlDef Sql definition as functional interface.
    * @return Query result.
    *
    * @see SqlQueryDef
    */
-  public static <T> T query(SqlQueryDef<T> sqlDef) {
-    Sql sql = new Sql(false);
+  public static <T> T query(String dataSourceId, SqlQueryDef<T> sqlDef) {
+    Sql sql = new Sql(dataSourceId, false);
     try {
-      return (T) sqlDef.execute(new Sql(true));
+      return (T) sqlDef.execute(sql);
     } catch (Throwable ex) {
       Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
       throw new SqlException(ex);
@@ -284,6 +339,19 @@ public final class Sql {
         throw new SqlException(ex);
       }
     }
+  }
+
+  /**
+   * Execute single Sql.
+   *
+   * @param <T> Type of result returned.
+   * @param sqlDef Sql definition as functional interface.
+   * @return Query result.
+   *
+   * @see SqlQueryDef
+   */
+  public static <T> T query(SqlQueryDef<T> sqlDef) {
+    return query(BasicDataSource.DEFAULT_DATASOURCE_ID, sqlDef);
   }
 
 }

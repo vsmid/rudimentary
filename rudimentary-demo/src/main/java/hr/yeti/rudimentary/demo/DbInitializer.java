@@ -2,9 +2,9 @@ package hr.yeti.rudimentary.demo;
 
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.sql.Sql;
+import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import java.io.InputStream;
 import java.util.Scanner;
-import javax.sql.DataSource;
 
 public class DbInitializer implements Instance {
 
@@ -19,7 +19,7 @@ public class DbInitializer implements Instance {
 
   @Override
   public Class[] dependsOn() {
-    return new Class[]{ DataSource.class };
+    return new Class[]{ BasicDataSource.class };
   }
 
   /**
