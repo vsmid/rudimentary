@@ -90,4 +90,9 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
     super.initialize();
   }
 
+  @Override
+  public boolean conditional() {
+    return Config.provider().property("email.smtp.enabled").asBoolean();
+  }
+
 }
