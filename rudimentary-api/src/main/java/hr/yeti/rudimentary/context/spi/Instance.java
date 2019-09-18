@@ -101,13 +101,13 @@ public interface Instance {
    * This is the id value under which an instance of this class is stored inside Context map.
    * An instance if retrieved from Context using this id value.
    *
-   * For now, it is set to class canonical name by default.
+   * For now, it is set to lower case simepl class name by default.
    * </pre>
    *
    * @return An id of the instance.
    */
   default String id() {
-    return this.getClass().getCanonicalName();
+    return this.getClass().getSimpleName().toLowerCase();
   }
 
   /**
