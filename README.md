@@ -74,13 +74,11 @@ Showcase can be run by executing `run.sh` script found in the root of the rudime
 ## Roadmap
 
 * Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
-* Add MVC caching policy settings
-* Add MVC escaping strategies, e.g. html, js, css, attributes, read OWASP
-* Add Security LoginForm authentication option
+* Add Security LoginForm authentication option - Basic, draft version done
 * Add Security JWT authentication option
 * Add Security CSRF protection - Basic, draft version available
 * Add Security CORS handling - Basic, draft version available
-* Add Sql rollback options - basic draft done.
+* Add Sql rollback options - Basic, draft version done.
 * Add HttpEndpoint async() method for async execution
 * Add Metrics (Time, Gauge, Count)
 * Add ApiDoc - read OpenApi - added very basic opinionated extension
