@@ -3,4 +3,3 @@ hr.yeti.rudimentary.cli.command.VersionCommand
 hr.yeti.rudimentary.cli.command.CreateNewProjectCommand
 hr.yeti.rudimentary.cli.command.CreateNewHttpEndpointCommand
 hr.yeti.rudimentary.cli.command.RunCommand
-hr.yeti.rudimentary.cli.command.DebugCommand

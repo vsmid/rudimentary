@@ -18,16 +18,24 @@ public class RunCommand implements Command {
 
   @Override
   public Map<String, String> options() {
-    return Map.of();
+    return Map.of("debug", "Run in debug mode. Default value is set to false.");
   }
 
   @Override
   public void execute(Map<String, String> arguments) {
     try {
-      Process run = Runtime.getRuntime().exec("sh ./run.sh");
+      String script = "run";
+
+      if (arguments.containsKey("debug")) {
+        script = "debug";
+      }
+
+      Process run = Runtime.getRuntime().exec("sh ./" + script + ".sh");
+
       run.waitFor();
+
     } catch (IOException | InterruptedException ex) {
-      ex.printStackTrace();
+      // Noop.
     }
   }
 
