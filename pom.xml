@@ -62,7 +62,6 @@
     <module>rudimentary-server</module>
     <module>rudimentary-api</module>
     <module>rudimentary-demo</module>
-    <module>rudimentary-runner</module>
     <module>rudimentary-cli</module>
     <module>rudimentary-exts</module>
     <module>rudimentary-maven-plugin</module>
