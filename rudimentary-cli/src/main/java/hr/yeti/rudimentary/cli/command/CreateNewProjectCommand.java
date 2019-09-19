@@ -39,7 +39,7 @@ public class CreateNewProjectCommand implements Command {
     String projectLocation = arguments.getOrDefault("location", new File("").getAbsolutePath());
     String rootPackage = arguments.getOrDefault("package", "app");
     String groupId = arguments.getOrDefault("groupId", rootPackage);
-    
+
     rootPackage = groupId;
 
     ProjectLayout projectLayout = new ProjectLayout(projectLocation + "/" + arguments.get("name"), rootPackage);
@@ -52,7 +52,9 @@ public class CreateNewProjectCommand implements Command {
       projectLayout.createNewFile(projectLayout.getSrcDir(), "module-info.java", moduleInfo(rootPackage).getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getResourcesDir(), "config.properties", config().getBytes(StandardCharsets.UTF_8));
       projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.http.spi.HttpEndpoint", null);
+      projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.mvc.spi.ViewEndpoint", null);
       projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.context.spi.Instance", null);
+      projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.sql.spi.BasicDataSource", null);
     } catch (IOException ex) {
       ex.printStackTrace();
     }

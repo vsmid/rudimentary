@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 // TODO Handle classes which extend framework's SPI's
 // TODO Handle interfaces which extend framework's SPI's
 // TODO Add other providers, e.g.EventListener, AuthMechanism, HttpFilter etc.
-
 public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
   private static final String HTTP_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.http.spi.HttpEndpoint";
   private static final String VIEW_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.mvc.spi.ViewEndpoint";
   private static final String INSTANCE_PROVIDERS = "hr.yeti.rudimentary.context.spi.Instance";
+  private static final String DATASOURCE_PROVIDERS = "hr.yeti.rudimentary.sql.spi.BasicDataSource";
 
   private Path projectRootDir;
   private Path servicesDir;
@@ -35,6 +35,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
       this.httpEndpointProvidersList = readProviders(servicesDir.resolve(HTTP_ENDPOINT_PROVIDERS));
       this.viewEndpointProvidersList = readProviders(servicesDir.resolve(VIEW_ENDPOINT_PROVIDERS));
       this.instanceProvidersList = readProviders(servicesDir.resolve(INSTANCE_PROVIDERS));
+      this.instanceProvidersList = readProviders(servicesDir.resolve(DATASOURCE_PROVIDERS));
 
     } catch (IOException ex) {
       Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,6 +55,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
         writeProvider(VIEW_ENDPOINT_PROVIDERS, file);
       } else if (content.contains("implements Instance") && !content.contains("abstract")) {
         writeProvider(INSTANCE_PROVIDERS, file);
+      } else if (content.contains("extends BasicDataSource") && !content.contains("abstract")) {
+        writeProvider(DATASOURCE_PROVIDERS, file);
       }
     }
     return FileVisitResult.CONTINUE;
@@ -85,6 +88,9 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
         alreadyRegistered = viewEndpointProvidersList.contains(provider);
         break;
       case INSTANCE_PROVIDERS:
+        alreadyRegistered = instanceProvidersList.contains(provider);
+        break;
+      case DATASOURCE_PROVIDERS:
         alreadyRegistered = instanceProvidersList.contains(provider);
         break;
       default:
