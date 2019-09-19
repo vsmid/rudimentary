@@ -26,7 +26,11 @@ public class SqlEndpoint implements HttpEndpoint<Text, Json> {
       sql.update("insert into users(id, name) values(3, 'M');");
       return sql.rows("select * from users;");
     });
-
+    
+    // Repository usage example
+    Map<String, Object> user = Sql.query(USER.getById(1));
+    System.out.println(user.toString());
+    
     return new Json(Sql.query().rows("select * from users;"));
   }
 
