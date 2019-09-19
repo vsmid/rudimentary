@@ -70,25 +70,3 @@ Check [rudimentary-api](./rudimentary-api) module for Javadoc.
 
 Make sure to check [rudimentary-demo](./rudimentary-demo/src/main/java/hr/yeti/rudimentary/demo/endpoint) for code examples describing what is stated in **notable features** section.
 Showcase can be run by executing `run.sh` script found in the root of the rudimentary-demo module.
-
-## Roadmap
-
-* Dynamic module loading/reloading while using rudimentary-runner module and Jigsaw
-* Add Security LoginForm authentication option - Basic, draft version done
-* Add Security JWT authentication option
-* Add Security CSRF protection - Basic, draft version available
-* Add Security CORS handling - Basic, draft version available
-* Add Sql rollback options - Basic, draft version done.
-* Add HttpEndpoint async() method for async execution
-* Add Metrics (Time, Gauge, Count)
-* Add ApiDoc - read OpenApi - added very basic opinionated extension
-* Add Tracing - read OpenTracing
-* Finish tests and README docs
-* More validation constraint definitions and implementations
-* JDBC - use HikariCP - basic impl, done.
-* Add fallback, bulkead, retry, backpressure handlers.
-* Logger should be moved from HttpEndpoint to allow access from anywhere
-* System properties listed are missing ones from system and environment
-* Add internationalization for messages etc.
-* Create test package within api moudule to help when writing tests, e.g. start server, load sql script utility, context mock etc. - Basic config and context mocks for now.
-* Add https server - added basic, draft version
