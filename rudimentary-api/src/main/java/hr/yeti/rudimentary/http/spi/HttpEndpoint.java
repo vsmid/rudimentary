@@ -51,7 +51,9 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
    */
   default URI path() {
     String path = this.getClass().getSimpleName();
-    return URI.create("/" + path.substring(0, 1).toLowerCase() + path.substring(1));
+    return URI.create(
+        "/" + path.substring(0, 1).toLowerCase() + path.substring(1)
+    );
   }
 
   /**
@@ -134,6 +136,7 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
   }
 
   /**
+   * <pre>
    * Sets validation constraints for data received via incoming HTTP request. This goes for request
    * body, request parameters, URI path variables and HTTP headers.
    *
@@ -146,8 +149,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
    * <li>Define constraints for body on the custom content type level using
    * {@link Model#constraints()} method.</li>
    * <li>Define constraints for body on the HttpEndpoint level using
-   * {@link HttpEndpoint#constraints(hr.yeti.rudimentary.http.content.Model, java.util.Map, java.util.Map, com.sun.net.httpserver.Headers)}
-   * method.</li>
+   * {@link HttpEndpoint#constraints(hr.yeti.rudimentary.http.content.Model, java.util.Map, java.util.Map,
+   * com.sun.net.httpserver.Headers)} method.</li>
    * <li>Define constraints for body on both of the above levels.</li>
    * </ul>
    *
@@ -157,6 +160,7 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
    *
    * General advice for custom {@link Model} body constraints would be to keep all the constraint
    * definitions inside the custom model itself.
+   * </pre>
    *
    * @param body Request body.
    * @param pathVariables Path variables.
