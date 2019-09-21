@@ -24,8 +24,7 @@ public class RunCommand implements Command {
   public Map<String, String> options() {
     return Map.of(
         "debug", "Run in debug mode.",
-        "port", "Set debug mode listening port. Defauls to 1044.",
-        "watch", "Watch and reload on any directory change."
+        "port", "Set debug mode listening port. Defauls to 1044."
     );
   }
 
