@@ -1,8 +1,12 @@
 package hr.yeti.rudimentary.cli.command;
 
 import hr.yeti.rudimentary.cli.Command;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RunCommand implements Command {
 
@@ -18,25 +22,67 @@ public class RunCommand implements Command {
 
   @Override
   public Map<String, String> options() {
-    return Map.of("debug", "Run in debug mode. Default value is set to false.");
+    return Map.of(
+        "debug", "Run in debug mode.",
+        "port", "Set debug mode listening port. Defaults to 1044."
+    );
   }
 
   @Override
   public void execute(Map<String, String> arguments) {
     try {
-      String script = "run";
+      String debugSettings = "";
 
       if (arguments.containsKey("debug")) {
-        script = "debug";
+        String port = arguments.getOrDefault("port", "1044");
+        debugSettings = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + port + " ";
       }
 
-      Process run = Runtime.getRuntime().exec("sh ./" + script + ".sh");
+      String mainClass = parsePOMForMainClass();
 
-      run.waitFor();
+      Process process = Runtime.getRuntime()
+          .exec(
+              new String[]{
+                "mvn",
+                "\"-Dexec.args=-classpath %classpath " + debugSettings + mainClass + "\"",
+                "-Dexec.executable=java",
+                "-Dexec.classpathScope=runtime",
+                "clean",
+                "compile",
+                "exec:exec"
+              });
 
+      process.waitFor();
     } catch (IOException | InterruptedException ex) {
+      ex.printStackTrace();
       // Noop.
     }
   }
+
+  private String parsePOMForMainClass() {
+    try (FileInputStream pom = new FileInputStream("pom.xml")) {
+      String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
+
+      Pattern pattern = Pattern.compile(".*mainClass\\>(.*)\\</mainClass.*");
+
+      Matcher matcher = pattern.matcher(pomContent);
+
+      if (matcher.find()) {
+        return matcher.group(1);
+      }
+    } catch (IOException ex) {
+      System.err.println("Could not detect main class.");
+    }
+    return null;
+  }
+
+//  private String readIs(InputStream is) throws IOException {
+//    int ch;
+//    StringBuilder sb = new StringBuilder();
+//    while ((ch = is.read()) != -1) {
+//      sb.append((char) ch);
+//    }
+//    return sb.toString();
+//  }
 
 }
