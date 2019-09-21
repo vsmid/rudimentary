@@ -24,7 +24,8 @@ public class RunCommand implements Command {
   public Map<String, String> options() {
     return Map.of(
         "debug", "Run in debug mode.",
-        "port", "Set debug mode listening port. Defauls to 1044."
+        "port", "Set debug mode listening port. Defauls to 1044.",
+        "watch", "Watch and reload on any directory change."
     );
   }
 
@@ -40,17 +41,19 @@ public class RunCommand implements Command {
 
       String mainClass = parsePOMForMainClass();
 
-      Process process = Runtime.getRuntime()
-          .exec(
-              new String[]{
-                "mvn",
-                "\"-Dexec.args=-classpath %classpath " + debugSettings + mainClass + "\"",
-                "-Dexec.executable=java",
-                "-Dexec.classpathScope=runtime",
-                "clean",
-                "compile",
-                "exec:exec"
-              });
+      ProcessBuilder builder = new ProcessBuilder(
+          "mvn",
+          "\"-Dexec.args=-classpath %classpath " + debugSettings + mainClass + "\"",
+          "-Dexec.executable=java",
+          "-Dexec.classpathScope=runtime",
+          "clean",
+          "compile",
+          "exec:exec"
+      );
+      builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
+      builder.redirectError(ProcessBuilder.Redirect.INHERIT);
+
+      Process process = builder.start();
 
       process.waitFor();
     } catch (IOException | InterruptedException ex) {
@@ -84,5 +87,4 @@ public class RunCommand implements Command {
 //    }
 //    return sb.toString();
 //  }
-
 }
