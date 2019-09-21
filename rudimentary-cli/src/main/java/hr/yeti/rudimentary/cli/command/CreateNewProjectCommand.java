@@ -167,10 +167,10 @@ public class CreateNewProjectCommand implements Command {
   }
 
   public String runShScript(String rootPackage) {
-    return "mvn compile package exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath " + rootPackage + ".Application\"";
+    return "mvn -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath " + rootPackage + ".Application\" compile package exec:exec";
   }
 
   public String debugShScript(String rootPackage) {
-    return "mvn compile package exec:exec -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 " + rootPackage + ".Application\"";
+    return "mvn -Dexec.executable=\"java\" -Dexec.args=\"-classpath %classpath -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 " + rootPackage + ".Application\" compile package exec:exec";
   }
 }

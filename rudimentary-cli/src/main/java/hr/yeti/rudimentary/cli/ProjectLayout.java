@@ -42,7 +42,7 @@ public class ProjectLayout {
       try {
         Files.createDirectories(projectDir.resolve(srcDir).resolve(rootPackageDir));
         Files.createDirectories(projectDir.resolve(resourcesDir));
-      } catch (IOException ex) {;
+      } catch (IOException ex) {
         ex.printStackTrace();
       }
     }
