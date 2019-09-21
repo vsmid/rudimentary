@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.cli.test;
+package hr.yeti.rudimentary.cli;
 
 import org.junit.jupiter.api.Test;
 

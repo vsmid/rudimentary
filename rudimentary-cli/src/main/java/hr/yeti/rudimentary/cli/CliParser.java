@@ -44,6 +44,10 @@ public class CliParser {
       }
     }
 
+    if (Objects.nonNull(activeOption)) {
+      options.put(activeOption, null);
+    }
+
     return options;
   }
 
