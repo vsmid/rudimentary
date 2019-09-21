@@ -13,14 +13,10 @@ import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -73,7 +69,7 @@ public class Server {
     try {
       long start = System.currentTimeMillis();
 
-      LOGGER.log(Level.INFO, "Starting server[Java PID={0}]...", ProcessHandle.current().pid());
+      LOGGER.log(Level.INFO, "Starting server[Java PID={0}]...", String.valueOf(ProcessHandle.current().pid()));
 
       Server server = new Server();
 
