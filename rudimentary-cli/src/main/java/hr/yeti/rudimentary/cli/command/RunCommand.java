@@ -25,7 +25,7 @@ public class RunCommand implements Command {
     return Map.of(
         "debug", "Run in debug mode.",
         "port", "Set debug mode listening port. Defauls to 1044.",
-        "props", "Set system properties."
+        "props", "Set system properties. For multiple values enclose in double quotes."
     );
   }
 
