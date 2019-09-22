@@ -48,10 +48,10 @@ public class ContextTest {
 
     then:
     assertTrue(ContextMock.getContext().size() == 1);
-    assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
+    assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getSimpleName().toLowerCase()));
 
     assertTrue(ContextMock.getInitializedInstances().size() == 1);
-    assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
+    assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getSimpleName().toLowerCase()));
 
     and:
 
@@ -76,11 +76,11 @@ public class ContextTest {
 
     //Instance is put to context map.
     assertTrue(ContextMock.getContext().size() == 1);
-    assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
+    assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getSimpleName().toLowerCase()));
 
     // Instance is initialized.
     assertTrue(ContextMock.getInitializedInstances().size() == 1);
-    assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
+    assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getSimpleName().toLowerCase()));
   }
 
   @Test
@@ -101,9 +101,9 @@ public class ContextTest {
 
     expect:
     assertEquals(2, ctx.getInstanceDependencyGraph().size());
-    assertTrue(ctx.getInstanceDependencyGraph().get(MockInstance1.class.getCanonicalName()).isEmpty());
-    assertEquals(1, ctx.getInstanceDependencyGraph().get(MockInstance5.class.getCanonicalName()).size());
-    assertEquals(MockInstance2.class.getCanonicalName(), ctx.getInstanceDependencyGraph().get(MockInstance5.class.getCanonicalName()).get(0));
+    assertTrue(ctx.getInstanceDependencyGraph().get(MockInstance1.class.getSimpleName().toLowerCase()).isEmpty());
+    assertEquals(1, ctx.getInstanceDependencyGraph().get(MockInstance5.class.getSimpleName().toLowerCase()).size());
+    assertEquals(MockInstance2.class.getSimpleName().toLowerCase(), ctx.getInstanceDependencyGraph().get(MockInstance5.class.getSimpleName().toLowerCase()).get(0));
   }
 
   @Test
@@ -144,6 +144,6 @@ public class ContextTest {
     ctx = new ContextMock(config, new MockInstance10());
 
     then:
-    assertEquals("Hello World", ((MockInstance10) ContextMock.getContext().get(MockInstance10.class.getCanonicalName())).getVal());
+    assertEquals("Hello World", ((MockInstance10) ContextMock.getContext().get(MockInstance10.class.getSimpleName().toLowerCase())).getVal());
   }
 }

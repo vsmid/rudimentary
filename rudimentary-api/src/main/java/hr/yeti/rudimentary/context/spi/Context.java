@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
  * There should be only one Context provider per application.
  * </pre>
  * <p>
- * Since this abstract class implements {@link Instance} it means it is loaded automatically via
- * {@link ServiceLoader} on application startup. An instance of this class is not intended to be
- * used except internally. Currently, <i>rudimentary-server</i> module provides Context provider so
- * there is no need for you to add an additional one. It is registered in the module's file
+ * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader}
+ * on application startup. An instance of this class is not intended to be used except internally. Currently,
+ * <i>rudimentary-server</i> module provides Context provider so there is no need for you to add an additional one. It
+ * is registered in the module's file
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.context.spi.Context</i>
  *
  * @author vedransmid@yeti-it.hr
@@ -60,12 +60,11 @@ public abstract class Context implements Instance {
 
   /**
    * <pre>
-   * Gets all instances canonical class names that are already
+   * Gets all instances simple class names that are already
    * initialized and put into {@link Context}.
    * </pre>
    *
-   * @return A list of canonical class name string values representing already initialized
-   * instances.
+   * @return A list of simple class name string values representing already initialized instances.
    */
   public static List<String> getInitializedInstances() {
     return INITIALIZED_INSTANCES;
@@ -104,7 +103,7 @@ public abstract class Context implements Instance {
    */
   protected void add(Instance instance) {
     if (instance.conditional()) {
-      CONTEXT.put(instance.getClass().getCanonicalName(), instance);
+      CONTEXT.put(instance.getClass().getSimpleName().toLowerCase(), instance);
     }
   }
 
@@ -117,7 +116,7 @@ public abstract class Context implements Instance {
    * @param instance
    */
   protected void setInitialized(Instance instance) {
-    INITIALIZED_INSTANCES.add(instance.getClass().getCanonicalName());
+    INITIALIZED_INSTANCES.add(instance.getClass().getSimpleName().toLowerCase());
   }
 
   /**
@@ -131,12 +130,11 @@ public abstract class Context implements Instance {
    * @return true if an instance of the parameter clazz has been initialized, otherwise false.
    */
   protected boolean isInstanceInitialized(Class<?> clazz) {
-    return INITIALIZED_INSTANCES.contains(clazz.getCanonicalName());
+    return INITIALIZED_INSTANCES.contains(clazz.getSimpleName().toLowerCase());
   }
 
   /**
-   * Initializes instance and all its instance dependencies stated in {@link Instance#dependsOn()}
-   * method.
+   * Initializes instance and all its instance dependencies stated in {@link Instance#dependsOn()} method.
    *
    * @param instance An instance to be initialized.
    */
@@ -175,7 +173,7 @@ public abstract class Context implements Instance {
       instanceDependencyGraph.put(
           key,
           List.of(value.dependsOn()).stream()
-              .map(Class::getCanonicalName)
+              .map(clazz -> clazz.getSimpleName().toLowerCase())
               .collect(Collectors.toList())
       );
     });

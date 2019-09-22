@@ -56,7 +56,7 @@ public interface Instance {
    */
   static <T> T of(Class<T> clazz) {
 
-    T instance = (T) Context.getContext().get(clazz.getCanonicalName());
+    T instance = (T) Context.getContext().get(clazz.getSimpleName().toLowerCase());
 
     if (Objects.isNull(instance)) {
       List<T> providersOf = providersOf(clazz);
@@ -158,8 +158,7 @@ public interface Instance {
   }
 
   /**
-   * Indicates whether an instance of this class should be created and put into application/service
-   * context or not.
+   * Indicates whether an instance of this class should be created and put into application/service context or not.
    *
    * @return True if an instance should be created, otherwise false.
    */
