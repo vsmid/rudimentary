@@ -24,7 +24,8 @@ public class RunCommand implements Command {
   public Map<String, String> options() {
     return Map.of(
         "debug", "Run in debug mode.",
-        "port", "Set debug mode listening port. Defauls to 1044."
+        "port", "Set debug mode listening port. Defauls to 1044.",
+        "props", "Set system properties."
     );
   }
 
@@ -32,17 +33,20 @@ public class RunCommand implements Command {
   public void execute(Map<String, String> arguments) {
     try {
       String debugSettings = "";
+      String systemProperties;
 
       if (arguments.containsKey("debug")) {
         String port = arguments.getOrDefault("port", "1044");
-        debugSettings = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + port + " ";
+        debugSettings = " -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + port + " ";
       }
+
+      systemProperties = arguments.getOrDefault("props", "");
 
       String mainClass = parsePOMForMainClass();
 
       ProcessBuilder builder = new ProcessBuilder(
           "mvn",
-          "\"-Dexec.args=-classpath %classpath " + debugSettings + mainClass + "\"",
+          "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
           "-Dexec.executable=java",
           "-Dexec.classpathScope=runtime",
           "clean",
