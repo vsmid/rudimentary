@@ -49,7 +49,7 @@ public class RunCommand implements Command {
           "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
           "-Dexec.executable=java",
           "-Dexec.classpathScope=runtime",
-          "clean",
+          "compile",
           "package",
           "exec:exec"
       );
