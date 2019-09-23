@@ -56,7 +56,7 @@ public interface Instance {
    */
   static <T> T of(Class<T> clazz) {
 
-    T instance = (T) Context.getContext().get(clazz.getSimpleName().toLowerCase());
+    T instance = (T) Context.getContext().get(clazz.getCanonicalName());
 
     if (Objects.isNull(instance)) {
       List<T> providersOf = providersOf(clazz);
