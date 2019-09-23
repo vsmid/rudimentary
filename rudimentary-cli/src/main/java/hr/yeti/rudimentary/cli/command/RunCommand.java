@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,12 +54,27 @@ public class RunCommand implements Command {
           "package",
           "exec:exec"
       );
-      builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
-      builder.redirectError(ProcessBuilder.Redirect.INHERIT);
 
       Process process = builder.start();
 
+      int stdOutChar = 0;
+      String pid = null;
+      StringBuilder stdOut = new StringBuilder();
+
+      while ((stdOutChar = process.getErrorStream().read()) != -1) {
+        System.out.print((char) stdOutChar);
+
+        if (Objects.isNull(pid)) {
+          stdOut.append((char) stdOutChar);
+          String temp = stdOut.toString();
+          if (temp.endsWith("]")) {
+            pid = temp.substring(stdOut.indexOf("=") - 1, stdOut.indexOf("]"));
+          }
+        }
+      }
+
       process.waitFor();
+
     } catch (IOException | InterruptedException ex) {
       ex.printStackTrace();
       // Noop.
@@ -81,13 +97,4 @@ public class RunCommand implements Command {
     }
     return null;
   }
-
-//  private String readIs(InputStream is) throws IOException {
-//    int ch;
-//    StringBuilder sb = new StringBuilder();
-//    while ((ch = is.read()) != -1) {
-//      sb.append((char) ch);
-//    }
-//    return sb.toString();
-//  }
 }
