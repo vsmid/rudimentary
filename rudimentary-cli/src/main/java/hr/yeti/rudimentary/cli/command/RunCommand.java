@@ -57,15 +57,15 @@ public class RunCommand implements Command {
 
       Process process = builder.start();
 
-      int stdOutChar = 0;
+      int read = 0;
       String pid = null;
       StringBuilder stdOut = new StringBuilder();
 
-      while ((stdOutChar = process.getErrorStream().read()) != -1) {
-        System.out.print((char) stdOutChar);
+      while ((read = process.getErrorStream().read()) != -1) {
+        System.out.print((char) read);
 
         if (Objects.isNull(pid)) {
-          stdOut.append((char) stdOutChar);
+          stdOut.append((char) read);
           String temp = stdOut.toString();
           if (temp.endsWith("]")) {
             pid = temp.substring(stdOut.indexOf("=") - 1, stdOut.indexOf("]"));
