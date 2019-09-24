@@ -107,7 +107,7 @@ public class ConfigTest {
   @Test
   public void test_load_config_using_Properties_file_path() {
     when:
-    config.load(getClass().getClassLoader().getResource("config.properties").getPath());
+    config.load(getClass().getResource("/config.properties").getPath());
 
     then:
     assertTrue(config.contains("server.port"));
@@ -120,8 +120,8 @@ public class ConfigTest {
   public void test_load_multiple_config_using_Properties_file_paths() {
     when:
     config.load(
-        getClass().getClassLoader().getResource("config_1.properties").getPath(),
-        getClass().getClassLoader().getResource("config.properties").getPath()
+        getClass().getResource("/config_1.properties").getPath(),
+        getClass().getResource("/config.properties").getPath()
     );
 
     then:
@@ -137,7 +137,7 @@ public class ConfigTest {
   @Test
   public void test_load_config_using_InputStream() {
     when:
-    config.load(getClass().getClassLoader().getResourceAsStream("config.properties"));
+    config.load(getClass().getResourceAsStream("/config.properties"));
 
     then:
     assertTrue(config.contains("server.port"));
@@ -150,8 +150,8 @@ public class ConfigTest {
   public void test_load_multiple_config_using_InputStreams() {
     when:
     config.load(
-        getClass().getClassLoader().getResourceAsStream("config_1.properties"),
-        getClass().getClassLoader().getResourceAsStream("config.properties")
+        getClass().getResourceAsStream("/config_1.properties"),
+        getClass().getResourceAsStream("/config.properties")
     );
 
     then:

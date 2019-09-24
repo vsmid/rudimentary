@@ -13,7 +13,7 @@ public class Rudy {
   public static final Properties CLI_INFO = new Properties();
 
   public static void main(String[] args) throws IOException {
-    CLI_INFO.load(Rudy.class.getClassLoader().getResourceAsStream("META-INF/maven/hr.yeti.rudimentary/rudimentary-cli/pom.properties"));
+    CLI_INFO.load(Rudy.class.getResourceAsStream("/META-INF/maven/hr.yeti.rudimentary/rudimentary-cli/pom.properties"));
 
     ServiceLoader.load(Command.class).forEach(command -> COMMANDS.put(command.name(), command));
 
