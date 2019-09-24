@@ -51,15 +51,21 @@ public class CreateNewHttpEndpointCommand implements Command {
     }
 
     try {
+      Path newFilePath = Path.of(new File("").toPath().toAbsolutePath().toString(), "src/main/java", packageName.replaceAll("\\.", "/"));
+
+      if (!Files.isDirectory(newFilePath)) {
+        Files.createDirectories(newFilePath);
+      }
+
       Files.write(
-          Path.of(new File("").toPath().toAbsolutePath().toString(), "src/main/java", packageName.replaceAll("\\.", "/"), className + ".java"),
+          newFilePath.resolve(className + ".java"),
           httpEndpointTemplate(
               arguments.get("http-method"),
               arguments.get("path"),
               packageName,
               className,
               arguments.getOrDefault("request-body-type", "Empty"),
-              arguments.getOrDefault("response-body-type", "Empty")
+              arguments.getOrDefault("response-type", "Empty")
           ).getBytes(),
           StandardOpenOption.CREATE_NEW
       );
