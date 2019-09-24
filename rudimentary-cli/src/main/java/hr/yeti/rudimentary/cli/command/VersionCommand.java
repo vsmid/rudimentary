@@ -23,10 +23,7 @@ public class VersionCommand implements Command {
 
   @Override
   public void execute(Map<String, String> arguments) {
-    System.console().printf(
-        Rudy.CLI_INFO.getProperty("version")
-        + System.lineSeparator()
-    );
+    System.out.println(Rudy.CLI_INFO.getProperty("version"));
   }
 
 }

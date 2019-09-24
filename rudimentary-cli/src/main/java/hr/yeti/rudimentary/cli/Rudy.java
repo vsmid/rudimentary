@@ -22,7 +22,7 @@ public class Rudy {
     Command command = COMMANDS.get(cliParser.command());
 
     if (Objects.isNull(command)) {
-      System.console().printf("Hmm, no such command[%s], type help for help." + System.lineSeparator(), cliParser.command());
+      System.out.println("Hmm, no such command[" + cliParser.command() + "], type help for help.");
     } else {
       command.execute(cliParser.options());
     }

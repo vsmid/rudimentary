@@ -33,7 +33,7 @@ public class HelpCommand implements Command {
         .map(e -> e.getKey() + spaces(e.getKey()) + e.getValue().description() + System.lineSeparator() + formatOptions(e.getValue().options()))
         .collect(Collectors.joining(System.lineSeparator()));
 
-    System.console().printf(
+    System.out.println(
         "Usage: COMMAND [OPTIONS...]"
         + System.lineSeparator()
         + System.lineSeparator()
