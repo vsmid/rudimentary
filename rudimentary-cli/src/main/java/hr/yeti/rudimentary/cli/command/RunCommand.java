@@ -46,7 +46,7 @@ public class RunCommand implements Command {
       String mainClass = parsePOMForMainClass();
 
       ProcessBuilder builder = new ProcessBuilder(
-          isWindowsOS() ? "mvn.cmd" : "mvn",
+          isWindowsOS() && !isCygwinOrMingw() ? "mvn.cmd" : "mvn",
           "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
           "-Dexec.executable=java",
           "-Dexec.classpathScope=runtime",
@@ -59,16 +59,16 @@ public class RunCommand implements Command {
 
       int read = 0;
       String pid = null;
-      StringBuilder stdOut = new StringBuilder();
+      StringBuilder consoleOutput = new StringBuilder();
 
       while ((read = process.getErrorStream().read()) != -1) {
         System.out.print((char) read);
 
         if (Objects.isNull(pid)) {
-          stdOut.append((char) read);
-          String temp = stdOut.toString();
+          consoleOutput.append((char) read);
+          String temp = consoleOutput.toString();
           if (temp.endsWith("]")) {
-            pid = temp.substring(stdOut.indexOf("=") - 1, stdOut.indexOf("]"));
+            pid = temp.substring(consoleOutput.indexOf("=") - 1, consoleOutput.indexOf("]"));
           }
         }
       }
