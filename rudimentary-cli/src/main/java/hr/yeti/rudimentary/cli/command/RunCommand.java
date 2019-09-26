@@ -48,7 +48,7 @@ public class RunCommand implements Command {
       String mainClass = parsePOMForMainClass();
 
       ProcessBuilder builder = new ProcessBuilder(
-          isWindowsOS() && !isCygwinOrMingw() ? "mvn.cmd" : "mvn",
+          isWindowsOS() || (isWindowsOS() && isCygwinOrMingw()) ? "mvn.cmd" : "mvn",
           "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
           "-Dexec.executable=java",
           "-Dexec.classpathScope=runtime",
