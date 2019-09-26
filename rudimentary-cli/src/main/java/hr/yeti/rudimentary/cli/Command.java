@@ -30,7 +30,6 @@ public interface Command {
       while ((read = unameProcess.getInputStream().read()) != -1) {
         consoleOutput.append((char) read);
       }
-      System.out.println(consoleOutput.toString());
 
       if (consoleOutput.toString().toLowerCase().contains("mingw") || consoleOutput.toString().toLowerCase().contains("cygwin")) {
         cygwinMingw = true;
