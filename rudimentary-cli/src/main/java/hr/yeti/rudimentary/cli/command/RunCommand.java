@@ -1,8 +1,10 @@
 package hr.yeti.rudimentary.cli.command;
 
 import hr.yeti.rudimentary.cli.Command;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
@@ -55,21 +57,22 @@ public class RunCommand implements Command {
           "exec:exec"
       );
 
+      builder.redirectErrorStream(true);
       Process process = builder.start();
 
-      int read = 0;
       String pid = null;
-      StringBuilder consoleOutput = new StringBuilder();
 
-      while ((read = process.getErrorStream().read()) != -1) {
-        System.out.print((char) read);
+      BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      String line;
 
+      while ((line = in.readLine()) != null) {
         if (Objects.isNull(pid)) {
-          consoleOutput.append((char) read);
-          String temp = consoleOutput.toString();
-          if (temp.endsWith("]")) {
-            pid = temp.substring(consoleOutput.indexOf("=") - 1, consoleOutput.indexOf("]"));
+          if (line.contains("[Java PID=") && line.endsWith("]...")) {
+            pid = line.substring(line.indexOf("=") - 1, line.indexOf("]"));
+            System.out.println(line);
           }
+        } else {
+          System.out.println(line);
         }
       }
 
