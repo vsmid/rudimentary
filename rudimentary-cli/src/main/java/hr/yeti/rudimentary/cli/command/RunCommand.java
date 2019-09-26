@@ -1,17 +1,28 @@
 package hr.yeti.rudimentary.cli.command;
 
 import hr.yeti.rudimentary.cli.Command;
-import java.io.BufferedReader;
+import hr.yeti.rudimentary.cli.ConsoleReader;
+import hr.yeti.rudimentary.cli.Watcher;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RunCommand implements Command {
+
+  private Pattern pattern = Pattern.compile(".*mainClass\\>(.*)\\</mainClass.*");
+  
+  public String debugSettings = "";
+  public String systemProperties;
+  public String mainClass;
+
+  public Process process;
+  public ConsoleReader consoleReader;
+  public String pid;
+  public Watcher watcher;
 
   @Override
   public String name() {
@@ -28,15 +39,14 @@ public class RunCommand implements Command {
     return Map.of(
         "debug", "Run in debug mode.",
         "port", "Set debug mode listening port. Defauls to 1044.",
-        "props", "Set system properties. For multiple values enclose in double quotes."
+        "props", "Set system properties. For multiple values enclose in double quotes.",
+        "reload", "Reload application on change."
     );
   }
 
   @Override
   public void execute(Map<String, String> arguments) {
     try {
-      String debugSettings = "";
-      String systemProperties;
 
       if (arguments.containsKey("debug")) {
         String port = arguments.getOrDefault("port", "1044");
@@ -44,49 +54,46 @@ public class RunCommand implements Command {
       }
 
       systemProperties = arguments.getOrDefault("props", "");
+      mainClass = parsePOMForMainClass();
 
-      String mainClass = parsePOMForMainClass();
+      mavenRunRudyApplication();
+      readProcessStdOut();
 
-      ProcessBuilder builder = new ProcessBuilder(
-          isWindowsOS() || (isWindowsOS() && isCygwinOrMingw()) ? "mvn.cmd" : "mvn",
-          "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
-          "-Dexec.executable=java",
-          "-Dexec.classpathScope=runtime",
-          "compile",
-          "package",
-          "exec:exec"
-      );
-
-      builder.redirectErrorStream(true);
-      Process process = builder.start();
-
-      String pid = null;
-
-      BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      String line;
-
-      while ((line = in.readLine()) != null) {
-        if (Objects.isNull(pid)) {
-          if (line.contains("[Java PID=") && line.endsWith("]...")) {
-            pid = line.substring(line.indexOf("=") - 1, line.indexOf("]"));
-            System.out.println(line);
-          }
-        } else {
-          System.out.println(line);
-        }
+      if (arguments.containsKey("reload")) {
+        watcher = new Watcher(new File("").toPath(), true, this);
+        watcher.processEvents();
       }
+
     } catch (IOException ex) {
       ex.printStackTrace();
       // Noop.
     }
   }
 
+  public void mavenRunRudyApplication() throws IOException {
+    ProcessBuilder builder = new ProcessBuilder(
+        isWindowsOS() || (isWindowsOS() && isCygwinOrMingw()) ? "mvn.cmd" : "mvn",
+        "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
+        "-Dexec.executable=java",
+        "-Dexec.classpathScope=runtime",
+        "compile",
+        "package",
+        "exec:exec"
+    );
+
+    builder.redirectErrorStream(true);
+    process = builder.start();
+  }
+
+  public void readProcessStdOut() {
+    this.consoleReader = new ConsoleReader(this);
+    new Thread(this.consoleReader).start();
+  }
+
   private String parsePOMForMainClass() {
     try (FileInputStream pom = new FileInputStream("pom.xml")) {
       String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
-
-      Pattern pattern = Pattern.compile(".*mainClass\\>(.*)\\</mainClass.*");
-
+      
       Matcher matcher = pattern.matcher(pomContent);
 
       if (matcher.find()) {
