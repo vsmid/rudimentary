@@ -75,10 +75,7 @@ public class RunCommand implements Command {
           System.out.println(line);
         }
       }
-
-      process.waitFor();
-
-    } catch (IOException | InterruptedException ex) {
+    } catch (IOException ex) {
       ex.printStackTrace();
       // Noop.
     }
