@@ -66,7 +66,7 @@ public class RunCommand implements Command {
       }
 
     } catch (IOException | RuntimeException ex) {
-      System.err.println(ex);
+      System.err.println(ex.getMessage());
       // Noop.
     }
   }
@@ -127,7 +127,7 @@ public class RunCommand implements Command {
       return mvn;
     }
 
-    throw new RuntimeException("Is Maven installed on your machine?");
+    throw new RuntimeException("Is Maven installed on your machine? Try setting M2_HOME env. variable.");
   }
 
 }
