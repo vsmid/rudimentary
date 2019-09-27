@@ -32,7 +32,7 @@ public class ConsoleReader implements Runnable {
         }
       }
     } catch (IOException e) {
-      ;
+      System.err.println(e.getMessage());
     }
   }
 
