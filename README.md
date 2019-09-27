@@ -27,7 +27,7 @@ Majority of features are a work in progress but are usable and show the intent.
 ## Prerequisites
 
 * Java 11+
-* Maven
+* Maven - Set M2_HOME environment variable or maven.home system property
 
 ## Getting started - writing Hello World
 
@@ -35,8 +35,11 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 
 1. Clone this repository from your terminal (git clone https://github.com/vsmid/rudimentary.git)
 2. Go to the root of cloned project
-3. Execute `mvn clean install`
-4. Execute `java -jar rudimentary-cli/target/rudimentary-cli-1.0-SNAPSHOT.jar new-project --name hello-world`
+3. Execute `mvn clean install`. This command will build rudimentary-cli-1.0-SNAPSHOT.jar inside rudimentary-cli/target directory.
+4. Execute `java -jar PATH_TO_rudimentary-cli-1.0-SNAPSHOT.jar new-project --name hello-world`
+  
+    *Hint: you can also choose to set a different location using --location parameter.*
+
 5. Go to **src/main/java/app** directory and create Java class **HelloWorldEndpoint** like this:
 
 ```java
@@ -58,8 +61,9 @@ public class HelloWorldEndpoint implements HttpEndpoint<Empty, Text> {
 ```
   *Hint: you can also use rudimentary-cli to create new http endpoint.*
 
-6. If you disabled/removed rudimentary-maven-plugin in project's pom.xml add **app.HelloWorldEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file.
-7. To run your application, you can execute either `run.sh` or `debug.sh` script found in the root of the project. Debug listens on port 1044 in case you want to attach debugger.
+6. If you disabled/removed rudimentary-maven-plugin in project's pom.xml add **app.HelloWorldEndpoint** entry to **src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint** file otherwise skip this step.
+7. To run your application, execute `java -jar PATH_TO_rudimentary-cli-1.0-SNAPSHOT.jar run` from inside hello-world project.
+You can also execute application by running either `run.sh` or `debug.sh` script found in the root of the generated project. Debug listens on port 1044 by default in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
 
 ## Javadoc
