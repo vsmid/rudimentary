@@ -8,13 +8,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RunCommand implements Command {
 
-  private Pattern pattern = Pattern.compile(".*mainClass\\>(.*)\\</mainClass.*");
-  
+  private final Pattern pattern = Pattern.compile(".*mainClass\\>(.*)\\</mainClass.*");
+
   public String debugSettings = "";
   public String systemProperties;
   public String mainClass;
@@ -72,7 +73,7 @@ public class RunCommand implements Command {
 
   public void mavenRunRudyApplication() throws IOException {
     ProcessBuilder builder = new ProcessBuilder(
-        isWindowsOS() || (isWindowsOS() && isCygwinOrMingw()) ? "mvn.cmd" : "mvn",
+        mvn() + "/bin/mvn" + (isWindowsOS() || (isWindowsOS() && isCygwinOrMingw()) ? ".cmd" : ""),
         "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
         "-Dexec.executable=java",
         "-Dexec.classpathScope=runtime",
@@ -93,7 +94,7 @@ public class RunCommand implements Command {
   private String parsePOMForMainClass() {
     try (FileInputStream pom = new FileInputStream("pom.xml")) {
       String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
-      
+
       Matcher matcher = pattern.matcher(pomContent);
 
       if (matcher.find()) {
@@ -103,6 +104,28 @@ public class RunCommand implements Command {
       System.err.println("Could not detect main class.");
     }
     return null;
+  }
+
+  private String mvn() {
+    String mvn = System.getenv("M2_HOME");
+
+    if (Objects.nonNull(mvn)) {
+      return mvn;
+    }
+
+    mvn = System.getenv("MAVEN_HOME");
+
+    if (Objects.nonNull(mvn)) {
+      return mvn;
+    }
+
+    mvn = System.getProperty("maven.home");
+
+    if (Objects.nonNull(mvn)) {
+      return mvn;
+    }
+
+    throw new RuntimeException("Is Maven installed on your machine?");
   }
 
 }
