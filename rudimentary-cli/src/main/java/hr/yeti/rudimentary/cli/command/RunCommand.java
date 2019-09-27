@@ -65,19 +65,21 @@ public class RunCommand implements Command {
         watcher.processEvents();
       }
 
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    } catch (IOException | RuntimeException ex) {
+      System.err.println(ex);
       // Noop.
     }
   }
 
   public void mavenRunRudyApplication() throws IOException {
+    System.out.println("...");
+
     ProcessBuilder builder = new ProcessBuilder(
-        mvn() + "/bin/mvn" + (isWindowsOS() || (isWindowsOS() && isCygwinOrMingw()) ? ".cmd" : ""),
+        mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
         "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
         "-Dexec.executable=java",
         "-Dexec.classpathScope=runtime",
-        "compile",
+        "clean",
         "package",
         "exec:exec"
     );
