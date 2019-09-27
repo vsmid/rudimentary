@@ -1,1 +1,1 @@
-mvn -Dexec.executable="java" -Dexec.args="-classpath %classpath hr.yeti.rudimentary.demo.Application" compile exec:exec
+mvn -Dexec.executable="java" -Dexec.args="-classpath %classpath hr.yeti.rudimentary.demo.Application" clean package exec:exec
