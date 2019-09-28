@@ -10,7 +10,7 @@ import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.lang.System.Logger.Level;
 import java.net.URI;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
 
@@ -59,19 +59,14 @@ public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
   }
 
   private String rowsHTMLGenerator() {
-    String rowsHTML = Config.provider().applicationProperties()
-        .entrySet()
-        .stream()
-        .map(e
-            -> String.format("<tr><td>%s</td><td>%s</td></tr>",
-            e.getKey(),
-            e.getValue())
-        )
-        .collect(
-            Collectors.joining(System.lineSeparator())
-        );
+    StringBuilder rowsHTML = new StringBuilder();
+    TreeMap props = new TreeMap(Config.provider().applicationProperties());
 
-    return rowsHTML;
+    props.forEach((key, value) -> {
+      rowsHTML.append(String.format("<tr><td>%s</td><td>%s</td></tr>", key, value));
+    });
+
+    return rowsHTML.toString();
   }
 
 }
