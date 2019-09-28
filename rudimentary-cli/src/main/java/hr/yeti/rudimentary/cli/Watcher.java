@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.cli;
 
+import com.sun.nio.file.SensitivityWatchEventModifier;
 import hr.yeti.rudimentary.cli.command.RunCommand;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -22,7 +23,12 @@ public class Watcher {
   }
 
   private void register(Path dir) throws IOException {
-    WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+    WatchKey key = dir.register(
+        watcher,
+        new WatchEvent.Kind[]{ ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY },
+        SensitivityWatchEventModifier.HIGH
+    );
+
     if (trace) {
       Path prev = keys.get(key);
       if (Objects.isNull(prev)) {
