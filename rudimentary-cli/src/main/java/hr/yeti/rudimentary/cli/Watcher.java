@@ -25,7 +25,7 @@ public class Watcher {
     WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
     if (trace) {
       Path prev = keys.get(key);
-      if (prev == null) {
+      if (Objects.isNull(prev)) {
         System.out.format("register: %s\n", dir);
       } else {
         if (!dir.equals(prev)) {
@@ -41,7 +41,7 @@ public class Watcher {
       @Override
       public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
           throws IOException {
-        if (dir.startsWith("src")) {
+        if (!dir.startsWith("target")) {
           register(dir);
         }
 
@@ -71,17 +71,16 @@ public class Watcher {
       WatchKey key;
       try {
         key = watcher.take();
-      } catch (InterruptedException x) {
+      } catch (InterruptedException ex) {
         return;
       }
 
       Path dir = keys.get(key);
-      if (dir == null) {
+      if (Objects.isNull(dir)) {
         System.err.println("WatchKey not recognized!!");
         continue;
       }
-
-      boolean found = false;
+      boolean reload = false;
       for (WatchEvent<?> event : key.pollEvents()) {
         WatchEvent.Kind kind = event.kind();
 
@@ -93,7 +92,6 @@ public class Watcher {
         Path name = ev.context();
         Path child = dir.resolve(name);
 
-        //System.out.format("%s: %s\n", event.kind().name(), child);
         if (recursive && (kind == ENTRY_CREATE)) {
           try {
             if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
@@ -103,12 +101,13 @@ public class Watcher {
             // Noop.
           }
         }
-        found = true;
+        reload = (child.toString().startsWith("src")
+            || !child.toString().equals("dependency-reduced-pom.xml"));
       }
 
-      if (found && cmd.pid != null) {
-        System.out.println("Changes detected...initiating reload....");
-        
+      if (reload && Objects.nonNull(cmd.pid)) {
+        System.out.println(System.lineSeparator() + "Changes detected...initiating reload....");
+
         ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
         cmd.consoleReader.setStop(true);
         cmd.pid = null;
@@ -116,6 +115,7 @@ public class Watcher {
         cmd.mavenRunRudyApplication();
         cmd.readProcessStdOut();
       }
+
       boolean valid = key.reset();
       if (!valid) {
         keys.remove(key);
