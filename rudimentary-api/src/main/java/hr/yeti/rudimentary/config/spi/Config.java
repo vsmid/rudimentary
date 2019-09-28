@@ -38,7 +38,8 @@ import java.util.ServiceLoader;
 public abstract class Config implements Instance {
 
   /**
-   * Object holding application properties.
+   * Object holding application properties not modified by system properties or environment
+   * variables.
    */
   protected final Properties properties = new Properties();
 
@@ -175,7 +176,7 @@ public abstract class Config implements Instance {
 
   /**
    * Seals configuration instance making it ineligible for additional configuration property
-   * addition.
+   * addition by using any of the load methods provided.
    */
   public void seal() {
     this.sealed = true;

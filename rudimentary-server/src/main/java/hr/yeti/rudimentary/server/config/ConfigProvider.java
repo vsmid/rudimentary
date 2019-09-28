@@ -11,6 +11,7 @@ public class ConfigProvider extends Config {
         new ClasspathResource("default-config.properties").get(),
         new ClasspathResource("config.properties").get()
     );
+    seal();
   }
 
   @Override
