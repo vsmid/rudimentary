@@ -41,13 +41,15 @@ public class HttpRequestUtils {
         }));
   }
 
-  public static Map<String, String> parsePathVariables(URI pattern, URI uri) {
+  public static Map<String, String> parsePathVariables(URI endpointPath, URI uri) {
     Map<String, String> pathVariables = new HashMap<>();
 
+    URI normalizedPath = URIUtils.prependSlashPrefix(endpointPath);
+
     if (uri.toString().length() > 0) {
-      Pattern regex = convertToRegex(pattern.toString(), "([^/.]+)");
+      Pattern regex = convertToRegex(normalizedPath.toString(), "([^/.]+)");
       Matcher regexMatcher = regex.matcher(uri.getPath());
-      Matcher pathVariableMatcher = URIUtils.PATH_VAR_PATTERN.matcher(pattern.toString());
+      Matcher pathVariableMatcher = URIUtils.PATH_VAR_PATTERN.matcher(normalizedPath.toString());
 
       List<String> list = new ArrayList<>();
       while (pathVariableMatcher.find()) {

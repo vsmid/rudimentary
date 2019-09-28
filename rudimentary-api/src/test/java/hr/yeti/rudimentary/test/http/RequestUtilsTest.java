@@ -17,7 +17,21 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class RequestUtilsTest {
 
   @Test
-  public void test_parse_uri_path_variables() {
+  public void test_parse_uri_path_variables_when_endpoint_uri_is_not_prefixed_with_slash() {
+    Map<String, String> pathVariables;
+
+    when:
+    pathVariables = HttpRequestUtils.parsePathVariables(URI.create("cars/:id"), URI.create("/cars/1"));
+
+    then:
+    assertNotNull(pathVariables);
+
+    assertTrue(pathVariables.containsKey("id"));
+    assertEquals("1", pathVariables.get("id"));
+  }
+
+  @Test
+  public void test_parse_uri_path_variables_when_endpoint_uri_is_prefixed_with_slash() {
     Map<String, String> pathVariables;
 
     when:
