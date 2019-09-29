@@ -54,7 +54,6 @@ public class CreateNewProjectCommand implements Command {
       projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.http.spi.HttpEndpoint", null);
       projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.mvc.spi.ViewEndpoint", null);
       projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.context.spi.Instance", null);
-      projectLayout.createNewFile(projectLayout.getServicesDir(), "hr.yeti.rudimentary.sql.spi.BasicDataSource", null);
     } catch (IOException ex) {
       ex.printStackTrace();
     }
