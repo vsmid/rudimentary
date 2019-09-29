@@ -10,6 +10,7 @@ import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.MediaType;
 import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Form;
 import hr.yeti.rudimentary.http.content.Html;
@@ -44,6 +45,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 import javax.json.JsonValue;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
@@ -163,12 +165,17 @@ public class HttpProcessor implements HttpHandler, Instance {
               exchange
           );
 
-          // Global before interceptor
-          List<BeforeInterceptor> globalBeforeInterceptors = Instance.providersOf(BeforeInterceptor.class);
-          globalBeforeInterceptors.sort(Comparator.comparing(BeforeInterceptor::order));
+          // Before interceptor
+          List<BeforeInterceptor> beforeInterceptors = Instance.providersOf(BeforeInterceptor.class);
+          beforeInterceptors.sort(Comparator.comparing(BeforeInterceptor::order));
 
-          globalBeforeInterceptors.forEach((globalBeforeInterceptor) -> {
-            globalBeforeInterceptor.intercept(request);
+          beforeInterceptors.forEach((interceptor) -> {
+            String normalizedApplyToURI = URIUtils.removeSlashPrefix(URI.create(interceptor.applyToURI())).toString();
+
+            //TODO Cache compiled patterns
+            if (Pattern.compile(normalizedApplyToURI).asPredicate().test(URIUtils.removeSlashPrefix(path).toString())) {
+              interceptor.intercept(request);
+            }
           });
 
           // Local http endpoint before interceptor
@@ -196,12 +203,18 @@ public class HttpProcessor implements HttpHandler, Instance {
             return;
           }
 
-          // Global after interceptor
-          List<AfterInterceptor> globalAfterInterceptors = Instance.providersOf(AfterInterceptor.class);
-          globalAfterInterceptors.sort(Comparator.comparing(AfterInterceptor::order));
+          // After interceptor
+          List<AfterInterceptor> afterInterceptors = Instance.providersOf(AfterInterceptor.class);
+          afterInterceptors.sort(Comparator.comparing(AfterInterceptor::order));
 
-          for (AfterInterceptor globalAfterInterceptor : globalAfterInterceptors) {
-            globalAfterInterceptor.intercept(request, response);
+          for (AfterInterceptor interceptor : afterInterceptors) {
+            String normalizedApplyToURI = URIUtils.removeSlashPrefix(URI.create(interceptor.applyToURI())).toString();
+
+            //TODO Cache compiled patterns
+            if (Pattern.compile(normalizedApplyToURI).asPredicate().test(URIUtils.removeSlashPrefix(path).toString())) {
+              interceptor.intercept(request, response);
+            }
+
           }
 
           // Local http endpoint before interceptor
