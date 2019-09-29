@@ -6,10 +6,9 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
- * Definition of the constraint as a function. Each constraint definition must return
- * {@link ValidationResult}. These constraints can later be applied to any given value. Default
- * constraints are defined in this class. You can freely extends this interface and create your own
- * set of custom constraints.
+ * Definition of the constraint as a function. Each constraint definition must return {@link ValidationResult}. These
+ * constraints can later be applied to any given value. Default constraints are defined in this class. You can freely
+ * extends this interface and create your own set of custom constraints.
  *
  * @author vedransmid@yeti-it.hr
  */
@@ -29,5 +28,14 @@ public interface Constraint extends Function<Object, ValidationResult> {
 
   static Constraint REGEX(Pattern pattern) {
     return (o) -> new ValidationResult(pattern.matcher(o.toString()).matches(), Optional.of(o + " does not match pattern of " + pattern.pattern()));
+  }
+
+  static Constraint CUSTOM(Function<Object, Boolean> constraintDefinition, String reason) {
+    return (o) -> {
+      boolean valid = constraintDefinition.apply(o);
+      Optional<String> message = valid ? Optional.empty() : Optional.ofNullable(reason);
+
+      return new ValidationResult(valid, message);
+    };
   }
 }
