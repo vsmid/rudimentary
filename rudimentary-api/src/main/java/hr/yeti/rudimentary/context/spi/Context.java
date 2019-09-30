@@ -60,11 +60,11 @@ public abstract class Context implements Instance {
 
   /**
    * <pre>
-   * Gets all instances simple class names that are already
+   * Gets all instances canonical class names that are already
    * initialized and put into {@link Context}.
    * </pre>
    *
-   * @return A list of simple class name string values representing already initialized instances.
+   * @return A list of canonical class name string values representing already initialized instances.
    */
   public static List<String> getInitializedInstances() {
     return INITIALIZED_INSTANCES;
@@ -103,7 +103,7 @@ public abstract class Context implements Instance {
    */
   protected void add(Instance instance) {
     if (instance.conditional()) {
-      CONTEXT.put(instance.getClass().getSimpleName().toLowerCase(), instance);
+      CONTEXT.put(instance.getClass().getCanonicalName(), instance);
     }
   }
 
@@ -116,7 +116,7 @@ public abstract class Context implements Instance {
    * @param instance
    */
   protected void setInitialized(Instance instance) {
-    INITIALIZED_INSTANCES.add(instance.getClass().getSimpleName().toLowerCase());
+    INITIALIZED_INSTANCES.add(instance.getClass().getCanonicalName());
   }
 
   /**
@@ -130,7 +130,7 @@ public abstract class Context implements Instance {
    * @return true if an instance of the parameter clazz has been initialized, otherwise false.
    */
   protected boolean isInstanceInitialized(Class<?> clazz) {
-    return INITIALIZED_INSTANCES.contains(clazz.getSimpleName().toLowerCase());
+    return INITIALIZED_INSTANCES.contains(clazz.getCanonicalName());
   }
 
   /**
@@ -173,7 +173,7 @@ public abstract class Context implements Instance {
       instanceDependencyGraph.put(
           key,
           List.of(value.dependsOn()).stream()
-              .map(clazz -> clazz.getSimpleName().toLowerCase())
+              .map(clazz -> clazz.getCanonicalName())
               .collect(Collectors.toList())
       );
     });
