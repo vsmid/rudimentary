@@ -80,6 +80,7 @@ public class RunCommand implements Command {
         "-Dexec.executable=java",
         "-Dexec.classpathScope=runtime",
         "clean",
+        "compile",
         "package",
         "exec:exec"
     );
