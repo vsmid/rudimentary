@@ -32,10 +32,10 @@ public class Watcher {
     if (trace) {
       Path prev = keys.get(key);
       if (Objects.isNull(prev)) {
-        System.out.format("register: %s\n", dir);
+        System.out.format("Register: %s\n", dir);
       } else {
         if (!dir.equals(prev)) {
-          System.out.format("update: %s -> %s\n", prev, dir);
+          System.out.format("Update: %s -> %s\n", prev, dir);
         }
       }
     }
@@ -68,7 +68,7 @@ public class Watcher {
       register(dir);
     }
 
-    this.trace = true;
+    this.trace = false;
   }
 
   public void processEvents() throws IOException {
