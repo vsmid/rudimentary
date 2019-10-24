@@ -6,6 +6,8 @@ public interface Command {
 
   String name();
 
+  String shorthand();
+
   String description();
 
   Map<String, String> options();

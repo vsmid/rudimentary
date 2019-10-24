@@ -1,14 +1,20 @@
 package hr.yeti.rudimentary.cli.command;
 
+import java.util.Map;
+
 import hr.yeti.rudimentary.cli.Command;
 import hr.yeti.rudimentary.cli.Rudy;
-import java.util.Map;
 
 public class VersionCommand implements Command {
 
   @Override
   public String name() {
     return "version";
+  }
+
+  @Override
+  public String shorthand() {
+    return "v";
   }
 
   @Override

@@ -3,9 +3,10 @@ package hr.yeti.rudimentary.cli;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ServiceLoader;
+import java.util.Map.Entry;
 
 public class Rudy {
 
@@ -19,13 +20,13 @@ public class Rudy {
 
     CliParser cliParser = new CliParser(args);
 
-    Command command = COMMANDS.get(cliParser.command());
-
-    if (Objects.isNull(command)) {
-      System.out.println("Hmm, no such command[" + cliParser.command() + "], type help for help.");
-    } else {
-      command.execute(cliParser.options());
-    }
+    COMMANDS.entrySet().stream()
+        .filter(e -> e.getValue().name().equals(cliParser.command()) || e.getValue().shorthand().equals(cliParser.command()))
+        .map(Entry::getValue)
+        .findAny()
+        .ifPresentOrElse(
+          cmd -> cmd.execute(cliParser.options()),
+            () -> System.out.println("Hmm, no such command[" + cliParser.command() + "], type help or h  for help.")
+        );
   }
-
 }

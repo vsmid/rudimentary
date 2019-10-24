@@ -1,8 +1,5 @@
 package hr.yeti.rudimentary.cli.command;
 
-import hr.yeti.rudimentary.cli.Command;
-import hr.yeti.rudimentary.cli.ConsoleReader;
-import hr.yeti.rudimentary.cli.Watcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +8,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import hr.yeti.rudimentary.cli.Command;
+import hr.yeti.rudimentary.cli.ConsoleReader;
+import hr.yeti.rudimentary.cli.Watcher;
 
 public class RunCommand implements Command {
 
@@ -31,18 +32,20 @@ public class RunCommand implements Command {
   }
 
   @Override
+  public String shorthand() {
+    return "r";
+  }
+
+  @Override
   public String description() {
     return "Run application.";
   }
 
   @Override
   public Map<String, String> options() {
-    return Map.of(
-        "debug", "Run in debug mode.",
-        "port", "Set debug mode listening port. Defauls to 1044.",
-        "props", "Set system properties. For multiple values enclose in double quotes.",
-        "reload", "Reload application on change."
-    );
+    return Map.of("debug", "Run in debug mode.", "port", "Set debug mode listening port. Defauls to 1044.", "props",
+        "Set system properties. For multiple values enclose in double quotes.", "reload",
+        "Reload application on change.");
   }
 
   @Override
@@ -74,16 +77,9 @@ public class RunCommand implements Command {
   public void mavenRunRudyApplication() throws IOException {
     System.out.println("...");
 
-    ProcessBuilder builder = new ProcessBuilder(
-        mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
+    ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
         "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
-        "-Dexec.executable=java",
-        "-Dexec.classpathScope=runtime",
-        "clean",
-        "compile",
-        "package",
-        "exec:exec"
-    );
+        "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "clean", "compile", "package", "exec:exec");
 
     builder.redirectErrorStream(true);
     process = builder.start();
