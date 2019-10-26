@@ -50,7 +50,7 @@ public class RunCommand implements Command {
         "debug", "Run in debug mode.",
         "debugPort", "Set debug mode listening port. Defauls to 1044.",
         "props", "Set system properties. For multiple values enclose in double quotes.",
-        "reload", "Reload application on change.");
+        "reload", "Reload application on change. Active by default. Set to false to deactivate.");
   }
 
   @Override
@@ -69,7 +69,9 @@ public class RunCommand implements Command {
       registerTestRunner();
       readProcessStdOut();
 
-      if (arguments.containsKey("reload")) {
+      boolean reload = Boolean.valueOf(arguments.getOrDefault("reload", "true"));
+
+      if (reload) {
         watcher = new Watcher(new File("").toPath(), true, this);
         watcher.processEvents();
       }
