@@ -3,7 +3,6 @@ package hr.yeti.rudimentary.cli;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Map.Entry;
@@ -26,7 +25,7 @@ public class Rudy {
         .findAny()
         .ifPresentOrElse(
           cmd -> cmd.execute(cliParser.options()),
-            () -> System.out.println("Hmm, no such command[" + cliParser.command() + "], type help or h  for help.")
+            () -> System.out.println("Hmm, no such command[" + cliParser.command() + "], type help or h for help.")
         );
   }
 }
