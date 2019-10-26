@@ -42,6 +42,8 @@ public class ProjectLayout {
       try {
         Files.createDirectories(projectDir.resolve(srcDir).resolve(rootPackageDir));
         Files.createDirectories(projectDir.resolve(resourcesDir));
+        Files.createDirectories(projectDir.resolve(testDir));
+        Files.createDirectories(projectDir.resolve(testResourcesDir));
       } catch (IOException ex) {
         ex.printStackTrace();
       }
