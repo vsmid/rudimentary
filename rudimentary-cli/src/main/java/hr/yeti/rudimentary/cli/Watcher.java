@@ -107,8 +107,9 @@ public class Watcher {
             // Noop.
           }
         }
-        reload = (child.toString().startsWith("src")
-            || !child.toString().equals("dependency-reduced-pom.xml"));
+
+        reload = ((child.toString().startsWith("src") && (!child.toString().startsWith("src/test")))
+            || child.toString().startsWith("pom.xml"));
       }
 
       if (reload && Objects.nonNull(cmd.pid)) {

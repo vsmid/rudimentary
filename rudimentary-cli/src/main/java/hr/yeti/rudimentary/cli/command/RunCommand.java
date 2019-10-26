@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import hr.yeti.rudimentary.cli.Command;
+import hr.yeti.rudimentary.cli.ConsoleActionListener;
 import hr.yeti.rudimentary.cli.ConsoleReader;
 import hr.yeti.rudimentary.cli.Watcher;
 
@@ -25,6 +26,8 @@ public class RunCommand implements Command {
   public ConsoleReader consoleReader;
   public String pid;
   public Watcher watcher;
+
+  public static final String ENTER = "";
 
   @Override
   public String name() {
@@ -63,6 +66,7 @@ public class RunCommand implements Command {
       mainClass = parsePOMForMainClass();
 
       mavenRunRudyApplication();
+      registerTestRunner();
       readProcessStdOut();
 
       if (arguments.containsKey("reload")) {
@@ -90,6 +94,24 @@ public class RunCommand implements Command {
   public void readProcessStdOut() {
     this.consoleReader = new ConsoleReader(this);
     new Thread(this.consoleReader).start();
+  }
+
+  public void registerTestRunner() {
+    new Thread(new ConsoleActionListener(ENTER, (input) -> {
+      try {
+        ProcessBuilder testBuilder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
+            "test-compile", "surefire:test");
+        Process test = testBuilder.inheritIO().start();
+        test.waitFor();
+
+        ProcessBuilder iTestBuilder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
+            "failsafe:integration-test");
+        Process iTest = iTestBuilder.inheritIO().start();
+        iTest.waitFor();
+      } catch (IOException | InterruptedException ex) {
+        System.err.println(ex.getMessage());
+      }
+    })).start();
   }
 
   private String parsePOMForMainClass() {
