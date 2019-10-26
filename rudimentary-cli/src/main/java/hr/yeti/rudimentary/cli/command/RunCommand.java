@@ -43,9 +43,11 @@ public class RunCommand implements Command {
 
   @Override
   public Map<String, String> options() {
-    return Map.of("debug", "Run in debug mode.", "port", "Set debug mode listening port. Defauls to 1044.", "props",
-        "Set system properties. For multiple values enclose in double quotes.", "reload",
-        "Reload application on change.");
+    return Map.of(
+        "debug", "Run in debug mode.",
+        "debugPort", "Set debug mode listening port. Defauls to 1044.",
+        "props", "Set system properties. For multiple values enclose in double quotes.",
+        "reload", "Reload application on change.");
   }
 
   @Override
@@ -53,7 +55,7 @@ public class RunCommand implements Command {
     try {
 
       if (arguments.containsKey("debug")) {
-        String port = arguments.getOrDefault("port", "1044");
+        String port = arguments.getOrDefault("debugPort", "1044");
         debugSettings = " -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + port + " ";
       }
 
@@ -91,7 +93,7 @@ public class RunCommand implements Command {
   }
 
   private String parsePOMForMainClass() {
-    try (FileInputStream pom = new FileInputStream("pom.xml")) {
+    try ( FileInputStream pom = new FileInputStream("pom.xml")) {
       String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
 
       Matcher matcher = pattern.matcher(pomContent);
