@@ -31,7 +31,6 @@ public class Request<T> {
   private Map<String, String> pathVariables;
   private Map<String, String> queryParameters;
   private URI uri;
-  private Session session;
   private HttpExchange httpExchange;
 
   public Request(
@@ -41,7 +40,6 @@ public class Request<T> {
       Map<String, String> pathVariables,
       Map<String, String> queryParameters,
       URI uri,
-      Session session,
       HttpExchange httpExchange) {
     this.identity = identity;
     this.httpHeaders = httpHeaders;
@@ -49,7 +47,6 @@ public class Request<T> {
     this.pathVariables = pathVariables;
     this.queryParameters = queryParameters;
     this.uri = uri;
-    this.session = session;
     this.httpExchange = httpExchange;
   }
 
@@ -80,6 +77,7 @@ public class Request<T> {
   }
 
   public Identity getIdentity() {
+    Session session = Session.getOrCreate(httpExchange);
     if (Objects.nonNull(session) && session.isAuthenticated()) {
       return session.getIdentity();
     }
@@ -107,7 +105,7 @@ public class Request<T> {
   }
 
   public Session getSession() {
-    return session;
+    return Session.getOrCreate(httpExchange);
   }
 
   public HttpExchange getHttpExchange() {

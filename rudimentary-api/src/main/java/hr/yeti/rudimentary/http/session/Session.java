@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.http.session;
 
 import com.sun.net.httpserver.HttpExchange;
+import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.security.Identity;
 import java.util.Map;
 import java.util.Optional;
@@ -64,13 +65,6 @@ public interface Session {
   void invalidate(HttpExchange httpExchange);
 
   /**
-   * Get csrf token value.
-   *
-   * @return Csrf token value.
-   */
-  String getCsrfToken();
-
-  /**
    *
    * @return Whether or not user request has been successfully authenticated.
    */
@@ -91,4 +85,15 @@ public interface Session {
    */
   public <D> Identity<D> getIdentity(Class<D> details);
 
+  /**
+   * Static method to get or create session.
+   *
+   * @param exchange
+   * @return
+   */
+  static Session getOrCreate(HttpExchange exchange) {
+    GetOrCreateSessionEvent createSessionEvent = new GetOrCreateSessionEvent(exchange);
+    createSessionEvent.publish(EventPublisher.Type.SYNC);
+    return createSessionEvent.getSession();
+  }
 }

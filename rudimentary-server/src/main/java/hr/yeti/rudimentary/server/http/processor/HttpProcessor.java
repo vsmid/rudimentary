@@ -21,20 +21,17 @@ import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.content.Redirect;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.View;
-import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
-import hr.yeti.rudimentary.server.http.session.HttpSession;
 import hr.yeti.rudimentary.validation.ConstraintViolations;
 import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpCookie;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -143,16 +140,6 @@ public class HttpProcessor implements HttpHandler, Instance {
             return;
           }
 
-          // Set session if possible
-          Session session = null;
-          if (Config.provider().property("session.create").asBoolean()) {
-            HttpCookie rsidCookie = HttpRequestUtils.parseCookies(exchange.getRequestHeaders()).get(Session.COOKIE);
-            if (Objects.nonNull(rsidCookie)) {
-              session = (Session) exchange.getAttribute(rsidCookie.getValue());
-              ((HttpSession) session).setLastAccessedTime(System.currentTimeMillis());
-            }
-          }
-
           // Construct request object
           Request request = new Request(
               (Identity) exchange.getPrincipal(),
@@ -161,7 +148,6 @@ public class HttpProcessor implements HttpHandler, Instance {
               pathVariables,
               queryParameters,
               exchange.getRequestURI(),
-              session,
               exchange
           );
 
@@ -254,7 +240,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
             exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
-            try (InputStream is = staticResource.getValue()) {
+            try ( InputStream is = staticResource.getValue()) {
               responseTransformed = is.readAllBytes();
             }
 

@@ -8,6 +8,7 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.content.Form;
+import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.security.UsernamePasswordCredential;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
@@ -20,7 +21,6 @@ import java.util.regex.Pattern;
 
 public class LoginFormAuthMechanism extends AuthMechanism {
 
-  private ConfigProperty createSession = new ConfigProperty("session.create");
   private ConfigProperty enabled = new ConfigProperty("security.loginform.enabled");
   private ConfigProperty loginURI = new ConfigProperty("security.loginform.loginURI");
   private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginform.redirectAfterSuccessfulLoginURI");
@@ -31,14 +31,7 @@ public class LoginFormAuthMechanism extends AuthMechanism {
 
   @Override
   public boolean conditional() {
-    if (!createSession.asBoolean()) {
-      Logger.getLogger(LoginFormAuthMechanism.class.getName())
-          .log(
-              Level.WARNING,
-              "Property session.create must be set to true in order to activate {0}.",
-              LoginFormAuthMechanism.class.getName());
-    }
-    return createSession.asBoolean() && enabled.asBoolean();
+    return enabled.asBoolean();
   }
 
   @Override
@@ -54,6 +47,9 @@ public class LoginFormAuthMechanism extends AuthMechanism {
     }
 
     if (formData.isEmpty()) {
+      // Login form authentication requires session.
+      Session.getOrCreate(exchange);
+
       Headers map = exchange.getResponseHeaders();
       map.set("Location", loginURI.value());
       return new Authenticator.Retry(302);

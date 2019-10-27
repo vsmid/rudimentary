@@ -48,7 +48,7 @@ public class HttpSession implements Session {
   @Override
   public Optional<Object> getAttribute(String name) {
     Object attribute = null;
-    
+
     if (Objects.nonNull(attributes)) {
       attribute = attributes.get(name);
     }
@@ -80,15 +80,6 @@ public class HttpSession implements Session {
 
     exchange.getResponseHeaders().add("Set-Cookie", new Cookie(rsidCookie).toString());
     exchange.setAttribute(rsid, null);
-  }
-
-  @Override
-  public String getCsrfToken() {
-    return csrfToken.getValue();
-  }
-
-  public void setCsrfToken(CsrfToken csrfToken) {
-    this.csrfToken = csrfToken;
   }
 
   @Override

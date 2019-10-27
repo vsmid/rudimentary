@@ -4,7 +4,6 @@ import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
 import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
@@ -98,9 +97,9 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
    * @return Authentication result.
    */
   @Override
-  public Result authenticate(HttpExchange exchange) {
+  public Result authenticate(HttpExchange exchange) {    
     if (conditional()) {
-      if (requiresAuthentication(exchange.getRequestURI()) && !authenticatedSession(exchange)) {
+        if (requiresAuthentication(exchange.getRequestURI()) && !authenticatedSession(exchange)) {
         Result result = doAuth(exchange);
 
         if (result instanceof Success) {
@@ -108,11 +107,10 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
           Identity identity = getIdentity(((Success) result).getPrincipal());
           result = new Authenticator.Success(identity);
 
-          if (Config.provider().property("session.create").asBoolean()) {
-            HttpRequestUtils.extractSession(exchange).ifPresent((session) -> {
-              new AuthenticatedSessionEvent(session, identity).publish(EventPublisher.Type.SYNC);
-            });
-          }
+          HttpRequestUtils.extractSession(exchange)
+              .ifPresent((session) -> {
+                new AuthenticatedSessionEvent(session, identity).publish(EventPublisher.Type.SYNC);
+              });
         }
 
         return result;
