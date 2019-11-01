@@ -21,6 +21,11 @@ public class CorsFilter extends HttpFilter {
   }
 
   @Override
+  public int order() {
+    return 1;
+  }
+
+  @Override
   public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
     exchange.getResponseHeaders().add("Access-Control-Allow-Origin", corsAllowOrigin.value());
     exchange.getResponseHeaders().add("Access-Control-Allow-Headers", corsAllowHeaders.value());

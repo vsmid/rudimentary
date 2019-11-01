@@ -21,6 +21,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -104,6 +105,7 @@ public class Server {
       // Load filters
       Instance.providersOf(HttpFilter.class)
           .stream()
+          .sorted(Comparator.comparingInt(HttpFilter::order))
           .forEach((filter) -> {
             context.getFilters().add(filter);
           });
@@ -166,7 +168,7 @@ public class Server {
     KeyManagerFactory keyManagerFactory = null;
     if (server.keyStore.length() > 0) {
       keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-      try (InputStream in = new FileInputStream(server.keyStore)) {
+      try ( InputStream in = new FileInputStream(server.keyStore)) {
         keystore.load(in, server.keyStorePassword.toCharArray());
       }
       keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -177,7 +179,7 @@ public class Server {
     TrustManagerFactory trustManagerFactory = null;
     if (server.trustStore.length() > 0) {
       truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-      try (InputStream in = new FileInputStream(server.trustStore)) {
+      try ( InputStream in = new FileInputStream(server.trustStore)) {
         truststore.load(in, server.trustStorePassword.toCharArray());
       }
       trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());

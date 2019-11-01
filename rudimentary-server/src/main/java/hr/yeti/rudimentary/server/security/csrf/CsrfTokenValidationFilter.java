@@ -26,6 +26,11 @@ public class CsrfTokenValidationFilter extends HttpFilter {
   }
 
   @Override
+  public int order() {
+    return 3;
+  }
+
+  @Override
   public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
     boolean csrfValid = false;
     Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());

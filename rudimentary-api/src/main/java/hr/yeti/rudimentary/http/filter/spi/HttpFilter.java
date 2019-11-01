@@ -19,4 +19,11 @@ import java.util.ServiceLoader;
  */
 public abstract class HttpFilter extends Filter implements Instance {
 
+  /**
+   * @return Order number for this filter in the filter chain.
+   */
+  public int order() {
+    return 0;
+  }
+
 }

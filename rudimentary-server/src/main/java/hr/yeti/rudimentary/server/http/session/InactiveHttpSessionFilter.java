@@ -19,6 +19,11 @@ public class InactiveHttpSessionFilter extends HttpFilter {
   private ConfigProperty inactivityPeriodAllowed = new ConfigProperty("session.inactivityPeriodAllowed");
 
   @Override
+  public int order() {
+    return 2;
+  }
+
+  @Override
   public String description() {
     return "Filter which checks whether session was inactive for a preconfigured period of time and then invalidates if so.";
   }
