@@ -6,6 +6,7 @@ import hr.yeti.rudimentary.context.spi.Instance;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,31 +23,34 @@ public final class ContextMock extends Context {
   private List<Instance> instances = new ArrayList<>();
 
   /**
-   * Create context from instances. Use this constructor if instances do not depend on some
-   * configuration properties.
+   * Create context from instances. Use this constructor if instances do not depend on some configuration properties.
    *
    * @param instances An instance of class implementing {@link Instance}.
    */
   public ContextMock(Instance... instances) {
+    this(new HashMap<>(), instances);
+  }
+
+  /**
+   * Create context from instances.
+   *
+   * @param properties Configuration properties.
+   * @param instances An instance of class implementing {@link Instance}.
+   */
+  public ContextMock(Map<String, String> properties, Instance... instances) {
     this.instances.addAll(Arrays.asList(instances));
+    initializeConfig(properties);
     initialize();
   }
 
   /**
-   * Create context from classes.Use this constructor if instances do depend on some configuration
-   * properties.
+   * Create context from classes.Use this constructor if instances do depend on some configuration properties.
    *
    * @param properties Configuration properties.
    * @param instances An instance of class implementing {@link Instance}.
    */
   public ContextMock(Map<String, String> properties, Class<? extends Instance>... instances) {
-    Config config = new ConfigMock().load(properties);
-    config.seal();
-
-    if (Objects.nonNull(config)) {
-      super.initializeInstance(config);
-      super.add(config);
-    }
+    initializeConfig(properties);
 
     for (Class<? extends Instance> instance : instances) {
       try {
@@ -83,6 +87,16 @@ public final class ContextMock extends Context {
   // Method used to test instanceDependencyGraph map.
   public Map<String, List<String>> getInstanceDependencyGraph() {
     return instanceDependencyGraph;
+  }
+
+  private void initializeConfig(Map<String, String> properties) {
+    Config config = new ConfigMock().load(properties);
+    config.seal();
+
+    if (Objects.nonNull(config)) {
+      super.initializeInstance(config);
+      super.add(config);
+    }
   }
 
 }
