@@ -17,12 +17,10 @@ public class ConfigPropertyTest {
 
   // Mimics configuration instance which will be loaded via ServiceLoader.
   ConfigMock config;
-  ContextMock ctx;
 
   @BeforeEach
   public void beforeEach() {
     config = new ConfigMock();
-    ctx = new ContextMock(config);
   }
 
   @Test
