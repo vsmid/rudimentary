@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.test.config;
 
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.test.ConfigMock;
-import hr.yeti.rudimentary.test.ContextMock;
 import java.util.Map;
 import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,12 +17,10 @@ public class ConfigTest {
 
   // Mimics configuration instance which will be loaded via ServiceLoader.
   ConfigMock config;
-  ContextMock ctx;
 
   @BeforeEach
   public void beforeEach() {
     config = new ConfigMock();
-    ctx = new ContextMock(config);
   }
 
   @Test
