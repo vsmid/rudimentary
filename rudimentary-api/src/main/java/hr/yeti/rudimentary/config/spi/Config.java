@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.config.spi;
 
 import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -149,7 +150,7 @@ public abstract class Config implements Instance {
    * @return Configuration property value in the {@link ConfigProperty} form.
    */
   public ConfigProperty property(String name) {
-    return new ConfigProperty(name);
+    return property(name, null);
   }
 
   /**
@@ -161,6 +162,9 @@ public abstract class Config implements Instance {
    * @return Configuration property value in the {@link ConfigProperty} form.
    */
   public ConfigProperty property(String name, String value) {
+    if (properties.keySet().contains(name)) {
+      return new ConfigProperty(name, properties.getProperty(name));
+    }
     return new ConfigProperty(name, value);
   }
 
@@ -224,7 +228,8 @@ public abstract class Config implements Instance {
 
   /**
    * Convenience method to be used to access {@link Config} properties without having to initialize
-   * a dedicated class field using {@link Instance#of(java.lang.Class)}.
+   * a dedicated class field using {@link Instance#of(java.lang.Class)}. This method is usable when
+   * a provider of {@link Context} is also present.
    *
    * @return An instance of Config class.
    */
