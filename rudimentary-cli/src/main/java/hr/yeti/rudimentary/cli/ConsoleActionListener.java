@@ -20,7 +20,7 @@ public class ConsoleActionListener implements Runnable {
     while (true) {
       String entry = in.nextLine();
 
-      if (entry.isBlank()) {
+      if (entry.equals(reactOn)) {
         action.accept(entry);
       }
     }
