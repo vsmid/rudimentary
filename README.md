@@ -2,6 +2,17 @@
 
 A small, simple and opinionated Java based web services/applications framework. 
 
+# Table of contents
+* [Rudimentary API](rudimentary-api/README.md)
+* [Rudimentary CLI](rudimentary-cli/README.md)
+* [Rudimentary Extensions](rudimentary-exts/README.md)
+* [Rudimentary Maven Plugin](rudimentary-maven-plugin/README.md)
+* [Rudimentary Server](rudimentary-server/README.md)
+
+## Current status
+
+Closing in on the initial release feature set. Not yet ready to be used in production environment. Use it for fast prototyping, mocks etc.
+
 ## Introduction
 
 It all started as a playground for the new Java module system and practicing some good old patterns.
