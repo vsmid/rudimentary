@@ -117,7 +117,7 @@ public class RunCommand implements Command {
   }
 
   private String parsePOMForMainClass() {
-    try ( FileInputStream pom = new FileInputStream("pom.xml")) {
+    try (FileInputStream pom = new FileInputStream("pom.xml")) {
       String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
 
       Matcher matcher = pattern.matcher(pomContent);
