@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -39,10 +41,9 @@ import java.util.ServiceLoader;
 public abstract class Config implements Instance {
 
   /**
-   * Object holding application properties not modified by system properties or environment
-   * variables.
+   * Object holding resolved application properties.
    */
-  protected final Properties properties = new Properties();
+  protected final Map<String, ConfigProperty> configProperties = new ConcurrentHashMap<>();
 
   /**
    * A property indicating whether current configuration instance is sealed or not. When
@@ -60,7 +61,7 @@ public abstract class Config implements Instance {
     if (!isSealed()) {
       if (Objects.nonNull(properties)) {
         for (ConfigProperty property : properties) {
-          this.properties.put(property.getName(), property.value());
+          this.configProperties.put(property.getName(), property);
         }
       }
     }
@@ -77,7 +78,9 @@ public abstract class Config implements Instance {
   public Config load(Properties... properties) {
     if (!isSealed()) {
       for (Properties props : properties) {
-        this.properties.putAll(props);
+        props.forEach((k, v)
+            -> this.configProperties.put(k.toString(), new ConfigProperty(k.toString(), v.toString()))
+        );
       }
     }
 
@@ -92,7 +95,7 @@ public abstract class Config implements Instance {
    */
   public Config load(Map<String, String> properties) {
     if (!isSealed()) {
-      this.properties.putAll(properties);
+      properties.forEach((k, v) -> this.configProperties.put(k, new ConfigProperty(k, v)));
     }
 
     return this;
@@ -110,7 +113,9 @@ public abstract class Config implements Instance {
     if (!isSealed()) {
       for (String propertiesFileLocation : propertiesFileLocations) {
         try (FileInputStream fis = new FileInputStream(propertiesFileLocation)) {
-          this.properties.load(fis); // We should make sure that empty properties do not override default ones set in server module.
+          Properties temp = new Properties();
+          temp.load(fis); // We should make sure that empty properties do not override default ones set in server module.
+          this.load(temp);
         } catch (IOException e) {
           throw new RuntimeException(
               "Failed to load configuration from " + propertiesFileLocation, e
@@ -133,7 +138,9 @@ public abstract class Config implements Instance {
     if (!isSealed()) {
       try {
         for (InputStream props : properties) {
-          this.properties.load(props);
+          Properties temp = new Properties();
+          temp.load(props);
+          this.load(temp);
         }
       } catch (IOException e) {
         throw new RuntimeException("Failed to load configuration", e);
@@ -162,10 +169,16 @@ public abstract class Config implements Instance {
    * @return Configuration property value in the {@link ConfigProperty} form.
    */
   public ConfigProperty property(String name, String value) {
-    if (properties.keySet().contains(name)) {
-      return new ConfigProperty(name, properties.getProperty(name));
+    ConfigProperty configProperty = null;
+
+    if (this.configProperties.keySet().contains(name)) {
+      configProperty = this.configProperties.get(name);
+    } else {
+      configProperty = new ConfigProperty(name, value);
+      this.configProperties.put(configProperty.getName(), configProperty);
     }
-    return new ConfigProperty(name, value);
+
+    return configProperty;
   }
 
   /**
@@ -175,7 +188,7 @@ public abstract class Config implements Instance {
    * @return Property value as a string.
    */
   public String value(String name) {
-    return this.properties.getProperty(name);
+    return property(name, null).value();
   }
 
   /**
@@ -201,7 +214,7 @@ public abstract class Config implements Instance {
    */
   @Override
   public void destroy() {
-    this.properties.clear();
+    this.configProperties.clear();
     this.sealed = false;
   }
 
@@ -214,7 +227,7 @@ public abstract class Config implements Instance {
    * @return true if configuration instance contains property, otherwise false.
    */
   public boolean contains(String property) {
-    return this.properties.containsKey(property);
+    return this.configProperties.containsKey(property);
   }
 
   /**
@@ -223,7 +236,7 @@ public abstract class Config implements Instance {
    * @return true if configuration instance is empty, otherwise false.
    */
   public boolean isEmpty() {
-    return this.properties.isEmpty();
+    return this.configProperties.isEmpty();
   }
 
   /**
@@ -242,10 +255,7 @@ public abstract class Config implements Instance {
    */
   public Properties applicationProperties() {
     Properties props = new Properties();
-    properties.forEach((key, value) -> {
-      ConfigProperty property = new ConfigProperty(key.toString());
-      props.put(key, property.value());
-    });
+    this.configProperties.entrySet().stream().collect(Collectors.toMap(k -> k, v -> v.getValue().value()));
     return props;
   }
 }
