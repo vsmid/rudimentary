@@ -4,6 +4,7 @@ import hr.yeti.rudimentary.config.spi.Config;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -172,13 +173,14 @@ public class ConfigProperty {
 
   /**
    * Gets property value as {@link Map}.
+   * Property value must be in form of k1=v1,k2=v2...
    *
    * @return Configuration property value as {@link Map}.
    */
   public Map<String, String> asMap() {
     String[] values = this.value.split(",");
     return Stream.of(values)
-        .map(kv -> kv.split(":"))
+        .map(kv -> kv.split("="))
         .collect(
             Collectors.toMap(
                 kv -> kv[0].trim(),

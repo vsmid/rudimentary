@@ -5,6 +5,7 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.test.ConfigMock;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.TreeMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -126,11 +127,11 @@ public class ConfigPropertyTest {
     expect:
     assertEquals(
         new TreeMap(Map.of("k1", "v1")).toString(),
-        new ConfigProperty("map", "k1:v1").asMap().toString()
+        new ConfigProperty("map", "k1=v1").asMap().toString()
     );
     assertEquals(
         new TreeMap(Map.of("k1", "v1", "k2", "v2")).toString(),
-        new ConfigProperty("map", "k1:v1, k2: v2").asMap().toString()
+        new ConfigProperty("map", "k1=v1, k2 = v2").asMap().toString()
     );
   }
 
