@@ -24,13 +24,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * in the module's file
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.config.spi.Config</i>
  *
- * Configuration is loaded honoring priority loading mechanism. This means that property value which
- * will be return is decided in the following order(top to bottom, top has the highest priority):
+ * Configuration is loaded honouring priority loading mechanism. This means that property value is 
+ * resolved based on the following order(top to bottom, top has the highest priority):
  * <ul>
  * <li>system property.</li>
  * <li>environment property.</li>
- * <li>config.properties file located in src/main/resources directory or any other kind of property
- * loading using {@link Config#load} methods.</li>
+ * <li>config.properties file located in src/main/resources directory or any other kind of properties
+ * loading mechanism using {@link Config#load} methods.</li>
  * <li>default value provided on the spot (e.g.
  * {@code new ConfigProperty("val", "defaultValue")}).</li>
  * </ul>
