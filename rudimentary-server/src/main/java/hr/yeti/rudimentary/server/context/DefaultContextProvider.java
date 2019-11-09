@@ -49,10 +49,14 @@ public class DefaultContextProvider extends Context {
   @Override
   public void initialize() {
     // Config before any instance is loaded.
-    ServiceLoader.load(Config.class).
-        forEach(instance -> {
-          this.initializeInstance((Instance) instance);
-          add((Instance) instance);
+    ServiceLoader.load(Config.class)
+        .stream()
+        .filter(cfg -> cfg.get().conditional())
+        .findFirst()
+        .ifPresent(provider -> {
+          Config config = provider.get();
+          this.initializeInstance(config);
+          add(config);
         });
 
     // Create context map.
