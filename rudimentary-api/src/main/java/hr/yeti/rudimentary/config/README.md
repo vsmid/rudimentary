@@ -14,7 +14,12 @@ Property value is resolved based on the following order(top to bottom, top has t
 * Default value provided on the fly `e.g. new ConfigProperty("val", "defaultValue")`
 
 ### Configuration provider
+Configuration provider is a class which extends `hr.yeti.rudimentary.config.spi.Config` class.
+By overriding its `initialize()` method you can define how the properties will be loaded(from the database, file etc.).
+Configuration providers should be registered by writing canonical class name of the provider to the `src/main/java/META-INF/services/hr.yeti.rudimentary.config.spi.Config` file.
+Fortunately for you, Rudimentary comes with Maven plugin which does that automatically for you.
 
+ 
 #### Default provider
 
 #### Registering provider
