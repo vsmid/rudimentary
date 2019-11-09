@@ -136,6 +136,19 @@ public class ConfigPropertyTest {
   }
 
   @Test
+  public void test_asPath_method() {
+    expect:
+    assertEquals(
+        Path.of("a/b/c"),
+        new ConfigProperty("path", "a/b/c").asPath()
+    );
+    assertEquals(
+        Path.of("a/b/c"),
+        new ConfigProperty("path", "a,b,c").asPath()
+    );
+  }
+
+  @Test
   public void test_asURL_method_throws_ConfigException() {
     // setup:
     ConfigProperty value = new ConfigProperty("url", "/api/v1");

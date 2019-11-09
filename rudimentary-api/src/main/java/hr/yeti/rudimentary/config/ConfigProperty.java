@@ -172,8 +172,7 @@ public class ConfigProperty {
   }
 
   /**
-   * Gets property value as {@link Map}.
-   * Property value must be in form of k1=v1,k2=v2...
+   * Gets property value as {@link Map}. Property value must be in form of k1=v1,k2=v2...
    *
    * @return Configuration property value as {@link Map}.
    */
@@ -189,6 +188,25 @@ public class ConfigProperty {
                 TreeMap::new
             )
         );
+  }
+
+  /**
+   * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as
+   * already constructed path or in a form of part1,part2,part3... in which case the path will be constructed by this
+   * method.
+   *
+   * @return Configuration property value as {@link Path}.
+   */
+  public Path asPath() {
+    String[] path = this.value.split(",");
+    String[] remainingPath = Stream.of(path)
+        .map(String::trim)
+        .skip(1)
+        .toArray(String[]::new);
+
+    return Path.of(
+        path[0].trim(),
+        remainingPath);
   }
 
   /**
