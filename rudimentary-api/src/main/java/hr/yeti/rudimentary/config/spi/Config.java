@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -188,7 +187,10 @@ public abstract class Config implements Instance {
    * @return Property value as a string.
    */
   public String value(String name) {
-    return property(name, null).value();
+    if (this.configProperties.containsKey(name)) {
+      return this.configProperties.get(name).value();
+    }
+    return null;
   }
 
   /**
@@ -255,11 +257,13 @@ public abstract class Config implements Instance {
    */
   public Properties getProperties() {
     Properties props = new Properties();
+
     this.configProperties.entrySet()
         .stream()
-        .collect(
-            Collectors.toMap(k -> k, v -> v.getValue().value())
-        );
+        .forEach((prop) -> {
+          props.put(prop.getKey(), prop.getValue().toString());
+        });
+
     return props;
   }
 }
