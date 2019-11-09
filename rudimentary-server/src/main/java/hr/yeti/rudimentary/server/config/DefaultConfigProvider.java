@@ -2,8 +2,9 @@ package hr.yeti.rudimentary.server.config;
 
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
+import java.util.ServiceLoader;
 
-public class DefaultConfigProvider extends Config {
+public final class DefaultConfigProvider extends Config {
 
   @Override
   public void initialize() {
@@ -21,7 +22,12 @@ public class DefaultConfigProvider extends Config {
 
   @Override
   public boolean primary() {
-    return true;
+    return false;
+  }
+
+  @Override
+  public boolean conditional() {
+    return ServiceLoader.load(Config.class).stream().count() == 1;
   }
 
 }
