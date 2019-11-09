@@ -10,7 +10,7 @@ Property value is resolved based on the following order(top to bottom, top has t
 
 * System property
 * Environment property
-* Any kind of properties loading mechanism using *Config#load* methods
+* Properties loaded using one of the `Config.load(...)` methods provided
 * Default value provided on the fly `e.g. new ConfigProperty("val", "defaultValue")`
 
 ### Configuration provider
