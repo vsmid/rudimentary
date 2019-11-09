@@ -10,6 +10,7 @@ import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
+import hr.yeti.rudimentary.server.context.DefaultContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
@@ -59,9 +60,11 @@ public class Server {
         );
 
     ServiceLoader.load(Context.class)
+        .stream()
+        .filter(ctx -> ctx.get() instanceof DefaultContextProvider) // Force default context provider
         .findFirst()
         .ifPresent((ctx) -> {
-          this.context = ctx;
+          this.context = ctx.get();
           this.context.initialize();
         });
   }
@@ -168,7 +171,7 @@ public class Server {
     KeyManagerFactory keyManagerFactory = null;
     if (server.keyStore.length() > 0) {
       keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-      try ( InputStream in = new FileInputStream(server.keyStore)) {
+      try (InputStream in = new FileInputStream(server.keyStore)) {
         keystore.load(in, server.keyStorePassword.toCharArray());
       }
       keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -179,7 +182,7 @@ public class Server {
     TrustManagerFactory trustManagerFactory = null;
     if (server.trustStore.length() > 0) {
       truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-      try ( InputStream in = new FileInputStream(server.trustStore)) {
+      try (InputStream in = new FileInputStream(server.trustStore)) {
         truststore.load(in, server.trustStorePassword.toCharArray());
       }
       trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
