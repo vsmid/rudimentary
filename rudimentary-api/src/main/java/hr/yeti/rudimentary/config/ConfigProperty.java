@@ -4,7 +4,10 @@ import hr.yeti.rudimentary.config.spi.Config;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -42,8 +45,7 @@ public class ConfigProperty {
   private final String value;
 
   /**
-   * Constructor used to set property value without setting the default value if the configuration
-   * property is missing.
+   * Constructor used to set property value without setting the default value if the configuration property is missing.
    *
    * @param name The name of the property.
    */
@@ -53,8 +55,8 @@ public class ConfigProperty {
   }
 
   /**
-   * Constructor used to set property value by also providing the default value if the configuration
-   * property is missing.
+   * Constructor used to set property value by also providing the default value if the configuration property is
+   * missing.
    *
    * @param name The name of the property.
    * @param defaultValue The default value of the property if the configuration property is missing.
@@ -166,6 +168,25 @@ public class ConfigProperty {
     } catch (MalformedURLException ex) {
       throw new ConfigException(ex);
     }
+  }
+
+  /**
+   * Gets property value as {@link Map}.
+   *
+   * @return Configuration property value as {@link Map}.
+   */
+  public Map<String, String> asMap() {
+    String[] values = this.value.split(",");
+    return Stream.of(values)
+        .map(kv -> kv.split(":"))
+        .collect(
+            Collectors.toMap(
+                kv -> kv[0].trim(),
+                kv -> kv[1].trim(),
+                (v1, v2) -> v2,
+                TreeMap::new
+            )
+        );
   }
 
   /**

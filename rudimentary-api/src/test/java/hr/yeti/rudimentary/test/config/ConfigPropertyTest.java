@@ -3,15 +3,19 @@ package hr.yeti.rudimentary.test.config;
 import hr.yeti.rudimentary.config.ConfigException;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.test.ConfigMock;
-import hr.yeti.rudimentary.test.ContextMock;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
+import java.util.TreeMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class ConfigPropertyTest {
 
@@ -115,6 +119,19 @@ public class ConfigPropertyTest {
     assertNotNull(value.asURL());
     assertTrue(value.asURL() instanceof URL);
     assertEquals("http://localhost:8080/api/v1", value.asURL().toString());
+  }
+
+  @Test
+  public void test_asMap_method() {
+    expect:
+    assertEquals(
+        new TreeMap(Map.of("k1", "v1")).toString(),
+        new ConfigProperty("map", "k1:v1").asMap().toString()
+    );
+    assertEquals(
+        new TreeMap(Map.of("k1", "v1", "k2", "v2")).toString(),
+        new ConfigProperty("map", "k1:v1, k2: v2").asMap().toString()
+    );
   }
 
   @Test
