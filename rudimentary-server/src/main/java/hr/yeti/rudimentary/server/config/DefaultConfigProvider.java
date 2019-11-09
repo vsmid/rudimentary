@@ -3,7 +3,7 @@ package hr.yeti.rudimentary.server.config;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 
-public class ConfigProvider extends Config {
+public class DefaultConfigProvider extends Config {
 
   @Override
   public void initialize() {
