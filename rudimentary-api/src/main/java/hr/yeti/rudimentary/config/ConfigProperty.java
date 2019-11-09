@@ -178,7 +178,7 @@ public class ConfigProperty {
    */
   public Map<String, String> asMap() {
     String[] values = this.value.split(",");
-    
+
     return Stream.of(values)
         .map(kv -> kv.split("="))
         .collect(
@@ -200,7 +200,7 @@ public class ConfigProperty {
    */
   public Path asPath() {
     String[] path = this.value.split(",");
-    
+
     String[] remainingPath = Stream.of(path)
         .map(String::trim)
         .skip(1)
@@ -209,6 +209,16 @@ public class ConfigProperty {
     return Path.of(
         path[0].trim(),
         remainingPath);
+  }
+
+  /**
+   * Gets property value after transformer function appliance.
+   *
+   * @param transformer TRansformer function.
+   * @return Transformed property value.
+   */
+  public Object transform(ConfigValueTransformer transformer) {
+    return transformer.transform(this.value);
   }
 
   /**

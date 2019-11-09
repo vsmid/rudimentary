@@ -14,9 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 public class ConfigPropertyTest {
 
@@ -146,6 +143,13 @@ public class ConfigPropertyTest {
         Path.of("a/b/c"),
         new ConfigProperty("path", "a,b,c").asPath()
     );
+  }
+
+  @Test
+  public void test_transform_method() {
+    expect:
+    assertEquals("a1", new ConfigProperty("path", "a").transform(v -> v + "1"));
+    assertEquals(1, new ConfigProperty("path", "1").transform(v -> Integer.valueOf(v)));
   }
 
   @Test
