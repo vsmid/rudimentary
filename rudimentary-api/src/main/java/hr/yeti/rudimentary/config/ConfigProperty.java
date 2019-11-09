@@ -178,6 +178,7 @@ public class ConfigProperty {
    */
   public Map<String, String> asMap() {
     String[] values = this.value.split(",");
+    
     return Stream.of(values)
         .map(kv -> kv.split("="))
         .collect(
@@ -199,6 +200,7 @@ public class ConfigProperty {
    */
   public Path asPath() {
     String[] path = this.value.split(",");
+    
     String[] remainingPath = Stream.of(path)
         .map(String::trim)
         .skip(1)
