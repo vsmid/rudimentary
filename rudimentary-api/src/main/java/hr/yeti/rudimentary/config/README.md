@@ -21,7 +21,10 @@ Configuration providers should be registered by writing canonical class name of 
 Fortunately for you, Rudimentary already comes with Maven plugin which does that automatically for you.
 
 At any time, you can create and register your own, custom configuration provider.
+Only one configuration provider is allowed to be active during runtime. If multiple providers are found, the first one will take precedence.
 
- 
+Overriding `primary()` method will have no effect.
+
 #### Default configuration provider
-By default, Rudimentary provides default configuration provider in the form of `hr.yeti.rudimentary.server.config.DefaultConfigProvider`. This provider loads configuration from the property file located in `src/main/resources/config.properties`.
+By default, Rudimentary provides default configuration provider in the form of `hr.yeti.rudimentary.server.config.DefaultConfigProvider`. This provider loads configuration from the property file located in `src/main/resources/config.properties`. This provider is activated only if it is the only configuration provider available.
+
