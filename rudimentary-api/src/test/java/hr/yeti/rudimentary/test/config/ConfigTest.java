@@ -209,9 +209,9 @@ public class ConfigTest {
   }
 
   @Test
-  public void test_application_properties_is_cloned_instance_of_active_config_properties_values() {
+  public void test_getPoperties_returns_cloned_instance_of_active_config_properties_values() {
     expect:
-    config.applicationProperties().forEach((key, value) -> {
+    config.getProperties().forEach((key, value) -> {
       assertEquals(config.property(key.toString()), value.toString());
     });
   }

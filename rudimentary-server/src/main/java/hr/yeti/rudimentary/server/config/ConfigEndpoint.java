@@ -60,7 +60,7 @@ public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
 
   private String rowsHTMLGenerator() {
     StringBuilder rowsHTML = new StringBuilder();
-    TreeMap props = new TreeMap(Config.provider().applicationProperties());
+    TreeMap props = new TreeMap(Config.provider().getProperties());
 
     props.forEach((key, value) -> {
       rowsHTML.append(String.format("<tr><td>%s</td><td>%s</td></tr>", key, value));

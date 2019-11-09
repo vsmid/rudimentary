@@ -19,19 +19,21 @@ import java.util.stream.Collectors;
  * There should be only one Config provider per application.
  * </pre>
  * <p>
- * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader}
- * on application startup. Currently, <i>rudimentary-server</i> module provides Config provider so there is no need for
- * you to add an additional one. It is registered in the module's file
+ * Since this abstract class implements {@link Instance} it means it is loaded automatically via
+ * {@link ServiceLoader} on application startup. Currently, <i>rudimentary-server</i> module
+ * provides Config provider so there is no need for you to add an additional one. It is registered
+ * in the module's file
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.config.spi.Config</i>
  *
- * Configuration is loaded honoring priority loading mechanism. This means that property value which will be return is
- * decided in the following order(top to bottom, top has the highest priority):
+ * Configuration is loaded honoring priority loading mechanism. This means that property value which
+ * will be return is decided in the following order(top to bottom, top has the highest priority):
  * <ul>
  * <li>system property.</li>
  * <li>environment property.</li>
- * <li>config.properties file located in src/main/resources directory or any other kind of property loading using
- * {@link Config#load} methods.</li>
- * <li>default value provided on the spot (e.g. {@code new ConfigProperty("val", "defaultValue")}).</li>
+ * <li>config.properties file located in src/main/resources directory or any other kind of property
+ * loading using {@link Config#load} methods.</li>
+ * <li>default value provided on the spot (e.g.
+ * {@code new ConfigProperty("val", "defaultValue")}).</li>
  * </ul>
  *
  * @author vedransmid@yeti-it.hr
@@ -44,8 +46,8 @@ public abstract class Config implements Instance {
   protected final Map<String, ConfigProperty> configProperties = new ConcurrentHashMap<>();
 
   /**
-   * A property indicating whether current configuration instance is sealed or not. When configuration instance is
-   * sealed it means no additional property can be added.
+   * A property indicating whether current configuration instance is sealed or not. When
+   * configuration instance is sealed it means no additional property can be added.
    */
   protected boolean sealed = false;
 
@@ -100,10 +102,11 @@ public abstract class Config implements Instance {
   }
 
   /**
-   * A method used to load properties using an array of strings representing paths to properties files.
+   * A method used to load properties using an array of strings representing paths to properties
+   * files.
    *
-   * @param propertiesFileLocations An array of strings, each representing path to the properties file to be added to
-   * configuration.
+   * @param propertiesFileLocations An array of strings, each representing path to the properties
+   * file to be added to configuration.
    * @return An instance of {@link Config}.
    */
   public Config load(String... propertiesFileLocations) {
@@ -127,8 +130,8 @@ public abstract class Config implements Instance {
   /**
    * A method used to load properties using an array of {@link InputStream}.
    *
-   * @param properties An array of configuration properties loaded from {@link InputStream} to be added to
-   * configuration.
+   * @param properties An array of configuration properties loaded from {@link InputStream} to be
+   * added to configuration.
    * @return An instance of {@link Config}.
    */
   public Config load(InputStream... properties) {
@@ -158,7 +161,8 @@ public abstract class Config implements Instance {
   }
 
   /**
-   * Gets property value but also sets the default value to be returned in case of the property not being set.
+   * Gets property value but also sets the default value to be returned in case of the property not
+   * being set.
    *
    * @param name The name of the property for which you want to get value.
    * @param value The default value to be returned in case of the property not being not set.
@@ -188,8 +192,8 @@ public abstract class Config implements Instance {
   }
 
   /**
-   * Seals configuration instance making it ineligible for additional configuration property addition by using any of
-   * the load methods provided.
+   * Seals configuration instance making it ineligible for additional configuration property
+   * addition by using any of the load methods provided.
    */
   public void seal() {
     this.sealed = true;
@@ -205,8 +209,8 @@ public abstract class Config implements Instance {
   }
 
   /**
-   * Destroys configuration instance by clearing properties object holder making it eligible for configuration
-   * properties addition.
+   * Destroys configuration instance by clearing properties object holder making it eligible for
+   * configuration properties addition.
    */
   @Override
   public void destroy() {
@@ -217,8 +221,8 @@ public abstract class Config implements Instance {
   /**
    * Whether or not configuration instance contains property or not.
    *
-   * @param property The name of the property you wish to check whether or not is contained withing configuration
-   * instance.
+   * @param property The name of the property you wish to check whether or not is contained withing
+   * configuration instance.
    *
    * @return true if configuration instance contains property, otherwise false.
    */
@@ -236,9 +240,9 @@ public abstract class Config implements Instance {
   }
 
   /**
-   * Convenience method to be used to access {@link Config} properties without having to initialize a dedicated class
-   * field using {@link Instance#of(java.lang.Class)}. This method is usable when a provider of {@link Context} is also
-   * present.
+   * Convenience method to be used to access {@link Config} properties without having to initialize
+   * a dedicated class field using {@link Instance#of(java.lang.Class)}. This method is usable when
+   * a provider of {@link Context} is also present.
    *
    * @return An instance of Config class.
    */
@@ -247,9 +251,9 @@ public abstract class Config implements Instance {
   }
 
   /**
-   * @return Full set of active configuration properties in raw format.
+   * @return Full set of active configuration properties in {@link Properties} format.
    */
-  public Properties applicationProperties() {
+  public Properties getProperties() {
     Properties props = new Properties();
     this.configProperties.entrySet()
         .stream()
