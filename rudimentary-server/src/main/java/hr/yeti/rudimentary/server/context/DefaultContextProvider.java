@@ -22,7 +22,7 @@ import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 
-public class ContextProvider extends Context {
+public class DefaultContextProvider extends Context {
 
   private final List<Class<?>> SPIS = List.of(// Top priorities are Config and Context
       // Config.class, omitted, has its own loader

@@ -1,1 +1,1 @@
-hr.yeti.rudimentary.server.context.ContextProvider
+hr.yeti.rudimentary.server.context.DefaultContextProvider
