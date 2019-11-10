@@ -18,8 +18,8 @@ Property value is resolved based on the following order(top to bottom, top has t
 There are multiple ways of accessing property values depending on your needs and preferred style.
 
 ```java
-  Config.provider().property("name"); // Static access, returns ConfigProperty instance for property named 'Lena'
-  Config.provider().property("name", "Lena"); // Static access which also sets default value if no property is found within provider for property named 'Lena', returns ConfigProperty instance
+  Config.provider().property("name"); // Static access, returns ConfigProperty instance for property named 'name'
+  Config.provider().property("name", "Lena"); // Static access which also sets default value if no property is found within provider for property named 'name', returns ConfigProperty instance
   Config.provider().value("name"); // Static access, returns String value
   Config.provider().getProperties(); // Gets all properties as java.util.Properties
   Config.provider().getPropertiesByPrefix("group", false); // Gets all properties as java.util.Properties which start with 'group' string. Boolean parameter decides whether to keep group prefix name or not. Convenient if you need to pass a group of properties but you do not know all the property names in advance (e.g. javax.mail.Session object creation).
