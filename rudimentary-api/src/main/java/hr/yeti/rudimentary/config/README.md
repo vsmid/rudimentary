@@ -103,3 +103,19 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Security(CSRF) | security.csrf.enabled     | false | Enabel CSRF protection |
 | Security(CSRF) | security.csrf.tokenHttpHeaderName     | X-CSRF-TOKEN | CSRF token http header name |
 | Security(CSRF) | security.csrf.tokenCookieName     | CSRF-TOKEN | CSRF token http cookie name |
+| Security(CORS) | security.cors.enabled    | false | Enable CORS |
+| Security(CORS) | security.cors.allowOrigin     | * | Comma separated list of origins allowed |
+| Security(CORS) | security.cors.allowHeaders    | origin, accept, content-type | Comma separated list of http headers allowed |
+| Security(CORS) | security.cors.exposeHeaders     | location, info | Comma separated list of exposed http headers as part of the response |
+| Security(CORS) | security.cors.allowCredentials    | true | Indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies, authorization headers or TLS client certificates |
+| Security(CORS) | security.cors.allowMethods     | GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE | List of allowed http methods |
+| Security(CORS) | security.cors.maxAge     | 3600 | Indicates how long the results of a preflight request can be cached. |
+
+
+
+
+
+
+
+
+
