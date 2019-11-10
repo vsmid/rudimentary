@@ -41,21 +41,13 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
   private ConfigProperty validationInterval = new ConfigProperty("email.pool.validationInterval", "30");
   private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.pool.awaitTerminationInterval", "10");
 
-  // Email properties
-  private ConfigProperty host = new ConfigProperty("mail.smtp.host");
-  private ConfigProperty port = new ConfigProperty("mail.smtp.port");
-  private ConfigProperty user = new ConfigProperty("mail.smtp.user");
-  private ConfigProperty password = new ConfigProperty("mail.smtp.password");
-  private ConfigProperty auth = new ConfigProperty("mail.smtp.auth");
-  private ConfigProperty enableStartTls = new ConfigProperty("mail.smtp.starttls.enable");
-  private ConfigProperty requiredStartTls = new ConfigProperty("mail.smtp.starttls.required");
+  private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("mail.smtp", true);
 
   private Authenticator authenticator;
-  private Properties sessionProperties;
 
   @Override
   protected Session createObject() throws ObjectPoolException {
-    return Session.getInstance(sessionProperties, authenticator);
+    return Session.getInstance(smtpSessionProperties, authenticator);
   }
 
   @Override
@@ -77,14 +69,6 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
         return new PasswordAuthentication(user.value(), password.value());
       }
     };
-
-    // Very basic set of session properties.
-    sessionProperties = new Properties();
-    sessionProperties.put("mail.smtp.host", host.value());
-    sessionProperties.put("mail.smtp.port", port.value());
-    sessionProperties.put("mail.smtp.auth", auth.value());
-    sessionProperties.put("mail.smtp.starttls.enable", enableStartTls.value());
-    sessionProperties.put("mail.smtp.starttls.required", requiredStartTls.value());
 
     // This call is required, do not remove.
     super.initialize();

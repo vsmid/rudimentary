@@ -39,7 +39,7 @@ module hr.yeti.rudimentary.api {
   exports hr.yeti.rudimentary.sql.spi;
 
   exports hr.yeti.rudimentary.validation;
-  
+
   exports hr.yeti.rudimentary.shutdown.spi;
 
   exports hr.yeti.rudimentary.test;
@@ -51,5 +51,5 @@ module hr.yeti.rudimentary.api {
 
   requires transitive java.sql;
 
-  requires transitive jakarta.mail.api;
+  requires transitive jakarta.mail;
 }
