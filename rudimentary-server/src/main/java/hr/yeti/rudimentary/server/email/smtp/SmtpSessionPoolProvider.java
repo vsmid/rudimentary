@@ -42,13 +42,13 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
   private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.pool.awaitTerminationInterval", "10");
 
   // Email properties
-  private ConfigProperty host = new ConfigProperty("email.host");
-  private ConfigProperty port = new ConfigProperty("email.port");
-  private ConfigProperty user = new ConfigProperty("email.user");
-  private ConfigProperty password = new ConfigProperty("email.password");
-  private ConfigProperty auth = new ConfigProperty("email.smtp.auth");
-  private ConfigProperty enableStartTls = new ConfigProperty("email.smtp.starttls.enable");
-  private ConfigProperty requiredStartTls = new ConfigProperty("email.smtp.starttls.required");
+  private ConfigProperty host = new ConfigProperty("mail.smtp.host");
+  private ConfigProperty port = new ConfigProperty("mail.smtp.port");
+  private ConfigProperty user = new ConfigProperty("mail.smtp.user");
+  private ConfigProperty password = new ConfigProperty("mail.smtp.password");
+  private ConfigProperty auth = new ConfigProperty("mail.smtp.auth");
+  private ConfigProperty enableStartTls = new ConfigProperty("mail.smtp.starttls.enable");
+  private ConfigProperty requiredStartTls = new ConfigProperty("mail.smtp.starttls.required");
 
   private Authenticator authenticator;
   private Properties sessionProperties;
