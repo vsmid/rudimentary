@@ -68,4 +68,14 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Server(SSL) | server.ssl.clientAuth     | false | Should client authentication be required |
 | MVC | mvc.templatesDir     | view | Directory where views are located (under src/main/resources) |
 | MVC | mvc.staticResourcesDir    | static | Directory where static resources are located (under src/main/resources) |
+| JDBC | dataSource.enabled     | false | Enable JDBC data source |
+| JDBC | dataSource.driverClassName     |  | JDBC driver class name |
+| JDBC | dataSource.jdbcUrl     |  | JDBC url string |
+| JDBC | dataSource.username     |  | Database username |
+| JDBC | dataSource.password     |  | Database password |
+| JDBC | dataSource.maximumPoolSize     | 25 | JDBC connection pool size |
+
+
+
+
 
