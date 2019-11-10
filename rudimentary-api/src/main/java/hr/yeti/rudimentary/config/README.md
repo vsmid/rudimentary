@@ -98,12 +98,8 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Security(Login form) | security.loginform.landingViewURI    |  | Where to land after successful login |
 | Security(Login form) | security.loginform.usernameFieldName    | username | Login form username input field name |
 | Security(Login form) | security.loginform.passwordFieldName    | password | Login form password input field name |
-
-
-
-
-
-
-
-
-
+| Security(Identity store) | security.identityStore.embedded.enabled     | false | Enable in memory identity store. |
+| Security(Identity store) | security.identityStore.embedded.identities    |  | In memory identity store users definitions  |
+| Security(CSRF) | security.csrf.enabled     | false | Enabel CSRF protection |
+| Security(CSRF) | security.csrf.tokenHttpHeaderName     | X-CSRF-TOKEN | CSRF token http header name |
+| Security(CSRF) | security.csrf.tokenCookieName     | CSRF-TOKEN | CSRF token http cookie name |
