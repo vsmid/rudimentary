@@ -59,6 +59,10 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Server | server.port     | 8888 | Http server port |
 | Server | server.threadPool     | 25 | Maximum number of threads that can be processed by server at a time |
 | Server | server.stopDelay     | 0 | Maximum time in seconds to wait until requests have finished |
-
-
-
+| Server(SSL) | server.ssl.enabled     | false | Enable SSL |
+| Server(SSL) | server.ssl.protocol    | TLS | SSL protocol to be used |
+| Server(SSL) | server.ssl.keyStore     |  | Key store used for SSL |
+| Server(SSL) | server.ssl.keyStore.password    |  | Key store password|
+| Server(SSL) | server.ssl.trustStore    | | Trust store used for SSL |
+| Server(SSL) | server.ssl.trustStore.password     | | Trust store password |
+| Server(SSL) | server.ssl.clientAuth     | false | Should client authentication be required |
