@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * <pre>
@@ -24,13 +25,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * in the module's file
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.config.spi.Config</i>
  *
- * Configuration is loaded honouring priority loading mechanism. This means that property value is 
+ * Configuration is loaded honouring priority loading mechanism. This means that property value is
  * resolved based on the following order(top to bottom, top has the highest priority):
  * <ul>
  * <li>system property.</li>
  * <li>environment property.</li>
- * <li>config.properties file located in src/main/resources directory or any other kind of properties
- * loading mechanism using {@link Config#load} methods.</li>
+ * <li>config.properties file located in src/main/resources directory or any other kind of
+ * properties loading mechanism using {@link Config#load} methods.</li>
  * <li>default value provided on the spot (e.g.
  * {@code new ConfigProperty("val", "defaultValue")}).</li>
  * </ul>
@@ -256,14 +257,34 @@ public abstract class Config implements Instance {
    * @return Full set of active configuration properties in {@link Properties} format.
    */
   public Properties getProperties() {
+    return getPropertiesByPrefix(null, true);
+  }
+
+  /**
+   * @param prefix Properties group name prefix.
+   * @param keepPrefix Should prefix be kept as part of property name.
+   *
+   * @return A group of active configuration properties in {@link Properties} format filtered by
+   * properties group name prefix.
+   */
+  public Properties getPropertiesByPrefix(String prefix, final boolean keepPrefix) {
     Properties props = new Properties();
 
-    this.configProperties.entrySet()
-        .stream()
-        .forEach((prop) -> {
-          props.put(prop.getKey(), prop.getValue().toString());
-        });
+    Stream<Map.Entry<String, ConfigProperty>> stream = this.configProperties.entrySet().stream();
+
+    if (Objects.nonNull(prefix) && prefix.trim().length() > 0) {
+      stream = stream.filter(e -> e.getKey().startsWith(prefix));
+    }
+
+    stream.forEach((prop) -> {
+      String key = prop.getKey();
+      if (!keepPrefix) {
+        key = key.substring(prefix.length() + 1);
+      }
+      props.put(key, prop.getValue().toString());
+    });
 
     return props;
   }
+
 }

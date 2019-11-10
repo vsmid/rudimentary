@@ -209,10 +209,52 @@ public class ConfigTest {
   }
 
   @Test
-  public void test_getPoperties_returns_cloned_instance_of_active_config_properties_values() {
+  public void test_getPoperties_returns_new_properties_instance_of_active_configuration_properties_values() {
+    // setup:
+    config.load(
+        Map.of(
+            "k1", "v1",
+            "k2", "v2"
+        )
+    );
+
+    Properties props;
+
+    when:
+    props = config.getProperties();
+
     expect:
-    config.getProperties().forEach((key, value) -> {
-      assertEquals(config.property(key.toString()), value.toString());
-    });
+    assertEquals(2, props.size());
+    assertTrue(props.containsKey("k1"));
+    assertTrue(props.containsKey("k2"));
+  }
+
+  @Test
+  public void test_getPopertiesByPrefix_returns_new_properties_instance_of_active_configuration_properties_values() {
+    // setup:
+    config.load(
+        Map.of(
+            "group.k1", "v1",
+            "k2", "v2"
+        )
+    );
+
+    Properties props;
+
+    when:
+    props = config.getPropertiesByPrefix("group", true);
+
+    then:
+    assertEquals(1, props.size());
+    assertTrue(props.containsKey("group.k1"));
+
+    and:
+
+    when:
+    props = config.getPropertiesByPrefix("group", false);
+
+    then:
+    assertEquals(1, props.size());
+    assertTrue(props.containsKey("k1"));
   }
 }
