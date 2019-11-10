@@ -36,12 +36,15 @@ import javax.mail.Session;
 public class SmtpSessionPoolProvider extends EmailSessionPool {
 
   // Session pool settings
-  private ConfigProperty minSize = new ConfigProperty("email.pool.minSize", "25");
-  private ConfigProperty maxSize = new ConfigProperty("email.pool.maxSize", "50");
-  private ConfigProperty validationInterval = new ConfigProperty("email.pool.validationInterval", "30");
-  private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.pool.awaitTerminationInterval", "10");
+  private ConfigProperty minSize = new ConfigProperty("email.smtp.pool.minSize", "25");
+  private ConfigProperty maxSize = new ConfigProperty("email.smtp.pool.maxSize", "50");
+  private ConfigProperty validationInterval = new ConfigProperty("email.smtp.pool.validationInterval", "30");
+  private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.smtp.pool.awaitTerminationInterval", "10");
 
-  private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("email.properties", true);
+  private ConfigProperty user = new ConfigProperty("email.smtp.user");
+  private ConfigProperty password = new ConfigProperty("email.smtp.password");
+
+  private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("email.smtp.properties", false);
 
   private Authenticator authenticator;
 
@@ -66,7 +69,10 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
     authenticator = new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(user.value(), password.value());
+        return new PasswordAuthentication(
+            user.value(),
+            password.value()
+        );
       }
     };
 
