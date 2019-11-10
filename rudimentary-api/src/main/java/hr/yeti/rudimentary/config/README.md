@@ -88,6 +88,20 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Email(SMTP) | mail.smtp.auth     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
 | Email(SMTP) | mail.smtp.starttls.enable     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
 | Email(SMTP) | mail.smtp.starttls.required     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Security | security.realm     | default | Realm name |
+| Security | security.urisRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will be applied |
+| Security | security.urisNotRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will not be applied |
+| Security(Basic) | security.basic.enabled    | false | Enable Basic security |
+| Security(Login form) | security.loginform.enabled    | false | Enable login form security |
+| Security(Login form) | security.loginform.loginURI    | /_login | Login view URI |
+| Security(Login form) | security.loginform.redirectAfterSuccessfulLoginURI    | _redirectAfterSuccessfulLogin | Http endpoint which will perform redirect to the landing view |
+| Security(Login form) | security.loginform.landingViewURI    |  | Where to land after successful login |
+| Security(Login form) | security.loginform.usernameFieldName    | username | Login form username input field name |
+| Security(Login form) | security.loginform.passwordFieldName    | password | Login form password input field name |
+
+
+
+
 
 
 
