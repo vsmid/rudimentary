@@ -76,6 +76,18 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | JDBC | dataSource.maximumPoolSize     | 25 | JDBC connection pool size |
 | Session | session.maxConcurrentAllowed     | 25 | Number of concurrent sessions allowed |
 | Session | session.inactivityPeriodAllowed     | 1800 | Maximum time allowed between two consequent requests in seconds before session is invalidated |
+| Email(pool) | email.smtp.enabled     | false | Enable SMTP |
+| Email(pool) | email.pool.minSize     | 25 | Minimim number of javax.mail.Session in the pool |
+| Email(pool) | email.pool.maxSize    | 50 | MAximum number of javax.mail.Session in the pool |
+| Email(pool) | email.pool.validationInterval     | 30 | Time between two checks of pool status |
+| Email(pool) | email.pool.awaitTerminationInterval     | 15 | Time to wait for tasks to finish before termination |
+| Email(SMTP) | mail.smtp.host     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Email(SMTP) | mail.smtp.port     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Email(SMTP) | mail.smtp.user     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Email(SMTP) | mail.smtp.password     |  | SMTP user password |
+| Email(SMTP) | mail.smtp.auth     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Email(SMTP) | mail.smtp.starttls.enable     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Email(SMTP) | mail.smtp.starttls.required     |  | https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
 
 
 
