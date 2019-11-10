@@ -53,3 +53,12 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 ```
 
 ### Available configuration properties
+
+| Group        | Property name        | Default value           |  Description           |
+| ------------ | ------------- | ------------- | ----- |
+| Server | server.port     | 8888 | Http server port |
+| Server | server.threadPool     | 25 | Maximum number of threads that can be processed by server at a time |
+| Server | server.stopDelay     | 0 | Maximum time in seconds to wait until requests have finished |
+
+
+
