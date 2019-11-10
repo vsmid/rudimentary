@@ -74,6 +74,8 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | JDBC | dataSource.username     |  | Database username |
 | JDBC | dataSource.password     |  | Database password |
 | JDBC | dataSource.maximumPoolSize     | 25 | JDBC connection pool size |
+| Session | session.maxConcurrentAllowed     | 25 | Number of concurrent sessions allowed |
+| Session | session.inactivityPeriodAllowed     | 1800 | Maximum time allowed between two consequent requests in seconds before session is invalidated |
 
 
 
