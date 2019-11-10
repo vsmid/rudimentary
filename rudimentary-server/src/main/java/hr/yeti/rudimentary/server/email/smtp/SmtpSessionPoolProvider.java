@@ -41,7 +41,7 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
   private ConfigProperty validationInterval = new ConfigProperty("email.pool.validationInterval", "30");
   private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.pool.awaitTerminationInterval", "10");
 
-  private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("mail.smtp", true);
+  private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("email.properties", true);
 
   private Authenticator authenticator;
 
