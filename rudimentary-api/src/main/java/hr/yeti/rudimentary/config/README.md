@@ -66,3 +66,6 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Server(SSL) | server.ssl.trustStore    | | Trust store used for SSL |
 | Server(SSL) | server.ssl.trustStore.password     | | Trust store password |
 | Server(SSL) | server.ssl.clientAuth     | false | Should client authentication be required |
+| MVC | mvc.templatesDir     | view | Directory where views are located (under src/main/resources) |
+| MVC | mvc.staticResourcesDir    | static | Directory where static resources are located (under src/main/resources) |
+
