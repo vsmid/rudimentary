@@ -79,11 +79,13 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | Session | session.maxConcurrentAllowed     | 25 | Number of concurrent sessions allowed |
 | Session | session.inactivityPeriodAllowed     | 1800 | Maximum time allowed between two consequent requests in seconds before session is invalidated |
 | Email(pool) | email.smtp.enabled     | false | Enable SMTP |
-| Email(pool) | email.pool.minSize     | 25 | Minimim number of javax.mail.Session in the pool |
-| Email(pool) | email.pool.maxSize    | 50 | MAximum number of javax.mail.Session in the pool |
-| Email(pool) | email.pool.validationInterval     | 30 | Time between two checks of pool status |
-| Email(pool) | email.pool.awaitTerminationInterval     | 15 | Time to wait for tasks to finish before termination |
-| Email(SMTP) | email.properties.*     |  | Check possible * values at https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| Email(pool) | email.smtp.pool.minSize     | 25 | Minimim number of javax.mail.Session in the pool |
+| Email(pool) | email.smtp.pool.maxSize    | 50 | MAximum number of javax.mail.Session in the pool |
+| Email(pool) | email.smtp.pool.validationInterval     | 30 | Time between two checks of pool status |
+| Email(pool) | email.smtp.pool.awaitTerminationInterval     | 15 | Time to wait for tasks to finish before termination |
+| Email(SMTP) | email.smtp.user    |  | Username |
+| Email(SMTP) | email.smtp.password     |  | Password |
+| Email(SMTP) | email.smtp.properties.*     |  | Check possible * values at https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
 | Security | security.realm     | default | Realm name |
 | Security | security.urisRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will be applied |
 | Security | security.urisNotRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will not be applied |
