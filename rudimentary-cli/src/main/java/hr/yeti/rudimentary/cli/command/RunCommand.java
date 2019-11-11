@@ -87,7 +87,7 @@ public class RunCommand implements Command {
 
     ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
         "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
-        "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "clean", "compile", "package", "exec:exec");
+        "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "compile", "package", "exec:exec");
 
     builder.redirectErrorStream(true);
     process = builder.start();
