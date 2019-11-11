@@ -5,7 +5,6 @@ Makes dealing with application/service configuration a little bit easier.
 A set of loaders is provided to enable configuration loading from basically any source.
 Also, a convenient set of property value converters is available to make value transformation a breeze.
 
-
 ### Configuration properties loading hierarchy
 Property value is resolved based on the following order(top to bottom, top has the highest priority):
 
@@ -34,13 +33,32 @@ By overriding its `initialize()` method you can define how the properties will b
 Configuration providers should be registered by writing canonical class name of the provider to the `src/main/java/META-INF/services/hr.yeti.rudimentary.config.spi.Config` file.
 Fortunately for you, Rudimentary already comes with Maven plugin (`rudimentary-maven-plugin`) which does that automatically for you.
 
-At any time, you can create and register your own, custom configuration provider.
-Only one configuration provider is allowed to be active during runtime. If multiple providers are found, the first one will take precedence.
-
-Overriding `primary()` method will have no effect.
-
 #### Default configuration provider
 By default, Rudimentary provides default configuration provider in the form of `hr.yeti.rudimentary.server.config.DefaultConfigProvider`. This provider loads configuration from the property file located in `src/main/resources/config.properties`. Format used is a classic *.properties* file format, meaning each entry is represented as *key=value*. This provider is activated only if it is the only configuration provider available.
+
+#### Custom configuration provider
+At any time, you can create and register your own, custom configuration provider just by extending `hr.yeti.rudimentary.config.spi.Config` class. Two things you need to remember when implementing your own custom configuration provider:
+
+1. First statement of the custom provider's `initialize()` method should be `super.initialize()` to load default properties
+2. Last statement of the custom provider's `initialize()` method should be `seal()` to prevent any further configuration loading
+
+```java
+...
+
+public class CustomConfigProvider extends Config {
+ 
+ @Override
+ public void initialize() {
+  super.initialize();
+  
+  // TODO Add you own properties loading logic such as database, remote URL etc.
+  
+  seal();
+ }
+ 
+}
+```
+Only one configuration provider is allowed to be active during runtime. If multiple providers are found, the first one will take precedence. Overriding `primary()` method will have no effect.
 
 #### Test configuration provider
 Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use when writing test cases.
