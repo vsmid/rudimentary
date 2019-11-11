@@ -284,4 +284,14 @@ public abstract class Config implements Instance {
     return props;
   }
 
+  @Override
+  public void initialize() {
+    try (
+        InputStream defaultConfig = this.getClass().getResourceAsStream("/default-config.properties")) {
+      load(defaultConfig, defaultConfig);
+    } catch (IOException ex) {
+      throw new ConfigException(ex);
+    }
+  }
+
 }

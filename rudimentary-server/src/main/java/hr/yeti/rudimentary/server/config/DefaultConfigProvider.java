@@ -11,13 +11,15 @@ public final class DefaultConfigProvider extends Config {
 
   @Override
   public void initialize() {
+    super.initialize();
+    
     try (
-        InputStream defaultConfig = new ClasspathResource("default-config.properties").get();
         InputStream config = new ClasspathResource("config.properties").get()) {
-      load(defaultConfig, config);
+      load(config);
     } catch (IOException ex) {
       throw new ConfigException(ex);
     }
+    
     seal();
   }
 
