@@ -125,8 +125,8 @@ public class Server {
       // Start server
       server.httpServer.start();
 
-      ServerInfoConsolePrinter.printRegisteredUriInfo(LOGGER);
-      ServerInfoConsolePrinter.printConfigProperties(LOGGER);
+      // ServerInfoConsolePrinter.printRegisteredUriInfo(LOGGER);
+      // ServerInfoConsolePrinter.printConfigProperties(LOGGER);
 
       LOGGER.log(Level.INFO, "Server started in {0} ms, listening on port {1}", new Object[]{
         (String.valueOf(System.currentTimeMillis() - start)), String.valueOf(server.port)
