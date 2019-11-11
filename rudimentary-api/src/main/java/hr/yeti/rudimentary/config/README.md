@@ -56,58 +56,58 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 
 ### Available configuration properties
 
-| Group        | Property name        | Default value           |  Description           |
-| ------------ | ------------- | ------------- | ----- |
-| Server | server.port     | 8888 | Http server port |
-| Server | server.threadPool     | 25 | Maximum number of threads that can be processed by server at a time |
-| Server | server.stopDelay     | 0 | Maximum time in seconds to wait until requests have finished |
-| Server(SSL) | server.ssl.enabled     | false | Enable SSL |
-| Server(SSL) | server.ssl.protocol    | TLS | SSL protocol to be used |
-| Server(SSL) | server.ssl.keyStore     |  | Key store used for SSL |
-| Server(SSL) | server.ssl.keyStore.password    |  | Key store password|
-| Server(SSL) | server.ssl.trustStore    | | Trust store used for SSL |
-| Server(SSL) | server.ssl.trustStore.password     | | Trust store password |
-| Server(SSL) | server.ssl.clientAuth     | false | Should client authentication be required |
-| MVC | mvc.templatesDir     | view | Directory where views are located (under src/main/resources) |
-| MVC | mvc.staticResourcesDir    | static | Directory where static resources are located (under src/main/resources) |
-| JDBC | dataSource.enabled     | false | Enable JDBC data source |
-| JDBC | dataSource.driverClassName     |  | JDBC driver class name |
-| JDBC | dataSource.jdbcUrl     |  | JDBC url string |
-| JDBC | dataSource.username     |  | Database username |
-| JDBC | dataSource.password     |  | Database password |
-| JDBC | dataSource.maximumPoolSize     | 25 | JDBC connection pool size |
-| Session | session.maxConcurrentAllowed     | 25 | Number of concurrent sessions allowed |
-| Session | session.inactivityPeriodAllowed     | 1800 | Maximum time allowed between two consequent requests in seconds before session is invalidated |
-| Email(pool) | email.smtp.enabled     | false | Enable SMTP |
-| Email(pool) | email.smtp.pool.minSize     | 25 | Minimim number of javax.mail.Session in the pool |
-| Email(pool) | email.smtp.pool.maxSize    | 50 | MAximum number of javax.mail.Session in the pool |
-| Email(pool) | email.smtp.pool.validationInterval     | 30 | Time between two checks of pool status |
-| Email(pool) | email.smtp.pool.awaitTerminationInterval     | 15 | Time to wait for tasks to finish before termination |
-| Email(SMTP) | email.smtp.user    |  | Username |
-| Email(SMTP) | email.smtp.password     |  | Password |
-| Email(SMTP) | email.smtp.properties.*     |  | Check possible * values at https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
-| Security | security.realm     | default | Realm name |
-| Security | security.urisRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will be applied |
-| Security | security.urisNotRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will not be applied |
-| Security(Basic) | security.basic.enabled    | false | Enable Basic security |
-| Security(Login form) | security.loginform.enabled    | false | Enable login form security |
-| Security(Login form) | security.loginform.loginURI    | /_login | Login view URI |
-| Security(Login form) | security.loginform.redirectAfterSuccessfulLoginURI    | _redirectAfterSuccessfulLogin | Http endpoint which will perform redirect to the landing view |
-| Security(Login form) | security.loginform.landingViewURI    |  | Where to land after successful login |
-| Security(Login form) | security.loginform.usernameFieldName    | username | Login form username input field name |
-| Security(Login form) | security.loginform.passwordFieldName    | password | Login form password input field name |
-| Security(Identity store) | security.identityStore.embedded.enabled     | false | Enable in memory identity store. |
-| Security(Identity store) | security.identityStore.embedded.identities    |  | In memory identity store users definitions  |
-| Security(CSRF) | security.csrf.enabled     | false | Enabel CSRF protection |
-| Security(CSRF) | security.csrf.tokenHttpHeaderName     | X-CSRF-TOKEN | CSRF token http header name |
-| Security(CSRF) | security.csrf.tokenCookieName     | CSRF-TOKEN | CSRF token http cookie name |
-| Security(CORS) | security.cors.enabled    | false | Enable CORS |
-| Security(CORS) | security.cors.allowOrigin     | * | Comma separated list of origins allowed |
-| Security(CORS) | security.cors.allowHeaders    | origin, accept, content-type | Comma separated list of http headers allowed |
-| Security(CORS) | security.cors.exposeHeaders     | location, info | Comma separated list of exposed http headers as part of the response |
-| Security(CORS) | security.cors.allowCredentials    | true | Indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies, authorization headers or TLS client certificates |
-| Security(CORS) | security.cors.allowMethods     | GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE | List of allowed http methods |
-| Security(CORS) | security.cors.maxAge     | 3600 | Indicates how long the results of a preflight request can be cached in seconds |
+| Property name        | Default value           |  Description           |
+| ------------- | ------------- | ----- |
+| server.port     | 8888 | Http server port |
+| server.threadPool     | 25 | Maximum number of threads that can be processed by server at a time |
+| server.stopDelay     | 0 | Maximum time in seconds to wait until requests have finished |
+| server.ssl.enabled     | false | Enable SSL |
+| server.ssl.protocol    | TLS | SSL protocol to be used |
+| server.ssl.keyStore     |  | Key store used for SSL |
+| server.ssl.keyStore.password    |  | Key store password|
+| server.ssl.trustStore    | | Trust store used for SSL |
+| server.ssl.trustStore.password     | | Trust store password |
+| server.ssl.clientAuth     | false | Should client authentication be required |
+| mvc.templatesDir     | view | Directory where views are located (under src/main/resources) |
+| mvc.staticResourcesDir    | static | Directory where static resources are located (under src/main/resources) |
+| dataSource.enabled     | false | Enable JDBC data source |
+| dataSource.driverClassName     |  driver class name |
+| dataSource.jdbcUrl     |  url string |
+| dataSource.username     |  | Database username |
+| dataSource.password     |  | Database password |
+| dataSource.maximumPoolSize     | 25 connection pool size |
+| session.maxConcurrentAllowed     | 25 | Number of concurrent sessions allowed |
+| session.inactivityPeriodAllowed     | 1800 | Maximum time allowed between two consequent requests in seconds before session is invalidated |
+| email.smtp.enabled     | false | Enable SMTP |
+| email.smtp.pool.minSize     | 25 | Minimim number of javax.mail.Session in the pool |
+| email.smtp.pool.maxSize    | 50 | MAximum number of javax.mail.Session in the pool |
+| email.smtp.pool.validationInterval     | 30 | Time between two checks of pool status |
+| email.smtp.pool.awaitTerminationInterval     | 15 | Time to wait for tasks to finish before termination |
+| email.smtp.user    |  | Username |
+| email.smtp.password     |  | Password |
+| email.smtp.properties.*     |  | Check possible * values at https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html |
+| security.realm     | default | Realm name |
+| security.urisRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will be applied |
+| security.urisNotRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will not be applied |
+| security.basic.enabled    | false | Enable Basic security |
+| security.loginform.enabled    | false | Enable login form security |
+| security.loginform.loginURI    | /_login | Login view URI |
+| security.loginform.redirectAfterSuccessfulLoginURI    | _redirectAfterSuccessfulLogin | Http endpoint which will perform redirect to the landing view |
+| security.loginform.landingViewURI    |  | Where to land after successful login |
+| security.loginform.usernameFieldName    | username | Login form username input field name |
+| security.loginform.passwordFieldName    | password | Login form password input field name |
+| security.identityStore.embedded.enabled     | false | Enable in memory identity store. |
+| security.identityStore.embedded.identities    |  | In memory identity store users definitions  |
+| security.csrf.enabled     | false | Enabel CSRF protection |
+| security.csrf.tokenHttpHeaderName     | X-CSRF-TOKEN | CSRF token http header name |
+| security.csrf.tokenCookieName     | CSRF-TOKEN | CSRF token http cookie name |
+| security.cors.enabled    | false | Enable CORS |
+| security.cors.allowOrigin     | * | Comma separated list of origins allowed |
+| security.cors.allowHeaders    | origin, accept, content-type | Comma separated list of http headers allowed |
+| security.cors.exposeHeaders     | location, info | Comma separated list of exposed http headers as part of the response |
+| security.cors.allowCredentials    | true | Indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies, authorization headers or TLS client certificates |
+| security.cors.allowMethods     | GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE | List of allowed http methods |
+| security.cors.maxAge     | 3600 | Indicates how long the results of a preflight request can be cached in seconds |
 
 
 
