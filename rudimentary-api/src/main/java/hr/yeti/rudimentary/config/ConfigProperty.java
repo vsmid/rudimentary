@@ -208,7 +208,8 @@ public class ConfigProperty {
 
     return Path.of(
         path[0].trim(),
-        remainingPath);
+        remainingPath
+    );
   }
 
   /**
