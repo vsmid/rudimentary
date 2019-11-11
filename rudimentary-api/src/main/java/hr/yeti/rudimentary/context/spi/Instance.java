@@ -140,7 +140,6 @@ public interface Instance {
    * </pre>
    */
   default void destroy() {
-    // TODO Shutdown is not yet implemented.
   }
 
   /**
@@ -148,7 +147,9 @@ public interface Instance {
    * An indicator that this instance is to be returned when there are multiple providers
    * of the same SPI and the above {@link Instance#of(java.lang.Class)} method is called.
    * If there are multiple primary providers, the first one encountered is returned. This however is a bad
-   * practice, there should only be one primary provider. Use this with caution.
+   * practice, there should only be one primary provider. Setting this value to true will have no
+   * effect during context initialization. {@link Instance#of(java.lang.Class)} uses this method.
+   * Use this with caution.
    * </pre>
    *
    * @return true if this instance is primary, otherwise false by default.
@@ -158,7 +159,8 @@ public interface Instance {
   }
 
   /**
-   * Indicates whether an instance of this class should be created and put into application/service context or not.
+   * Indicates whether an instance of this class should be created and put into application/service
+   * context or not.
    *
    * @return True if an instance should be created, otherwise false.
    */
