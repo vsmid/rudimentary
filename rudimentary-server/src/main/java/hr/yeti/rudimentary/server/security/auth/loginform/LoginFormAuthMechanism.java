@@ -21,11 +21,11 @@ import java.util.regex.Pattern;
 
 public class LoginFormAuthMechanism extends AuthMechanism {
 
-  private ConfigProperty enabled = new ConfigProperty("security.loginform.enabled");
-  private ConfigProperty loginURI = new ConfigProperty("security.loginform.loginURI");
-  private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginform.redirectAfterSuccessfulLoginURI");
-  private ConfigProperty usernameFieldName = new ConfigProperty("security.loginform.usernameFieldName");
-  private ConfigProperty passwordFieldName = new ConfigProperty("security.loginform.passwordFieldName");
+  private ConfigProperty enabled = new ConfigProperty("security.loginForm.enabled");
+  private ConfigProperty loginURI = new ConfigProperty("security.loginForm.loginURI");
+  private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginForm.redirectAfterSuccessfulLoginURI");
+  private ConfigProperty usernameFieldName = new ConfigProperty("security.loginForm.usernameFieldName");
+  private ConfigProperty passwordFieldName = new ConfigProperty("security.loginForm.passwordFieldName");
 
   private IdentityStore identityStore;
 

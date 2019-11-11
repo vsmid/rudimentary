@@ -90,12 +90,12 @@ Rudimentary provides `hr.yeti.rudimentary.test.ConfigMock` which you can use whe
 | security.urisRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will be applied |
 | security.urisNotRequiringAuthentication     | | Comma separated list of URIs(regex format allowed) for which authentication will not be applied |
 | security.basic.enabled    | false | Enable Basic security |
-| security.loginform.enabled    | false | Enable login form security |
-| security.loginform.loginURI    | /_login | Login view URI |
-| security.loginform.redirectAfterSuccessfulLoginURI    | _redirectAfterSuccessfulLogin | Http endpoint which will perform redirect to the landing view |
-| security.loginform.landingViewURI    |  | Where to land after successful login |
-| security.loginform.usernameFieldName    | username | Login form username input field name |
-| security.loginform.passwordFieldName    | password | Login form password input field name |
+| security.loginForm.enabled    | false | Enable login form security |
+| security.loginForm.loginURI    | /_login | Login view URI |
+| security.loginForm.redirectAfterSuccessfulLoginURI    | _redirectAfterSuccessfulLogin | Http endpoint which will perform redirect to the landing view |
+| security.loginForm.landingViewURI    |  | Where to land after successful login |
+| security.loginForm.usernameFieldName    | username | Login form username input field name |
+| security.loginForm.passwordFieldName    | password | Login form password input field name |
 | security.identityStore.embedded.enabled     | false | Enable in memory identity store. |
 | security.identityStore.embedded.identities    |  | In memory identity store users definitions  |
 | security.csrf.enabled     | false | Enabel CSRF protection |

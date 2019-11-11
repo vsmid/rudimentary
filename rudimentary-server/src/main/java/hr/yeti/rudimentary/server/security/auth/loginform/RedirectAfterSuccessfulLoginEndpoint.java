@@ -10,9 +10,9 @@ import java.net.URI;
 
 public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, Redirect> {
 
-  private ConfigProperty enabled = new ConfigProperty("security.loginform.enabled");
-  private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginform.redirectAfterSuccessfulLoginURI");
-  private ConfigProperty landingViewURI = new ConfigProperty("security.loginform.landingViewURI");
+  private ConfigProperty enabled = new ConfigProperty("security.loginForm.enabled");
+  private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginForm.redirectAfterSuccessfulLoginURI");
+  private ConfigProperty landingViewURI = new ConfigProperty("security.loginForm.landingViewURI");
 
   @Override
   public HttpMethod httpMethod() {
