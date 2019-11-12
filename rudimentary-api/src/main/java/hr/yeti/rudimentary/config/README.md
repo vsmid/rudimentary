@@ -26,6 +26,24 @@ There are multiple ways of accessing property values depending on your needs and
   new ConfigProperty("name", "Lena"); // Class level property named 'name' which also sets default value if no property is found within provider
 ```
 
+### Property value converters
+ConfigProperty type comes with a set of default value converters.
+
+```java
+  Config.provider().property("name").value(); // Returns value as String
+  new ConfigProperty("name").value(); // Returns value as String, same as above example
+  Config.provider().property("name").toString(); // Returns value as String
+  Config.provider().property("age").asInt(); // Returns value as Integer
+  Config.provider().property("long").asLong(); // Returns value as Long
+  Config.provider().property("truth").asBoolean; // Returns value as Boolean
+  Config.provider().property("path").asPath(); // Either a/b/c or a,b,c value format
+  Config.provider().property("map").asMap(); // Requires k=v comma sepatared values format e.g. k1=v1,k2=v2,k3=v3
+  Config.provider().property("url").asURL(); // Returns value as URL
+  Config.provider().property("uri").asURI(); // Returns value as URI
+  Config.provider().property("array").asArray(); // Requires comma separated values format, e.q. a,b,c,d
+  Config.provider().property("name").transform(String::toUpperCase); // Custom transformation on the fly
+```
+
 ### Configuration provider
 Configuration provider is a class which extends `hr.yeti.rudimentary.config.spi.Config` class.
 By overriding its `initialize()` method you can define how the properties will be loaded(from the database, file, remote URL etc.).
