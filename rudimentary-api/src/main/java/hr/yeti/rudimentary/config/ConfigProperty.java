@@ -46,7 +46,8 @@ public class ConfigProperty {
   private final String value;
 
   /**
-   * Constructor used to set property value without setting the default value if the configuration property is missing.
+   * Constructor used to set property value without setting the default value if the configuration
+   * property is missing.
    *
    * @param name The name of the property.
    */
@@ -56,8 +57,8 @@ public class ConfigProperty {
   }
 
   /**
-   * Constructor used to set property value by also providing the default value if the configuration property is
-   * missing.
+   * Constructor used to set property value by also providing the default value if the configuration
+   * property is missing.
    *
    * @param name The name of the property.
    * @param defaultValue The default value of the property if the configuration property is missing.
@@ -68,7 +69,7 @@ public class ConfigProperty {
   }
 
   /**
-   * Sets the property value honoring priority loading mechanism.
+   * Sets the property value honouring priority loading mechanism.
    *
    * @see Config for more info about priority loading mechanism.
    *
@@ -80,12 +81,6 @@ public class ConfigProperty {
 
     if (Objects.isNull(property)) {
       property = System.getenv(name);
-    }
-
-    if (Objects.isNull(property)) {
-      if (Objects.nonNull(Config.provider())) {
-        property = Config.provider().value(name);
-      }
     }
 
     if (Objects.isNull(property)) {
@@ -192,9 +187,9 @@ public class ConfigProperty {
   }
 
   /**
-   * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as
-   * already constructed path or in a form of part1,part2,part3... in which case the path will be constructed by this
-   * method.
+   * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which
+   * will be treated as already constructed path or in a form of part1,part2,part3... in which case
+   * the path will be constructed by this method.
    *
    * @return Configuration property value as {@link Path}.
    */
