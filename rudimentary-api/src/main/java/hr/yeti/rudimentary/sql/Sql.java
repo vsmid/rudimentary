@@ -33,16 +33,15 @@ public final class Sql {
   private boolean tx = false;
 
   private Sql(String dataSourceId, boolean tx) {
-    Instance.providersOf(BasicDataSource.class).stream()
-        .filter(ds -> ds.id().equals(dataSourceId))
-        .findAny()
-        .ifPresent(ds -> {
-          try {
-            this.conn = ds.getConnection();
-          } catch (SQLException ex) {
-            Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
-          }
-        });
+    BasicDataSource dataSource = Instance.withId(BasicDataSource.class, dataSourceId);
+
+    if (Objects.nonNull(dataSource)) {
+      try {
+        this.conn = dataSource.getConnection();
+      } catch (SQLException ex) {
+        Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
 
     this.tx = tx;
   }

@@ -55,7 +55,6 @@ public interface Instance {
    * @return An instance of given @param class.
    */
   static <T> T of(Class<T> clazz) {
-
     T instance = (T) Context.getContext().get(clazz.getCanonicalName());
 
     if (Objects.isNull(instance)) {
@@ -77,8 +76,29 @@ public interface Instance {
       }
     }
 
-    // TODO throw exception on null instead null?
     return instance;
+  }
+
+  /**
+   * The same as {@link Instance#of(java.lang.Class)} but with additional filtering by instance's
+   * id. If you have multiple instances of the same provider with the same instance id, the first
+   * one found will be returned unless marked as primary.
+   *
+   * @param <T> Inferred class type generics.
+   * @param clazz Class type to be returned.
+   * @param id Instance id.
+   * @return An instance of given @param class with @param id.
+   */
+  static <T> T withId(Class<T> clazz, String id) {
+    Optional<T> instanceWithId = providersOf(clazz)
+        .stream()
+        .filter(instance -> {
+          String instanceId = ((Instance) instance).id();
+          return Objects.nonNull(instanceId) && instanceId.equalsIgnoreCase(id);
+        })
+        .findFirst();
+
+    return instanceWithId.isPresent() ? instanceWithId.get() : null;
   }
 
   /**

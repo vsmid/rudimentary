@@ -3,6 +3,8 @@ package hr.yeti.rudimentary.test.context;
 import hr.yeti.rudimentary.test.context.mock.MockInstance1;
 import hr.yeti.rudimentary.test.ContextMock;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.test.context.mock.MockInstance11a;
+import hr.yeti.rudimentary.test.context.mock.MockInstance11b;
 import hr.yeti.rudimentary.test.context.mock.MockInstance2;
 import hr.yeti.rudimentary.test.context.mock.MockInstance3;
 import hr.yeti.rudimentary.test.context.mock.MockInstance4;
@@ -16,7 +18,7 @@ import org.junit.jupiter.api.Test;
 public class InstanceTest {
 
   @Test
-  public void test_should_return_null_when_instance_does_not_exist() {
+  public void test_should_throw_exception_when_instance_does_not_exist() {
     // setup:
     MockInstance1 mockInstance1 = new MockInstance1();
 
@@ -161,5 +163,26 @@ public class InstanceTest {
     assertTrue(
         fetchedInstances.containsAll(List.of(mockInstance1, mockInstance2, mockInstance3))
     );
+  }
+
+  @Test
+  public void test_should_return_an_instance_with_id() {
+    // setup:
+    MockInstance11a mockInstance11a = new MockInstance11a(); // id = lean
+    MockInstance11b mockInstance11b = new MockInstance11b();
+
+    ContextMock ctx = new ContextMock(
+        mockInstance11a, mockInstance11b
+    );
+
+    Instance fetchedInstance;
+
+    when:
+    fetchedInstance = Instance.withId(MockInstance11a.class, "lena");
+
+    then:
+    assertNotNull(fetchedInstance);
+    assertTrue(fetchedInstance instanceof MockInstance11a);
+    assertEquals("lena", fetchedInstance.id());
   }
 }
