@@ -27,7 +27,7 @@ A small, simple and opinionated Java based web services/applications framework.
 
 ## Current status
 
-Closing in on the initial release feature set. Not yet ready to be used in production environment. Use it for fast prototyping, mocks etc.
+Closing in on the initial release feature set. Slowly but steadily adding documentation. Not yet ready to be used in production environment. Use it for fast prototyping, mocks etc. 
 
 ## Introduction
 
