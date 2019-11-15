@@ -96,7 +96,7 @@ Logic for conditional object initialization should be placed inside overriden me
 public class A implements Instance {
   @Override
   public void conditional() {
-    return 1 < 2; // Will initialize instance if condition is true
+    return 1 < 2; // Will initialize instance if condition is true.
   }
 }
 ```
