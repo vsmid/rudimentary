@@ -58,9 +58,12 @@ The preferred way is by using `hr.yeti.rudimentary.context.spi.Instance`.
 Simply put, if you want Rudimentray context to automatically initialize custom instance for you, just make your class implement 
 `hr.yeti.rudimentary.context.spi.Instance`. That's it.
 
+*rudimentary-maven-plugin* will automatically register new instance but you can also register it manually by writing canonical class name of the provider to the `src/main/resources/META-INF/services/hr.yeti.rudimentary.context.spi.Instance` file.
+
 #### Instance lifecycle/phases/features
 
 ##### Initialization
+Every instance must be initialized. Context triggers each instance initialization method before caching it internally.
 Your custom object initialization logic should be placed inside overriden method called `initialize()`.
 
 ```java
@@ -74,7 +77,7 @@ public class A implements Instance {
 
 #### Destroy
 Your custom object destroy logic should be placed inside overriden method called `destroy()`.
-Is will be called when context is destroyed(server stop).
+It will be called when context is destroyed(server stop).
 
 
 ```java
