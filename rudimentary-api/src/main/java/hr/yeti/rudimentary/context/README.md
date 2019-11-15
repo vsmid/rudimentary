@@ -62,7 +62,7 @@ Simply put, if you want Rudimentray context to automatically initialize custom i
 
 #### Instance lifecycle/phases/features
 
-##### Initialization
+#### Initialization
 Every instance must be initialized. Context triggers each instance initialization method before caching it internally.
 Your custom object initialization logic should be placed inside overriden method called `initialize()`.
 
