@@ -15,12 +15,6 @@ This default provider for now only manages application scoped instances which ba
 #### Test Context provider
 Rudimentary provides `hr.yeti.rudimentary.test.ContextMock` which you can use when writing test cases.
 ```java
-  // Create mock context without configuration
-  ContextMock ctx1 = new ContextMock(
-      Mockinstance1.class, 
-      MockInstance2.class
-   );
-   
   // Create mock context with configuration
   ContextMock ctx2 = new ContextMock(
       Map.of("key", "value"), 
