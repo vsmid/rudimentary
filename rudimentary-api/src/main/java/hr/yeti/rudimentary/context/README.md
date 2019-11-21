@@ -61,6 +61,7 @@ Your custom object initialization logic should be placed inside overriden method
 
 ```java
 public class A implements Instance {
+
   @Override
   public void initialize() {
     // TODO Put your logic here.
@@ -75,6 +76,7 @@ It will be called when context is destroyed(server stop).
 
 ```java
 public class A implements Instance {
+
   @Override
   public void destroy() {
     // TODO Put your logic here.
@@ -87,6 +89,7 @@ Logic for conditional object initialization should be placed inside overriden me
 
 ```java
 public class A implements Instance {
+
   @Override
   public void conditional() {
     return 1 < 2; // Will initialize instance if condition is true.
@@ -99,6 +102,7 @@ If your custom object instance dependes on some other instance to be loaded befo
 
 ```java
 public class A implements Instance {
+
   @Override
   public Class[] dependsOn() {
     return new Class[]{ Config.class }; // Config instance must be initialized before.
@@ -106,3 +110,29 @@ public class A implements Instance {
 }
 ```
 
+#### Id
+You can give an instance a custom id in case you have multiple providers of the same SPI. 
+This is helpful if you are not fetching instance by the exact class but by SPI class.
+Example is how Rudimentary handle multiple `hr.yeti.rudimentary.sql.spi.BasicDataSource` providers.
+
+
+#### Primary
+In case you have multiple providers of the same SPI and you want to return the specific one, set primary to true;
+This is helpful if you are not fetching instance by the exact class but by SPI class.
+
+```java
+// This instance will be returned when called Instance.of(Instance.class)
+public class A implements Instance {
+
+  @Override
+  public boolean primary() {
+    return true;
+}
+
+public class B implements Instance {
+
+  @Override
+  public boolean primary() {
+    return false;
+}
+```
