@@ -10,7 +10,7 @@ Context provider is a class extending `hr.yeti.rudimentary.context.spi.Context` 
 
 #### Default Context provider
 Rudimentary provides default Context implementation through `hr.yeti.rudimentary.server.context.DefaultContextProvider`.
-This default provider for now only manages application scoped instances which basically means there is only one object instance created per runtime.
+This default provider for now only manages application scoped instances which basically means there is only one object instance created per runtime. Currently, this is the only Context provider allowed.
 
 #### Test Context provider
 Rudimentary provides `hr.yeti.rudimentary.test.ContextMock` which you can use when writing test cases.
