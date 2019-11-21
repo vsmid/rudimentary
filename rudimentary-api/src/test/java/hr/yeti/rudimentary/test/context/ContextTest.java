@@ -1,9 +1,6 @@
 package hr.yeti.rudimentary.test.context;
 
-import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.ContextException;
-import hr.yeti.rudimentary.test.ConfigMock;
 import hr.yeti.rudimentary.test.ContextMock;
 import hr.yeti.rudimentary.test.context.mock.MockInstance1;
 import hr.yeti.rudimentary.test.context.mock.MockInstance10;
@@ -15,6 +12,7 @@ import hr.yeti.rudimentary.test.context.mock.MockInstance8;
 import hr.yeti.rudimentary.test.context.mock.MockInstance9a;
 import hr.yeti.rudimentary.test.context.mock.MockInstance9b;
 import hr.yeti.rudimentary.test.context.mock.MockInstance9c;
+import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,126 +22,121 @@ import org.junit.jupiter.api.Test;
 
 public class ContextTest {
 
-  @Test
-  public void test_initial_context_state() {
-    // setup:
-    ContextMock ctx = new ContextMock();
+    @Test
+    public void test_initial_context_state() {
+        // setup:
+        ContextMock ctx = new ContextMock(Map.of());
 
-    expect:
-    assertNotNull(ContextMock.getContext());
-    assertTrue(ContextMock.getContext().isEmpty());
+        expect:
+        assertNotNull(ContextMock.getContext());
+        assertFalse(ContextMock.getContext().isEmpty());
 
-    assertNotNull(ContextMock.getInitializedInstances());
-    assertTrue(ContextMock.getInitializedInstances().isEmpty());
-  }
+        assertNotNull(ContextMock.getInitializedInstances());
+        assertFalse(ContextMock.getInitializedInstances().isEmpty());
+    }
 
-  @Test
-  public void test_destroy_method_should_reset_state() {
-    // setup: 
-    MockInstance1 mockInstance1 = new MockInstance1();
-    ContextMock ctx;
+    @Test
+    public void test_destroy_method_should_reset_state() {
+        // setup: 
+        ContextMock ctx;
 
-    when:
-    ctx = new ContextMock(mockInstance1);
+        when:
+        ctx = new ContextMock(Map.of(), MockInstance1.class);
 
-    then:
-    assertTrue(ContextMock.getContext().size() == 1);
-    assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
+        then:
+        assertTrue(ContextMock.getContext().size() == 2);
+        assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
 
-    assertTrue(ContextMock.getInitializedInstances().size() == 1);
-    assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
+        assertTrue(ContextMock.getInitializedInstances().size() == 2);
+        assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
 
-    and:
+        and:
 
-    when:
-    // Calls destroy method in constructor.
-    ctx = new ContextMock();
+        when:
+        // Calls destroy method in constructor.
+        ctx = new ContextMock(Map.of());
 
-    then:
-    assertTrue(ContextMock.getContext().isEmpty());
-    assertTrue(ContextMock.getInitializedInstances().isEmpty());
-  }
+        then:
+        assertEquals(1, ContextMock.getContext().size());
+        assertEquals(1, ContextMock.getInitializedInstances().size());
+    }
 
-  @Test
-  public void test_should_execute_all_initialization_steps() {
-    // setup: 
-    MockInstance1 mockInstance1 = new MockInstance1();
-    ContextMock ctx = new ContextMock(mockInstance1);
+    @Test
+    public void test_should_execute_all_initialization_steps() {
+        // setup: 
+        ContextMock ctx = new ContextMock(Map.of(), MockInstance1.class);
 
-    expect:
-    // Value is 10 after initialization.
-    assertEquals("10", mockInstance1.getValue());
+        expect:
+        // Value is 10 after initialization.
+        assertEquals("10", ((MockInstance1) ContextMock.getContext().get(MockInstance1.class.getCanonicalName())).getValue());
 
-    //Instance is put to context map.
-    assertTrue(ContextMock.getContext().size() == 1);
-    assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
+        //Instance is put to context map.
+        assertTrue(ContextMock.getContext().size() == 2);
+        assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
 
-    // Instance is initialized.
-    assertTrue(ContextMock.getInitializedInstances().size() == 1);
-    assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
-  }
+        // Instance is initialized.
+        assertTrue(ContextMock.getInitializedInstances().size() == 2);
+        assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
+    }
 
-  @Test
-  public void test_isInstanceInitialized_should_return_correct_result() {
-    // setup:
-    ContextMock ctx = new ContextMock(new MockInstance1());
+    @Test
+    public void test_isInstanceInitialized_should_return_correct_result() {
+        // setup:
+        ContextMock ctx = new ContextMock(Map.of(), MockInstance1.class);
 
-    expect:
-    // contextMock.initialized is calling protected Context method in order to test it.
-    assertTrue(ctx.initialized(MockInstance1.class));
-    assertFalse(ctx.initialized(MockInstance2.class));
-  }
+        expect:
+        // contextMock.initialized is calling protected Context method in order to test it.
+        assertTrue(ctx.initialized(MockInstance1.class));
+        assertFalse(ctx.initialized(MockInstance2.class));
+    }
 
-  @Test
-  public void test_creating_instance_dependency_graph() {
-    // setup:
-    ContextMock ctx = new ContextMock(new MockInstance1(), new MockInstance5());
+    @Test
+    public void test_creating_instance_dependency_graph() {
+        // setup:
+        ContextMock ctx = new ContextMock(Map.of(), MockInstance1.class, MockInstance5.class);
 
-    expect:
-    assertEquals(2, ctx.getInstanceDependencyGraph().size());
-    assertTrue(ctx.getInstanceDependencyGraph().get(MockInstance1.class.getCanonicalName()).isEmpty());
-    assertEquals(1, ctx.getInstanceDependencyGraph().get(MockInstance5.class.getCanonicalName()).size());
-    assertEquals(MockInstance2.class.getCanonicalName(), ctx.getInstanceDependencyGraph().get(MockInstance5.class.getCanonicalName()).get(0));
-  }
+        expect:
+        assertEquals(3, ctx.getInstanceDependencyGraph().size());
+        assertTrue(ctx.getInstanceDependencyGraph().get(MockInstance1.class.getCanonicalName()).isEmpty());
+        assertEquals(1, ctx.getInstanceDependencyGraph().get(MockInstance5.class.getCanonicalName()).size());
+        assertEquals(MockInstance2.class.getCanonicalName(), ctx.getInstanceDependencyGraph().get(MockInstance5.class.getCanonicalName()).get(0));
+    }
 
-  @Test
-  public void test_exception_on_circular_dependency() {
-    ContextException ex;
+    @Test
+    public void test_exception_on_circular_dependency() {
+        ContextException ex;
 
-    expect:
-    ex = assertThrows(ContextException.class, () -> new ContextMock(new MockInstance6(), new MockInstance7()));
-    assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
-  }
+        expect:
+        ex = assertThrows(ContextException.class, () -> new ContextMock(Map.of(), MockInstance6.class, MockInstance7.class));
+        assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
+    }
 
-  @Test
-  public void test_exception_on_self_circular_dependency() {
-    ContextException ex;
+    @Test
+    public void test_exception_on_self_circular_dependency() {
+        ContextException ex;
 
-    expect:
-    ex = assertThrows(ContextException.class, () -> new ContextMock(new MockInstance8()));
-    assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
-  }
+        expect:
+        ex = assertThrows(ContextException.class, () -> new ContextMock(Map.of(), MockInstance8.class));
+        assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
+    }
 
-  @Test
-  public void test_exception_on_transitive_circular_dependency() {
-    ContextException ex;
+    @Test
+    public void test_exception_on_transitive_circular_dependency() {
+        ContextException ex;
 
-    expect:
-    ex = assertThrows(ContextException.class, () -> new ContextMock(new MockInstance9a(), new MockInstance9b(), new MockInstance9c()));
-    assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
-  }
+        expect:
+        ex = assertThrows(ContextException.class, () -> new ContextMock(Map.of(), MockInstance9a.class, MockInstance9b.class, MockInstance9c.class));
+        assertTrue(ex.getMessage().startsWith("Circular dependency detected"));
+    }
 
-  @Test
-  public void test_config_to_mock_context_injection() {
-    ContextMock ctx;
-    Config config = new ConfigMock();
+    @Test
+    public void test_config_to_mock_context_injection() {
+        ContextMock ctx;
 
-    when:
-    config = config.load(new ConfigProperty("val", "Hello World"));
-    config.seal();
-    ctx = new ContextMock(config, new MockInstance10());
+        when:
+        ctx = new ContextMock(Map.of("val", "Hello World"), MockInstance10.class);
 
-    then:
-    assertEquals("Hello World", ((MockInstance10) ContextMock.getContext().get(MockInstance10.class.getCanonicalName())).getVal());
-  }
+        then:
+        assertEquals("Hello World", ((MockInstance10) ContextMock.getContext().get(MockInstance10.class.getCanonicalName())).getVal());
+    }
 }
