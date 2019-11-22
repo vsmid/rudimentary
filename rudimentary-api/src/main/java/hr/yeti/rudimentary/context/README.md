@@ -54,6 +54,9 @@ Simply put, if you want Rudimentray context to automatically initialize custom i
 
 *rudimentary-maven-plugin* will automatically register new instance but you can also register it manually by writing canonical class name of the provider to the `src/main/resources/META-INF/services/hr.yeti.rudimentary.context.spi.Instance` file.
 
+### Instance
+Everything stored inside Context is Instance. Instance can be considerd as an application scoped singleton.
+
 #### Instance lifecycle and phases
 #### Initialization
 Every instance must be initialized. Context triggers each instance initialization method before caching it internally.
