@@ -22,14 +22,14 @@ import java.util.ServiceLoader;
  */
 public interface HealthCheck extends Instance {
 
-  /**
-   * <pre>
-   * Implementation of this method will be executed to gain health check information about some
-   * application resource, integration part or whatever else you think is worth having as a part of
-   * application health check.
-   * </pre>
-   *
-   * @return health check into in the form of {@link HealthCheckResponse}.
-   */
-  HealthCheckResponse call();
+    /**
+     * <pre>
+     * Implementation of this method will be executed to gain health check information about some
+     * application resource, integration part or whatever else you think is worth having as a part of
+     * application health check.
+     * </pre>
+     *
+     * @return health check into in the form of {@link HealthCheckResponse}.
+     */
+    HealthCheckResponse call();
 }

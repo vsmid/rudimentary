@@ -14,74 +14,74 @@ import java.util.Base64;
 
 public final class BasicAuthMechanism extends AuthMechanism {
 
-  private ConfigProperty enabled = new ConfigProperty("security.basic.enabled");
+    private ConfigProperty enabled = new ConfigProperty("security.basic.enabled");
 
-  private IdentityStore identityStore;
+    private IdentityStore identityStore;
 
-  @Override
-  public Result doAuth(HttpExchange exchange) {
-    Headers headers = exchange.getRequestHeaders();
+    @Override
+    public Result doAuth(HttpExchange exchange) {
+        Headers headers = exchange.getRequestHeaders();
 
-    String auth = headers.getFirst("Authorization");
+        String auth = headers.getFirst("Authorization");
 
-    if (auth == null) {
-      Headers map = exchange.getResponseHeaders();
-      map.set("WWW-Authenticate", "Basic realm=" + "\"" + realm.value() + "\"");
-      return new Authenticator.Retry(401);
+        if (auth == null) {
+            Headers map = exchange.getResponseHeaders();
+            map.set("WWW-Authenticate", "Basic realm=" + "\"" + realm.value() + "\"");
+            return new Authenticator.Retry(401);
+        }
+
+        int spaceSeparatorIndex = auth.indexOf(' ');
+
+        if (spaceSeparatorIndex == -1 || !auth.substring(0, spaceSeparatorIndex).equals("Basic")) {
+            return new Authenticator.Failure(401);
+        }
+
+        byte[] credentials = Base64.getDecoder().decode(auth.substring(spaceSeparatorIndex + 1));
+        String usernamePassword = new String(credentials);
+
+        int colonIndex = usernamePassword.indexOf(':');
+
+        String username = usernamePassword.substring(0, colonIndex);
+        String password = usernamePassword.substring(colonIndex + 1);
+
+        if (identityStore.validate(new UsernamePasswordCredential(username, password))) {
+            return new Authenticator.Success(
+                    new HttpPrincipal(
+                            username, realm.value()
+                    )
+            );
+        } else {
+            Headers map = exchange.getResponseHeaders();
+            map.set("WWW-Authenticate", "Basic realm=" + "\"" + realm.value() + "\"");
+            return new Authenticator.Failure(401);
+        }
+
     }
 
-    int spaceSeparatorIndex = auth.indexOf(' ');
-
-    if (spaceSeparatorIndex == -1 || !auth.substring(0, spaceSeparatorIndex).equals("Basic")) {
-      return new Authenticator.Failure(401);
+    @Override
+    public Identity getIdentity(HttpPrincipal principal) {
+        return identityStore.getIdentity(principal);
     }
 
-    byte[] credentials = Base64.getDecoder().decode(auth.substring(spaceSeparatorIndex + 1));
-    String usernamePassword = new String(credentials);
-
-    int colonIndex = usernamePassword.indexOf(':');
-
-    String username = usernamePassword.substring(0, colonIndex);
-    String password = usernamePassword.substring(colonIndex + 1);
-
-    if (identityStore.validate(new UsernamePasswordCredential(username, password))) {
-      return new Authenticator.Success(
-          new HttpPrincipal(
-              username, realm.value()
-          )
-      );
-    } else {
-      Headers map = exchange.getResponseHeaders();
-      map.set("WWW-Authenticate", "Basic realm=" + "\"" + realm.value() + "\"");
-      return new Authenticator.Failure(401);
+    @Override
+    public boolean conditional() {
+        return enabled.asBoolean();
     }
 
-  }
+    @Override
+    public Class[] dependsOn() {
+        return new Class[]{ IdentityStore.class };
+    }
 
-  @Override
-  public Identity getIdentity(HttpPrincipal principal) {
-    return identityStore.getIdentity(principal);
-  }
+    @Override
+    public void initialize() {
+        super.initialize();
+        this.identityStore = Instance.of(IdentityStore.class);
+    }
 
-  @Override
-  public boolean conditional() {
-    return enabled.asBoolean();
-  }
+    @Override
+    public void destroy() {
 
-  @Override
-  public Class[] dependsOn() {
-    return new Class[]{ IdentityStore.class };
-  }
-
-  @Override
-  public void initialize() {
-    super.initialize();
-    this.identityStore = Instance.of(IdentityStore.class);
-  }
-
-  @Override
-  public void destroy() {
-
-  }
+    }
 
 }

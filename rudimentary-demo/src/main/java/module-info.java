@@ -1,10 +1,11 @@
+
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 
 module hr.yeti.rudimentary.demo {
-  requires hr.yeti.rudimentary.api;
-  requires hr.yeti.rudimentary.server;
-  
-  requires jakarta.mail;
+    requires hr.yeti.rudimentary.api;
+    requires hr.yeti.rudimentary.server;
 
-  uses HttpEndpoint;
+    requires jakarta.mail;
+
+    uses HttpEndpoint;
 }

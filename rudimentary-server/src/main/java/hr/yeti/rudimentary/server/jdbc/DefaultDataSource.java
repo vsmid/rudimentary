@@ -8,28 +8,28 @@ import javax.sql.DataSource;
 
 public class DefaultDataSource extends BasicDataSource {
 
-  @Override
-  public String id() {
-    return "";
-  }
-
-  @Override
-  public DataSource dataSource() {
-    if (Config.provider().contains(propertyName("jdbcUrl"))) {
-      HikariConfig config = new HikariConfig();
-      config.setJdbcUrl(Config.provider().property(propertyName("jdbcUrl")).value());
-      config.setDriverClassName(Config.provider().property(
-          propertyName("driverClassName")
-      ).value());
-      config.setUsername(Config.provider().property(propertyName("username")).value());
-      config.setPassword(Config.provider().property(propertyName("password")).value());
-      config.setMaximumPoolSize(Config.provider().property(
-          propertyName("maximumPoolSize")).asInt()
-      );
-
-      return new HikariDataSource(config);
+    @Override
+    public String id() {
+        return "";
     }
-    return null;
-  }
+
+    @Override
+    public DataSource dataSource() {
+        if (Config.provider().contains(propertyName("jdbcUrl"))) {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(Config.provider().property(propertyName("jdbcUrl")).value());
+            config.setDriverClassName(Config.provider().property(
+                    propertyName("driverClassName")
+            ).value());
+            config.setUsername(Config.provider().property(propertyName("username")).value());
+            config.setPassword(Config.provider().property(propertyName("password")).value());
+            config.setMaximumPoolSize(Config.provider().property(
+                    propertyName("maximumPoolSize")).asInt()
+            );
+
+            return new HikariDataSource(config);
+        }
+        return null;
+    }
 
 }

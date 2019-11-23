@@ -14,16 +14,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "auto-register")
 public class AutoRegisterMojo extends AbstractMojo {
 
-  @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
-    Path projectDir = new File("").toPath();
-    Path sourcesDir = projectDir.resolve("src").resolve("main").resolve("java");
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        Path projectDir = new File("").toPath();
+        Path sourcesDir = projectDir.resolve("src").resolve("main").resolve("java");
 
-    try {
-      Files.walkFileTree(sourcesDir, new RegisterAsServiceProvider());
-    } catch (IOException ex) {
-      Logger.getLogger(AutoRegisterMojo.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            Files.walkFileTree(sourcesDir, new RegisterAsServiceProvider());
+        } catch (IOException ex) {
+            Logger.getLogger(AutoRegisterMojo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-  }
 
 }

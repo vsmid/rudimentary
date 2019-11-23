@@ -15,26 +15,26 @@ import java.net.URI;
  */
 public class Redirect extends Model implements Value<URI> {
 
-  private URI redirectUri;
-  private int httpStatus;
+    private URI redirectUri;
+    private int httpStatus;
 
-  public Redirect(String redirectUri) {
-    this.redirectUri = URI.create(redirectUri);
-    this.httpStatus = 302;
-  }
+    public Redirect(String redirectUri) {
+        this.redirectUri = URI.create(redirectUri);
+        this.httpStatus = 302;
+    }
 
-  public Redirect(URI redirectUri, int httpStatus) {
-    this.redirectUri = redirectUri;
-    this.httpStatus = httpStatus;
-  }
+    public Redirect(URI redirectUri, int httpStatus) {
+        this.redirectUri = redirectUri;
+        this.httpStatus = httpStatus;
+    }
 
-  @Override
-  public URI getValue() {
-    return redirectUri;
-  }
+    @Override
+    public URI getValue() {
+        return redirectUri;
+    }
 
-  public int getHttpStatus() {
-    return httpStatus;
-  }
+    public int getHttpStatus() {
+        return httpStatus;
+    }
 
 }

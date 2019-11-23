@@ -16,49 +16,49 @@ import java.util.stream.Collectors;
 
 public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckReport> {
 
-  private static final long MB = 1024 * 1024;
+    private static final long MB = 1024 * 1024;
 
-  private List<HealthCheck> healthCheckProviders = new ArrayList<>();
+    private List<HealthCheck> healthCheckProviders = new ArrayList<>();
 
-  @Override
-  public void initialize() {
-    Instance.providersOf(HealthCheck.class)
-        .forEach(healthCheckProviders::add);
-  }
+    @Override
+    public void initialize() {
+        Instance.providersOf(HealthCheck.class)
+                .forEach(healthCheckProviders::add);
+    }
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.GET;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.GET;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/_health");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/_health");
+    }
 
-  @Override
-  public HealthCheckReport response(Request<Empty> request) {
+    @Override
+    public HealthCheckReport response(Request<Empty> request) {
 
-    List<HealthCheckResponse> healthChecks = healthCheckProviders.stream()
-        .map(HealthCheck::call)
-        .collect(Collectors.toList());
+        List<HealthCheckResponse> healthChecks = healthCheckProviders.stream()
+                .map(HealthCheck::call)
+                .collect(Collectors.toList());
 
-    MemoryInfo memoryInfo = new MemoryInfo(
-        Runtime.getRuntime().totalMemory() / MB,
-        Runtime.getRuntime().maxMemory() / MB,
-        Runtime.getRuntime().maxMemory() / MB
-    );
+        MemoryInfo memoryInfo = new MemoryInfo(
+                Runtime.getRuntime().totalMemory() / MB,
+                Runtime.getRuntime().maxMemory() / MB,
+                Runtime.getRuntime().maxMemory() / MB
+        );
 
-    boolean down = healthChecks.stream().anyMatch(healthCheckResponse -> healthCheckResponse.getState() == HealthState.DOWN);
+        boolean down = healthChecks.stream().anyMatch(healthCheckResponse -> healthCheckResponse.getState() == HealthState.DOWN);
 
-    HealthCheckReport healthCheckReport = new HealthCheckReport(down ? HealthState.DOWN : HealthState.UP, memoryInfo, healthChecks);
+        HealthCheckReport healthCheckReport = new HealthCheckReport(down ? HealthState.DOWN : HealthState.UP, memoryInfo, healthChecks);
 
-    return healthCheckReport;
-  }
+        return healthCheckReport;
+    }
 
-  @Override
-  public String description() {
-    return "Show service's health status like memory consumption.";
-  }
+    @Override
+    public String description() {
+        return "Show service's health status like memory consumption.";
+    }
 
 }

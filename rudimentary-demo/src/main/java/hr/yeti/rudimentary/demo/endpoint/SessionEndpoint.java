@@ -8,30 +8,30 @@ import java.net.URI;
 
 public class SessionEndpoint implements HttpEndpoint<Empty, Html> {
 
-  @Override
-  public URI path() {
-    return URI.create("/session");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/session");
+    }
 
-  @Override
-  public Html response(Request<Empty> request) {
-    return new Html(
-        "<html>"
-        + "<head></head>"
-        + "<body>Hello! Info: " + request.getSession().getAttributes().get("info") + "</body>"
-        + "</html>"
-    );
-  }
+    @Override
+    public Html response(Request<Empty> request) {
+        return new Html(
+                "<html>"
+                + "<head></head>"
+                + "<body>Hello! Info: " + request.getSession().getAttributes().get("info") + "</body>"
+                + "</html>"
+        );
+    }
 
-  @Override
-  public void after(Request<Empty> request, Html response) {
-    // Add some data to session after request is processed.
-    request.getSession().getAttributes().put("info", "Info for second request");
-  }
+    @Override
+    public void after(Request<Empty> request, Html response) {
+        // Add some data to session after request is processed.
+        request.getSession().getAttributes().put("info", "Info for second request");
+    }
 
-  @Override
-  public String description() {
-    return "Demonstrates how to persist data into session.";
-  }
+    @Override
+    public String description() {
+        return "Demonstrates how to persist data into session.";
+    }
 
 }

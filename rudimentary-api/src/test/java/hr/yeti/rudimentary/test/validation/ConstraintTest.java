@@ -11,106 +11,106 @@ import org.junit.jupiter.api.Test;
 
 public class ConstraintTest {
 
-  @Test
-  @DisplayName("NOT_NULL constraint should report failure for null values")
-  public void test_NOT_NULL_constraint_fail() {
-    ValidationResult result;
+    @Test
+    @DisplayName("NOT_NULL constraint should report failure for null values")
+    public void test_NOT_NULL_constraint_fail() {
+        ValidationResult result;
 
-    when:
-    result = Constraint.NOT_NULL.apply(null);
+        when:
+        result = Constraint.NOT_NULL.apply(null);
 
-    then:
-    assertNotNull(result);
-    assertFalse(result.isValid());
-  }
+        then:
+        assertNotNull(result);
+        assertFalse(result.isValid());
+    }
 
-  @Test
-  @DisplayName("NOT_NULL constraint should report success for not null values")
-  public void test_NOT_NULL_constraint_succeed() {
-    ValidationResult result;
+    @Test
+    @DisplayName("NOT_NULL constraint should report success for not null values")
+    public void test_NOT_NULL_constraint_succeed() {
+        ValidationResult result;
 
-    when:
-    result = Constraint.NOT_NULL.apply(1);
+        when:
+        result = Constraint.NOT_NULL.apply(1);
 
-    then:
-    assertNotNull(result);
-    assertTrue(result.isValid());
-  }
+        then:
+        assertNotNull(result);
+        assertTrue(result.isValid());
+    }
 
-  @Test
-  @DisplayName("NOT_EMPTY constraint should report failure for empty values")
-  public void test_NOT_EMPTY_constraint_fail() {
-    ValidationResult result;
+    @Test
+    @DisplayName("NOT_EMPTY constraint should report failure for empty values")
+    public void test_NOT_EMPTY_constraint_fail() {
+        ValidationResult result;
 
-    when:
-    result = Constraint.NOT_EMPTY.apply("");
+        when:
+        result = Constraint.NOT_EMPTY.apply("");
 
-    then:
-    assertNotNull(result);
-    assertFalse(result.isValid());
-  }
+        then:
+        assertNotNull(result);
+        assertFalse(result.isValid());
+    }
 
-  @Test
-  @DisplayName("NOT_EMPTY constraint should report success for not empty values")
-  public void test_NOT_EMPTY_constraint_succeed() {
-    ValidationResult result;
+    @Test
+    @DisplayName("NOT_EMPTY constraint should report success for not empty values")
+    public void test_NOT_EMPTY_constraint_succeed() {
+        ValidationResult result;
 
-    when:
-    result = Constraint.NOT_NULL.apply("Rudimentary");
+        when:
+        result = Constraint.NOT_NULL.apply("Rudimentary");
 
-    then:
-    assertNotNull(result);
-    assertTrue(result.isValid());
-  }
+        then:
+        assertNotNull(result);
+        assertTrue(result.isValid());
+    }
 
-  @Test
-  public void test_MIN_constraint() {
-    expect:
-    assertFalse(Constraint.MIN(2).apply(1).isValid());
-    assertTrue(Constraint.MIN(2).apply(5).isValid());
-    assertTrue(Constraint.MIN(2).apply(2).isValid());
-  }
+    @Test
+    public void test_MIN_constraint() {
+        expect:
+        assertFalse(Constraint.MIN(2).apply(1).isValid());
+        assertTrue(Constraint.MIN(2).apply(5).isValid());
+        assertTrue(Constraint.MIN(2).apply(2).isValid());
+    }
 
-  @Test
-  public void test_MAX_constraint() {
-    expect:
-    assertTrue(Constraint.MAX(2).apply(1).isValid());
-    assertFalse(Constraint.MAX(2).apply(5).isValid());
-    assertTrue(Constraint.MAX(2).apply(2).isValid());
-  }
+    @Test
+    public void test_MAX_constraint() {
+        expect:
+        assertTrue(Constraint.MAX(2).apply(1).isValid());
+        assertFalse(Constraint.MAX(2).apply(5).isValid());
+        assertTrue(Constraint.MAX(2).apply(2).isValid());
+    }
 
-  @Test
-  public void test_PATTERN_constraint() {
-    expect:
-    assertTrue(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("B_WORD_E").isValid());
-    assertFalse(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("Test123").isValid());
-  }
+    @Test
+    public void test_PATTERN_constraint() {
+        expect:
+        assertTrue(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("B_WORD_E").isValid());
+        assertFalse(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("Test123").isValid());
+    }
 
-  @Test
-  public void test_CUSTOM_constraint() {
-    // setup:
-    ValidationResult result;
+    @Test
+    public void test_CUSTOM_constraint() {
+        // setup:
+        ValidationResult result;
 
-    when:
-    result = Constraint.CUSTOM((o) -> {
-      return o.toString().equals("1");
-    }, "No reason.").apply("2");
+        when:
+        result = Constraint.CUSTOM((o) -> {
+            return o.toString().equals("1");
+        }, "No reason.").apply("2");
 
-    then:
-    assertFalse(result.isValid());
-    result.getReason().ifPresent((reason) -> {
-      assertTrue(reason.equals("No reason."));
-    });
+        then:
+        assertFalse(result.isValid());
+        result.getReason().ifPresent((reason) -> {
+            assertTrue(reason.equals("No reason."));
+        });
 
-    and:
+        and:
 
-    when:
-    result = Constraint.CUSTOM((o) -> {
-      return o.toString().equals("1");
-    }, "No reason.").apply("1");
+        when:
+        result = Constraint.CUSTOM((o) -> {
+            return o.toString().equals("1");
+        }, "No reason.").apply("1");
 
-    then:
-    assertTrue(result.isValid());
-    assertTrue(result.getReason().isEmpty());
-  }
+        then:
+        assertTrue(result.isValid());
+        assertTrue(result.getReason().isEmpty());
+    }
 }

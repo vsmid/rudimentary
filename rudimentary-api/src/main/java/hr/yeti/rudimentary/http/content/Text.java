@@ -13,17 +13,17 @@ package hr.yeti.rudimentary.http.content;
  */
 public final class Text extends Model implements Value<String> {
 
-  private String value;
+    private String value;
 
-  /**
-   * @param value Value received through request body or value to be sent in a response.
-   */
-  public Text(String value) {
-    this.value = value;
-  }
+    /**
+     * @param value Value received through request body or value to be sent in a response.
+     */
+    public Text(String value) {
+        this.value = value;
+    }
 
-  @Override
-  public String getValue() {
-    return value;
-  }
+    @Override
+    public String getValue() {
+        return value;
+    }
 }

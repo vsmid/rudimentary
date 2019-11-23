@@ -13,6 +13,6 @@ package hr.yeti.rudimentary.config;
 @FunctionalInterface
 public interface ConfigValueTransformer {
 
-  public Object transform(String value);
+    public Object transform(String value);
 
 }

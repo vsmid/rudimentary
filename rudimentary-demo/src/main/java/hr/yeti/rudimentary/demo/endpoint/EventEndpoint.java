@@ -10,32 +10,32 @@ import java.net.URI;
 
 public class EventEndpoint implements HttpEndpoint<BlogPost, Text> {
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.POST;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.POST;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/blogpost");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/blogpost");
+    }
 
-  @Override
-  public int httpStatus() {
-    return 201;
-  }
+    @Override
+    public int httpStatus() {
+        return 201;
+    }
 
-  @Override
-  public Text response(Request<BlogPost> request) {
-    // Imagine saving blog post to database
-    // Publish received blogpost as event
-    request.getBody().publish(EventPublisher.Type.SYNC);
+    @Override
+    public Text response(Request<BlogPost> request) {
+        // Imagine saving blog post to database
+        // Publish received blogpost as event
+        request.getBody().publish(EventPublisher.Type.SYNC);
 
-    return new Text(request.getBody().getText());
-  }
+        return new Text(request.getBody().getText());
+    }
 
-  @Override
-  public String description() {
-    return "Receives blog post and chnages its content through event listener.";
-  }
+    @Override
+    public String description() {
+        return "Receives blog post and chnages its content through event listener.";
+    }
 }

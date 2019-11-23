@@ -11,28 +11,28 @@ import org.junit.jupiter.api.Test;
 
 public class ConstraintsTest {
 
-  @Test
-  @DisplayName("Should add constraint to Constraints object")
-  public void test_add_constraint() {
-    Constraints constraints;
+    @Test
+    @DisplayName("Should add constraint to Constraints object")
+    public void test_add_constraint() {
+        Constraints constraints;
 
-    final String field1 = "test1";
-    final String field2 = "test2";
+        final String field1 = "test1";
+        final String field2 = "test2";
 
-    when:
-    constraints = new Constraints() {
-      {
-        o(field1, NOT_NULL);
-        o(() -> field2, NOT_EMPTY);
-      }
-    };
+        when:
+        constraints = new Constraints() {
+            {
+                o(field1, NOT_NULL);
+                o(() -> field2, NOT_EMPTY);
+            }
+        };
 
-    then:
-    assertNotNull(constraints);
-    assertTrue(!constraints.getConstraints().isEmpty());
-    assertTrue(constraints.getConstraints().size() == 2);
-    assertEquals("test1", constraints.getConstraints().get(0).getValue().toString());
-    assertEquals("test2", constraints.getConstraints().get(1).getValue().toString());
-  }
+        then:
+        assertNotNull(constraints);
+        assertTrue(!constraints.getConstraints().isEmpty());
+        assertTrue(constraints.getConstraints().size() == 2);
+        assertEquals("test1", constraints.getConstraints().get(0).getValue().toString());
+        assertEquals("test2", constraints.getConstraints().get(1).getValue().toString());
+    }
 
 }

@@ -14,59 +14,59 @@ import java.util.TreeMap;
 
 public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
 
-  private String configHTML;
+    private String configHTML;
 
-  @Override
-  public void initialize() {
-    try {
-      this.configHTML = new String(
-          new ClasspathResource("/templates/config.html")
-              .get()
-              .readAllBytes()
-      );
-    } catch (IOException ex) {
-      logger().log(Level.ERROR, "Failed to load config.html template.", ex);
+    @Override
+    public void initialize() {
+        try {
+            this.configHTML = new String(
+                    new ClasspathResource("/templates/config.html")
+                            .get()
+                            .readAllBytes()
+            );
+        } catch (IOException ex) {
+            logger().log(Level.ERROR, "Failed to load config.html template.", ex);
+        }
     }
-  }
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.GET;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.GET;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/_config");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/_config");
+    }
 
-  @Override
-  public int httpStatus() {
-    return 200;
-  }
+    @Override
+    public int httpStatus() {
+        return 200;
+    }
 
-  @Override
-  public Html response(Request<Empty> request) {
-    return new Html(
-        String.format(configHTML,
-            rowsHTMLGenerator()
-        )
-    );
-  }
+    @Override
+    public Html response(Request<Empty> request) {
+        return new Html(
+                String.format(configHTML,
+                        rowsHTMLGenerator()
+                )
+        );
+    }
 
-  @Override
-  public String description() {
-    return "Lists current application configuration properties.";
-  }
+    @Override
+    public String description() {
+        return "Lists current application configuration properties.";
+    }
 
-  private String rowsHTMLGenerator() {
-    StringBuilder rowsHTML = new StringBuilder();
-    TreeMap props = new TreeMap(Config.provider().getProperties());
+    private String rowsHTMLGenerator() {
+        StringBuilder rowsHTML = new StringBuilder();
+        TreeMap props = new TreeMap(Config.provider().getProperties());
 
-    props.forEach((key, value) -> {
-      rowsHTML.append(String.format("<tr><td>%s</td><td>%s</td></tr>", key, value));
-    });
+        props.forEach((key, value) -> {
+            rowsHTML.append(String.format("<tr><td>%s</td><td>%s</td></tr>", key, value));
+        });
 
-    return rowsHTML.toString();
-  }
+        return rowsHTML.toString();
+    }
 
 }

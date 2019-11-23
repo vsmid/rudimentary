@@ -20,34 +20,33 @@ import hr.yeti.rudimentary.validation.Constraints;
  */
 public abstract class Model {
 
-  /**
-   * Each class extending model gains a feature of defining validation constraints on each of the
-   * properties defined in the class.
-   *
-   * Example:
-   *
-   * <pre>
-   * public class Person extends Model {
-   *
-   *    private String name;
-   *    private String description;
-   *
-   *    &#64;Override
-   *    public Constraints constraints() {
-   *      return new Constraints() {
-   *        {
-   *          o(name, NOT_NULL);
-   *          o(description, NOT_NULL, NOT_EMPTY);
-   *        }
-   *      };
-   *    }
-   * }
-   * </pre>
-   *
-   * @return {@link Constraints}
-   */
-  public Constraints constraints() {
-    return new Constraints();
-  }
+    /**
+     * Each class extending model gains a feature of defining validation constraints on each of the properties defined in the class.
+     *
+     * Example:
+     *
+     * <pre>
+     * public class Person extends Model {
+     *
+     *    private String name;
+     *    private String description;
+     *
+     *    &#64;Override
+     *    public Constraints constraints() {
+     *      return new Constraints() {
+     *        {
+     *          o(name, NOT_NULL);
+     *          o(description, NOT_NULL, NOT_EMPTY);
+     *        }
+     *      };
+     *    }
+     * }
+     * </pre>
+     *
+     * @return {@link Constraints}
+     */
+    public Constraints constraints() {
+        return new Constraints();
+    }
 
 }

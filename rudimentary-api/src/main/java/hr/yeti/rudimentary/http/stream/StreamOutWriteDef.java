@@ -11,5 +11,5 @@ import java.io.OutputStream;
 @FunctionalInterface
 public interface StreamOutWriteDef {
 
-  void startStreaming(OutputStream outputStream) throws IOException;
+    void startStreaming(OutputStream outputStream) throws IOException;
 }

@@ -6,10 +6,10 @@ import hr.yeti.rudimentary.server.http.session.HttpSession;
 
 public class AuthenticatedSessionEventListener implements EventListener<AuthenticatedSessionEvent> {
 
-  @Override
-  public void onEvent(AuthenticatedSessionEvent event) {
-    ((HttpSession) event.getSession()).setAuthenticated(true);
-    ((HttpSession) event.getSession()).setIdentity(event.getIdentity());
-  }
+    @Override
+    public void onEvent(AuthenticatedSessionEvent event) {
+        ((HttpSession) event.getSession()).setAuthenticated(true);
+        ((HttpSession) event.getSession()).setIdentity(event.getIdentity());
+    }
 
 }

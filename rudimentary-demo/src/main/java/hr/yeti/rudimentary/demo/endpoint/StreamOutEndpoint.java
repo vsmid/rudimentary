@@ -11,35 +11,35 @@ import java.util.Arrays;
 
 public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
 
-  @Override
-  public URI path() {
-    return URI.create("/streamOut");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/streamOut");
+    }
 
-  @Override
-  public ByteStream response(Request<Empty> request) {
-    return new ByteStream((outputStream) -> {
-      for (int i = 0; i < 100000; i++) {
-        outputStream.write((String.valueOf(i) + System.lineSeparator()).getBytes());
-        // Flush after each write.
-        outputStream.flush();
-      }
-    });
-  }
+    @Override
+    public ByteStream response(Request<Empty> request) {
+        return new ByteStream((outputStream) -> {
+            for (int i = 0; i < 100000; i++) {
+                outputStream.write((String.valueOf(i) + System.lineSeparator()).getBytes());
+                // Flush after each write.
+                outputStream.flush();
+            }
+        });
+    }
 
-  @Override
-  public Headers responseHttpHeaders() {
-    // To use stream for download a document, set below http headers. Do not override this method
-    // if you want plain writing to stream.
-    Headers headers = new Headers();
-    headers.put("Content-Type", Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-    headers.put("Content-Disposition", Arrays.asList("attachment;filename=streamOut.txt"));
-    return headers;
-  }
+    @Override
+    public Headers responseHttpHeaders() {
+        // To use stream for download a document, set below http headers. Do not override this method
+        // if you want plain writing to stream.
+        Headers headers = new Headers();
+        headers.put("Content-Type", Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
+        headers.put("Content-Disposition", Arrays.asList("attachment;filename=streamOut.txt"));
+        return headers;
+    }
 
-  @Override
-  public String description() {
-    return "Stream data out.";
-  }  
-  
+    @Override
+    public String description() {
+        return "Stream data out.";
+    }
+
 }

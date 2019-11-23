@@ -4,8 +4,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 /**
- * Define email as a function. This comes in handy when you want to keep your email message
- * templates in a separate class.
+ * Define email as a function. This comes in handy when you want to keep your email message templates in a separate class.
  *
  * e.g.
  *
@@ -34,5 +33,5 @@ import javax.mail.internet.MimeMessage;
 @FunctionalInterface
 public interface EmailMessage {
 
-  void compose(MimeMessage message) throws MessagingException;
+    void compose(MimeMessage message) throws MessagingException;
 }

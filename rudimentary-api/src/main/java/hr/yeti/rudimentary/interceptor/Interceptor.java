@@ -9,18 +9,18 @@ import hr.yeti.rudimentary.context.spi.Instance;
  */
 public interface Interceptor extends Instance {
 
-  /**
-   * Set interceptor priority order.
-   *
-   * @return Interceptor priority order.
-   */
-  int order();
+    /**
+     * Set interceptor priority order.
+     *
+     * @return Interceptor priority order.
+     */
+    int order();
 
-  /**
-   * Set regular expression as string to which this interceptor will be applied to.
-   *
-   * @return String based regular expression.
-   */
-  String applyToURI();
+    /**
+     * Set regular expression as string to which this interceptor will be applied to.
+     *
+     * @return String based regular expression.
+     */
+    String applyToURI();
 
 }

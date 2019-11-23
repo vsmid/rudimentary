@@ -1,5 +1,5 @@
 function greet(name) {
-  alert("Hello " + name + "!");
+    alert("Hello " + name + "!");
 }
 
 

@@ -9,26 +9,26 @@ import java.net.URI;
 
 public class TextEndpoint implements HttpEndpoint<Text, Text> {
 
-  ConfigProperty server = new ConfigProperty("server.port", "8888");
+    ConfigProperty server = new ConfigProperty("server.port", "8888");
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.POST;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.POST;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/text");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/text");
+    }
 
-  @Override
-  public int httpStatus() {
-    return 200;
-  }
+    @Override
+    public int httpStatus() {
+        return 200;
+    }
 
-  @Override
-  public Text response(Request<Text> request) {
-    return new Text("Hello " + request.getBody().getValue());
-  }
+    @Override
+    public Text response(Request<Text> request) {
+        return new Text("Hello " + request.getBody().getValue());
+    }
 
 }

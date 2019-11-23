@@ -10,12 +10,12 @@ package hr.yeti.rudimentary.sql;
  */
 public class TxException extends SqlException {
 
-  public TxException(Throwable cause) {
-    super(cause);
-  }
+    public TxException(Throwable cause) {
+        super(cause);
+    }
 
-  public TxException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    public TxException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

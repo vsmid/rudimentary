@@ -4,18 +4,18 @@ import java.util.Map;
 
 public interface Command {
 
-  String name();
+    String name();
 
-  String shorthand();
+    String shorthand();
 
-  String description();
+    String description();
 
-  Map<String, String> options();
+    Map<String, String> options();
 
-  void execute(Map<String, String> arguments);
+    void execute(Map<String, String> arguments);
 
-  default boolean isWindowsOS() {
-    return System.getProperty("os.name").toLowerCase().contains("windows");
-  }
+    default boolean isWindowsOS() {
+        return System.getProperty("os.name").toLowerCase().contains("windows");
+    }
 
 }

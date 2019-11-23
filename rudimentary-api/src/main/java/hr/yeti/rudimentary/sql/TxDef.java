@@ -1,8 +1,7 @@
 package hr.yeti.rudimentary.sql;
 
 /**
- * Define Sql transaction as a function. This comes in handy when you want to keep your
- * transactional parts in a separate class.
+ * Define Sql transaction as a function. This comes in handy when you want to keep your transactional parts in a separate class.
  *
  * e.g.
  *
@@ -31,5 +30,5 @@ package hr.yeti.rudimentary.sql;
 @FunctionalInterface
 public interface TxDef<T> {
 
-  T execute(Sql sql) throws SqlException;
+    T execute(Sql sql) throws SqlException;
 }

@@ -5,23 +5,23 @@ import hr.yeti.rudimentary.events.Event;
 
 public class GetOrCreateSessionEvent implements Event {
 
-  private HttpExchange exchange;
-  private Session session;
+    private HttpExchange exchange;
+    private Session session;
 
-  public GetOrCreateSessionEvent(HttpExchange exchange) {
-    this.exchange = exchange;
-  }
+    public GetOrCreateSessionEvent(HttpExchange exchange) {
+        this.exchange = exchange;
+    }
 
-  public HttpExchange getExchange() {
-    return exchange;
-  }
+    public HttpExchange getExchange() {
+        return exchange;
+    }
 
-  public Session getSession() {
-    return session;
-  }
+    public Session getSession() {
+        return session;
+    }
 
-  public void setSession(Session session) {
-    this.session = session;
-  }
+    public void setSession(Session session) {
+        this.session = session;
+    }
 
 }

@@ -4,20 +4,20 @@ import hr.yeti.rudimentary.context.spi.Instance;
 
 public class MockInstance1 implements Instance {
 
-  private String value;
+    private String value;
 
-  @Override
-  public void initialize() {
-    this.value = "10";
-  }
+    @Override
+    public void initialize() {
+        this.value = "10";
+    }
 
-  @Override
-  public boolean primary() {
-    return true;
-  }
+    @Override
+    public boolean primary() {
+        return true;
+    }
 
-  public String getValue() {
-    return value;
-  }
+    public String getValue() {
+        return value;
+    }
 
 }

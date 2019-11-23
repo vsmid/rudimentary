@@ -8,19 +8,19 @@ import java.net.URI;
 
 public class HtmlEndpoint implements HttpEndpoint<Empty, Html> {
 
-  @Override
-  public URI path() {
-    return URI.create("/html");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/html");
+    }
 
-  @Override
-  public Html response(Request<Empty> request) {
-    return new Html(
-        "<html>"
-        + "<head></head>"
-        + "<body>Hello!</body>"
-        + "</html>"
-    );
-  }
+    @Override
+    public Html response(Request<Empty> request) {
+        return new Html(
+                "<html>"
+                + "<head></head>"
+                + "<body>Hello!</body>"
+                + "</html>"
+        );
+    }
 
 }

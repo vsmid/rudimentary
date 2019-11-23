@@ -15,9 +15,8 @@ import javax.mail.Session;
  *
  * <b>Important!</b>
  *
- * We should add a {@link Config} feature which would be able to load all properties into a single
- * object based on configuration properties prefix. This would further allow loading of all
- * javax.mail properties to enable all configuration properties without stating them in this class.
+ * We should add a {@link Config} feature which would be able to load all properties into a single object based on configuration properties prefix. This would further allow loading of all javax.mail
+ * properties to enable all configuration properties without stating them in this class.
  *
  * <pre>
  * e.g. for the below configuration properties:
@@ -35,54 +34,54 @@ import javax.mail.Session;
  */
 public class SmtpSessionPoolProvider extends EmailSessionPool {
 
-  // Session pool settings
-  private ConfigProperty minSize = new ConfigProperty("email.smtp.pool.minSize", "25");
-  private ConfigProperty maxSize = new ConfigProperty("email.smtp.pool.maxSize", "50");
-  private ConfigProperty validationInterval = new ConfigProperty("email.smtp.pool.validationInterval", "30");
-  private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.smtp.pool.awaitTerminationInterval", "10");
+    // Session pool settings
+    private ConfigProperty minSize = new ConfigProperty("email.smtp.pool.minSize", "25");
+    private ConfigProperty maxSize = new ConfigProperty("email.smtp.pool.maxSize", "50");
+    private ConfigProperty validationInterval = new ConfigProperty("email.smtp.pool.validationInterval", "30");
+    private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.smtp.pool.awaitTerminationInterval", "10");
 
-  private ConfigProperty user = new ConfigProperty("email.smtp.user");
-  private ConfigProperty password = new ConfigProperty("email.smtp.password");
+    private ConfigProperty user = new ConfigProperty("email.smtp.user");
+    private ConfigProperty password = new ConfigProperty("email.smtp.password");
 
-  private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("email.smtp.properties", false);
+    private Properties smtpSessionProperties = Config.provider().getPropertiesByPrefix("email.smtp.properties", false);
 
-  private Authenticator authenticator;
+    private Authenticator authenticator;
 
-  @Override
-  protected Session createObject() throws ObjectPoolException {
-    return Session.getInstance(smtpSessionProperties, authenticator);
-  }
+    @Override
+    protected Session createObject() throws ObjectPoolException {
+        return Session.getInstance(smtpSessionProperties, authenticator);
+    }
 
-  @Override
-  protected ObjectPoolSettings settings() {
-    return new ObjectPoolSettings(
-        minSize.asInt(),
-        maxSize.asInt(),
-        validationInterval.asInt(),
-        awaitTerminationInterval.asInt()
-    );
-  }
-
-  @Override
-  public void initialize() {
-    // Set authenticator.
-    authenticator = new Authenticator() {
-      @Override
-      protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(
-            user.value(),
-            password.value()
+    @Override
+    protected ObjectPoolSettings settings() {
+        return new ObjectPoolSettings(
+                minSize.asInt(),
+                maxSize.asInt(),
+                validationInterval.asInt(),
+                awaitTerminationInterval.asInt()
         );
-      }
-    };
+    }
 
-    // This call is required, do not remove.
-    super.initialize();
-  }
+    @Override
+    public void initialize() {
+        // Set authenticator.
+        authenticator = new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(
+                        user.value(),
+                        password.value()
+                );
+            }
+        };
 
-  @Override
-  public boolean conditional() {
-    return Config.provider().property("email.smtp.enabled").asBoolean();
-  }
+        // This call is required, do not remove.
+        super.initialize();
+    }
+
+    @Override
+    public boolean conditional() {
+        return Config.provider().property("email.smtp.enabled").asBoolean();
+    }
 
 }

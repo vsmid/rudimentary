@@ -13,40 +13,40 @@ import java.util.Map;
 
 public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
-  ConfigProperty server = new ConfigProperty("server.port", "8888");
+    ConfigProperty server = new ConfigProperty("server.port", "8888");
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.POST;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.POST;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/textWithConstraints");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/textWithConstraints");
+    }
 
-  @Override
-  public int httpStatus() {
-    return 200;
-  }
+    @Override
+    public int httpStatus() {
+        return 200;
+    }
 
-  @Override
-  public Constraints constraints(
-      Text body,
-      Map<String, String> pathVariables,
-      Map<String, String> queryParameters,
-      Headers httpHeaders
-  ) {
-    return new Constraints() {
-      {
-        o(body.getValue(), Constraint.NOT_EMPTY);
-      }
-    };
-  }
+    @Override
+    public Constraints constraints(
+            Text body,
+            Map<String, String> pathVariables,
+            Map<String, String> queryParameters,
+            Headers httpHeaders
+    ) {
+        return new Constraints() {
+            {
+                o(body.getValue(), Constraint.NOT_EMPTY);
+            }
+        };
+    }
 
-  @Override
-  public Text response(Request<Text> request) {
-    return new Text("Hello " + request.getBody().getValue());
-  }
+    @Override
+    public Text response(Request<Text> request) {
+        return new Text("Hello " + request.getBody().getValue());
+    }
 
 }

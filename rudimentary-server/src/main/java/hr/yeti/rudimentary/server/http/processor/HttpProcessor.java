@@ -50,250 +50,250 @@ import javax.json.stream.JsonParsingException;
 
 public class HttpProcessor implements HttpHandler, Instance {
 
-  private ExecutorService executorService;
-  private ExceptionHandler globalExceptionHandler = Instance.of(ExceptionHandler.class);
+    private ExecutorService executorService;
+    private ExceptionHandler globalExceptionHandler = Instance.of(ExceptionHandler.class);
 
-  @Override
-  public void initialize() {
-    this.executorService = Executors.newFixedThreadPool(
-        Config.provider().property("server.threadPoolSize").asInt()
-    );
-  }
+    @Override
+    public void initialize() {
+        this.executorService = Executors.newFixedThreadPool(
+                Config.provider().property("server.threadPoolSize").asInt()
+        );
+    }
 
-  @Override
-  public void handle(HttpExchange exchange) {
+    @Override
+    public void handle(HttpExchange exchange) {
 
-    executorService.execute(() -> {
+        executorService.execute(() -> {
 
-      try {
+            try {
 
-        URI path = exchange.getRequestURI();
-        HttpMethod httpMethod = HttpMethod.valueOf(exchange.getRequestMethod());
+                URI path = exchange.getRequestURI();
+                HttpMethod httpMethod = HttpMethod.valueOf(exchange.getRequestMethod());
 
-        Optional<HttpEndpoint> httpEndpoint = Instance.of(HttpEndpointContextProvider.class).getHttpEndpoint(path, httpMethod);
+                Optional<HttpEndpoint> httpEndpoint = Instance.of(HttpEndpointContextProvider.class).getHttpEndpoint(path, httpMethod);
 
-        if (httpEndpoint.isPresent()) {
+                if (httpEndpoint.isPresent()) {
 
-          if (httpMethod != httpEndpoint.get().httpMethod()) {
-            respond(405, ("Http method " + httpMethod + " is not supported.").getBytes(), exchange);
-            return;
-          }
+                    if (httpMethod != httpEndpoint.get().httpMethod()) {
+                        respond(405, ("Http method " + httpMethod + " is not supported.").getBytes(), exchange);
+                        return;
+                    }
 
-          // Request body
-          Object value = null;
-          Class requestBodyModelType;
-          try {
-            requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.get().getClass());
-          } catch (ClassNotFoundException e) {
-            respond(405, "Invalid request body.".getBytes(), exchange);
-            return;
-          }
+                    // Request body
+                    Object value = null;
+                    Class requestBodyModelType;
+                    try {
+                        requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.get().getClass());
+                    } catch (ClassNotFoundException e) {
+                        respond(405, "Invalid request body.".getBytes(), exchange);
+                        return;
+                    }
 
-          // Path & query parsing
-          Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
-              httpEndpoint.get().path(), path
-          );
-          Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
+                    // Path & query parsing
+                    Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
+                            httpEndpoint.get().path(), path
+                    );
+                    Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
 
-          try {
+                    try {
 
-            List<Constraints> constraintsList = new ArrayList<>();
+                        List<Constraints> constraintsList = new ArrayList<>();
 
-            if (requestBodyModelType.isAssignableFrom(Empty.class)) {
-              value = new Empty();
-            } else if (requestBodyModelType.isAssignableFrom(Json.class)) {
-              value = new Json(JsonbBuilder.create().fromJson(exchange.getRequestBody(), JsonValue.class));
-            } else if (requestBodyModelType.isAssignableFrom(Text.class)) {
-              value = new Text(new String(exchange.getRequestBody().readAllBytes()));
-            } else if (requestBodyModelType.isAssignableFrom(Html.class)) {
-              value = new Html(new String(exchange.getRequestBody().readAllBytes()));
-            } else if (requestBodyModelType.isAssignableFrom(Form.class)) {
-              String form = new String(exchange.getRequestBody().readAllBytes());
-              value = new Form(HttpRequestUtils.parseQueryParameters(form));
-            } else if (requestBodyModelType.isAssignableFrom(ByteStream.class)) {
-              value = new ByteStream(exchange.getRequestBody());
-            } else {
-              // POJO assumed
-              try {
-                value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
-              } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
-                respond(405, "Invalid request body.".getBytes(), exchange);
-                return;
-              }
-              constraintsList.add(((Model) value).constraints());
+                        if (requestBodyModelType.isAssignableFrom(Empty.class)) {
+                            value = new Empty();
+                        } else if (requestBodyModelType.isAssignableFrom(Json.class)) {
+                            value = new Json(JsonbBuilder.create().fromJson(exchange.getRequestBody(), JsonValue.class));
+                        } else if (requestBodyModelType.isAssignableFrom(Text.class)) {
+                            value = new Text(new String(exchange.getRequestBody().readAllBytes()));
+                        } else if (requestBodyModelType.isAssignableFrom(Html.class)) {
+                            value = new Html(new String(exchange.getRequestBody().readAllBytes()));
+                        } else if (requestBodyModelType.isAssignableFrom(Form.class)) {
+                            String form = new String(exchange.getRequestBody().readAllBytes());
+                            value = new Form(HttpRequestUtils.parseQueryParameters(form));
+                        } else if (requestBodyModelType.isAssignableFrom(ByteStream.class)) {
+                            value = new ByteStream(exchange.getRequestBody());
+                        } else {
+                            // POJO assumed
+                            try {
+                                value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
+                            } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
+                                respond(405, "Invalid request body.".getBytes(), exchange);
+                                return;
+                            }
+                            constraintsList.add(((Model) value).constraints());
+                        }
+
+                        constraintsList.add(httpEndpoint.get().constraints(
+                                (Model) value, pathVariables, queryParameters, exchange.getRequestHeaders()
+                        ));
+
+                        Constraints[] constraints = constraintsList.stream().toArray(Constraints[]::new);
+
+                        ConstraintViolations violations = Validator.validate(constraints);
+                        if (!violations.getList().isEmpty()) {
+                            respond(400, "Constraint violations detected.".getBytes(), exchange);
+                            return;
+                        }
+
+                    } catch (JsonbException e) {
+                        respond(405, "Invalid request body.".getBytes(), exchange);
+                        return;
+                    }
+
+                    // Construct request object
+                    Request request = new Request(
+                            (Identity) exchange.getPrincipal(),
+                            exchange.getRequestHeaders(),
+                            value,
+                            pathVariables,
+                            queryParameters,
+                            exchange.getRequestURI(),
+                            exchange
+                    );
+
+                    // Before interceptor
+                    List<BeforeInterceptor> beforeInterceptors = Instance.providersOf(BeforeInterceptor.class);
+                    beforeInterceptors.sort(Comparator.comparing(BeforeInterceptor::order));
+
+                    beforeInterceptors.forEach((interceptor) -> {
+                        String normalizedApplyToURI = URIUtils.removeSlashPrefix(URI.create(interceptor.applyToURI())).toString();
+
+                        //TODO Cache compiled patterns
+                        if (Pattern.compile(normalizedApplyToURI).asPredicate().test(URIUtils.removeSlashPrefix(path).toString())) {
+                            interceptor.intercept(request);
+                        }
+                    });
+
+                    // Local http endpoint before interceptor
+                    httpEndpoint.get().before(request);
+
+                    // Creating response
+                    Object response = null;
+                    try {
+                        response = httpEndpoint.get().response(request);
+                    } catch (Exception e) {
+                        ExceptionInfo exceptionInfo = httpEndpoint.get().onException(e);
+
+                        if (!exceptionInfo.isOverride()) {
+                            // Activate global exception handler if provided and http endpoint does not override
+                            // default onException.
+                            if (Objects.nonNull(globalExceptionHandler)) {
+                                exceptionInfo = globalExceptionHandler.onException(e);
+                            } else if (Objects.isNull(globalExceptionHandler)) {
+                                // Print stack trace if no custom exception handler is provided.
+                                e.printStackTrace();
+                            }
+                        }
+
+                        respond(exceptionInfo.getHttpStatus(), exceptionInfo.getDescription().getBytes(), exchange);
+                        return;
+                    }
+
+                    // After interceptor
+                    List<AfterInterceptor> afterInterceptors = Instance.providersOf(AfterInterceptor.class);
+                    afterInterceptors.sort(Comparator.comparing(AfterInterceptor::order));
+
+                    for (AfterInterceptor interceptor : afterInterceptors) {
+                        String normalizedApplyToURI = URIUtils.removeSlashPrefix(URI.create(interceptor.applyToURI())).toString();
+
+                        //TODO Cache compiled patterns
+                        if (Pattern.compile(normalizedApplyToURI).asPredicate().test(URIUtils.removeSlashPrefix(path).toString())) {
+                            interceptor.intercept(request, response);
+                        }
+
+                    }
+
+                    // Local http endpoint before interceptor
+                    httpEndpoint.get().after(request, (Model) response);
+
+                    byte[] responseTransformed = null;
+
+                    // Set http endpoint defined http headers
+                    exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders());
+
+                    if (response instanceof Empty) {
+                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
+                        responseTransformed = "".getBytes();
+                    } else if (response instanceof Json) {
+                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
+                        responseTransformed = ((Json) response).getValue().toString().getBytes();
+                    } else if (response instanceof Text) {
+                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
+                        responseTransformed = ((Text) response).getValue().getBytes();
+                    } else if (response instanceof Html) {
+                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
+                        responseTransformed = ((Html) response).getValue().getBytes();
+                    } else if (response instanceof View) {
+                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
+
+                        View view = (View) response;
+
+                        if (Objects.nonNull(Instance.of(ViewEngine.class))) {
+                            responseTransformed = view.getValue().getBytes();
+                        } else {
+                            respond(500, "Could not resolve view.".getBytes(), exchange);
+                            return;
+                        }
+
+                    } else if (response instanceof StaticResource) {
+                        StaticResource staticResource = (StaticResource) response;
+
+                        exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
+
+                        try (InputStream is = staticResource.getValue()) {
+                            responseTransformed = is.readAllBytes();
+                        }
+
+                    } else if (response instanceof ByteStream) {
+                        ByteStream streamOut = (ByteStream) response;
+                        respondWithStream(httpEndpoint.get().httpStatus(), streamOut, exchange);
+                        return;
+                    } else if (response instanceof Redirect) {
+                        Redirect redirect = (Redirect) response;
+                        if (Objects.nonNull(redirect)) {
+                            exchange.getResponseHeaders().add("location", redirect.getValue().toString());
+                            respond(redirect.getHttpStatus(), null, exchange);
+                            return;
+                        }
+                    } else {
+                        // POJO assumed
+                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
+                        responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
+                    }
+
+                    respond(httpEndpoint.get().httpStatus(), responseTransformed, exchange);
+
+                } else {
+                    respond(404, null, exchange);
+                }
+            } catch (IOException e) {
+                System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, e);
             }
+        });
+    }
 
-            constraintsList.add(httpEndpoint.get().constraints(
-                (Model) value, pathVariables, queryParameters, exchange.getRequestHeaders()
-            ));
-
-            Constraints[] constraints = constraintsList.stream().toArray(Constraints[]::new);
-
-            ConstraintViolations violations = Validator.validate(constraints);
-            if (!violations.getList().isEmpty()) {
-              respond(400, "Constraint violations detected.".getBytes(), exchange);
-              return;
-            }
-
-          } catch (JsonbException e) {
-            respond(405, "Invalid request body.".getBytes(), exchange);
-            return;
-          }
-
-          // Construct request object
-          Request request = new Request(
-              (Identity) exchange.getPrincipal(),
-              exchange.getRequestHeaders(),
-              value,
-              pathVariables,
-              queryParameters,
-              exchange.getRequestURI(),
-              exchange
-          );
-
-          // Before interceptor
-          List<BeforeInterceptor> beforeInterceptors = Instance.providersOf(BeforeInterceptor.class);
-          beforeInterceptors.sort(Comparator.comparing(BeforeInterceptor::order));
-
-          beforeInterceptors.forEach((interceptor) -> {
-            String normalizedApplyToURI = URIUtils.removeSlashPrefix(URI.create(interceptor.applyToURI())).toString();
-
-            //TODO Cache compiled patterns
-            if (Pattern.compile(normalizedApplyToURI).asPredicate().test(URIUtils.removeSlashPrefix(path).toString())) {
-              interceptor.intercept(request);
-            }
-          });
-
-          // Local http endpoint before interceptor
-          httpEndpoint.get().before(request);
-
-          // Creating response
-          Object response = null;
-          try {
-            response = httpEndpoint.get().response(request);
-          } catch (Exception e) {
-            ExceptionInfo exceptionInfo = httpEndpoint.get().onException(e);
-
-            if (!exceptionInfo.isOverride()) {
-              // Activate global exception handler if provided and http endpoint does not override
-              // default onException.
-              if (Objects.nonNull(globalExceptionHandler)) {
-                exceptionInfo = globalExceptionHandler.onException(e);
-              } else if (Objects.isNull(globalExceptionHandler)) {
-                // Print stack trace if no custom exception handler is provided.
-                e.printStackTrace();
-              }
-            }
-
-            respond(exceptionInfo.getHttpStatus(), exceptionInfo.getDescription().getBytes(), exchange);
-            return;
-          }
-
-          // After interceptor
-          List<AfterInterceptor> afterInterceptors = Instance.providersOf(AfterInterceptor.class);
-          afterInterceptors.sort(Comparator.comparing(AfterInterceptor::order));
-
-          for (AfterInterceptor interceptor : afterInterceptors) {
-            String normalizedApplyToURI = URIUtils.removeSlashPrefix(URI.create(interceptor.applyToURI())).toString();
-
-            //TODO Cache compiled patterns
-            if (Pattern.compile(normalizedApplyToURI).asPredicate().test(URIUtils.removeSlashPrefix(path).toString())) {
-              interceptor.intercept(request, response);
-            }
-
-          }
-
-          // Local http endpoint before interceptor
-          httpEndpoint.get().after(request, (Model) response);
-
-          byte[] responseTransformed = null;
-
-          // Set http endpoint defined http headers
-          exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders());
-
-          if (response instanceof Empty) {
-            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
-            responseTransformed = "".getBytes();
-          } else if (response instanceof Json) {
-            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-            responseTransformed = ((Json) response).getValue().toString().getBytes();
-          } else if (response instanceof Text) {
-            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
-            responseTransformed = ((Text) response).getValue().getBytes();
-          } else if (response instanceof Html) {
-            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-            responseTransformed = ((Html) response).getValue().getBytes();
-          } else if (response instanceof View) {
-            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-
-            View view = (View) response;
-
-            if (Objects.nonNull(Instance.of(ViewEngine.class))) {
-              responseTransformed = view.getValue().getBytes();
-            } else {
-              respond(500, "Could not resolve view.".getBytes(), exchange);
-              return;
-            }
-
-          } else if (response instanceof StaticResource) {
-            StaticResource staticResource = (StaticResource) response;
-
-            exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
-
-            try ( InputStream is = staticResource.getValue()) {
-              responseTransformed = is.readAllBytes();
-            }
-
-          } else if (response instanceof ByteStream) {
-            ByteStream streamOut = (ByteStream) response;
-            respondWithStream(httpEndpoint.get().httpStatus(), streamOut, exchange);
-            return;
-          } else if (response instanceof Redirect) {
-            Redirect redirect = (Redirect) response;
-            if (Objects.nonNull(redirect)) {
-              exchange.getResponseHeaders().add("location", redirect.getValue().toString());
-              respond(redirect.getHttpStatus(), null, exchange);
-              return;
-            }
-          } else {
-            // POJO assumed
-            exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-            responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
-          }
-
-          respond(httpEndpoint.get().httpStatus(), responseTransformed, exchange);
-
-        } else {
-          respond(404, null, exchange);
+    private void respond(int httpStatus, byte[] message, HttpExchange httpExchange) throws IOException {
+        httpExchange.sendResponseHeaders(httpStatus, Objects.isNull(message) ? 0 : message.length);
+        if (Objects.nonNull(message)) {
+            httpExchange.getResponseBody().write(message);
+            httpExchange.getResponseBody().flush();
         }
-      } catch (IOException e) {
-        System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, e);
-      }
-    });
-  }
-
-  private void respond(int httpStatus, byte[] message, HttpExchange httpExchange) throws IOException {
-    httpExchange.sendResponseHeaders(httpStatus, Objects.isNull(message) ? 0 : message.length);
-    if (Objects.nonNull(message)) {
-      httpExchange.getResponseBody().write(message);
-      httpExchange.getResponseBody().flush();
+        httpExchange.close();
     }
-    httpExchange.close();
-  }
 
-  private void respondWithStream(int httpStatus, ByteStream stream, HttpExchange httpExchange) throws IOException {
-    if (Objects.nonNull(stream)) {
-      httpExchange.sendResponseHeaders(httpStatus, 0);
-      stream.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
-      httpExchange.getResponseBody().flush();
-      httpExchange.getResponseBody().close();
+    private void respondWithStream(int httpStatus, ByteStream stream, HttpExchange httpExchange) throws IOException {
+        if (Objects.nonNull(stream)) {
+            httpExchange.sendResponseHeaders(httpStatus, 0);
+            stream.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
+            httpExchange.getResponseBody().flush();
+            httpExchange.getResponseBody().close();
+        }
+        httpExchange.close();
     }
-    httpExchange.close();
-  }
 
-  @Override
-  public Class[] dependsOn() {
-    return new Class[]{ Config.class };
-  }
+    @Override
+    public Class[] dependsOn() {
+        return new Class[]{ Config.class };
+    }
 
 }

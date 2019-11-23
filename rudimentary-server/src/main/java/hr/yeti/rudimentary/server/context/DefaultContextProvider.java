@@ -24,67 +24,67 @@ import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 
 public class DefaultContextProvider extends Context {
 
-  private final List<Class<?>> SPIS = List.of(// Top priorities are Config and Context
-      // Config.class, omitted, has its own loader
-      // Context.class, omitted, has its own loader
-      AfterInterceptor.class,
-      BeforeInterceptor.class,
-      ExceptionHandler.class,
-      EventListener.class,
-      HealthCheck.class,
-      HttpEndpoint.class,
-      HttpEndpointContextProvider.class,
-      HttpFilter.class,
-      IdentityDetails.class,
-      IdentityStore.class,
-      AuthMechanism.class,
-      BasicDataSource.class,
-      ShutdownHook.class,
-      ViewEndpoint.class,
-      ViewEngine.class,
-      ObjectPool.class,
-      Instance.class
-  );
+    private final List<Class<?>> SPIS = List.of(// Top priorities are Config and Context
+            // Config.class, omitted, has its own loader
+            // Context.class, omitted, has its own loader
+            AfterInterceptor.class,
+            BeforeInterceptor.class,
+            ExceptionHandler.class,
+            EventListener.class,
+            HealthCheck.class,
+            HttpEndpoint.class,
+            HttpEndpointContextProvider.class,
+            HttpFilter.class,
+            IdentityDetails.class,
+            IdentityStore.class,
+            AuthMechanism.class,
+            BasicDataSource.class,
+            ShutdownHook.class,
+            ViewEndpoint.class,
+            ViewEngine.class,
+            ObjectPool.class,
+            Instance.class
+    );
 
-  @Override
-  public void initialize() {
-    // Config before any instance is loaded.
-    ServiceLoader.load(Config.class)
-        .stream()
-        .filter(cfg -> cfg.get().conditional())
-        .findFirst()
-        .ifPresent(provider -> {
-          Config config = provider.get();
-          this.initializeInstance(config);
-          add(config);
+    @Override
+    public void initialize() {
+        // Config before any instance is loaded.
+        ServiceLoader.load(Config.class)
+                .stream()
+                .filter(cfg -> cfg.get().conditional())
+                .findFirst()
+                .ifPresent(provider -> {
+                    Config config = provider.get();
+                    this.initializeInstance(config);
+                    add(config);
+                });
+
+        // Create context map.
+        SPIS.forEach((clazz) -> {
+            ServiceLoader.load(clazz).
+                    forEach(instance -> {
+                        add((Instance) instance);
+                    });
         });
 
-    // Create context map.
-    SPIS.forEach((clazz) -> {
-      ServiceLoader.load(clazz).
-          forEach(instance -> {
-            add((Instance) instance);
-          });
-    });
+        // Check for circular dependencies.
+        buildInstanceDependenciesGraph();
 
-    // Check for circular dependencies.
-    buildInstanceDependenciesGraph();
-
-    instanceDependencyGraph.keySet().forEach((instance) -> {
-      checkForCircularDependencies(instance, null);
-    });
-
-    // Initialize instances.
-    getContext().values()
-        .forEach((instance) -> {
-          this.initializeInstance(instance);
+        instanceDependencyGraph.keySet().forEach((instance) -> {
+            checkForCircularDependencies(instance, null);
         });
 
-  }
+        // Initialize instances.
+        getContext().values()
+                .forEach((instance) -> {
+                    this.initializeInstance(instance);
+                });
 
-  @Override
-  public boolean primary() {
-    return true;
-  }
+    }
+
+    @Override
+    public boolean primary() {
+        return true;
+    }
 
 }

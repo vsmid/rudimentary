@@ -6,11 +6,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class ClasspathResourceTest {
 
-  @ParameterizedTest
-  @ValueSource(strings = { "/templates/apidocs.html", "templates/apidocs.html" })
-  public void test_get_resource(String path) {
-    expect:
-    assertNotNull(new ClasspathResource(path).get());
-  }
+    @ParameterizedTest
+    @ValueSource(strings = { "/templates/apidocs.html", "templates/apidocs.html" })
+    public void test_get_resource(String path) {
+        expect:
+        assertNotNull(new ClasspathResource(path).get());
+    }
 
 }

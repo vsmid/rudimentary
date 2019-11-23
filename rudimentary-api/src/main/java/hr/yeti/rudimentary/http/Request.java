@@ -25,91 +25,91 @@ import java.util.stream.Stream;
  */
 public class Request<T> {
 
-  private Identity identity;
-  private Headers httpHeaders;
-  private T body;
-  private Map<String, String> pathVariables;
-  private Map<String, String> queryParameters;
-  private URI uri;
-  private HttpExchange httpExchange;
+    private Identity identity;
+    private Headers httpHeaders;
+    private T body;
+    private Map<String, String> pathVariables;
+    private Map<String, String> queryParameters;
+    private URI uri;
+    private HttpExchange httpExchange;
 
-  public Request(
-      Identity identity,
-      Headers httpHeaders,
-      T body,
-      Map<String, String> pathVariables,
-      Map<String, String> queryParameters,
-      URI uri,
-      HttpExchange httpExchange) {
-    this.identity = identity;
-    this.httpHeaders = httpHeaders;
-    this.body = body;
-    this.pathVariables = pathVariables;
-    this.queryParameters = queryParameters;
-    this.uri = uri;
-    this.httpExchange = httpExchange;
-  }
-
-  /**
-   * Gets HTTP cookies received in HTTP request.
-   *
-   * @return List of HTTP cookies.
-   */
-  public List<HttpCookie> getCookies() {
-    return httpHeaders.get("Cookie")
-        .stream()
-        .map(c -> c.split("; "))
-        .flatMap(Stream::of)
-        .map(HttpCookie::parse)
-        .flatMap(List::stream)
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Gets user details with custom details.
-   *
-   * @param <D> Type of user details.
-   * @param details User details class.
-   * @return User identity with custom details.
-   */
-  public <D> Identity<D> getIdentity(Class<D> details) {
-    return getIdentity();
-  }
-
-  public Identity getIdentity() {
-    Session session = Session.getOrCreate(httpExchange);
-    if (Objects.nonNull(session) && session.isAuthenticated()) {
-      return session.getIdentity();
+    public Request(
+            Identity identity,
+            Headers httpHeaders,
+            T body,
+            Map<String, String> pathVariables,
+            Map<String, String> queryParameters,
+            URI uri,
+            HttpExchange httpExchange) {
+        this.identity = identity;
+        this.httpHeaders = httpHeaders;
+        this.body = body;
+        this.pathVariables = pathVariables;
+        this.queryParameters = queryParameters;
+        this.uri = uri;
+        this.httpExchange = httpExchange;
     }
-    return identity;
-  }
 
-  public Headers getHttpHeaders() {
-    return httpHeaders;
-  }
+    /**
+     * Gets HTTP cookies received in HTTP request.
+     *
+     * @return List of HTTP cookies.
+     */
+    public List<HttpCookie> getCookies() {
+        return httpHeaders.get("Cookie")
+                .stream()
+                .map(c -> c.split("; "))
+                .flatMap(Stream::of)
+                .map(HttpCookie::parse)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
 
-  public T getBody() {
-    return body;
-  }
+    /**
+     * Gets user details with custom details.
+     *
+     * @param <D> Type of user details.
+     * @param details User details class.
+     * @return User identity with custom details.
+     */
+    public <D> Identity<D> getIdentity(Class<D> details) {
+        return getIdentity();
+    }
 
-  public Map<String, String> getPathVariables() {
-    return pathVariables;
-  }
+    public Identity getIdentity() {
+        Session session = Session.getOrCreate(httpExchange);
+        if (Objects.nonNull(session) && session.isAuthenticated()) {
+            return session.getIdentity();
+        }
+        return identity;
+    }
 
-  public Map<String, String> getQueryParameters() {
-    return queryParameters;
-  }
+    public Headers getHttpHeaders() {
+        return httpHeaders;
+    }
 
-  public URI getUri() {
-    return uri;
-  }
+    public T getBody() {
+        return body;
+    }
 
-  public Session getSession() {
-    return Session.getOrCreate(httpExchange);
-  }
+    public Map<String, String> getPathVariables() {
+        return pathVariables;
+    }
 
-  public HttpExchange getHttpExchange() {
-    return httpExchange;
-  }
+    public Map<String, String> getQueryParameters() {
+        return queryParameters;
+    }
+
+    public URI getUri() {
+        return uri;
+    }
+
+    public Session getSession() {
+        return Session.getOrCreate(httpExchange);
+    }
+
+    public HttpExchange getHttpExchange() {
+        return httpExchange;
+    }
 
 }

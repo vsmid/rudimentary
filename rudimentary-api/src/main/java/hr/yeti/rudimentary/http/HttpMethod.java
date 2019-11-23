@@ -6,5 +6,5 @@ package hr.yeti.rudimentary.http;
  * @author vedransmid@yeti-it.hr
  */
 public enum HttpMethod {
-  GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE
+    GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE
 }

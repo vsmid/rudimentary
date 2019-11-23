@@ -22,53 +22,53 @@ import hr.yeti.rudimentary.http.stream.StreamOutWriteDef;
  */
 public class ByteStream extends Model implements Value<InputStream> {
 
-  /**
-   *
-   * Implementation of how data is written to output stream.
-   */
-  private StreamOutWriteDef streamOutWriteDef;
+    /**
+     *
+     * Implementation of how data is written to output stream.
+     */
+    private StreamOutWriteDef streamOutWriteDef;
 
-  /**
-   *
-   * Incoming data stream as {@link InputSteram}.
-   */
-  private InputStream inputStream;
+    /**
+     *
+     * Incoming data stream as {@link InputSteram}.
+     */
+    private InputStream inputStream;
 
-  private ByteStream() {
+    private ByteStream() {
 
-  }
+    }
 
-  /**
-   *
-   * @param inputStream Incoming data stream.
-   */
-  public ByteStream(InputStream inputStream) {
-    this.inputStream = inputStream;
-  }
+    /**
+     *
+     * @param inputStream Incoming data stream.
+     */
+    public ByteStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
-  /**
-   *
-   * @param streamOutWriteDef Implementation of how data is written to output stream.
-   */
-  public ByteStream(StreamOutWriteDef streamOutWriteDef) {
-    this.streamOutWriteDef = streamOutWriteDef;
-  }
+    /**
+     *
+     * @param streamOutWriteDef Implementation of how data is written to output stream.
+     */
+    public ByteStream(StreamOutWriteDef streamOutWriteDef) {
+        this.streamOutWriteDef = streamOutWriteDef;
+    }
 
-  /**
-   *
-   * @return Implementation of how data is written to output stream.
-   */
-  public StreamOutWriteDef getStreamOutWriteDef() {
-    return streamOutWriteDef;
-  }
+    /**
+     *
+     * @return Implementation of how data is written to output stream.
+     */
+    public StreamOutWriteDef getStreamOutWriteDef() {
+        return streamOutWriteDef;
+    }
 
-  /**
-   *
-   * @return Incoming data stream as {@link InputSteram}.
-   */
-  @Override
-  public InputStream getValue() {
-    return this.inputStream;
-  }
+    /**
+     *
+     * @return Incoming data stream as {@link InputSteram}.
+     */
+    @Override
+    public InputStream getValue() {
+        return this.inputStream;
+    }
 
 }

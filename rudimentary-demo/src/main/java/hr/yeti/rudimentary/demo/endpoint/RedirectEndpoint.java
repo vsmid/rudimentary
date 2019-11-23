@@ -7,8 +7,8 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 
 public class RedirectEndpoint implements HttpEndpoint<Empty, Redirect> {
 
-  @Override
-  public Redirect response(Request<Empty> request) {
-    return new Redirect("http://www.yeti-it.hr");
-  }
+    @Override
+    public Redirect response(Request<Empty> request) {
+        return new Redirect("http://www.yeti-it.hr");
+    }
 }

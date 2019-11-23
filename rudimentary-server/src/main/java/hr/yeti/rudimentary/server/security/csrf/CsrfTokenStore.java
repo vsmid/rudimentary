@@ -6,29 +6,29 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CsrfTokenStore implements Instance {
 
-  private Map<String, CsrfToken> store;
+    private Map<String, CsrfToken> store;
 
-  @Override
-  public void initialize() {
-    this.store = new ConcurrentHashMap();
-  }
+    @Override
+    public void initialize() {
+        this.store = new ConcurrentHashMap();
+    }
 
-  @Override
-  public void destroy() {
-    this.store.clear();
-  }
+    @Override
+    public void destroy() {
+        this.store.clear();
+    }
 
-  public void remove(String csrfToken) {
-    store.remove(csrfToken);
-  }
+    public void remove(String csrfToken) {
+        store.remove(csrfToken);
+    }
 
-  public CsrfToken create() {
-    CsrfToken csrfToken = new CsrfToken();
-    store.put(csrfToken.getValue(), csrfToken);
-    return csrfToken;
-  }
+    public CsrfToken create() {
+        CsrfToken csrfToken = new CsrfToken();
+        store.put(csrfToken.getValue(), csrfToken);
+        return csrfToken;
+    }
 
-  public boolean contains(String csrfToken) {
-    return store.containsKey(csrfToken);
-  }
+    public boolean contains(String csrfToken) {
+        return store.containsKey(csrfToken);
+    }
 }

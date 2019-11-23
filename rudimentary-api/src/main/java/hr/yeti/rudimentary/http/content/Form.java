@@ -17,18 +17,18 @@ import java.util.Map;
  */
 public final class Form extends Model implements Value< Map<String, Object>> {
 
-  private Map<String, Object> value;
+    private Map<String, Object> value;
 
-  /**
-   * @param value Value received through request body.
-   */
-  public Form(Map<String, Object> value) {
-    this.value = value;
-  }
+    /**
+     * @param value Value received through request body.
+     */
+    public Form(Map<String, Object> value) {
+        this.value = value;
+    }
 
-  @Override
-  public Map<String, Object> getValue() {
-    return value;
-  }
+    @Override
+    public Map<String, Object> getValue() {
+        return value;
+    }
 
 }

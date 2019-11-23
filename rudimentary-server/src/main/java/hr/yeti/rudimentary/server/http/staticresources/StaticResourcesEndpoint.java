@@ -15,48 +15,48 @@ import java.util.Objects;
 
 public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResource> {
 
-  private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
+    private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
 
-  @Override
-  public URI path() {
-    return URI.create(staticResourcesDir.value() + "/.*");
-  }
-
-  @Override
-  public StaticResource response(Request<Empty> request) {
-    InputStream staticResource = new ClasspathResource(request.getUri().toString()).get();
-
-    if (Objects.isNull(staticResource)) {
-      throw new ResourceNotFoundException(request.getUri().toString());
+    @Override
+    public URI path() {
+        return URI.create(staticResourcesDir.value() + "/.*");
     }
 
-    int extensionIndex = request.getUri().toString().lastIndexOf(".");
-    String extension = request.getUri().toString().substring(extensionIndex + 1).toLowerCase();
+    @Override
+    public StaticResource response(Request<Empty> request) {
+        InputStream staticResource = new ClasspathResource(request.getUri().toString()).get();
 
-    String mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        if (Objects.isNull(staticResource)) {
+            throw new ResourceNotFoundException(request.getUri().toString());
+        }
 
-    switch (extension) {
-      case "js":
-        mediaType = MediaType.APPLICATION_JAVASCRIPT;
-        break;
-      case "css":
-        mediaType = MediaType.TEXT_CSS;
-        break;
-      default:
-        break;
+        int extensionIndex = request.getUri().toString().lastIndexOf(".");
+        String extension = request.getUri().toString().substring(extensionIndex + 1).toLowerCase();
+
+        String mediaType = MediaType.APPLICATION_OCTET_STREAM;
+
+        switch (extension) {
+            case "js":
+                mediaType = MediaType.APPLICATION_JAVASCRIPT;
+                break;
+            case "css":
+                mediaType = MediaType.TEXT_CSS;
+                break;
+            default:
+                break;
+        }
+
+        return new StaticResource(staticResource, mediaType);
     }
 
-    return new StaticResource(staticResource, mediaType);
-  }
+    @Override
+    public String description() {
+        return "Serves static files such as javascript and css.";
+    }
 
-  @Override
-  public String description() {
-    return "Serves static files such as javascript and css.";
-  }
-
-  @Override
-  public ExceptionInfo onException(Exception e) {
-    return new ExceptionInfo(404, "Could not load resource " + e.getMessage() + ".");
-  }
+    @Override
+    public ExceptionInfo onException(Exception e) {
+        return new ExceptionInfo(404, "Could not load resource " + e.getMessage() + ".");
+    }
 
 }

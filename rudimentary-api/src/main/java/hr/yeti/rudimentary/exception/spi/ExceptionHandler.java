@@ -22,14 +22,14 @@ import java.util.ServiceLoader;
  */
 public interface ExceptionHandler extends Instance {
 
-  /**
-   * <pre>
-   * Implement this method to handle any exception you like. This basically means setting the http
-   * status and dedicated error description based on exception thrown.
-   * </pre>
-   *
-   * @param e Exception thrown by the application.
-   * @return Custom {@link ExceptionInfo} description depending on the type of thrown exception.
-   */
-  ExceptionInfo onException(Exception e);
+    /**
+     * <pre>
+     * Implement this method to handle any exception you like. This basically means setting the http
+     * status and dedicated error description based on exception thrown.
+     * </pre>
+     *
+     * @param e Exception thrown by the application.
+     * @return Custom {@link ExceptionInfo} description depending on the type of thrown exception.
+     */
+    ExceptionInfo onException(Exception e);
 }

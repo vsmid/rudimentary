@@ -26,11 +26,11 @@ import java.util.ServiceLoader;
  */
 public interface BeforeInterceptor extends Interceptor {
 
-  /**
-   * Implement interceptor's logic.
-   *
-   * @param request Incoming HTTP request in {@link Request} form.
-   */
-  void intercept(Request request);
+    /**
+     * Implement interceptor's logic.
+     *
+     * @param request Incoming HTTP request in {@link Request} form.
+     */
+    void intercept(Request request);
 
 }

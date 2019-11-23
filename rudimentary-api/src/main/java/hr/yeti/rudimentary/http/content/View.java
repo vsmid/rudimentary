@@ -20,34 +20,33 @@ import java.util.Map;
  */
 public final class View extends Model implements Value<String> {
 
-  private String templatePath;
-  private Map<String, Object> context;
+    private String templatePath;
+    private Map<String, Object> context;
 
-  /**
-   * @param templatePath Path to HTML template.
-   * @param context A map of values to be applied against HTML template.
-   */
-  public View(String templatePath, Map<String, Object> context) {
-    this.templatePath = templatePath;
-    this.context = context;
-  }
+    /**
+     * @param templatePath Path to HTML template.
+     * @param context A map of values to be applied against HTML template.
+     */
+    public View(String templatePath, Map<String, Object> context) {
+        this.templatePath = templatePath;
+        this.context = context;
+    }
 
-  public String getTemplatePath() {
-    return templatePath;
-  }
+    public String getTemplatePath() {
+        return templatePath;
+    }
 
-  public Map<String, Object> getContext() {
-    return context;
-  }
+    public Map<String, Object> getContext() {
+        return context;
+    }
 
-  /**
-   * @return A string HTML representation of the view to be sent in a response. For this, an
-   * instance {@link ViewEngine] provider is used.
-   */
-  @Override
-  public String getValue() {
-    return Instance.of(ViewEngine.class)
-        .render(this);
-  }
+    /**
+     * @return A string HTML representation of the view to be sent in a response. For this, an instance {@link ViewEngine] provider is used.
+     */
+    @Override
+    public String getValue() {
+        return Instance.of(ViewEngine.class)
+                .render(this);
+    }
 
 }

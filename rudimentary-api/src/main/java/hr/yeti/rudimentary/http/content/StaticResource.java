@@ -18,26 +18,25 @@ import java.io.InputStream;
  */
 public final class StaticResource extends Model implements Value<InputStream> {
 
-  private InputStream staticResource;
-  private String mediaType;
+    private InputStream staticResource;
+    private String mediaType;
 
-  /**
-   * @param staticResource Resource to be loaded.
-   * @param mediaType Type of resource, e.q. for javascript set to
-   * {@link MediaType#APPLICATION_JAVASCRIPT}, for others {@link MediaType#APPLICATION_OCTET_STREAM}
-   */
-  public StaticResource(InputStream staticResource, String mediaType) {
-    this.staticResource = staticResource;
-    this.mediaType = mediaType;
-  }
+    /**
+     * @param staticResource Resource to be loaded.
+     * @param mediaType Type of resource, e.q. for javascript set to {@link MediaType#APPLICATION_JAVASCRIPT}, for others {@link MediaType#APPLICATION_OCTET_STREAM}
+     */
+    public StaticResource(InputStream staticResource, String mediaType) {
+        this.staticResource = staticResource;
+        this.mediaType = mediaType;
+    }
 
-  @Override
-  public InputStream getValue() {
-    return staticResource;
-  }
+    @Override
+    public InputStream getValue() {
+        return staticResource;
+    }
 
-  public String getMediaType() {
-    return mediaType;
-  }
+    public String getMediaType() {
+        return mediaType;
+    }
 
 }

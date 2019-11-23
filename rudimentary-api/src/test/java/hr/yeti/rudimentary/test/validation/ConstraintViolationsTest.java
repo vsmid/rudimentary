@@ -10,18 +10,18 @@ import org.junit.jupiter.api.Test;
 
 public class ConstraintViolationsTest {
 
-  @Test
-  @DisplayName("Should add only failed validations")
-  public void test_add_violation() {
-    ConstraintViolations violations = new ConstraintViolations();
+    @Test
+    @DisplayName("Should add only failed validations")
+    public void test_add_violation() {
+        ConstraintViolations violations = new ConstraintViolations();
 
-    when:
-    violations.add(new ValidationResult(true, Optional.empty()));
-    violations.add(new ValidationResult(false, Optional.empty()));
+        when:
+        violations.add(new ValidationResult(true, Optional.empty()));
+        violations.add(new ValidationResult(false, Optional.empty()));
 
-    then:
-    assertTrue(violations.getList().size() == 1);
-    assertFalse(violations.getList().get(0).isValid());
+        then:
+        assertTrue(violations.getList().size() == 1);
+        assertFalse(violations.getList().get(0).isValid());
 
-  }
+    }
 }

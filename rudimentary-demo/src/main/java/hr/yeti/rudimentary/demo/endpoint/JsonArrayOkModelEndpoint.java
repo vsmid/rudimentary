@@ -15,25 +15,25 @@ import java.util.stream.Collectors;
 
 public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.POST;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.POST;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/array");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/array");
+    }
 
-  @Override
-  public int httpStatus() {
-    return 200;
-  }
+    @Override
+    public int httpStatus() {
+        return 200;
+    }
 
-  @Override
-  public Constraints constraints(Json body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
-    //Manually define constraints for raw JSON array if you do not have a type
-    /*new Constraints() {
+    @Override
+    public Constraints constraints(Json body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
+        //Manually define constraints for raw JSON array if you do not have a type
+        /*new Constraints() {
       {
         body.getValue()
             .asJsonArray()
@@ -45,18 +45,18 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
       }
     };*/
 
-    return new Constraints(body, OkModel.class);
-  }
+        return new Constraints(body, OkModel.class);
+    }
 
-  @Override
-  public Text response(Request<Json> request) {
-    List<OkModel> okModels = request.getBody().asListOf(OkModel.class);
+    @Override
+    public Text response(Request<Json> request) {
+        List<OkModel> okModels = request.getBody().asListOf(OkModel.class);
 
-    return new Text(
-        okModels.stream()
-            .map(OkModel::toString)
-            .collect(Collectors.joining(System.lineSeparator()))
-    );
-  }
+        return new Text(
+                okModels.stream()
+                        .map(OkModel::toString)
+                        .collect(Collectors.joining(System.lineSeparator()))
+        );
+    }
 
 }

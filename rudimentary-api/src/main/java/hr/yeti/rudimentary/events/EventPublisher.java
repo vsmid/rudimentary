@@ -33,84 +33,84 @@ import java.util.logging.Logger;
  */
 public final class EventPublisher implements Instance {
 
-  /**
-   * Enumerated type of how event should be published. This has an effect on the way how listeners process published event.
-   */
-  public enum Type {
-    SYNC, ASYNC
-  }
-
-  /**
-   * A map of all registered {@link EventListener}. One event class type can have multiple listeners registered.
-   */
-  private static final Map<Class<? extends Event>, List<EventListener<Event>>> LISTENERS = new ConcurrentHashMap<>();
-
-  /**
-   * Thread pool for asynchronous listener execution.
-   */
-  private static final ExecutorService ASYNC_EXECUTOR = Executors.newCachedThreadPool();
-
-  /**
-   * <pre>
-   * Call this class to publish an event. This method is used internally by
-   * {@link Event#publish(hr.yeti.rudimentary.events.EventPublisher.Type)} for publishing events.
-   * For now only synchronous publishing is supported which means listeners will
-   * be executed synchronously one after another.
-   * </pre>
-   *
-   * @param event Event instance to be published.
-   * @param type How event will be published.
-   */
-  public void publish(Event event, Type type) {
-    if (LISTENERS.containsKey(event.getClass())) {
-      if (type == Type.SYNC) {
-        LISTENERS.get(event.getClass())
-            .stream()
-            .forEach((t) -> {
-              t.onEvent(event);
-            });
-      } else {
-        LISTENERS.get(event.getClass())
-            .stream()
-            .map(listener -> {
-              return (Runnable) () -> {
-                listener.onEvent(event);
-              };
-            })
-            .forEach((runnable) -> {
-              CompletableFuture.runAsync(runnable, ASYNC_EXECUTOR);
-            });
-      }
+    /**
+     * Enumerated type of how event should be published. This has an effect on the way how listeners process published event.
+     */
+    public enum Type {
+        SYNC, ASYNC
     }
-  }
 
-  @Override
-  public void initialize() {
-    Instance.providersOf(EventListener.class)
-        .forEach(this::attach);
-  }
+    /**
+     * A map of all registered {@link EventListener}. One event class type can have multiple listeners registered.
+     */
+    private static final Map<Class<? extends Event>, List<EventListener<Event>>> LISTENERS = new ConcurrentHashMap<>();
 
-  /**
-   * Adds event listener to LISTENERS map.
-   *
-   * @param listener Registered event listener to be added to LISTENERS map.
-   */
-  private void attach(EventListener<Event> listener) {
-    String className = ((ParameterizedType) listener.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
-    try {
-      Class<? extends Event> clazz = (Class<? extends Event>) Class.forName(className);
-      LISTENERS.putIfAbsent(clazz, new ArrayList<>());
-      if (!LISTENERS.get(clazz).contains(listener)) {
-        LISTENERS.get(clazz).add(listener);
-      }
-    } catch (ClassNotFoundException ex) {
-      Logger.getLogger(EventPublisher.class.getName()).log(Level.SEVERE, null, ex);
+    /**
+     * Thread pool for asynchronous listener execution.
+     */
+    private static final ExecutorService ASYNC_EXECUTOR = Executors.newCachedThreadPool();
+
+    /**
+     * <pre>
+     * Call this class to publish an event. This method is used internally by
+     * {@link Event#publish(hr.yeti.rudimentary.events.EventPublisher.Type)} for publishing events.
+     * For now only synchronous publishing is supported which means listeners will
+     * be executed synchronously one after another.
+     * </pre>
+     *
+     * @param event Event instance to be published.
+     * @param type How event will be published.
+     */
+    public void publish(Event event, Type type) {
+        if (LISTENERS.containsKey(event.getClass())) {
+            if (type == Type.SYNC) {
+                LISTENERS.get(event.getClass())
+                        .stream()
+                        .forEach((t) -> {
+                            t.onEvent(event);
+                        });
+            } else {
+                LISTENERS.get(event.getClass())
+                        .stream()
+                        .map(listener -> {
+                            return (Runnable) () -> {
+                                listener.onEvent(event);
+                            };
+                        })
+                        .forEach((runnable) -> {
+                            CompletableFuture.runAsync(runnable, ASYNC_EXECUTOR);
+                        });
+            }
+        }
     }
-  }
 
-  @Override
-  public Class[] dependsOn() {
-    return new Class[]{ EventListener.class };
-  }
+    @Override
+    public void initialize() {
+        Instance.providersOf(EventListener.class)
+                .forEach(this::attach);
+    }
+
+    /**
+     * Adds event listener to LISTENERS map.
+     *
+     * @param listener Registered event listener to be added to LISTENERS map.
+     */
+    private void attach(EventListener<Event> listener) {
+        String className = ((ParameterizedType) listener.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
+        try {
+            Class<? extends Event> clazz = (Class<? extends Event>) Class.forName(className);
+            LISTENERS.putIfAbsent(clazz, new ArrayList<>());
+            if (!LISTENERS.get(clazz).contains(listener)) {
+                LISTENERS.get(clazz).add(listener);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EventPublisher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public Class[] dependsOn() {
+        return new Class[]{ EventListener.class };
+    }
 
 }

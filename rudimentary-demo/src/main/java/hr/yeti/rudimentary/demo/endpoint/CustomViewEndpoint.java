@@ -8,14 +8,14 @@ import java.net.URI;
 
 public class CustomViewEndpoint implements ViewEndpoint<Form> {
 
-  @Override
-  public URI path() {
-    return URI.create("/dynamicView");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/dynamicView");
+    }
 
-  @Override
-  public View response(Request<Form> request) {
-    return new View("dynamicView.html", request.getBody().getValue());
-  }
+    @Override
+    public View response(Request<Form> request) {
+        return new View("dynamicView.html", request.getBody().getValue());
+    }
 
 }

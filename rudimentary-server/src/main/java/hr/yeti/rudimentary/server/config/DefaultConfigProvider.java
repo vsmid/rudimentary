@@ -9,33 +9,33 @@ import java.util.ServiceLoader;
 
 public final class DefaultConfigProvider extends Config {
 
-  @Override
-  public void initialize() {
-    super.initialize();
-    
-    try (
-        InputStream config = new ClasspathResource("config.properties").get()) {
-      load(config);
-    } catch (IOException ex) {
-      throw new ConfigException(ex);
+    @Override
+    public void initialize() {
+        super.initialize();
+
+        try (
+                InputStream config = new ClasspathResource("config.properties").get()) {
+            load(config);
+        } catch (IOException ex) {
+            throw new ConfigException(ex);
+        }
+
+        seal();
     }
-    
-    seal();
-  }
 
-  @Override
-  public void destroy() {
-    super.destroy();
-  }
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 
-  @Override
-  public boolean primary() {
-    return false;
-  }
+    @Override
+    public boolean primary() {
+        return false;
+    }
 
-  @Override
-  public boolean conditional() {
-    return ServiceLoader.load(Config.class).stream().count() == 1;
-  }
+    @Override
+    public boolean conditional() {
+        return ServiceLoader.load(Config.class).stream().count() == 1;
+    }
 
 }

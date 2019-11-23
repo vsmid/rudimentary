@@ -7,9 +7,9 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 
 public class UserInfoEndpoint implements HttpEndpoint<Empty, Text> {
 
-  @Override
-  public Text response(Request<Empty> request) {
-    return new Text(request.getIdentity().toString());
-  }
+    @Override
+    public Text response(Request<Empty> request) {
+        return new Text(request.getIdentity().toString());
+    }
 
 }

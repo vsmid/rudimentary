@@ -32,14 +32,13 @@ import hr.yeti.rudimentary.context.spi.Instance;
  */
 public interface Event {
 
-  /**
-   * Publishes this object instance as an event. Default implementation should generally not be
-   * overridden.
-   *
-   * @param type Should event be published synchronously or asynchronously.
-   */
-  default void publish(EventPublisher.Type type) {
-    Instance.of(EventPublisher.class).publish(this, type);
-  }
+    /**
+     * Publishes this object instance as an event. Default implementation should generally not be overridden.
+     *
+     * @param type Should event be published synchronously or asynchronously.
+     */
+    default void publish(EventPublisher.Type type) {
+        Instance.of(EventPublisher.class).publish(this, type);
+    }
 
 }

@@ -5,17 +5,17 @@ import java.util.Objects;
 
 public class ClasspathResource {
 
-  private String path;
+    private String path;
 
-  public ClasspathResource(String path) {
-    Objects.requireNonNull(path);
+    public ClasspathResource(String path) {
+        Objects.requireNonNull(path);
 
-    this.path = !path.startsWith("/") ? "/" + path : path;
-  }
+        this.path = !path.startsWith("/") ? "/" + path : path;
+    }
 
-  public InputStream get() {
-    return this.getClass().
-        getResourceAsStream(path);
-  }
+    public InputStream get() {
+        return this.getClass().
+                getResourceAsStream(path);
+    }
 
 }

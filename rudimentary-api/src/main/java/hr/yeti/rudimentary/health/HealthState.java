@@ -12,5 +12,5 @@ package hr.yeti.rudimentary.health;
  * @author vedransmid@yeti-it.hr
  */
 public enum HealthState {
-  UP, DOWN
+    UP, DOWN
 }

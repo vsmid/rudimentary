@@ -9,19 +9,19 @@ import java.net.URI;
 
 public class FormEndpoint implements HttpEndpoint<Form, Text> {
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.POST;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.POST;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create("/form");
-  }
+    @Override
+    public URI path() {
+        return URI.create("/form");
+    }
 
-  @Override
-  public Text response(Request<Form> request) {
-    return new Text(request.getBody().getValue().toString());
-  }
+    @Override
+    public Text response(Request<Form> request) {
+        return new Text(request.getBody().getValue().toString());
+    }
 
 }

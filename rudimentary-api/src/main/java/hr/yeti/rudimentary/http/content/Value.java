@@ -11,5 +11,5 @@ package hr.yeti.rudimentary.http.content;
  */
 public interface Value<T> {
 
-  T getValue();
+    T getValue();
 }

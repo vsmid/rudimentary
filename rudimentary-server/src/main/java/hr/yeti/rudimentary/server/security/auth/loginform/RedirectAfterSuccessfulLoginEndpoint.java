@@ -10,30 +10,30 @@ import java.net.URI;
 
 public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, Redirect> {
 
-  private ConfigProperty enabled = new ConfigProperty("security.loginForm.enabled");
-  private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginForm.redirectAfterSuccessfulLoginURI");
-  private ConfigProperty landingViewURI = new ConfigProperty("security.loginForm.landingViewURI");
+    private ConfigProperty enabled = new ConfigProperty("security.loginForm.enabled");
+    private ConfigProperty redirectAfterSuccessfulLoginURI = new ConfigProperty("security.loginForm.redirectAfterSuccessfulLoginURI");
+    private ConfigProperty landingViewURI = new ConfigProperty("security.loginForm.landingViewURI");
 
-  @Override
-  public HttpMethod httpMethod() {
-    return HttpMethod.POST;
-  }
+    @Override
+    public HttpMethod httpMethod() {
+        return HttpMethod.POST;
+    }
 
-  @Override
-  public URI path() {
-    return URI.create(redirectAfterSuccessfulLoginURI.value());
-  }
+    @Override
+    public URI path() {
+        return URI.create(redirectAfterSuccessfulLoginURI.value());
+    }
 
-  @Override
-  public Redirect response(Request<Form> request) {
-    String redirectToURI = landingViewURI.value().length() == 0
-        ? request.getSession().getAttributes().getOrDefault("sessionCreatingURI", "/").toString() : landingViewURI.value();
-    return new Redirect(redirectToURI);
-  }
+    @Override
+    public Redirect response(Request<Form> request) {
+        String redirectToURI = landingViewURI.value().length() == 0
+                ? request.getSession().getAttributes().getOrDefault("sessionCreatingURI", "/").toString() : landingViewURI.value();
+        return new Redirect(redirectToURI);
+    }
 
-  @Override
-  public boolean conditional() {
-    return enabled.asBoolean();
-  }
+    @Override
+    public boolean conditional() {
+        return enabled.asBoolean();
+    }
 
 }

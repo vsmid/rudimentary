@@ -5,25 +5,25 @@ import java.time.Instant;
 
 public class CsrfToken {
 
-  private String value;
-  private Instant created;
+    private String value;
+    private Instant created;
 
-  public CsrfToken() {
-    this.value = Hash.generateRandomSHA256();
-    this.created = Instant.now();
-  }
+    public CsrfToken() {
+        this.value = Hash.generateRandomSHA256();
+        this.created = Instant.now();
+    }
 
-  public String getValue() {
-    return value;
-  }
+    public String getValue() {
+        return value;
+    }
 
-  public Instant getCreated() {
-    return created;
-  }
+    public Instant getCreated() {
+        return created;
+    }
 
-  @Override
-  public String toString() {
-    return this.value;
-  }
+    @Override
+    public String toString() {
+        return this.value;
+    }
 
 }
