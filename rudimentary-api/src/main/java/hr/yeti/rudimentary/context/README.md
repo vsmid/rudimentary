@@ -23,6 +23,9 @@ Rudimentary provides `hr.yeti.rudimentary.test.ContextMock` which you can use wh
    );
 ```
 
+### Instance
+Everything stored inside Context is Instance. Instance can be considerd as an application scoped singleton.
+
 ### Accessing Context object instances
 Context instances can be accessed in a static way but that is not the preferred way.
 ```java
@@ -53,9 +56,6 @@ Simply put, if you want Rudimentray context to automatically initialize custom i
 `hr.yeti.rudimentary.context.spi.Instance`. That's it.
 
 *rudimentary-maven-plugin* will automatically register new instance but you can also register it manually by writing canonical class name of the provider to the `src/main/resources/META-INF/services/hr.yeti.rudimentary.context.spi.Instance` file.
-
-### Instance
-Everything stored inside Context is Instance. Instance can be considerd as an application scoped singleton.
 
 #### Instance lifecycle and phases
 #### Initialization
