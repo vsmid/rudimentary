@@ -3,7 +3,7 @@
 A small, simple and opinionated Java based web services/applications framework. 
 
 # Table of contents (in progress...)
-* [Rudimentary API](rudimentary-api/README.md)
+* Rudimentary API
   * [Configuration](rudimentary-api/src/main/java/hr/yeti/rudimentary/config/README.md) :white_check_mark:
   * [Context](rudimentary-api/src/main/java/hr/yeti/rudimentary/context/README.md) :white_check_mark:
   * [Http](rudimentary-api/src/main/java/hr/yeti/rudimentary/http/README.md)
