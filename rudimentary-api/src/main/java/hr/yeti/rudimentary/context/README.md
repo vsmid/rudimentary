@@ -23,7 +23,7 @@ Rudimentary provides `hr.yeti.rudimentary.test.ContextMock` which you can use wh
    );
 ```
 
-### Instance
+## Instance
 Everything stored inside Context is Instance. Instance can be considerd as an application scoped singleton.
 
 ### Accessing Context object instances
