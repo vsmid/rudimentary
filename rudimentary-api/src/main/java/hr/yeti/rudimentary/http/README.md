@@ -24,7 +24,7 @@ public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
 ```
 
 #### Setting endpoint http method
-Default http method is set to GET. To set new http method just override *httpMethod*.
+Default http method is set to GET. To set new http method just override *httpMethod* method.
 ```java
 @Override
 public HttpMethod httpMethod() {
@@ -33,7 +33,7 @@ public HttpMethod httpMethod() {
 ```
 
 #### Setting endpoint http status
-Default http status which endpoint returns is set to 200. To set new http statuse override **.
+Default http status which endpoint returns is set to 200. To set new http statuse override *httpStatus* method.
 ```java
 @Override
 public int httpStatus() {
@@ -41,4 +41,27 @@ public int httpStatus() {
 }
 ```
 
+#### Setting http endpoint path
+Defaut http uri path is set to class name with first letter as lower case.
+If class name was `CustomHttpEndpoint` the default path would then be `customHttpEndpoint`.
+To set new http endpoint uri path override *path* method.
+```java
+@Override
+public URI path() {
+    return URI.create("/custom");
+}
+```
+If you would like to have parameter as part of you uri path define path as:
+```java
+@Override
+public URI path() {
+    return URI.create("/custom/:id"); // Define id as path variable. You can multiple path variables, e.g. /custom/:id1/dummy/:id2
+}
+
+@Override
+public Text response(Request<Empty> request) {
+    return new Text(request.getPathVariables().get("id"))); // Send value of id path variable as response
+}
+
+```
 
