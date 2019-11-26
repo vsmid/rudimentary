@@ -29,8 +29,8 @@ public class ExceptionInfo {
     private Object details;
 
     /**
-     * Flag indicating whether default interface implementation of {@link HttpEndpoint#onException(java.lang.Exception)} has been overriden or not.
-     * {@link HttpEndpoint#onException(java.lang.Exception)} has greater priority than the one implemented through {@link ExceptionHandler#onException(java.lang.Exception)} if overriden by the given
+     * Flag indicating whether default interface implementation of {@link HttpEndpoint#onException(java.lang.Exception)} has been overridden or not.
+     * {@link HttpEndpoint#onException(java.lang.Exception)} has greater priority than the one implemented through {@link ExceptionHandler#onException(java.lang.Exception)} if overridden by the given
      * http endpoint provider class.
      */
     private boolean override;
