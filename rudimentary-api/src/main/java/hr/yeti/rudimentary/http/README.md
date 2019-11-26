@@ -139,7 +139,14 @@ public Constraints constraints(
     };
 }
 ```
-
+#### Endpoint description
+To set short endpoint description which will be shown in *apidocs* override *description* method.
+```java
+@Override
+public String description() {
+    return "Some description";
+}
+```
 
 
 
