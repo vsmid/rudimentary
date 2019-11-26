@@ -123,7 +123,7 @@ public Text response(Request<Text> request) {
 ```
 #### Constraint validations
 Http endpoint provides convenient way to define constraints for parts of incoming http request.
-To define custom constraints, override *constraints* method.
+To define custom constraints, override *constraints* method. More information about validation can be found in [Validation](../validation/README.md) section.
 ```java
 @Override
 public Constraints constraints(
