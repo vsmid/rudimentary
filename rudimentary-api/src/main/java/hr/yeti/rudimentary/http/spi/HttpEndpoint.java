@@ -86,10 +86,10 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     /**
      * Sets HTTP headers to be return in a response.
      *
-     * @param headers Incoming http request headers.
+     * @param requestHeaders Incoming http request headers.
      * @return HTTP headers.
      */
-    default Headers responseHttpHeaders(Headers headers) {
+    default Headers responseHttpHeaders(Headers requestHeaders) {
         return new Headers();
     }
 
