@@ -11,7 +11,7 @@ This is the main SPI for any Rudimentary developer.
 Through this SPI you can expose some business functionality over http.
 You can have as many different HttpEndpoint implementations as you want and you can register them in src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint. This however, *rudimentary-maven-plugin* automatically does for you.
 
-Defining new http endpoint is as simple as:
+#### Defining new http endpoint is as simple as:
 ```java
 // Create custom endpoint which receives Empty request body and return Text response
 public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
@@ -42,7 +42,7 @@ public int httpStatus() {
 ```
 
 #### Setting http endpoint path
-Defaut http uri path is set to class name with first letter as lower case.
+Default http uri path is set to class name with first letter as lower case.
 If class name was `CustomHttpEndpoint` the default path would then be `customHttpEndpoint`.
 To set new http endpoint uri path override *path* method.
 ```java
@@ -110,6 +110,32 @@ To execute custom piece of logic after `response` method execution override `aft
 @Override
 public void after(Request<Text> request, Text response) {
   // Do something after response method processing
+}
+```
+#### Logging inside http endpoint
+Convenient method for logger access is provided via `logger` method.
+```java
+@Override
+public Text response(Request<Text> request) {
+    logger().log(System.Logger.Level.INFO, "Some message.");
+    return new Text("Hello World!");
+}
+```
+#### Constraint validations
+Http endpoint provides convenient way to define constraints for parts of incoming http request.
+```java
+@Override
+public Constraints constraints(
+        Text body,
+        Map<String, String> pathVariables,
+        Map<String, String> queryParameters,
+        Headers httpHeaders
+) {
+    return new Constraints() {
+        {
+            o(body.getValue(), Constraint.NOT_NULL, Constraint.NOT_EMPTY);
+        }
+    };
 }
 ```
 
