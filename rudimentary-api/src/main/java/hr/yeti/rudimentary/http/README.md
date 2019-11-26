@@ -84,7 +84,6 @@ public Headers responseHttpHeaders(Headers requestHeaders) {
     return newHeaders;
 }
 ```
-
 #### Handle exceptions
 Sometimes exceptions occur during code execution. If you want to handle exceptions in your endpoint override
 `onException` method. This takes priority over global exception handler if you provide one.
@@ -95,6 +94,22 @@ public ExceptionInfo onException(Exception e) {
       return new ExceptionInfo(500, "Something went wrong!");
     }
     return ExceptionInfo.defaultExceptionInfo();
+}
+```
+#### Before interceptor
+To execute custom piece of logic before `response` method execution override `before` method.
+```java
+@Override
+public void before(Request<Text> request) {
+  // Do something before response method processing
+}
+```
+#### After interceptor
+To execute custom piece of logic after `response` method execution override `after` method.
+```java
+@Override
+public void after(Request<Text> request, Text response) {
+  // Do something after response method processing
 }
 ```
 
