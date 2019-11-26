@@ -101,7 +101,7 @@ public class A implements Instance {
 ```
 
 #### DependsOn
-If your custom object instance dependes on some other instance to be loaded before override method `dependsOn()`.
+If your custom object instance depends on some other instance to be loaded before override method `dependsOn()`.
 
 ```java
 public class A implements Instance {
