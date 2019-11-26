@@ -65,3 +65,14 @@ public Text response(Request<Empty> request) {
 
 ```
 
+#### Returning http response
+To return something as a http response override *response* method.
+```java
+@Override
+public Text response(Request<Empty> request) {
+    return new Text("Hello World!");
+}
+```
+
+
+
