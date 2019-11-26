@@ -79,9 +79,22 @@ The same can also be achived through *response* method by using `request.getHttp
 ```java
 @Override
 public Headers responseHttpHeaders(Headers requestHeaders) {
-  Headers newHeaders = new Headers();
-  newHeaders.add("key", "value");
-  return newHeaders;
+    Headers newHeaders = new Headers();
+    newHeaders.add("key", "value");
+    return newHeaders;
+}
+```
+
+#### Handle exceptions
+Sometimes exceptions occur during code execution. If you want to handle exceptions in your endpoint override
+`onException` method. This takes priority over global exception handler if you provide one.
+```java
+@Override
+public ExceptionInfo onException(Exception e) {
+    if(e instanceof SqlException) {
+      return new ExceptionInfo(500, "Something went wrong!");
+    }
+    return ExceptionInfo.defaultExceptionInfo();
 }
 ```
 
