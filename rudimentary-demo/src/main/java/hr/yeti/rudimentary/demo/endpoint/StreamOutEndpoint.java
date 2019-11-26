@@ -28,13 +28,13 @@ public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
     }
 
     @Override
-    public Headers responseHttpHeaders() {
+    public Headers responseHttpHeaders(Headers headers) {
         // To use stream for download a document, set below http headers. Do not override this method
         // if you want plain writing to stream.
-        Headers headers = new Headers();
-        headers.put("Content-Type", Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-        headers.put("Content-Disposition", Arrays.asList("attachment;filename=streamOut.txt"));
-        return headers;
+        Headers responseHeaders = new Headers();
+        responseHeaders.put("Content-Type", Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
+        responseHeaders.put("Content-Disposition", Arrays.asList("attachment;filename=streamOut.txt"));
+        return responseHeaders;
     }
 
     @Override

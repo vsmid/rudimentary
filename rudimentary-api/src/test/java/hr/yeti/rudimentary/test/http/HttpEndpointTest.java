@@ -55,8 +55,8 @@ public class HttpEndpointTest {
     @DisplayName("Default responseHttpHeaders() should return empty instance of Map")
     public void test_responseHttpHeaders_method() {
         expect:
-        assertNotNull(okEndpoint.responseHttpHeaders());
-        assertTrue(okEndpoint.responseHttpHeaders().isEmpty());
+        assertNotNull(okEndpoint.responseHttpHeaders(null));
+        assertTrue(okEndpoint.responseHttpHeaders(null).isEmpty());
     }
 
     @Test
