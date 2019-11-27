@@ -11,7 +11,7 @@ This is the main SPI for any Rudimentary developer.
 Through this SPI you can expose some business functionality over http.
 You can have as many different HttpEndpoint implementations as you want and you can register them in src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint. This however, *rudimentary-maven-plugin* automatically does for you.
 
-#### Defining new http endpoint is as simple as:
+#### Creating new http endpoint
 ```java
 // Create custom endpoint which receives Empty request body and return Text response
 public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
