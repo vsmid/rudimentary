@@ -11,7 +11,7 @@ This is the main SPI for any Rudimentary developer.
 Through this SPI you can expose some business functionality over http.
 You can have as many different HttpEndpoint implementations as you want and you can register them in src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint. This however, *rudimentary-maven-plugin* automatically does for you.
 
-#### Creating new http endpoint
+### Creating new http endpoint
 ```java
 // Create custom endpoint which receives Empty request body and return Text response
 public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
@@ -23,7 +23,7 @@ public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
 }
 ```
 
-#### Setting endpoint http method
+### Setting endpoint http method
 Default http method is set to GET. To set new http method just override *httpMethod* method.
 ```java
 @Override
@@ -32,7 +32,7 @@ public HttpMethod httpMethod() {
 }
 ```
 
-#### Setting endpoint http status
+### Setting endpoint http status
 Default http status which endpoint returns is set to 200. To set new http statuse override *httpStatus* method.
 ```java
 @Override
@@ -41,7 +41,7 @@ public int httpStatus() {
 }
 ```
 
-#### Setting http endpoint path
+### Setting http endpoint path
 Default http uri path is set to class name with first letter as lower case.
 If class name was `CustomHttpEndpoint` the default path would then be `customHttpEndpoint`.
 To set new http endpoint uri path override *path* method.
@@ -65,7 +65,7 @@ public Text response(Request<Empty> request) {
 
 ```
 
-#### Returning http response
+### Returning http response
 To return something as a http response override *response* method.
 ```java
 @Override
@@ -73,7 +73,7 @@ public Text response(Request<Empty> request) {
     return new Text("Hello World!");
 }
 ```
-#### Returning http headers
+### Returning http headers
 In order to set which http headers to return, override *responseHttpHeaders* method.
 The same can also be achived through *response* method by using `request.getHttpExchange().getResponseHeaders()`.
 ```java
@@ -84,7 +84,7 @@ public Headers responseHttpHeaders(Headers requestHeaders) {
     return newHeaders;
 }
 ```
-#### Handle exceptions
+### Handle exceptions
 Sometimes exceptions occur during code execution. If you want to handle exceptions in your endpoint override
 `onException` method. This takes priority over global exception handler if you provide one.
 ```java
@@ -96,7 +96,7 @@ public ExceptionInfo onException(Exception e) {
     return ExceptionInfo.defaultExceptionInfo();
 }
 ```
-#### Before interceptor
+### Before interceptor
 To execute custom piece of logic before `response` method execution override `before` method.
 ```java
 @Override
@@ -104,7 +104,7 @@ public void before(Request<Text> request) {
   // Do something before response method processing
 }
 ```
-#### After interceptor
+### After interceptor
 To execute custom piece of logic after `response` method execution override `after` method.
 ```java
 @Override
@@ -112,7 +112,7 @@ public void after(Request<Text> request, Text response) {
   // Do something after response method processing
 }
 ```
-#### Logging inside http endpoint
+### Logging inside http endpoint
 Convenient method for logger access is provided via `logger` method.
 ```java
 @Override
@@ -121,7 +121,7 @@ public Text response(Request<Text> request) {
     return new Text("Hello World!");
 }
 ```
-#### Setting constraint validations
+### Setting constraint validations
 Http endpoint provides convenient way to define constraints for parts of incoming http request.
 To define custom constraints, override *constraints* method. More information about validation can be found in [Validation](../validation/README.md) section.
 ```java
@@ -139,7 +139,7 @@ public Constraints constraints(
     };
 }
 ```
-#### Setting http endpoint description
+### Setting http endpoint description
 To set short endpoint description which will be shown in *apidocs* override *description* method.
 ```java
 @Override
