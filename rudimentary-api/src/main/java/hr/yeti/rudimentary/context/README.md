@@ -1,11 +1,11 @@
-## Context
+# Context
 
 ### Introduction
 Context is the central point of every Rudimentary application/service. It is the place where all object instances implementing various Rudimentary SPIs are held.
 
 The foundation of the context actually lies within Java's own `java.util.ServiceLoader` utility. Rudimentary context can then be viewed as a simple wrapper around ServiceLoader utility.
 
-### Context provider
+## Context provider
 Context provider is a class extending `hr.yeti.rudimentary.context.spi.Context` class. This is the only SPI that is not meant to be implemented/overriden by the user of the framework.
 
 #### Default Context provider
