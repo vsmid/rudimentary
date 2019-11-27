@@ -148,6 +148,10 @@ public String description() {
 }
 ```
 
+### Request body content types
+
+### Response content types
+
 ## Http session
 
 ## Http filter
