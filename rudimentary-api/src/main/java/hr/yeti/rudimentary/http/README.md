@@ -98,6 +98,7 @@ public ExceptionInfo onException(Exception e) {
 ```
 ### Before interceptor
 To execute custom piece of logic before `response` method execution override `before` method.
+Find out more about interceptors in [Interceptors](../interceptor/README.md) section.
 ```java
 @Override
 public void before(Request<Text> request) {
@@ -106,6 +107,7 @@ public void before(Request<Text> request) {
 ```
 ### After interceptor
 To execute custom piece of logic after `response` method execution override `after` method.
+Find out more about interceptors in [Interceptors](../interceptor/README.md) section.
 ```java
 @Override
 public void after(Request<Text> request, Text response) {
