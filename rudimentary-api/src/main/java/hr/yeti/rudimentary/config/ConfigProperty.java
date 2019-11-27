@@ -46,7 +46,8 @@ public class ConfigProperty {
     private final String value;
 
     /**
-     * Constructor used to set property value without setting the default value if the configuration property is missing.
+     * Constructor used to set property value without setting the default value if the configuration property is
+     * missing.
      *
      * @param name The name of the property.
      */
@@ -56,7 +57,8 @@ public class ConfigProperty {
     }
 
     /**
-     * Constructor used to set property value by also providing the default value if the configuration property is missing.
+     * Constructor used to set property value by also providing the default value if the configuration property is
+     * missing.
      *
      * @param name The name of the property.
      * @param defaultValue The default value of the property if the configuration property is missing.
@@ -82,6 +84,12 @@ public class ConfigProperty {
         }
 
         if (Objects.isNull(property)) {
+            if (Objects.nonNull(Config.provider())) {
+                property = Config.provider().value(name);
+            } 
+        }
+        
+        if(Objects.isNull(property)) {
             property = value;
         }
 
@@ -137,9 +145,9 @@ public class ConfigProperty {
      */
     public String[] asArray() {
         return Stream.of(this.value.split(","))
-                .map(String::trim)
-                .filter(val -> !val.isEmpty())
-                .toArray(String[]::new);
+            .map(String::trim)
+            .filter(val -> !val.isEmpty())
+            .toArray(String[]::new);
     }
 
     /**
@@ -173,20 +181,21 @@ public class ConfigProperty {
         String[] values = this.value.split(",");
 
         return Stream.of(values)
-                .map(kv -> kv.split("="))
-                .collect(
-                        Collectors.toMap(
-                                kv -> kv[0].trim(),
-                                kv -> kv[1].trim(),
-                                (v1, v2) -> v2,
-                                TreeMap::new
-                        )
-                );
+            .map(kv -> kv.split("="))
+            .collect(
+                Collectors.toMap(
+                    kv -> kv[0].trim(),
+                    kv -> kv[1].trim(),
+                    (v1, v2) -> v2,
+                    TreeMap::new
+                )
+            );
     }
 
     /**
-     * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as already constructed path or in a form of part1,part2,part3... in which case the
-     * path will be constructed by this method.
+     * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as
+     * already constructed path or in a form of part1,part2,part3... in which case the path will be constructed by this
+     * method.
      *
      * @return Configuration property value as {@link Path}.
      */
@@ -194,13 +203,13 @@ public class ConfigProperty {
         String[] path = this.value.split(",");
 
         String[] remainingPath = Stream.of(path)
-                .map(String::trim)
-                .skip(1)
-                .toArray(String[]::new);
+            .map(String::trim)
+            .skip(1)
+            .toArray(String[]::new);
 
         return Path.of(
-                path[0].trim(),
-                remainingPath
+            path[0].trim(),
+            remainingPath
         );
     }
 
