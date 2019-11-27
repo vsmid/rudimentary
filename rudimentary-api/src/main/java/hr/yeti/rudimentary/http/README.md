@@ -13,7 +13,7 @@ You can have as many different HttpEndpoint implementations as you want and you 
 
 ### Creating new http endpoint
 ```java
-// Create custom endpoint which receives Empty request body and return Text response
+// Create custom endpoint which receives Empty request body and returns Text response
 public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
     
     @Override
