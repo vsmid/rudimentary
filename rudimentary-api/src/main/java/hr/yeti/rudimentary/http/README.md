@@ -14,6 +14,7 @@ You can have as many different HttpEndpoint implementations as you want and you 
 ### Creating new http endpoint
 ```java
 // Create custom endpoint which receives Empty request body and returns Text response
+// Content types are described further bellow
 public class CustomEndpoint implements HttpEndpoint<Empty, Text> {
     
     @Override
