@@ -151,8 +151,23 @@ public String description() {
 ```
 
 ### Request body content types
+For now, you can not add additional, custom request body type. It is planned for next release.
+* **Empty** - use when you do not expect anything in request body
+* **Form** - use when you expect form in request body
+* **Html** - use when you expect html in request body
+* **Json** - use when you expect json in request body. This type offers mathods for easy type conversion for both json object and json array.
+* **Text** - use when you expect text in request body.
+* **ByteStream** - use when you expect stream in request body. This could be for example file upload. Multipart is not supported yet.
 
 ### Response content types
+For now, you can not add additional, custom response type. It is planned for next release.
+* **Empty** - use when you do not want to send anything in a response.
+* **Html** - use when you want to send html in a response.
+* **ByteStream** - use when you want to send byte stream in a response. This could be for example file download.
+* **Redirect** - use when you want to perform redirect.
+* **StaticResource** - use when you want to send javascript, image etc. in a response. This is already used internally by static resource endpoint.
+* **Text** - use when you want to send text in a response.
+* **View** - use when you want to send processed view in a response. You can find more on this in [MVC](../mvc/README.md) section.
 
 ## Http session
 
