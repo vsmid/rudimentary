@@ -7,7 +7,7 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
-import java.util.Arrays;
+import java.util.List;
 
 public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
 
@@ -32,8 +32,8 @@ public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
         // To use stream for download a document, set below http headers. Do not override this method
         // if you want plain writing to stream.
         Headers responseHeaders = new Headers();
-        responseHeaders.put("Content-Type", Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-        responseHeaders.put("Content-Disposition", Arrays.asList("attachment;filename=streamOut.txt"));
+        responseHeaders.put("Content-Type", List.of(MediaType.APPLICATION_OCTET_STREAM));
+        responseHeaders.put("Content-Disposition", List.of("attachment;filename=streamOut.txt"));
         return responseHeaders;
     }
 
