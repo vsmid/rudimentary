@@ -1,4 +1,4 @@
-## Configuration
+# Configuration
 
 ### Introduction
 Makes dealing with application/service configuration a little bit easier. 
