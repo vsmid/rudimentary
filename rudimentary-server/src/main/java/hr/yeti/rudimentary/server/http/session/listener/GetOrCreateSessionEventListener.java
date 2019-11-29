@@ -47,10 +47,10 @@ public class GetOrCreateSessionEventListener implements EventListener<GetOrCreat
                 rawRequestCookies.clear();
                 rawRequestCookies.add(Session.COOKIE + "=" + rsid);
             }
-            // This is the first URI triggered by user which crated session. Useful for login form
+            // This is the first URI triggered by user which created session. Useful for login form
             // authentication to know to which page to land after successful login. 
             // This is true if requested URI is secured.
-            // TODO Conditionally set based od LogiFormAuthenticationMechanism settings.
+            // TODO Conditionally set based on LogiFormAuthenticationMechanism settings.
             newSession.getAttributes().put("sessionCreatingURI", event.getExchange().getRequestURI().toString());
             session = newSession;
         }
