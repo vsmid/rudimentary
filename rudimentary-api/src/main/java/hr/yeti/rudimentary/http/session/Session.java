@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * An abstraction of HTTP session. Mostly used in MVC.
  *
- * @see <b>rudimentary/rudimentary-server</b> module for details about how RSID session cookie is generated in {@code HttpSessionCreatingFilter} class.
+ * @see <b>rudimentary/rudimentary-server</b> module for details about how RSID session cookie is generated.
  *
  * @author vedransmid@yeti-it.hr
  */
