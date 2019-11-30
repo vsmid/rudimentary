@@ -171,6 +171,9 @@ For now, you can not add additional, custom response type. It is planned for nex
 * **View** - use when you want to send processed view in a response. You can find more on this in [MVC](../mvc/README.md) section.
 
 ## Http session
+This functionality provides means to identify the same user across multuple http requests.
+During the lifetime of http session you can store information about user and state in session.
+Typically, this is used in MCV applications.
 
 ## Http filter
 
