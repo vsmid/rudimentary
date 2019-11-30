@@ -51,7 +51,7 @@ public class GetOrCreateSessionEventListener implements EventListener<GetOrCreat
             // authentication to know to which page to land after successful login. 
             // This is true if requested URI is secured.
             // TODO Conditionally set based on LogiFormAuthenticationMechanism settings.
-            newSession.getAttributes().put("sessionCreatingURI", event.getExchange().getRequestURI().toString());
+            newSession.getAttributes().put(Session.DEEP_LINK_URI, event.getExchange().getRequestURI().toString());
             session = newSession;
         }
 

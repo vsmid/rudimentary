@@ -19,6 +19,12 @@ public interface Session {
      * Http cookie name used to identify user's session.
      */
     public static final String COOKIE = "RSID";
+    
+    /**
+     * Name of the URI to which application will go after successful authentication.
+     * The value of URI is stored in user's Session.
+     */
+    public static final String DEEP_LINK_URI = "deepLinkURI";
 
     /**
      * Get unique session id value which uniquely identifies session.

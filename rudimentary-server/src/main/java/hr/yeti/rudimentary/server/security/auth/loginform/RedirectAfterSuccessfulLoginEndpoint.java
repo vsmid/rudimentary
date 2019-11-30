@@ -5,6 +5,7 @@ import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Form;
 import hr.yeti.rudimentary.http.content.Redirect;
+import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 
@@ -27,7 +28,7 @@ public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, 
     @Override
     public Redirect response(Request<Form> request) {
         String redirectToURI = landingViewURI.value().length() == 0
-                ? request.getSession().getAttributes().getOrDefault("sessionCreatingURI", "/").toString() : landingViewURI.value();
+                ? request.getSession().getAttributes().getOrDefault(Session.DEEP_LINK_URI, "/").toString() : landingViewURI.value();
         return new Redirect(redirectToURI);
     }
 
