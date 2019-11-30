@@ -192,6 +192,26 @@ session.inactivityPeriodAllowed=1800 # After how many seconds will an inactive h
 * HttpEndpoint access via `Request#getSession`
 
 ## Http filter
+Http filters are used to enrich incoming request or outgoing response or to prevent request from executing depending on some condition. You can have as many filter as you like. 
+
+### Creating http filter
+Http filter is created by extending `hr.yeti.rudimentary.http.filter.spi.HttpFilter` and overriding `doFilter` method.
+```
+@Override
+public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
+    ...
+}
+```
+### Http filter ordering
+You can set filter order by overriding `order` method.
+```
+@Override
+public int order() {
+    return 100;
+}
+```
+### Registering http filter 
+You can register your custom http filter in `src/main/resources/META-INF/services/hr.yeti.rudimentary.http.filter.spi.HttpFilter` file of your application to make it eligible for Java `ServiceLoader`.
 
 ## Examples
 You can find many HttpEndpoint examples in [rudimentary-demo](../../../../../../../../rudimentary-demo/src/main/java/hr/yeti/rudimentary/demo/endpoint) module.
