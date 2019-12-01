@@ -212,6 +212,7 @@ public int order() {
 ```
 ### Registering http filter 
 You can register your custom http filter in `src/main/resources/META-INF/services/hr.yeti.rudimentary.http.filter.spi.HttpFilter` file of your application to make it eligible for Java `ServiceLoader`.
+This is already done automatically by `rudimentary-maven-plugin`.
 
 ## Examples
 You can find many HttpEndpoint examples in [rudimentary-demo](../../../../../../../../rudimentary-demo/src/main/java/hr/yeti/rudimentary/demo/endpoint) module.
