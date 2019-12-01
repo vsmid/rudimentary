@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
     private static final String HTTP_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.http.spi.HttpEndpoint";
+    private static final String HTTP_FILTER_PROVIDERS = "hr.yeti.rudimentary.http.filter.spi.HttpFilter";
     private static final String VIEW_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.mvc.spi.ViewEndpoint";
     private static final String INSTANCE_PROVIDERS = "hr.yeti.rudimentary.context.spi.Instance";
     private static final String DATASOURCE_PROVIDERS = "hr.yeti.rudimentary.sql.spi.BasicDataSource";
@@ -27,6 +28,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private Path servicesDir;
 
     private String httpEndpointProvidersList;
+    private String httpFilterProvidersList;
     private String viewEndpointProvidersList;
     private String instanceProvidersList;
     private String datasourceProvidersList;
@@ -38,6 +40,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.projectRootDir = new File("").toPath().toAbsolutePath();
             this.servicesDir = this.projectRootDir.resolve("src/main/resources/META-INF/services");
             this.httpEndpointProvidersList = readProviders(servicesDir.resolve(HTTP_ENDPOINT_PROVIDERS));
+            this.httpFilterProvidersList = readProviders(servicesDir.resolve(HTTP_FILTER_PROVIDERS));
             this.viewEndpointProvidersList = readProviders(servicesDir.resolve(VIEW_ENDPOINT_PROVIDERS));
             this.instanceProvidersList = readProviders(servicesDir.resolve(INSTANCE_PROVIDERS));
             this.datasourceProvidersList = readProviders(servicesDir.resolve(DATASOURCE_PROVIDERS));
@@ -58,6 +61,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
             if (content.contains("implements HttpEndpoint<") && !content.contains("abstract")) {
                 writeProvider(HTTP_ENDPOINT_PROVIDERS, file);
+            } else if (content.contains("extends HttpFilter") && !content.contains("abstract")) {
+                writeProvider(HTTP_FILTER_PROVIDERS, file);
             } else if (content.contains("implements ViewEndpoint<") && !content.contains("abstract")) {
                 writeProvider(VIEW_ENDPOINT_PROVIDERS, file);
             } else if (content.contains("implements Instance") && !content.contains("abstract")) {
@@ -94,6 +99,9 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
         switch (providerType) {
             case HTTP_ENDPOINT_PROVIDERS:
                 alreadyRegistered = httpEndpointProvidersList.contains(provider);
+                break;
+            case HTTP_FILTER_PROVIDERS:
+                alreadyRegistered = httpFilterProvidersList.contains(provider);
                 break;
             case VIEW_ENDPOINT_PROVIDERS:
                 alreadyRegistered = viewEndpointProvidersList.contains(provider);
