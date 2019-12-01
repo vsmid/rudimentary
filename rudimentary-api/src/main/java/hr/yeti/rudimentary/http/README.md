@@ -196,7 +196,7 @@ Http filters are used to enrich incoming request or outgoing response or to prev
 
 ### Creating http filter
 Http filter is created by extending `hr.yeti.rudimentary.http.filter.spi.HttpFilter` and overriding `doFilter` method.
-```
+```java
 @Override
 public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
     ...
@@ -204,7 +204,7 @@ public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
 ```
 ### Http filter ordering
 You can set filter order by overriding `order` method.
-```
+```java
 @Override
 public int order() {
     return 100;
