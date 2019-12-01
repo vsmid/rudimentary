@@ -116,7 +116,8 @@ public void after(Request<Text> request, Text response) {
 }
 ```
 ### Logging inside http endpoint
-Convenient method for logger access is provided via `logger` method.
+Convenient method for logger access is provided via `logger` method. For more information about this logger check
+[System.Logger](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/System.Logger.html).
 ```java
 @Override
 public Text response(Request<Text> request) {
