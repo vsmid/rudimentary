@@ -27,7 +27,7 @@ public class CsrfTokenValidationFilter extends HttpFilter {
 
     @Override
     public int order() {
-        return 3;
+        return 30;
     }
 
     @Override

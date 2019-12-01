@@ -22,7 +22,7 @@ public class CorsFilter extends HttpFilter {
 
     @Override
     public int order() {
-        return 1;
+        return 10;
     }
 
     @Override

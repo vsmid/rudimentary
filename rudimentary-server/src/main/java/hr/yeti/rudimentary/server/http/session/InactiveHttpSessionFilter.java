@@ -20,7 +20,7 @@ public class InactiveHttpSessionFilter extends HttpFilter {
 
     @Override
     public int order() {
-        return 2;
+        return 20;
     }
 
     @Override
