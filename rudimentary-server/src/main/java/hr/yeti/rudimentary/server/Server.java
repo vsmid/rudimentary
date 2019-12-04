@@ -54,19 +54,14 @@ public class Server {
     private Context context;
 
     private Server() throws IOException {
-        LogManager.getLogManager()
-                .readConfiguration(
-                        new ClasspathResource("server-logging.properties").get()
-                );
-
         ServiceLoader.load(Context.class)
-                .stream()
-                .filter(ctx -> ctx.get() instanceof DefaultContextProvider) // Force default context provider
-                .findFirst()
-                .ifPresent((ctx) -> {
-                    this.context = ctx.get();
-                    this.context.initialize();
-                });
+            .stream()
+            .filter(ctx -> ctx.get() instanceof DefaultContextProvider) // Force default context provider
+            .findFirst()
+            .ifPresent((ctx) -> {
+                this.context = ctx.get();
+                this.context.initialize();
+            });
     }
 
     public static Server start() {
@@ -99,26 +94,26 @@ public class Server {
 
             // Load authentication mechanism
             Instance.providersOf(AuthMechanism.class).stream()
-                    .filter(AuthMechanism::conditional)
-                    .findFirst()
-                    .ifPresent((authMechanism) -> {
-                        context.setAuthenticator(authMechanism);
-                    });
+                .filter(AuthMechanism::conditional)
+                .findFirst()
+                .ifPresent((authMechanism) -> {
+                    context.setAuthenticator(authMechanism);
+                });
 
             // Load filters
             Instance.providersOf(HttpFilter.class)
-                    .stream()
-                    .sorted(Comparator.comparingInt(HttpFilter::order))
-                    .forEach((filter) -> {
-                        context.getFilters().add(filter);
-                    });
+                .stream()
+                .sorted(Comparator.comparingInt(HttpFilter::order))
+                .forEach((filter) -> {
+                    context.getFilters().add(filter);
+                });
 
             ShutdownHook shutdownHook = Instance.of(ShutdownHook.class);
             if (Objects.nonNull(shutdownHook)) {
                 Runtime.getRuntime().addShutdownHook(
-                        new Thread(() -> {
-                            shutdownHook.onShutdown();
-                        })
+                    new Thread(() -> {
+                        shutdownHook.onShutdown();
+                    })
                 );
             }
 
@@ -170,7 +165,7 @@ public class Server {
         KeyManagerFactory keyManagerFactory = null;
         if (server.keyStore.length() > 0) {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try (InputStream in = new FileInputStream(server.keyStore)) {
+            try ( InputStream in = new FileInputStream(server.keyStore)) {
                 keystore.load(in, server.keyStorePassword.toCharArray());
             }
             keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -181,7 +176,7 @@ public class Server {
         TrustManagerFactory trustManagerFactory = null;
         if (server.trustStore.length() > 0) {
             truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try (InputStream in = new FileInputStream(server.trustStore)) {
+            try ( InputStream in = new FileInputStream(server.trustStore)) {
                 truststore.load(in, server.trustStorePassword.toCharArray());
             }
             trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -192,9 +187,9 @@ public class Server {
         SSLContext sslContext = SSLContext.getInstance(server.protocol);
 
         sslContext.init(
-                Objects.isNull(keyManagerFactory) ? null : keyManagerFactory.getKeyManagers(),
-                Objects.isNull(trustManagerFactory) ? null : trustManagerFactory.getTrustManagers(),
-                new SecureRandom());
+            Objects.isNull(keyManagerFactory) ? null : keyManagerFactory.getKeyManagers(),
+            Objects.isNull(trustManagerFactory) ? null : trustManagerFactory.getTrustManagers(),
+            new SecureRandom());
 
         return sslContext;
     }

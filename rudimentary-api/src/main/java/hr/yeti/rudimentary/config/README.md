@@ -141,4 +141,5 @@ security.cors.exposeHeaders=location, info # Comma separated list of exposed htt
 security.cors.allowCredentials=true # Indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies, authorization headers or TLS client certificates
 security.cors.allowMethods=GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE # List of allowed http methods
 security.cors.maxAge=600 # Indicates how long the results of a preflight request can be cached in seconds
+logging.propertiesFile=classpath:server-logging.properties # Logging configuration file
 ```
