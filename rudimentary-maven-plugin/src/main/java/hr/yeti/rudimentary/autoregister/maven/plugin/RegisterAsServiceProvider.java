@@ -23,6 +23,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private static final String DATASOURCE_PROVIDERS = "hr.yeti.rudimentary.sql.spi.BasicDataSource";
     private static final String BEFORE_INTERCEPTOR_PROVIDERS = "hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor";
     private static final String AFTER_INTERCEPTOR_PROVIDERS = "hr.yeti.rudimentary.interceptor.spi.AfterInterceptor";
+    private static final String EVENT_LISTENER_PROVIDERS = "hr.yeti.rudimentary.events.spi.EventListener";
 
     private Path projectRootDir;
     private Path servicesDir;
@@ -34,6 +35,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String datasourceProvidersList;
     private String beforeInterceptorProviderList;
     private String afterInterceptorProviderList;
+    private String eventListenerProviderList;
 
     public RegisterAsServiceProvider() {
         try {
@@ -46,6 +48,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.datasourceProvidersList = readProviders(servicesDir.resolve(DATASOURCE_PROVIDERS));
             this.beforeInterceptorProviderList = readProviders(servicesDir.resolve(BEFORE_INTERCEPTOR_PROVIDERS));
             this.afterInterceptorProviderList = readProviders(servicesDir.resolve(AFTER_INTERCEPTOR_PROVIDERS));
+            this.eventListenerProviderList = readProviders(servicesDir.resolve(EVENT_LISTENER_PROVIDERS));
 
         } catch (IOException ex) {
             Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,6 +76,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 writeProvider(BEFORE_INTERCEPTOR_PROVIDERS, file);
             } else if (content.contains("implements AfterInterceptor") && !content.contains("abstract")) {
                 writeProvider(AFTER_INTERCEPTOR_PROVIDERS, file);
+            } else if (content.contains("implements EventListener") && !content.contains("abstract")) {
+                writeProvider(EVENT_LISTENER_PROVIDERS, file);
             }
         }
         return FileVisitResult.CONTINUE;
@@ -117,6 +122,9 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 break;
             case AFTER_INTERCEPTOR_PROVIDERS:
                 alreadyRegistered = afterInterceptorProviderList.contains(provider);
+                break;
+            case EVENT_LISTENER_PROVIDERS:
+                alreadyRegistered = eventListenerProviderList.contains(provider);
                 break;
             default:
                 break;
