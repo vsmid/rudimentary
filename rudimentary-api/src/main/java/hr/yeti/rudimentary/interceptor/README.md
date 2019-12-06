@@ -4,11 +4,6 @@
 Sometimes you want to apply a piece of logic before or after some operation. Rudimentary offers simple way to do that through
 `hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor` and `hr.yeti.rudimentary.interceptor.spi.AfterInterceptor`.
 
-### Interceptor scope
-Scope for both before and after interceptor is global. That means that interceptors will be executed on the `HttpEndpoint` level. Simply put, before or after `HttpEndpoint#response` method. If interceptor's `Interceptor#applyToURI` matches endpoint's `HttpEndpoint#path` intreceptor will be executed. 
-
-Important things to note is that global before interceptors will always be executed before `HttpEndpoint#before` method and global after interceptors will always be executed before `HttpEndpoint#after` method.
-
 ### Creating interceptor
 To create your own before interceptor simply implement `hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor`. For after interceptor implement `hr.yeti.rudimentary.interceptor.spi.AfterInterceptor`. Put your intreceptor logic inside `intercept` method.
 
@@ -29,7 +24,7 @@ public class LoggingBeforeInterceptor implements BeforeInterceptor {
 
 You can have as many different interceptor implementations as you want and you can register them in *src/main/resources/META-INF/services/hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor* and *src/main/resources/META-INF/services/hr.yeti.rudimentary.interceptor.spi.AfterInterceptor*. This however, rudimentary-maven-plugin automatically does for you.
 
-#### Setting interceptor order
+### Setting interceptor order
 You can set interceptor order by overriding `order` method.
 ```java
 @Override
@@ -38,7 +33,9 @@ public int order() {
 }
 ```
 
-#### Setting interceptor URI (scoping)
+### Setting interceptor scope
+Interceptors are always executed before or after `HttpEndpoint#response` method depending on interceptor type. By scope we actually think of set of configured URIs. If interceptor's `Interceptor#applyToURI` matches endpoint's `HttpEndpoint#path` intreceptor will be executed. 
+
 You can set for which URIs will interceptor be executed by overriding `applyToURI` method. Default value is set to `.*` to match all URIs since it is a global interceptor. You can use regular expression to define custom URIs to which interceptor will be applied to.
 ```java
 @Override
@@ -46,4 +43,6 @@ public String applyToURI() {
     return "/_health";
 }
 ```
+### Realtion to `HttpEndpoint#before` and `HttpEndpoint#after`
+`BeforeInterceptor` interceptors will always be executed before `HttpEndpoint#before` method and `AfterInterceptor` interceptors will always be executed before `HttpEndpoint#after` method.
 
