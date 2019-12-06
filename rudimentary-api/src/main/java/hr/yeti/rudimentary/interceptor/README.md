@@ -43,6 +43,6 @@ public String applyToURI() {
     return "/_health";
 }
 ```
-### Realtion to `HttpEndpoint#before` and `HttpEndpoint#after`
+### Relation to `HttpEndpoint#before` and `HttpEndpoint#after`
 `BeforeInterceptor` interceptors will always be executed before `HttpEndpoint#before` method and `AfterInterceptor` interceptors will always be executed before `HttpEndpoint#after` method.
 
