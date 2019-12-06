@@ -36,7 +36,7 @@ public int order() {
 ### Setting interceptor scope
 Interceptors are always executed before or after `HttpEndpoint#response` method depending on interceptor type. By scope we actually think of set of configured URIs. If interceptor's `Interceptor#applyToURI` matches endpoint's `HttpEndpoint#path` intreceptor will be executed. 
 
-You can set for which URIs will interceptor be executed by overriding `applyToURI` method. Default value is set to `.*` to match all URIs since it is a global interceptor. You can use regular expression to define custom URIs to which interceptor will be applied to.
+You can set for which URIs will interceptor be executed by overriding `applyToURI` method. Default value is set to `.*` to match all URIs since it is a global interceptor(by deafult executes for all `HttpEndpoint` providers). You can use regular expression to define custom URIs to which interceptor will be applied to.
 ```java
 @Override
 public String applyToURI() {
