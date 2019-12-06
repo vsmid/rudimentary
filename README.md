@@ -8,7 +8,7 @@ A small, simple and opinionated Java based web services/applications framework.
   * [Context](rudimentary-api/src/main/java/hr/yeti/rudimentary/context/README.md) :white_check_mark:
   * [Http](rudimentary-api/src/main/java/hr/yeti/rudimentary/http/README.md) :white_check_mark:
   * [Events](rudimentary-api/src/main/java/hr/yeti/rudimentary/events/README.md) :white_check_mark:
-  * [Interceptors](rudimentary-api/src/main/java/hr/yeti/rudimentary/interceptor/README.md)
+  * [Interceptors](rudimentary-api/src/main/java/hr/yeti/rudimentary/interceptor/README.md) :white_check_mark:
   * [Security](rudimentary-api/src/main/java/hr/yeti/rudimentary/security/README.md)
   * [Validation](rudimentary-api/src/main/java/hr/yeti/rudimentary/validation/README.md)
   * [Exceptions](rudimentary-api/src/main/java/hr/yeti/rudimentary/exception/README.md)
