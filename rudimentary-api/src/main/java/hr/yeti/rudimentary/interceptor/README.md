@@ -10,7 +10,7 @@ Scope for both before and after interceptor is global. That means that intercept
 Important things to note is that global before interceptors will always be executed before `HttpEndpoint#before` method and global after interceptors will always be executed before `HttpEndpoint#after` method.
 
 ### Creating interceptor
-To create your own before interceptor simply implement `hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor`. For after interceptor implement `hr.yeti.rudimentary.interceptor.spi.AfterInterceptor`.
+To create your own before interceptor simply implement `hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor`. For after interceptor implement `hr.yeti.rudimentary.interceptor.spi.AfterInterceptor`. Put your intreceptor logic inside `intercept` method.
 
 ```java
 public class LoggingBeforeInterceptor implements BeforeInterceptor {
