@@ -39,7 +39,7 @@ public int order() {
 ```
 
 #### Setting interceptor URI (scoping)
-You can set to which uri's will interceptor be applied by overriding `applyToURI` method. Default value is set to `.*` to match all URIs since it is a global interceptor. You can use regular expression to define custom URIs to which interceptor will be applied to.
+You can set for which URIs will interceptor be executed by overriding `applyToURI` method. Default value is set to `.*` to match all URIs since it is a global interceptor. You can use regular expression to define custom URIs to which interceptor will be applied to.
 ```java
 @Override
 public String applyToURI() {
