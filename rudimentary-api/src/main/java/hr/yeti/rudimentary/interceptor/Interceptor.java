@@ -18,9 +18,12 @@ public interface Interceptor extends Instance {
 
     /**
      * Set regular expression as string to which this interceptor will be applied to.
+     * Defaults to all URIs.
      *
      * @return String based regular expression.
      */
-    String applyToURI();
+    default String applyToURI() {
+      return ".*";
+    }
 
 }
