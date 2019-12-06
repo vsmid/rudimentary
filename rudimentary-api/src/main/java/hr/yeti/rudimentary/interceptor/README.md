@@ -5,7 +5,9 @@ Sometimes you want to apply a piece of logic before or after some operation. Rud
 `hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor` and `hr.yeti.rudimentary.interceptor.spi.AfterInterceptor`.
 
 ### Interceptor scope
-Scope for both before and after interceptor is global. That means that interceptors will be applied on the `HttpEndpoint` level. Simply put, before or after `HttpEndpoint#response`. If interceptor's `Interceptor#applyToURI` matches endpoint's `HttpEndpoint#path` intreceptor will be executed.
+Scope for both before and after interceptor is global. That means that interceptors will be applied on the `HttpEndpoint` level. Simply put, before or after `HttpEndpoint#response` method. If interceptor's `Interceptor#applyToURI` matches endpoint's `HttpEndpoint#path` intreceptor will be executed. 
+
+Important things to note is that global before interceptors will always be executed before `HttpEndpoint#before` method and global after interceptors will always be executed before `HttpEndpoint#after` method.
 
 ### Creating interceptor
 To create your own before interceptor simply implement `hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor`. For after interceptor implement `hr.yeti.rudimentary.interceptor.spi.AfterInterceptor`.
@@ -17,12 +19,6 @@ public class LoggingBeforeInterceptor implements BeforeInterceptor {
   public int order() {
       return 1;
   }
-
-  @Override
-  public String applyToURI() {
-      return "/_health";
-  }
-
   @Override
   public void intercept(Request request) {
       System.out.println("Logging interceptor message: " + request.getUri().toString());
@@ -43,8 +39,7 @@ public int order() {
 ```
 
 #### Interceptor URI
-You can set to which uri's will interceptor be applied by overriding `applyToURI` method.
-You can use regular expression to define URIs.
+You can set to which uri's will interceptor be applied by overriding `applyToURI` method. Default value is set to `.*` to match all URIs since it is a global interceptor. You can use regular expression to define custom URIs to which interceptor will be applied to.
 ```java
 @Override
 public String applyToURI() {
