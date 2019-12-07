@@ -11,19 +11,23 @@ import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
+import hr.yeti.rudimentary.security.Authorization;
 import hr.yeti.rudimentary.validation.Constraints;
 
 import java.net.URI;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.function.Predicate;
 
 // TODO Write about how to include single http endpoint via jar and module-info.jar.
 /**
  * This is a central SPI for exposing functionalities over HTTP.
  *
- * Since this interface extends {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
+ * Since this interface extends {@link Instance} it means it is loaded automatically via
+ * {@link ServiceLoader} on application startup.
  *
- * You can have as many different HttpEndpoint implementations as you want and you can register them in <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint</i>
+ * You can have as many different HttpEndpoint implementations as you want and you can register them
+ * in <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint</i>
  * file.
  *
  * @author vedransmid@yeti-it.hr
@@ -50,7 +54,7 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     default URI path() {
         String path = this.getClass().getSimpleName();
         return URI.create(
-                "/" + path.substring(0, 1).toLowerCase() + path.substring(1)
+            "/" + path.substring(0, 1).toLowerCase() + path.substring(1)
         );
     }
 
@@ -64,8 +68,10 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * Local before interceptor. This interceptor will apply only to implementing class. Implement this method to execute any kind of logic before
-     * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed. Also, this method will be executed after global {@link AfterInterceptor}.
+     * Local before interceptor. This interceptor will apply only to implementing class. Implement
+     * this method to execute any kind of logic before
+     * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed. Also,
+     * this method will be executed after global {@link AfterInterceptor}.
      *
      * @param request Incoming HTTP request abstraction.
      */
@@ -74,8 +80,9 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * This is the single most important method of this interface. This is also the only method which requires implementation upon declaration. This is basically a place where you implement business
-     * logic exposed by implementing class.
+     * This is the single most important method of this interface. This is also the only method
+     * which requires implementation upon declaration. This is basically a place where you implement
+     * business logic exposed by implementing class.
      *
      * @param request Incoming HTTP request abstraction.
      * @return Response type depending on the inferred generic type.
@@ -94,8 +101,11 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * Local after interceptor. This interceptor will apply only to implementing class. Implement this method to execute any kind of logic after
-     * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed and no exception is thrown. Also, this method will be executed after global {@link AfterInterceptor}.
+     * Local after interceptor. This interceptor will apply only to implementing class. Implement
+     * this method to execute any kind of logic after
+     * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method is executed and no
+     * exception is thrown. Also, this method will be executed after global
+     * {@link AfterInterceptor}.
      *
      * @param request Incoming HTTP request abstraction.
      * @param response Outgoing response.
@@ -105,10 +115,12 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * Local exception handler. This interceptor will apply only to implementing class. If this method is implemented it will have greater priority that the global {@link ExceptionHandler} when
-     * handling exceptions.
+     * Local exception handler. This interceptor will apply only to implementing class. If this
+     * method is implemented it will have greater priority that the global {@link ExceptionHandler}
+     * when handling exceptions.
      *
-     * @param e Exception thrown during {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method execution.
+     * @param e Exception thrown during
+     * {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method execution.
      * @return Exception information.
      */
     default ExceptionInfo onException(Exception e) {
@@ -116,8 +128,10 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * Convenience method to have a logger available out-of-the box. By default, this logger will use standard Java logger unless a different provider is configured. In both cases, use this logger to
-     * log. In most cases, there should be no need to override this method whether you choose to log with custom logging provider or with default Java logging provider.
+     * Convenience method to have a logger available out-of-the box. By default, this logger will
+     * use standard Java logger unless a different provider is configured. In both cases, use this
+     * logger to log. In most cases, there should be no need to override this method whether you
+     * choose to log with custom logging provider or with default Java logging provider.
      *
      * @return System logger.
      */
@@ -159,16 +173,27 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
      * @return Set of validation constraints for the given parameters..
      */
     default Constraints constraints(
-            I body,
-            Map<String, String> pathVariables,
-            Map<String, String> queryParameters,
-            Headers httpHeaders
+        I body,
+        Map<String, String> pathVariables,
+        Map<String, String> queryParameters,
+        Headers httpHeaders
     ) {
         return new Constraints();
     }
 
     /**
-     * Sets information about what this endpoint is suppose to be doing. This will be printed out on startup and will also be used in auto generated docs.
+     * Define authorization rules needed for this HttpEndpoint access. Defaults to allow access to
+     * all regardless of their set of authorizations.
+     *
+     * @return Authorization rules in form of {@link Predicate}.
+     */
+    default Predicate<Request> authorizations() {
+        return Authorization.ALLOW_ALL;
+    }
+
+    /**
+     * Sets information about what this endpoint is suppose to be doing. This will be printed out on
+     * startup and will also be used in auto generated docs.
      *
      * @return Endpoint description.
      */

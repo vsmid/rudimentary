@@ -42,7 +42,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import javax.json.JsonValue;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
@@ -56,7 +58,7 @@ public class HttpProcessor implements HttpHandler, Instance {
     @Override
     public void initialize() {
         this.executorService = Executors.newFixedThreadPool(
-                Config.provider().property("server.threadPoolSize").asInt()
+            Config.provider().property("server.threadPoolSize").asInt()
         );
     }
 
@@ -91,9 +93,31 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     // Path & query parsing
                     Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
-                            httpEndpoint.get().path(), path
+                        httpEndpoint.get().path(), path
                     );
                     Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
+
+                    // Construct request object
+                    Request request = new Request(
+                        (Identity) exchange.getPrincipal(),
+                        exchange.getRequestHeaders(),
+                        value,
+                        pathVariables,
+                        queryParameters,
+                        exchange.getRequestURI(),
+                        exchange
+                    );
+
+                    // Check authorizations
+                    Predicate<Request> authorizations = httpEndpoint.get().authorizations();
+                    Optional<Predicate<Request>> authorizationChain = Stream.of(authorizations).reduce(Predicate::and);
+                    if (authorizationChain.isPresent()) {
+                        boolean authorized = authorizationChain.get().test(request);
+                        if (!authorized) {
+                            respond(403, ("Not authorized.").getBytes(), exchange);
+                            return;
+                        }
+                    }
 
                     try {
 
@@ -124,7 +148,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         }
 
                         constraintsList.add(httpEndpoint.get().constraints(
-                                (Model) value, pathVariables, queryParameters, exchange.getRequestHeaders()
+                            (Model) value, pathVariables, queryParameters, exchange.getRequestHeaders()
                         ));
 
                         Constraints[] constraints = constraintsList.stream().toArray(Constraints[]::new);
@@ -139,17 +163,6 @@ public class HttpProcessor implements HttpHandler, Instance {
                         respond(405, "Invalid request body.".getBytes(), exchange);
                         return;
                     }
-
-                    // Construct request object
-                    Request request = new Request(
-                            (Identity) exchange.getPrincipal(),
-                            exchange.getRequestHeaders(),
-                            value,
-                            pathVariables,
-                            queryParameters,
-                            exchange.getRequestURI(),
-                            exchange
-                    );
 
                     // Before interceptor
                     List<BeforeInterceptor> beforeInterceptors = Instance.providersOf(BeforeInterceptor.class);
@@ -240,7 +253,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                         exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
-                        try (InputStream is = staticResource.getValue()) {
+                        try ( InputStream is = staticResource.getValue()) {
                             responseTransformed = is.readAllBytes();
                         }
 
