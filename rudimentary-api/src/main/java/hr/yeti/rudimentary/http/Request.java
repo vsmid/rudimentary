@@ -34,13 +34,13 @@ public class Request<T> {
     private HttpExchange httpExchange;
 
     public Request(
-            Identity identity,
-            Headers httpHeaders,
-            T body,
-            Map<String, String> pathVariables,
-            Map<String, String> queryParameters,
-            URI uri,
-            HttpExchange httpExchange) {
+        Identity identity,
+        Headers httpHeaders,
+        T body,
+        Map<String, String> pathVariables,
+        Map<String, String> queryParameters,
+        URI uri,
+        HttpExchange httpExchange) {
         this.identity = identity;
         this.httpHeaders = httpHeaders;
         this.body = body;
@@ -57,12 +57,12 @@ public class Request<T> {
      */
     public List<HttpCookie> getCookies() {
         return httpHeaders.get("Cookie")
-                .stream()
-                .map(c -> c.split("; "))
-                .flatMap(Stream::of)
-                .map(HttpCookie::parse)
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
+            .stream()
+            .map(c -> c.split("; "))
+            .flatMap(Stream::of)
+            .map(HttpCookie::parse)
+            .flatMap(List::stream)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -77,10 +77,6 @@ public class Request<T> {
     }
 
     public Identity getIdentity() {
-        Session session = Session.acquire(httpExchange);
-        if (Objects.nonNull(session) && session.isAuthenticated()) {
-            return session.getIdentity();
-        }
         return identity;
     }
 
@@ -105,7 +101,7 @@ public class Request<T> {
     }
 
     public Session getSession() {
-        return Session.acquire(httpExchange);
+        return Session.acquire(httpExchange, true);
     }
 
     public HttpExchange getHttpExchange() {

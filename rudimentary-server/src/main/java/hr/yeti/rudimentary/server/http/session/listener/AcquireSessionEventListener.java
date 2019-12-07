@@ -30,32 +30,37 @@ public class AcquireSessionEventListener implements EventListener<AcquireSession
             }
         }
 
-        if (Objects.isNull(session)) {
-            HttpSession newSession = new HttpSession();
-            event.getExchange().setAttribute(newSession.getRsid(), newSession);
+        if (event.isCreateIfAbsent()) {
+            if (Objects.isNull(session)) {
+                HttpSession newSession = new HttpSession();
+                event.getExchange().setAttribute(newSession.getRsid(), newSession);
 
-            String rsid = newSession.getRsid();
+                String rsid = newSession.getRsid();
 
-            HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, rsid);
-            rsidCookie.setHttpOnly(true);
-            rsidCookie.setMaxAge(-1);
+                HttpCookie rsidCookie = new HttpCookie(Session.COOKIE, rsid);
+                rsidCookie.setHttpOnly(true);
+                rsidCookie.setMaxAge(-1);
 
-            event.getExchange().getResponseHeaders().add("Set-Cookie", new Cookie(rsidCookie).toString());
+                event.getExchange().getResponseHeaders().add("Set-Cookie", new Cookie(rsidCookie).toString());
 
-            List<String> rawRequestCookies = event.getExchange().getRequestHeaders().get("Cookie");
-            if (overwriteRsidCookie) {
-                rawRequestCookies.clear();
-                rawRequestCookies.add(Session.COOKIE + "=" + rsid);
+                List<String> rawRequestCookies = event.getExchange().getRequestHeaders().get("Cookie");
+                if (overwriteRsidCookie) {
+                    rawRequestCookies.clear();
+                    rawRequestCookies.add(Session.COOKIE + "=" + rsid);
+                }
+                // This is the first URI triggered by user which created session. Useful for login form
+                // authentication to know to which page to land after successful login. 
+                // This is true if requested URI is secured.
+                // TODO Conditionally set based on LogiFormAuthenticationMechanism settings.
+                newSession.getAttributes().put(Session.DEEP_LINK_URI, event.getExchange().getRequestURI().toString());
+                session = newSession;
             }
-            // This is the first URI triggered by user which created session. Useful for login form
-            // authentication to know to which page to land after successful login. 
-            // This is true if requested URI is secured.
-            // TODO Conditionally set based on LogiFormAuthenticationMechanism settings.
-            newSession.getAttributes().put(Session.DEEP_LINK_URI, event.getExchange().getRequestURI().toString());
-            session = newSession;
         }
 
-        ((HttpSession) session).setLastAccessedTime(System.currentTimeMillis());
+        if (Objects.nonNull(session)) {
+            ((HttpSession) session).setLastAccessedTime(System.currentTimeMillis());
+        }
+        
         event.setSession(session);
     }
 

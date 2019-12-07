@@ -35,21 +35,23 @@ public class LoginFormAuthMechanism extends AuthMechanism {
     }
 
     @Override
+    public boolean startAuthenticatedSessionOnSuccessfulAuth() {
+        return true;
+    }
+
+    @Override
     public Result doAuth(HttpExchange exchange) {
         Map<String, Object> formData = null;
 
         try {
             formData = HttpRequestUtils.parseQueryParameters(
-                    new String(exchange.getRequestBody().readAllBytes())
+                new String(exchange.getRequestBody().readAllBytes())
             );
         } catch (IOException ex) {
             Logger.getLogger(LoginFormAuthMechanism.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (formData.isEmpty()) {
-            // Login form authentication requires session.
-            Session.acquire(exchange);
-
             Headers map = exchange.getResponseHeaders();
             map.set("Location", loginURI.value());
             return new Authenticator.Retry(302);
@@ -62,9 +64,9 @@ public class LoginFormAuthMechanism extends AuthMechanism {
 
         if (identityStore.validate(new UsernamePasswordCredential(username, password))) {
             return new Authenticator.Success(
-                    new HttpPrincipal(
-                            username, realm.value()
-                    )
+                new HttpPrincipal(
+                    username, realm.value()
+                )
             );
         } else {
             Headers map = exchange.getResponseHeaders();

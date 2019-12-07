@@ -120,6 +120,7 @@ email.smtp.user= # Username
 email.smtp.password= # Password
 email.smtp.properties.*= # Check possible * values at https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html
 security.realm=default # Realm name
+security.startAuthenticatedSessionOnSuccessfulAuth=false # Should session be created on successful auth to avoid full auth process on subsequent requests.
 security.urisRequiringAuthentication= # Comma separated list of URIs(regex format allowed) for which authentication will be applied
 security.urisNotRequiringAuthentication= # Comma separated list of URIs(regex format allowed) for which authentication will not be applied
 security.basic.enabled=false # Enable Basic security

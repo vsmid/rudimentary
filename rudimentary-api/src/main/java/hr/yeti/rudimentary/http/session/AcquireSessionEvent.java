@@ -7,9 +7,11 @@ public class AcquireSessionEvent implements Event {
 
     private HttpExchange exchange;
     private Session session;
+    private boolean createIfAbsent;
 
-    public AcquireSessionEvent(HttpExchange exchange) {
+    public AcquireSessionEvent(HttpExchange exchange, boolean createIfAbsent) {
         this.exchange = exchange;
+        this.createIfAbsent = createIfAbsent;
     }
 
     public HttpExchange getExchange() {
@@ -22,6 +24,10 @@ public class AcquireSessionEvent implements Event {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    public boolean isCreateIfAbsent() {
+        return createIfAbsent;
     }
 
 }

@@ -91,15 +91,15 @@ public interface Session {
     public <D> Identity<D> getIdentity(Class<D> details);
 
     /**
-     * Static method to get session.
-     * If session does not yet exist it is created.
+     * Static method to get session.If session does not yet exist it is created.
      *
-     * @param exchange
+     * @param exchange {@link HttpExchange}
+     * @param createIfAbsent Set to true to create new session otherwise false.
      * @return
      */
-    static Session acquire(HttpExchange exchange) {
-        AcquireSessionEvent createSessionEvent = new AcquireSessionEvent(exchange);
-        createSessionEvent.publish(EventPublisher.Type.SYNC);
-        return createSessionEvent.getSession();
+    static Session acquire(HttpExchange exchange, boolean createIfAbsent) {
+        AcquireSessionEvent acquireSessionEvent = new AcquireSessionEvent(exchange, createIfAbsent);
+        acquireSessionEvent.publish(EventPublisher.Type.SYNC);
+        return acquireSessionEvent.getSession();
     }
 }
