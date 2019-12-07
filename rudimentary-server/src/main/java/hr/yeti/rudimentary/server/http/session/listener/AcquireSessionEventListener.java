@@ -3,7 +3,7 @@ package hr.yeti.rudimentary.server.http.session.listener;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.http.Cookie;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
-import hr.yeti.rudimentary.http.session.GetOrCreateSessionEvent;
+import hr.yeti.rudimentary.http.session.AcquireSessionEvent;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.server.http.session.HttpSession;
 import java.net.HttpCookie;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class GetOrCreateSessionEventListener implements EventListener<GetOrCreateSessionEvent> {
+public class AcquireSessionEventListener implements EventListener<AcquireSessionEvent> {
 
     @Override
-    public void onEvent(GetOrCreateSessionEvent event) {
+    public void onEvent(AcquireSessionEvent event) {
         Session session = null;
         Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(event.getExchange().getRequestHeaders());
 

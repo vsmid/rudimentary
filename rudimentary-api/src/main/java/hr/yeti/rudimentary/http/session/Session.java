@@ -98,7 +98,7 @@ public interface Session {
      * @return
      */
     static Session acquire(HttpExchange exchange) {
-        GetOrCreateSessionEvent createSessionEvent = new GetOrCreateSessionEvent(exchange);
+        AcquireSessionEvent createSessionEvent = new AcquireSessionEvent(exchange);
         createSessionEvent.publish(EventPublisher.Type.SYNC);
         return createSessionEvent.getSession();
     }

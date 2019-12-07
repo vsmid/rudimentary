@@ -1,2 +1,2 @@
 hr.yeti.rudimentary.server.http.session.listener.AuthenticatedSessionEventListener
-hr.yeti.rudimentary.server.http.session.listener.GetOrCreateSessionEventListener
+hr.yeti.rudimentary.server.http.session.listener.AcquireSessionEventListener
