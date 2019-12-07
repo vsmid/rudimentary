@@ -104,7 +104,7 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
                 }
 
                 return result;
-            } else if (requiresAuthentication(exchange.getRequestURI()) && authenticatedSession(exchange)) {
+            } else if (authenticatedSession(exchange)) {
                 Identity identity = HttpRequestUtils.extractSession(exchange).get().getIdentity();
                 return new Success(identity);
             } else {
