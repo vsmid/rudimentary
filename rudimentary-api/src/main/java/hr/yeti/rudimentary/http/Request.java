@@ -77,7 +77,7 @@ public class Request<T> {
     }
 
     public Identity getIdentity() {
-        Session session = Session.getOrCreate(httpExchange);
+        Session session = Session.acquire(httpExchange);
         if (Objects.nonNull(session) && session.isAuthenticated()) {
             return session.getIdentity();
         }
@@ -105,7 +105,7 @@ public class Request<T> {
     }
 
     public Session getSession() {
-        return Session.getOrCreate(httpExchange);
+        return Session.acquire(httpExchange);
     }
 
     public HttpExchange getHttpExchange() {

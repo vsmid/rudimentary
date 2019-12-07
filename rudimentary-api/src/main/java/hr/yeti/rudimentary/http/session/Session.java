@@ -91,12 +91,13 @@ public interface Session {
     public <D> Identity<D> getIdentity(Class<D> details);
 
     /**
-     * Static method to get or create session.
+     * Static method to get session.
+     * If session does not yet exist it is created.
      *
      * @param exchange
      * @return
      */
-    static Session getOrCreate(HttpExchange exchange) {
+    static Session acquire(HttpExchange exchange) {
         GetOrCreateSessionEvent createSessionEvent = new GetOrCreateSessionEvent(exchange);
         createSessionEvent.publish(EventPublisher.Type.SYNC);
         return createSessionEvent.getSession();

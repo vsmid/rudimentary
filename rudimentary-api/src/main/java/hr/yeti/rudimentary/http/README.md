@@ -176,7 +176,7 @@ This functionality provides means to identify the same user across multuple http
 During the lifetime of http session you can store information about user and state in session.
 Typically, this is used in MCV applications.
 
-Http session will be created the first time you call `Session#getOrCreate` method.
+Http session will be created the first time you call `Session#acquire` method.
 In some cases, http session is created by the framework. Such case would for example be when using login form authentication mechanism.
 
 ### RSID
@@ -189,7 +189,7 @@ session.maxConcurrentAllowed=25 # How many concurrent sessions are allowed
 session.inactivityPeriodAllowed=1800 # After how many seconds will an inactive http session be terminated and invalidated
 ```
 ### Accessing http session
-* Application wide static access via `Session#getOrCreate`
+* Application wide static access via `Session#acquire`
 * HttpEndpoint access via `Request#getSession`
 
 ## Http filter

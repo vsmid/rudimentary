@@ -48,7 +48,7 @@ public class LoginFormAuthMechanism extends AuthMechanism {
 
         if (formData.isEmpty()) {
             // Login form authentication requires session.
-            Session.getOrCreate(exchange);
+            Session.acquire(exchange);
 
             Headers map = exchange.getResponseHeaders();
             map.set("Location", loginURI.value());
