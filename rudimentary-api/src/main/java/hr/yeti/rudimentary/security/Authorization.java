@@ -25,7 +25,7 @@ public interface Authorization extends Predicate<Request> {
 
         return (request) -> {
             return Stream.of(groups)
-                .anyMatch(role -> request.getIdentity().getGroups().contains(groups));
+                .anyMatch(group -> request.getIdentity().getGroups().contains(group));
         };
     }
 
