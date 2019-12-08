@@ -143,6 +143,14 @@ public Constraints constraints(
     };
 }
 ```
+### Setting http endpoint authorizations
+If you wish to protect http endpoint access with authorization rules override *authorizations* method.
+```java
+@Override
+public Predicate<Request> authorizations() {
+    return Authorization.ALLOW_ALL;
+}
+```
 ### Setting http endpoint description
 To set short endpoint description which will be shown in *apidocs* override *description* method.
 ```java
