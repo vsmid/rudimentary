@@ -137,19 +137,19 @@ public class ConfigPropertyTest {
         expect:
         assertEquals(
                 Path.of("a/b/c"),
-                new ConfigProperty("path", "a/b/c").asPath()
+                new ConfigProperty("customPath", "a/b/c").asPath()
         );
         assertEquals(
                 Path.of("a/b/c"),
-                new ConfigProperty("path", "a,b,c").asPath()
+                new ConfigProperty("customPath", "a,b,c").asPath()
         );
     }
 
     @Test
     public void test_transform_method() {
         expect:
-        assertEquals("a1", new ConfigProperty("path", "a").transform(v -> v + "1"));
-        assertEquals(1, new ConfigProperty("path", "1").transform(v -> Integer.valueOf(v)));
+        assertEquals("a1", new ConfigProperty("customPath", "a").transform(v -> v + "1"));
+        assertEquals(1, new ConfigProperty("customPath", "1").transform(v -> Integer.valueOf(v)));
     }
 
     @Test
