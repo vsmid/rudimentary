@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.EventPublisher;
-import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
@@ -17,7 +16,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
