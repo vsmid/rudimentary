@@ -40,7 +40,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     public RegisterAsServiceProvider() {
         try {
             this.projectRootDir = new File("").toPath().toAbsolutePath();
-            this.servicesDir = this.projectRootDir.resolve("src/main/resources/META-INF/services");
+            this.servicesDir = this.projectRootDir.resolve("src").resolve("main").resolve("resources").resolve("META-INF").resolve("services");
             this.httpEndpointProvidersList = readProviders(servicesDir.resolve(HTTP_ENDPOINT_PROVIDERS));
             this.httpFilterProvidersList = readProviders(servicesDir.resolve(HTTP_FILTER_PROVIDERS));
             this.viewEndpointProvidersList = readProviders(servicesDir.resolve(VIEW_ENDPOINT_PROVIDERS));
@@ -91,8 +91,11 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     }
 
     private String extractProvider(Path file) {
-        String[] parts = file.toAbsolutePath().toString().split("src/main/java");
-        return parts[1].replaceAll("/", ".").replace(".java", "").substring(1);
+        String filePath = file.toAbsolutePath().toString();
+        int javaSourcesIndex = filePath.indexOf("java") + ("java" + File.separator).length();
+        String canonicalProviderName = filePath.substring(javaSourcesIndex, filePath.lastIndexOf("."));
+        String resolvedProviderName = canonicalProviderName.replaceAll(File.separator + File.separator, ".");
+        return resolvedProviderName;
     }
 
     private void writeProvider(String providerType, Path file) throws IOException {
