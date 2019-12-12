@@ -94,7 +94,7 @@ For now only one provider is allowed and it can be registered in *src/main/resou
 
 **Hint** - take a look at how `EmbeddedIdentityStore` is implemented.
 
-#### IdentityDetails
+### IdentityDetails
 This is used when you wish to add custom details about authenticated user, primarily when overrding `IdentityStore#getIdentity` method. 
 This is not a mandatory SPI and is more of a declarative way of providing user details. 
 
