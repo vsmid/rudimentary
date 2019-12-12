@@ -47,6 +47,13 @@ You can user regular expression to define uris.
 This done by setting `security.urisNotRequiringAuthentication` property.
 You can user regular expression to define uris.
 
+#### Starting authenticated session
+Sometimes you would like to avoid triggering authentication against the resource for subsequent request.
+For example, `LoginFormAuthMechanism` does that automatically. 
+In general, you would not use this for stateless web services and this is typically used for web applications which store some information into session.
+
+To start authenticated session on first successful authentication set `security.startAuthenticatedSessionOnSuccessfulAuth` property to true. Behind the scenes this will generate RSID http cookie by which user requests are recognized.
+
 ### IdentityStore
 
 #### IdentityStoreDetails
