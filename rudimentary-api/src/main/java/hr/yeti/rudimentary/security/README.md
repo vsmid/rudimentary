@@ -49,7 +49,7 @@ public final class CustomAuthMechanism extends AuthMechanism {
   
 }
 ```
-You can have only one AuthMechanism you can register them in src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.AuthMechanism. 
+You can have only one AuthMechanism you can register it in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.AuthMechanism*. 
 
 **Hint** - take a look at how `BasiAuthMechanism` is implemented.
 
@@ -87,8 +87,14 @@ mmeglic:pass::read,write;\
 
 #### Creating custom identity store
 Creating custom identity store is done by implementing `hr.yeti.rudimentary.security.spi.IdentityStore` interface.
-For now only one provider is allowed and it can be registered in `src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore` file. Federated identity store will be added in the future.
+For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore* file. Federated identity store will be added in the future.
 
 **Hint** - take a look at how `EmbeddedIdentityStore` is implemented.
 
-#### IdentityStoreDetails
+#### IdentityDetails
+This is used when you wish to add custom details about authenticated user, primarily when overrding `IdentityStore#getIdentity` method. 
+This is not a mandatory SPI and is more of a declarative way of providing user details. 
+For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityDetails* file.
+
+
+
