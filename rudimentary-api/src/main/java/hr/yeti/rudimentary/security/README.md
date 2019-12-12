@@ -94,6 +94,8 @@ For now only one provider is allowed and it can be registered in *src/main/resou
 #### IdentityDetails
 This is used when you wish to add custom details about authenticated user, primarily when overrding `IdentityStore#getIdentity` method. 
 This is not a mandatory SPI and is more of a declarative way of providing user details. 
+
+To create a custom identity details provider implement `hr.yeti.rudimentary.security.spi.IdentityDetails` interface.
 For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityDetails* file.
 
 
