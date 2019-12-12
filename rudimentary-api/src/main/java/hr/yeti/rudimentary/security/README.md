@@ -103,10 +103,10 @@ For now only one provider is allowed and it can be registered in *src/main/resou
 
 ### Authorizations
 Authorizations are set on `HttpEndpoint` level by overriding `authorizations` method.
-Rudimentary framework provides a helper class `hr.yeti.rudimentary.security.Authorization` containing commonly used authorization definitions but you can define custom rules as well.
+Rudimentary framework provides a helper class `hr.yeti.rudimentary.security.Authorization` containing commonly used authorization rules but you can define custom rules as well.
 
 * allow access to all users - `Authorization.ALLOW_ALL`
 * deny to all users - `Authorization.DENY_ALL`
-* Alow access to certain roles - `Authorization.rolesAllowed(String... roles)`
-* Allow access to certains groups -  `Authorization.groupsAllowed(String... groups)`
+* alow access to certain roles - `Authorization.rolesAllowed(String... roles)`
+* allow access to certains groups -  `Authorization.groupsAllowed(String... groups)`
 
