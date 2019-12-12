@@ -89,6 +89,9 @@ mmeglic:pass::read,write;\
 Creating custom identity store is done by implementing `hr.yeti.rudimentary.security.spi.IdentityStore` interface.
 For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore* file. Federated identity store will be added in the future.
 
+* public boolean validate(Credential credential) - implement how user credentials are validated agains a resource
+* public Identity<?> getIdentity(HttpPrincipal principal) - implement how user info is retrieved
+
 **Hint** - take a look at how `EmbeddedIdentityStore` is implemented.
 
 #### IdentityDetails
