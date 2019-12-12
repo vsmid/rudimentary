@@ -101,5 +101,12 @@ This is not a mandatory SPI and is more of a declarative way of providing user d
 To create a custom identity details provider implement `hr.yeti.rudimentary.security.spi.IdentityDetails` interface.
 For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityDetails* file.
 
+### Authorizations
+Authorizations are set on `HttpEndpoint` level by overriding `authorizations` method.
+Rudimentary framework provides a helper class `hr.yeti.rudimentary.security.Authorization` containing commonly used authorization definitions but you can define custom rules as well.
 
+* allow access to all users - `Authorization.ALLOW_ALL`
+* deny to all users - `Authorization.DENY_ALL`
+* Alow access to certain roles - `Authorization.rolesAllowed(String... roles)`
+* Allow access to certains groups -  `Authorization.groupsAllowed(String... groups)`
 
