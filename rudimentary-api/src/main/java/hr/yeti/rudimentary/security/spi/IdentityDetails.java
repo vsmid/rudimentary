@@ -14,7 +14,8 @@ import hr.yeti.rudimentary.security.Identity;
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityDetails</i>
  * file.
  *
- * @see rudimentary/rudimentary-exts/rudimentary-security-identitystore-embedded-ext module for the implementation of {@link IdentityStore} and the possible usage of IdentityDetails.
+ * @see hr.yeti.rudimentary.server.security.identitystore.embedded.EmbeddedIdentityStore.java in rudimentary-server
+ * module.
  *
  * @author vedransmid@yeti-it.hr
  * @param <D> Type of user details.
