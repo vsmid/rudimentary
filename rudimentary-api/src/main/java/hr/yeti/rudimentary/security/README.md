@@ -22,6 +22,7 @@ security.loginForm.passwordFieldName=password # Password field name attribute va
 ```
 #### Creating custom authentication mechanism
 To create a custom authentication mechanism extend `hr.yeti.rudimentary.security.spi.AuthMechanism` class.
+Authentication mechanism should always depend on `IdentityStore` and should always call `super.initialize()` in `initialize` method.
 ```java
 public final class CustomAuthMechanism extends AuthMechanism {
 
@@ -34,10 +35,23 @@ public final class CustomAuthMechanism extends AuthMechanism {
   public Identity getIdentity(HttpPrincipal principal) {
     ...
   }
+
+  @Override
+  public Class[] dependsOn() {
+    return new Class[]{ IdentityStore.class };
+  }
+  
+  @Override
+  public void initialize() {
+    super.initialize();
+    ...
+  }
   
 }
 ```
 You can have only one AuthMechanism you can register them in src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.AuthMechanism. 
+
+**Hint** - take a look at how `BasiAuthMechanism` is implemented.
 
 #### Setting uris which require authentication
 This done by setting `security.urisRequiringAuthentication` property.
@@ -55,5 +69,26 @@ In general, you would not use this for stateless web services and this is typica
 To start authenticated session on first successful authentication set `security.startAuthenticatedSessionOnSuccessfulAuth` property to true. Behind the scenes this will generate RSID http cookie by which user requests are recognized.
 
 ### IdentityStore
+`hr.yeti.rudimentary.security.spi.IdentityStore` SPI is used to validate user credentials and to retrieve user's identity.
+Identity store should always be provided otherwise authentication machanism will not work.
+
+#### Embedded identity store
+Rudimentary for now provides only embedded identity store. You can enable it by setting
+`security.identityStore.embedded.enabled`property to true.
+
+##### Configuring embedded identity store identities
+This is done by setting `security.identityStore.embedded.identities`property.
+The format used is: *username*:*password*:*groups*:*roles*:*details* where groups and roles are values separated with comma and details is key=value separated with comma.
+```properties
+security.identityStore.embedded.identities=\
+lena:pass:admins:rookie:email=vsmid@gmail.com,city=Zagreb;\
+mmeglic:pass::read,write;\
+```
+
+#### Creating custom identity store
+Creating custom identity store is done by implementing `hr.yeti.rudimentary.security.spi.IdentityStore` interface.
+For now only one provider is allowed and it can be registered in `src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore` file. Federated identity store will be added in the future.
+
+**Hint** - take a look at how `EmbeddedIdentityStore` is implemented.
 
 #### IdentityStoreDetails
