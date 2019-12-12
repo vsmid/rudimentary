@@ -26,6 +26,7 @@ public final class CustomAuthMechanism extends AuthMechanism {
   
 }
 ```
+You can have only one AuthMechanism you can register them in src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.AuthMechanism. 
 
 ### IdentityStore
 
