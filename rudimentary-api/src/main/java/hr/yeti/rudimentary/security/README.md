@@ -9,7 +9,7 @@ Rudimentary framework for now provides two authentication mechanisms but also of
 
 #### LoginFormAuthMechanism
 
-#### Creting custom authenticatin mechanism
+#### Creating custom authentication mechanism
 To create a custom authentication mechanism extend `hr.yeti.rudimentary.security.spi.AuthMechanism` class.
 ```java
 public final class CustomAuthMechanism extends AuthMechanism {
