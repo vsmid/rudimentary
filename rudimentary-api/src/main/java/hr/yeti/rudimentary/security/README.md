@@ -62,7 +62,7 @@ This done by setting `security.urisNotRequiringAuthentication` property.
 You can user regular expression to define uris.
 
 #### Starting authenticated session
-Sometimes you would like to avoid triggering authentication against the resource for subsequent request.
+Sometimes you would like to avoid triggering authentication against the resource for subsequent requests.
 For example, `LoginFormAuthMechanism` does that automatically. 
 In general, you would not use this for stateless web services and this is typically used for web applications which store some information into session.
 
@@ -95,7 +95,7 @@ For now only one provider is allowed and it can be registered in *src/main/resou
 **Hint** - take a look at how `EmbeddedIdentityStore` is implemented.
 
 ### IdentityDetails
-This is used when you wish to add custom details about authenticated user, primarily when overrding `IdentityStore#getIdentity` method. 
+This is used when you wish to add custom details about authenticated user, primarily when overriding `IdentityStore#getIdentity` method. 
 This is not a mandatory SPI and is more of a declarative way of providing user details. 
 
 To create a custom identity details provider implement `hr.yeti.rudimentary.security.spi.IdentityDetails` interface.
