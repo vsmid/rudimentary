@@ -110,3 +110,9 @@ Rudimentary framework provides a helper class `hr.yeti.rudimentary.security.Auth
 * alow access to certain roles - `Authorization.rolesAllowed(String... roles)`
 * allow access to certains groups -  `Authorization.groupsAllowed(String... groups)`
 
+```java
+@Override
+public Predicate<Request> authorizations() {
+    return Authorization.rolesAllowed("rookie");
+}
+```
