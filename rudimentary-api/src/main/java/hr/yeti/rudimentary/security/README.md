@@ -10,6 +10,7 @@ To enable basic authentication mechanism set `security.basic.enabled` property t
 
 ### LoginFormAuthMechanism
 To enable basic authentication mechanism set `security.loginForm.enabled` property to true.
+This mechanism automatically starts user session on successful authentication.
 
 #### Configuring login form
 This is done by setting below listed Rudimentary properties. Values shown are used by default implementation but you can overide them at any time.
