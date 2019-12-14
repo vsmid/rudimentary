@@ -20,9 +20,9 @@ public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
     public void initialize() {
         try {
             this.configHTML = new String(
-                    new ClasspathResource("/templates/config.html")
-                            .get()
-                            .readAllBytes()
+                new ClasspathResource("/templates/config.html")
+                    .get()
+                    .readAllBytes()
             );
         } catch (IOException ex) {
             logger().log(Level.ERROR, "Failed to load config.html template.", ex);
@@ -47,9 +47,9 @@ public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
     @Override
     public Html response(Request<Empty> request) {
         return new Html(
-                String.format(configHTML,
-                        rowsHTMLGenerator()
-                )
+            String.format(configHTML,
+                rowsHTMLGenerator()
+            )
         );
     }
 

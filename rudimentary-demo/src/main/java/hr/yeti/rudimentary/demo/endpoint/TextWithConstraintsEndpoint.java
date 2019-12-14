@@ -32,10 +32,10 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
     @Override
     public Constraints constraints(
-            Text body,
-            Map<String, String> pathVariables,
-            Map<String, String> queryParameters,
-            Headers httpHeaders
+        Text body,
+        Map<String, String> pathVariables,
+        Map<String, String> queryParameters,
+        Headers httpHeaders
     ) {
         return new Constraints() {
             {

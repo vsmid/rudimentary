@@ -15,21 +15,21 @@ public class ServerInfoConsolePrinter {
         System.out.println(System.lineSeparator());
 
         logger.log(Level.INFO, "Registered uris: {0} {1}",
-                new Object[]{
-                    System.lineSeparator(),
-                    Instance.of(HttpEndpointContextProvider.class).getRegisteredUris()
-                            .stream()
-                            .map(e -> new StringBuilder()
-                            .append("\t")
-                            .append(e.httpMethod().toString())
-                            .append(" ")
-                            .append(!e.path().toString().startsWith("/") ? "/" : "")
-                            .append(e.path().toString())
-                            .append(" ")
-                            .append(Optional.ofNullable(e.description()).map(desc -> " -> " + desc).orElse(""))
-                            .toString())
-                            .collect(Collectors.joining(System.lineSeparator()))
-                });
+            new Object[]{
+                System.lineSeparator(),
+                Instance.of(HttpEndpointContextProvider.class).getRegisteredUris()
+                    .stream()
+                    .map(e -> new StringBuilder()
+                    .append("\t")
+                    .append(e.httpMethod().toString())
+                    .append(" ")
+                    .append(!e.path().toString().startsWith("/") ? "/" : "")
+                    .append(e.path().toString())
+                    .append(" ")
+                    .append(Optional.ofNullable(e.description()).map(desc -> " -> " + desc).orElse(""))
+                    .toString())
+                    .collect(Collectors.joining(System.lineSeparator()))
+            });
     }
 
     public static void printConfigProperties(Logger logger) {

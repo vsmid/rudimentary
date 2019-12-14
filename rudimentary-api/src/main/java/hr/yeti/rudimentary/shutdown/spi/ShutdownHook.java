@@ -6,7 +6,8 @@ import java.util.ServiceLoader;
 /**
  * SPI used to add on shutdown hook logic.
  *
- * Since this interface extends {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
+ * Since this interface extends {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on
+ * application startup.
  *
  * There should be only one ShutdownHook provider per application.
  *

@@ -14,7 +14,7 @@ public final class DefaultConfigProvider extends Config {
         super.initialize();
 
         try (
-                InputStream config = new ClasspathResource("config.properties").get()) {
+             InputStream config = new ClasspathResource("config.properties").get()) {
             load(config);
         } catch (IOException ex) {
             throw new ConfigException(ex);

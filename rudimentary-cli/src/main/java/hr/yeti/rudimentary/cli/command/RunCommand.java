@@ -47,10 +47,10 @@ public class RunCommand implements Command {
     @Override
     public Map<String, String> options() {
         return Map.of(
-                "debug", "Run in debug mode.",
-                "debugPort", "Set debug mode listening port. Defauls to 1044.",
-                "props", "Set system properties. For multiple values enclose in double quotes.",
-                "reload", "Reload application on change. Active by default. Set to false to deactivate.");
+            "debug", "Run in debug mode.",
+            "debugPort", "Set debug mode listening port. Defauls to 1044.",
+            "props", "Set system properties. For multiple values enclose in double quotes.",
+            "reload", "Reload application on change. Active by default. Set to false to deactivate.");
     }
 
     @Override
@@ -86,8 +86,8 @@ public class RunCommand implements Command {
         System.out.println("...");
 
         ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
-                "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
-                "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "compile", "package", "exec:exec");
+            "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
+            "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "compile", "package", "exec:exec");
 
         builder.redirectErrorStream(true);
         process = builder.start();
@@ -102,12 +102,12 @@ public class RunCommand implements Command {
         new Thread(new ConsoleActionListener(ENTER, (input) -> {
             try {
                 ProcessBuilder testBuilder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
-                        "test-compile", "surefire:test");
+                    "test-compile", "surefire:test");
                 Process test = testBuilder.inheritIO().start();
                 test.waitFor();
 
                 ProcessBuilder iTestBuilder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
-                        "failsafe:integration-test");
+                    "failsafe:integration-test");
                 Process iTest = iTestBuilder.inheritIO().start();
                 iTest.waitFor();
             } catch (IOException | InterruptedException ex) {
@@ -117,7 +117,7 @@ public class RunCommand implements Command {
     }
 
     private String parsePOMForMainClass() {
-        try (FileInputStream pom = new FileInputStream("pom.xml")) {
+        try ( FileInputStream pom = new FileInputStream("pom.xml")) {
             String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
 
             Matcher matcher = pattern.matcher(pomContent);

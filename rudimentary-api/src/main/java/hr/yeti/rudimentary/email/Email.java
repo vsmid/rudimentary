@@ -11,7 +11,8 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
 /**
- * Class used for static access to email communication. Main goal of this class to reduce boilerplate code as much as possible and just write email messages on the fly.
+ * Class used for static access to email communication. Main goal of this class to reduce boilerplate code as much as
+ * possible and just write email messages on the fly.
  *
  * @author vedransmid@yeti-it.hr
  */

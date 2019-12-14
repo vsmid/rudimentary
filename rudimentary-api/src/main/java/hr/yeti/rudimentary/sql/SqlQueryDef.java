@@ -1,7 +1,8 @@
 package hr.yeti.rudimentary.sql;
 
 /**
- * Define Sql query as a function. This comes in handy when you want to keep your Sql queries in a separate class. Think of it as a repository or DAO.
+ * Define Sql query as a function. This comes in handy when you want to keep your Sql queries in a separate class. Think
+ * of it as a repository or DAO.
  *
  * e.g.
  *

@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 /**
  * Class holding defined constraints. Each constraint is defined as a {@link ConstraintTuple}.
  *
- * Usages of this class can be seen in {@link HttpEndpoint#constraints(hr.yeti.rudimentary.http.content.Model, java.util.Map, java.util.Map, com.sun.net.httpserver.Headers)} and
- * {@link Model#constraints()}.
+ * Usages of this class can be seen in
+ * {@link HttpEndpoint#constraints(hr.yeti.rudimentary.http.content.Model, java.util.Map, java.util.Map, com.sun.net.httpserver.Headers)}
+ * and {@link Model#constraints()}.
  *
  * e.g. Usage example in {@link HttpEndpoint}:
  *
@@ -48,7 +49,8 @@ public class Constraints {
     }
 
     /**
-     * This constructor should be used when you have {@link Json} request body type and you have an exact type to which you can convert receiving json data. Works for both json arrays and objects.
+     * This constructor should be used when you have {@link Json} request body type and you have an exact type to which
+     * you can convert receiving json data. Works for both json arrays and objects.
      *
      * @param json Json data.
      * @param type Type to which json will be converted.
@@ -56,15 +58,15 @@ public class Constraints {
     public Constraints(Json json, Class<? extends Model> type) {
         if (json.isArray()) {
             constraints = json.asListOf(type)
-                    .stream()
-                    .map(Model::constraints)
-                    .map(Constraints::getConstraints)
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList());
+                .stream()
+                .map(Model::constraints)
+                .map(Constraints::getConstraints)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
         } else {
             constraints = json.as(type)
-                    .constraints()
-                    .getConstraints();
+                .constraints()
+                .getConstraints();
         }
     }
 

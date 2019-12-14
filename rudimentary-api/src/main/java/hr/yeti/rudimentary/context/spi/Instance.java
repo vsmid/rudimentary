@@ -62,10 +62,10 @@ public interface Instance {
 
             if (!providersOf.isEmpty()) {
                 Optional<T> provider = providersOf.stream()
-                        .filter((i) -> {
-                            return ((Instance) i).primary();
-                        })
-                        .findFirst();
+                    .filter((i) -> {
+                        return ((Instance) i).primary();
+                    })
+                    .findFirst();
 
                 if (provider.isPresent()) {
                     instance = provider.get();
@@ -80,8 +80,9 @@ public interface Instance {
     }
 
     /**
-     * The same as {@link Instance#of(java.lang.Class)} but with additional filtering by instance's id. If you have multiple instances of the same provider with the same instance id, the first one
-     * found will be returned unless marked as primary.
+     * The same as {@link Instance#of(java.lang.Class)} but with additional filtering by instance's id. If you have
+     * multiple instances of the same provider with the same instance id, the first one found will be returned unless
+     * marked as primary.
      *
      * @param <T> Inferred class type generics.
      * @param clazz Class type to be returned.
@@ -90,12 +91,12 @@ public interface Instance {
      */
     static <T> T withId(Class<T> clazz, String id) {
         Optional<T> instanceWithId = providersOf(clazz)
-                .stream()
-                .filter(instance -> {
-                    String instanceId = ((Instance) instance).id();
-                    return Objects.nonNull(instanceId) && instanceId.equalsIgnoreCase(id);
-                })
-                .findFirst();
+            .stream()
+            .filter(instance -> {
+                String instanceId = ((Instance) instance).id();
+                return Objects.nonNull(instanceId) && instanceId.equalsIgnoreCase(id);
+            })
+            .findFirst();
 
         return instanceWithId.isPresent() ? instanceWithId.get() : null;
     }
@@ -109,10 +110,10 @@ public interface Instance {
      */
     static <T> List<T> providersOf(Class<T> clazz) {
         return (List<T>) Context.getContext()
-                .values()
-                .stream()
-                .filter(instance -> clazz.isAssignableFrom(instance.getClass()))
-                .collect(Collectors.toList());
+            .values()
+            .stream()
+            .filter(instance -> clazz.isAssignableFrom(instance.getClass()))
+            .collect(Collectors.toList());
     }
 
     /**

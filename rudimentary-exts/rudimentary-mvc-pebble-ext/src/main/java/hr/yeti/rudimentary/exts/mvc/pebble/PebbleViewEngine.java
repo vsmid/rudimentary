@@ -53,8 +53,8 @@ public class PebbleViewEngine implements ViewEngine {
         loader.setPrefix(templatesDir.value());
 
         engine = new PebbleEngine.Builder()
-                .loader(loader)
-                .build();
+            .loader(loader)
+            .build();
     }
 
 }

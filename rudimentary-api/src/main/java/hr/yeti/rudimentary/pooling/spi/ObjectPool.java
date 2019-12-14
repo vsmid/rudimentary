@@ -16,13 +16,15 @@ import java.util.ServiceLoader;
 /**
  * A SPI for providing object pooling. Most notable and currently only usage is a {@link JdbcConnectionPool}.
  *
- * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
+ * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader}
+ * on application startup.
  *
  * You can have as many different ObjectPool providers as you want and you can register them in
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.pooling.spi.ObjectPool</i>
  * file.
  *
- * If you have you own dedicated pool SPI such as {@link JdbcConnectionPool} you will then probably want to use a different file under
+ * If you have you own dedicated pool SPI such as {@link JdbcConnectionPool} you will then probably want to use a
+ * different file under
  * <i>src/main/resources/META-INF/services</i> to register it.
  *
  * @author vedransmid@gmail.com
@@ -86,9 +88,11 @@ public abstract class ObjectPool<T> implements Instance {
     protected abstract ObjectPoolSettings settings();
 
     /**
-     * Do not call this method unless you know what you are doing. It will be called by the framework on application startup.
+     * Do not call this method unless you know what you are doing. It will be called by the framework on application
+     * startup.
      *
-     * Starts thread which keeps the state of the pool between the boundaries set by the minSize and maxSize values of the {@link ObjectPoolSettings}.
+     * Starts thread which keeps the state of the pool between the boundaries set by the minSize and maxSize values of
+     * the {@link ObjectPoolSettings}.
      */
     @Override
     public void initialize() {
@@ -118,7 +122,8 @@ public abstract class ObjectPool<T> implements Instance {
     }
 
     /**
-     * Do not call this method unless you know what you are doing. It will be called by the framework on application shutdown.
+     * Do not call this method unless you know what you are doing. It will be called by the framework on application
+     * shutdown.
      */
     @Override
     public void destroy() {
@@ -144,7 +149,7 @@ public abstract class ObjectPool<T> implements Instance {
      */
     public PoolStatus status() {
         return executorService.isShutdown() && Objects.isNull(settings) && Objects.isNull(pool)
-                ? PoolStatus.DOWN : PoolStatus.UP;
+            ? PoolStatus.DOWN : PoolStatus.UP;
     }
 
 }

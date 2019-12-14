@@ -46,7 +46,7 @@ public final class View extends Model implements Value<String> {
     @Override
     public String getValue() {
         return Instance.of(ViewEngine.class)
-                .render(this);
+            .render(this);
     }
 
 }

@@ -23,7 +23,7 @@ public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckRepor
     @Override
     public void initialize() {
         Instance.providersOf(HealthCheck.class)
-                .forEach(healthCheckProviders::add);
+            .forEach(healthCheckProviders::add);
     }
 
     @Override
@@ -40,13 +40,13 @@ public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckRepor
     public HealthCheckReport response(Request<Empty> request) {
 
         List<HealthCheckResponse> healthChecks = healthCheckProviders.stream()
-                .map(HealthCheck::call)
-                .collect(Collectors.toList());
+            .map(HealthCheck::call)
+            .collect(Collectors.toList());
 
         MemoryInfo memoryInfo = new MemoryInfo(
-                Runtime.getRuntime().totalMemory() / MB,
-                Runtime.getRuntime().maxMemory() / MB,
-                Runtime.getRuntime().maxMemory() / MB
+            Runtime.getRuntime().totalMemory() / MB,
+            Runtime.getRuntime().maxMemory() / MB,
+            Runtime.getRuntime().maxMemory() / MB
         );
 
         boolean down = healthChecks.stream().anyMatch(healthCheckResponse -> healthCheckResponse.getState() == HealthState.DOWN);

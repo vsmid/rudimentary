@@ -1,7 +1,8 @@
 package hr.yeti.rudimentary.email;
 
 /**
- * Exception thrown if something goes wrong during {@link Email#send(hr.yeti.rudimentary.email.EmailMessage)} method execution.
+ * Exception thrown if something goes wrong during {@link Email#send(hr.yeti.rudimentary.email.EmailMessage)} method
+ * execution.
  *
  * @see Email#send(hr.yeti.rudimentary.email.EmailMessage)
  *

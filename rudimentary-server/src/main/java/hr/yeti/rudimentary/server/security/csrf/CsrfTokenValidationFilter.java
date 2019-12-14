@@ -52,7 +52,7 @@ public class CsrfTokenValidationFilter extends HttpFilter {
 
         // Skip for non state changing requests.
         if (EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS, HttpMethod.TRACE)
-                .contains(HttpMethod.valueOf(exchange.getRequestMethod()))) {
+            .contains(HttpMethod.valueOf(exchange.getRequestMethod()))) {
             chain.doFilter(exchange);
             return;
         }

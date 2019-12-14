@@ -17,13 +17,12 @@ public interface Interceptor extends Instance {
     int order();
 
     /**
-     * Set regular expression as string to which this interceptor will be applied to.
-     * Defaults to all URIs.
+     * Set regular expression as string to which this interceptor will be applied to. Defaults to all URIs.
      *
      * @return String based regular expression.
      */
     default String applyToURI() {
-      return ".*";
+        return ".*";
     }
 
 }

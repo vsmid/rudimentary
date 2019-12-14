@@ -19,12 +19,12 @@ public class DefaultDataSource extends BasicDataSource {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(Config.provider().property(propertyName("jdbcUrl")).value());
             config.setDriverClassName(Config.provider().property(
-                    propertyName("driverClassName")
+                propertyName("driverClassName")
             ).value());
             config.setUsername(Config.provider().property(propertyName("username")).value());
             config.setPassword(Config.provider().property(propertyName("password")).value());
             config.setMaximumPoolSize(Config.provider().property(
-                    propertyName("maximumPoolSize")).asInt()
+                propertyName("maximumPoolSize")).asInt()
             );
 
             return new HikariDataSource(config);

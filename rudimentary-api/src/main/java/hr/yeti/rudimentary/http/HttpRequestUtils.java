@@ -29,16 +29,16 @@ public class HttpRequestUtils {
         }
 
         return headers.get("Cookie")
-                .stream()
-                .map(c -> c.split("; "))
-                .flatMap(Stream::of)
-                .map(HttpCookie::parse)
-                .flatMap(List::stream)
-                .collect(Collectors.toMap((c) -> {
-                    return c.getName();
-                }, (c) -> {
-                    return c;
-                }));
+            .stream()
+            .map(c -> c.split("; "))
+            .flatMap(Stream::of)
+            .map(HttpCookie::parse)
+            .flatMap(List::stream)
+            .collect(Collectors.toMap((c) -> {
+                return c.getName();
+            }, (c) -> {
+                return c;
+            }));
     }
 
     public static Map<String, String> parsePathVariables(URI endpointPath, URI uri) {
@@ -71,10 +71,10 @@ public class HttpRequestUtils {
 
         if (Objects.nonNull(query) && query.length() > 0) {
             Stream.of(query.split("&"))
-                    .forEach(pair -> {
-                        String[] keyValue = pair.split("=");
-                        queryParameters.put(keyValue[0], URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
-                    });
+                .forEach(pair -> {
+                    String[] keyValue = pair.split("=");
+                    queryParameters.put(keyValue[0], URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
+                });
         }
 
         return queryParameters;

@@ -74,10 +74,10 @@ public class Pbkdf2 {
 
     private String encode(byte[] hash, byte[] salt) {
         return String.format("%s:%d:%s:%s",
-                ALGORITHM,
-                iterationCount.asInt(),
-                Base64.getEncoder().encodeToString(salt),
-                Base64.getEncoder().encodeToString(hash)
+            ALGORITHM,
+            iterationCount.asInt(),
+            Base64.getEncoder().encodeToString(salt),
+            Base64.getEncoder().encodeToString(hash)
         );
     }
 

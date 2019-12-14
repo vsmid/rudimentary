@@ -15,8 +15,9 @@ import javax.mail.Session;
  *
  * <b>Important!</b>
  *
- * We should add a {@link Config} feature which would be able to load all properties into a single object based on configuration properties prefix. This would further allow loading of all javax.mail
- * properties to enable all configuration properties without stating them in this class.
+ * We should add a {@link Config} feature which would be able to load all properties into a single object based on
+ * configuration properties prefix. This would further allow loading of all javax.mail properties to enable all
+ * configuration properties without stating them in this class.
  *
  * <pre>
  * e.g. for the below configuration properties:
@@ -55,10 +56,10 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
     @Override
     protected ObjectPoolSettings settings() {
         return new ObjectPoolSettings(
-                minSize.asInt(),
-                maxSize.asInt(),
-                validationInterval.asInt(),
-                awaitTerminationInterval.asInt()
+            minSize.asInt(),
+            maxSize.asInt(),
+            validationInterval.asInt(),
+            awaitTerminationInterval.asInt()
         );
     }
 
@@ -69,8 +70,8 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
-                        user.value(),
-                        password.value()
+                    user.value(),
+                    password.value()
                 );
             }
         };

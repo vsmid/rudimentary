@@ -30,8 +30,7 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("val", "Rudy");
 
-        expect:
-        assertEquals("Rudy", value.toString());
+        expect: assertEquals("Rudy", value.toString());
     }
 
     @Test
@@ -39,8 +38,7 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("val", "Rudy");
 
-        expect:
-        assertEquals("Rudy", value.value());
+        expect: assertEquals("Rudy", value.value());
     }
 
     @Test
@@ -48,8 +46,7 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("val", "Rudy");
 
-        expect:
-        assertEquals(value.toString(), value.value());
+        expect: assertEquals(value.toString(), value.value());
     }
 
     @Test
@@ -57,8 +54,7 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("val", "1");
 
-        expect:
-        assertEquals(1, value.asInt().intValue());
+        expect: assertEquals(1, value.asInt().intValue());
     }
 
     @Test
@@ -66,8 +62,7 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("val", "1");
 
-        expect:
-        assertEquals(1l, value.asLong().longValue());
+        expect: assertEquals(1l, value.asLong().longValue());
     }
 
     @Test
@@ -76,8 +71,7 @@ public class ConfigPropertyTest {
         ConfigProperty valueTrue = new ConfigProperty("val", "true");
         ConfigProperty valueFalse = new ConfigProperty("val", "false");
 
-        expect:
-        assertEquals(true, valueTrue.asBoolean());
+        expect: assertEquals(true, valueTrue.asBoolean());
         assertEquals(false, valueFalse.asBoolean());
     }
 
@@ -87,11 +81,9 @@ public class ConfigPropertyTest {
         ConfigProperty value = new ConfigProperty("val", "   one, one two, three   ");
         String[] array;
 
-        when:
-        array = value.asArray();
+        when:   array = value.asArray();
 
-        then:
-        assertNotNull(array);
+        then:   assertNotNull(array);
         assertEquals("one", array[0]);
         assertEquals("one two", array[1]);
         assertEquals("three", array[2]);
@@ -102,8 +94,7 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("uri", "/api/v1");
 
-        then:
-        assertNotNull(value.asURI());
+        then:   assertNotNull(value.asURI());
         assertTrue(value.asURI() instanceof URI);
         assertEquals(URI.create("/api/v1"), value.asURI());
     }
@@ -113,42 +104,38 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("url", "http://localhost:8080/api/v1");
 
-        then:
-        assertNotNull(value.asURL());
+        then:   assertNotNull(value.asURL());
         assertTrue(value.asURL() instanceof URL);
         assertEquals("http://localhost:8080/api/v1", value.asURL().toString());
     }
 
     @Test
     public void test_asMap_method() {
-        expect:
+        expect: assertEquals(
+                    new TreeMap(Map.of("k1", "v1")).toString(),
+                    new ConfigProperty("map", "k1=v1").asMap().toString()
+                );
         assertEquals(
-                new TreeMap(Map.of("k1", "v1")).toString(),
-                new ConfigProperty("map", "k1=v1").asMap().toString()
-        );
-        assertEquals(
-                new TreeMap(Map.of("k1", "v1", "k2", "v2")).toString(),
-                new ConfigProperty("map", "k1=v1, k2 = v2").asMap().toString()
+            new TreeMap(Map.of("k1", "v1", "k2", "v2")).toString(),
+            new ConfigProperty("map", "k1=v1, k2 = v2").asMap().toString()
         );
     }
 
     @Test
     public void test_asPath_method() {
-        expect:
+        expect: assertEquals(
+                    Path.of("a/b/c"),
+                    new ConfigProperty("customPath", "a/b/c").asPath()
+                );
         assertEquals(
-                Path.of("a/b/c"),
-                new ConfigProperty("customPath", "a/b/c").asPath()
-        );
-        assertEquals(
-                Path.of("a/b/c"),
-                new ConfigProperty("customPath", "a,b,c").asPath()
+            Path.of("a/b/c"),
+            new ConfigProperty("customPath", "a,b,c").asPath()
         );
     }
 
     @Test
     public void test_transform_method() {
-        expect:
-        assertEquals("a1", new ConfigProperty("customPath", "a").transform(v -> v + "1"));
+        expect: assertEquals("a1", new ConfigProperty("customPath", "a").transform(v -> v + "1"));
         assertEquals(1, new ConfigProperty("customPath", "1").transform(v -> Integer.valueOf(v)));
     }
 
@@ -157,10 +144,9 @@ public class ConfigPropertyTest {
         // setup:
         ConfigProperty value = new ConfigProperty("url", "/api/v1");
 
-        expect:
-        assertThrows(ConfigException.class, () -> {
-            value.asURL();
-        });
+        expect: assertThrows(ConfigException.class, () -> {
+                    value.asURL();
+                });
 
     }
 
@@ -170,11 +156,9 @@ public class ConfigPropertyTest {
         ConfigProperty value = new ConfigProperty("val", "");
         String[] array;
 
-        when:
-        array = value.asArray();
+        when:   array = value.asArray();
 
-        then:
-        assertNotNull(array);
+        then:   assertNotNull(array);
         assertEquals(0, array.length);
     }
 }

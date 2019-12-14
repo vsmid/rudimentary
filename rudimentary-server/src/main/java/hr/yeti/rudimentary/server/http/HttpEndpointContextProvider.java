@@ -25,15 +25,15 @@ public class HttpEndpointContextProvider implements Instance {
     public void initialize() {
 
         Instance.providersOf(HttpEndpoint.class)
-                .forEach((httpEndpoint) -> {
-                    checkForDuplicateMapping(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint.httpMethod());
+            .forEach((httpEndpoint) -> {
+                checkForDuplicateMapping(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint.httpMethod());
 
-                    HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), httpEndpoint);
-                    PATTERN_PATHS_MAPPING.put(
-                            URIUtils.convertToRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(),
-                                    "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path())
-                    );
-                });
+                HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), httpEndpoint);
+                PATTERN_PATHS_MAPPING.put(
+                    URIUtils.convertToRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(),
+                        "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path())
+                );
+            });
     }
 
     @Override
@@ -48,10 +48,10 @@ public class HttpEndpointContextProvider implements Instance {
         URI resolvedURI = URIUtils.removeSlashPrefix(path);
 
         Optional<Map.Entry<Pattern, URI>> match = PATTERN_PATHS_MAPPING.entrySet().stream()
-                .filter(e -> {
-                    return e.getKey().asPredicate().test(URIUtils.removeSlashPrefix(path).toString());
-                })
-                .findFirst();
+            .filter(e -> {
+                return e.getKey().asPredicate().test(URIUtils.removeSlashPrefix(path).toString());
+            })
+            .findFirst();
         if (match.isPresent()) {
             resolvedURI = match.get().getValue();
         }
@@ -61,19 +61,19 @@ public class HttpEndpointContextProvider implements Instance {
 
     public List<HttpEndpoint> getRegisteredUris() {
         return HTTP_ENDPOINTS.values().stream()
-                .sorted(Comparator.comparing((httpEndpoint) -> {
-                    return httpEndpoint.path().toString();
-                }))
-                .collect(Collectors.toList());
+            .sorted(Comparator.comparing((httpEndpoint) -> {
+                return httpEndpoint.path().toString();
+            }))
+            .collect(Collectors.toList());
     }
 
     private void checkForDuplicateMapping(URI uri, HttpMethod httpMethod) {
         Predicate pattern = URIUtils.convertToRegex(URIUtils.removeSlashPrefix(uri).toString(), ":.*").asPredicate();
 
         boolean match = HTTP_ENDPOINTS.entrySet().stream()
-                .filter(httpEndpoint -> httpEndpoint.getValue().httpMethod() == httpMethod)
-                .map(httpEndpoint -> URIUtils.removeSlashPrefix(httpEndpoint.getValue().path()).toString())
-                .anyMatch(pattern);
+            .filter(httpEndpoint -> httpEndpoint.getValue().httpMethod() == httpMethod)
+            .map(httpEndpoint -> URIUtils.removeSlashPrefix(httpEndpoint.getValue().path()).toString())
+            .anyMatch(pattern);
 
         if (match) {
             throw new RuntimeException("Duplicate http mapping found: " + URIUtils.removeSlashPrefix(uri).getPath());

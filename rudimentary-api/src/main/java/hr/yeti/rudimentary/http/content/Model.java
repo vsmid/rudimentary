@@ -21,7 +21,8 @@ import hr.yeti.rudimentary.validation.Constraints;
 public abstract class Model {
 
     /**
-     * Each class extending model gains a feature of defining validation constraints on each of the properties defined in the class.
+     * Each class extending model gains a feature of defining validation constraints on each of the properties defined
+     * in the class.
      *
      * Example:
      *

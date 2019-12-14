@@ -15,7 +15,7 @@ public class ClasspathResource {
 
     public InputStream get() {
         return this.getClass().
-                getResourceAsStream(path);
+            getResourceAsStream(path);
     }
 
 }

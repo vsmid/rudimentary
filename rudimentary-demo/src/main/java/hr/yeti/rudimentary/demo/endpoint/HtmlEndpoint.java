@@ -16,10 +16,10 @@ public class HtmlEndpoint implements HttpEndpoint<Empty, Html> {
     @Override
     public Html response(Request<Empty> request) {
         return new Html(
-                "<html>"
-                + "<head></head>"
-                + "<body>Hello!</body>"
-                + "</html>"
+            "<html>"
+            + "<head></head>"
+            + "<body>Hello!</body>"
+            + "</html>"
         );
     }
 

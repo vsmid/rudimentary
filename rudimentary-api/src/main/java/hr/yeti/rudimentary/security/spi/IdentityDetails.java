@@ -6,7 +6,8 @@ import hr.yeti.rudimentary.security.Identity;
 /**
  * SPI which should retrieve user details in a customized way. Common usage would be as a part of {@link IdentityStore}.
  *
- * Since this interface extends {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
+ * Since this interface extends {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on
+ * application startup.
  *
  * There should be only one IdentityDetails provider per application.
  *

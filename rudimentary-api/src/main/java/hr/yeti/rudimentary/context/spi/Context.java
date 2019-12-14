@@ -16,9 +16,10 @@ import java.util.stream.Collectors;
  * There should be only one Context provider per application.
  * </pre>
  * <p>
- * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup. An instance of this class is not intended to be used
- * except internally. Currently,
- * <i>rudimentary-server</i> module provides Context provider so there is no need for you to add an additional one. It is registered in the module's file
+ * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader}
+ * on application startup. An instance of this class is not intended to be used except internally. Currently,
+ * <i>rudimentary-server</i> module provides Context provider so there is no need for you to add an additional one. It
+ * is registered in the module's file
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.context.spi.Context</i>
  *
  * @author vedransmid@yeti-it.hr
@@ -78,15 +79,15 @@ public abstract class Context implements Instance {
     @Override
     public void destroy() {
         CONTEXT
-                .values()
-                .stream()
-                .forEach((instance) -> {
-                    try {
-                        instance.destroy();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+            .values()
+            .stream()
+            .forEach((instance) -> {
+                try {
+                    instance.destroy();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         CONTEXT.clear();
         INITIALIZED_INSTANCES.clear();
         instanceDependencyGraph.clear();
@@ -170,10 +171,10 @@ public abstract class Context implements Instance {
     protected void buildInstanceDependenciesGraph() {
         getContext().forEach((key, value) -> {
             instanceDependencyGraph.put(
-                    key,
-                    List.of(value.dependsOn()).stream()
-                            .map(clazz -> clazz.getCanonicalName())
-                            .collect(Collectors.toList())
+                key,
+                List.of(value.dependsOn()).stream()
+                    .map(clazz -> clazz.getCanonicalName())
+                    .collect(Collectors.toList())
             );
         });
     }

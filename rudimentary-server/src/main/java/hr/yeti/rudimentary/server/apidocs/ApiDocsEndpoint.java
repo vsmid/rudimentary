@@ -22,9 +22,9 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
     public void initialize() {
         try {
             this.apiDocsHTML = new String(
-                    new ClasspathResource("/templates/apidocs.html")
-                            .get()
-                            .readAllBytes()
+                new ClasspathResource("/templates/apidocs.html")
+                    .get()
+                    .readAllBytes()
             );
         } catch (IOException ex) {
             logger().log(Level.ERROR, "Failed to load apidocs.html template.", ex);
@@ -49,9 +49,9 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
     @Override
     public Html response(Request<Empty> request) {
         return new Html(
-                String.format(apiDocsHTML,
-                        rowsHTMLGenerator()
-                )
+            String.format(apiDocsHTML,
+                rowsHTMLGenerator()
+            )
         );
     }
 
@@ -62,17 +62,17 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
 
     private String rowsHTMLGenerator() {
         String rowsHTML = Instance.providersOf(HttpEndpoint.class)
-                .stream()
-                .map(endpoint
-                        -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
-                        endpoint.httpMethod(),
-                        URIUtils.prependSlashPrefix(endpoint.path()),
-                        endpoint.httpStatus(),
-                        Optional.ofNullable(endpoint.description()).orElse(""))
-                )
-                .collect(
-                        Collectors.joining(System.lineSeparator())
-                );
+            .stream()
+            .map(endpoint
+                -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                endpoint.httpMethod(),
+                URIUtils.prependSlashPrefix(endpoint.path()),
+                endpoint.httpStatus(),
+                Optional.ofNullable(endpoint.description()).orElse(""))
+            )
+            .collect(
+                Collectors.joining(System.lineSeparator())
+            );
 
         return rowsHTML;
     }

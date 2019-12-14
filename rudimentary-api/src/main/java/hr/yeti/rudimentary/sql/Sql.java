@@ -17,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class used for static access to database communication. Main goal of this class to reduce boilerplate code as much as possible and just write Sql queries on the fly. Connection pool used is
- * HikariCP.
+ * Class used for static access to database communication. Main goal of this class to reduce boilerplate code as much as
+ * possible and just write Sql queries on the fly. Connection pool used is HikariCP.
  *
  * @see
  * <a href="https://brettwooldridge.github.io/HikariCP">https://brettwooldridge.github.io/HikariCP</a>
@@ -232,7 +232,7 @@ public final class Sql {
      */
     public static <T> T tx(TxDef<T> txDef) throws TransactionException {
         return (T) tx(
-                BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, new Class[]{ Exception.class }, null
+            BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, new Class[]{ Exception.class }, null
         );
     }
 
@@ -243,17 +243,18 @@ public final class Sql {
      * @param dataSourceId Id of the dataSource you want to use for the transactional query.
      * @param txDef Transaction definition as functional interface.
      * @param rollbackOn Exceptions for which transaction will be rolled back.
-     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param rollbackOn.
+     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
+     * rollbackOn.
      * @return Transaction result.
      * @throws TransactionException
      *
      * @see TxDef
      */
     public static <T> T tx(
-            String dataSourceId,
-            TxDef<T> txDef,
-            Class<? extends Exception>[] rollbackOn,
-            Class<? extends Exception>[] noRollbackOn
+        String dataSourceId,
+        TxDef<T> txDef,
+        Class<? extends Exception>[] rollbackOn,
+        Class<? extends Exception>[] noRollbackOn
     ) {
         Sql sql = new Sql(dataSourceId, true);
         try {
@@ -299,14 +300,15 @@ public final class Sql {
      * @param <T> Type of result returned from transaction.
      * @param txDef Transaction definition as functional interface.
      * @param rollbackOn Exceptions for which transaction will be rolled back.
-     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param rollbackOn.
+     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
+     * rollbackOn.
      * @return Transaction result.
      * @throws TransactionException
      *
      * @see TxDef
      */
     public static <T> T tx(TxDef<T> txDef, Class<? extends Exception>[] rollbackOn, Class<? extends Exception>[] noRollbackOn)
-            throws TransactionException {
+        throws TransactionException {
         return tx(BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, rollbackOn, noRollbackOn);
     }
 

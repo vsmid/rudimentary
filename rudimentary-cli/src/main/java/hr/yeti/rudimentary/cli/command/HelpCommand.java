@@ -34,12 +34,12 @@ public class HelpCommand implements Command {
     @Override
     public void execute(Map<String, String> options) {
         String commands = Rudy.COMMANDS
-                .entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -> e.getKey() + "(" + e.getValue().shorthand() + ")" + spaces((e.getValue().name() + "(" + e.getValue().shorthand() + ")").length())
-                + e.getValue().description() + System.lineSeparator() + formatOptions(e.getValue().options()))
-                .collect(Collectors.joining(System.lineSeparator()));
+            .entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -> e.getKey() + "(" + e.getValue().shorthand() + ")" + spaces((e.getValue().name() + "(" + e.getValue().shorthand() + ")").length())
+            + e.getValue().description() + System.lineSeparator() + formatOptions(e.getValue().options()))
+            .collect(Collectors.joining(System.lineSeparator()));
 
         System.out.println("Usage: COMMAND [OPTIONS...]" + System.lineSeparator() + System.lineSeparator() + "Commands"
-                + System.lineSeparator() + "--------" + System.lineSeparator() + commands + System.lineSeparator());
+            + System.lineSeparator() + "--------" + System.lineSeparator() + commands + System.lineSeparator());
     }
 
     public String spaces(int cmdLength) {
@@ -52,7 +52,7 @@ public class HelpCommand implements Command {
         }
 
         return options.entrySet().stream().map(e -> " --" + e.getKey() + spaces((" --" + e.getKey()).length()) + e.getValue())
-                .collect(Collectors.joining(System.lineSeparator())) + System.lineSeparator();
+            .collect(Collectors.joining(System.lineSeparator())) + System.lineSeparator();
     }
 
 }

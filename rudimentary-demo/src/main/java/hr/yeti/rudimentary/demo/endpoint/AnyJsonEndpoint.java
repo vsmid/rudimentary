@@ -34,10 +34,10 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
 
     @Override
     public Constraints constraints(
-            Json body,
-            Map<String, String> pathVariables,
-            Map<String, String> queryParameters,
-            Headers httpHeaders) {
+        Json body,
+        Map<String, String> pathVariables,
+        Map<String, String> queryParameters,
+        Headers httpHeaders) {
 
         // If you would have an exact type to map json to e.g. OkModel you would simply
         // use new Constraints(body, OkModel.class);
@@ -50,7 +50,8 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
 
     @Override
     public Text response(Request<Json> request) {
-        logger().log(Level.INFO, Thread.currentThread().getName() + ":: PV ::" + request.getPathVariables().get("id") + ":: QP ::" + request.getQueryParameters().get("name"));
+        logger().log(Level.INFO, Thread.currentThread().getName() + ":: PV ::"
+            + request.getPathVariables().get("id") + ":: QP ::" + request.getQueryParameters().get("name"));
 
         return new Text("Hello " + request.getBody().toString());
     }

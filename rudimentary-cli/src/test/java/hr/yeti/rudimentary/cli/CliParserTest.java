@@ -10,11 +10,9 @@ public class CliParserTest {
     public void test_arg_with_no_value_is_put_to_options_map_with_null_value() {
         CliParser parser;
 
-        when:
-        parser = new CliParser(new String[]{ "run", "--debug" });
+        when:   parser = new CliParser(new String[]{ "run", "--debug" });
 
-        then:
-        assertTrue(parser.options().containsKey("debug"));
+        then:   assertTrue(parser.options().containsKey("debug"));
         assertNull(parser.options().get("debug"));
     }
 

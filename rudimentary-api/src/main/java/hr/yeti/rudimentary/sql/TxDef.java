@@ -1,7 +1,8 @@
 package hr.yeti.rudimentary.sql;
 
 /**
- * Define Sql transaction as a function. This comes in handy when you want to keep your transactional parts in a separate class.
+ * Define Sql transaction as a function. This comes in handy when you want to keep your transactional parts in a
+ * separate class.
  *
  * e.g.
  *

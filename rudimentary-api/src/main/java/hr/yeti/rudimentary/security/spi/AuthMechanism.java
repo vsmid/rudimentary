@@ -108,7 +108,7 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
     public Result authenticate(HttpExchange exchange) {
         if (conditional()) {
             Session existingSession = Session.acquire(exchange, false);
-            
+
             if (Objects.nonNull(existingSession) && existingSession.isAuthenticated()) {
                 Identity identity = Session.acquire(exchange, false).getIdentity();
                 return new Success(identity);

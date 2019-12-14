@@ -16,11 +16,9 @@ public class ConstraintTest {
     public void test_NOT_NULL_constraint_fail() {
         ValidationResult result;
 
-        when:
-        result = Constraint.NOT_NULL.apply(null);
+        when:   result = Constraint.NOT_NULL.apply(null);
 
-        then:
-        assertNotNull(result);
+        then:   assertNotNull(result);
         assertFalse(result.isValid());
     }
 
@@ -29,11 +27,9 @@ public class ConstraintTest {
     public void test_NOT_NULL_constraint_succeed() {
         ValidationResult result;
 
-        when:
-        result = Constraint.NOT_NULL.apply(1);
+        when:   result = Constraint.NOT_NULL.apply(1);
 
-        then:
-        assertNotNull(result);
+        then:   assertNotNull(result);
         assertTrue(result.isValid());
     }
 
@@ -42,11 +38,9 @@ public class ConstraintTest {
     public void test_NOT_EMPTY_constraint_fail() {
         ValidationResult result;
 
-        when:
-        result = Constraint.NOT_EMPTY.apply("");
+        when:   result = Constraint.NOT_EMPTY.apply("");
 
-        then:
-        assertNotNull(result);
+        then:   assertNotNull(result);
         assertFalse(result.isValid());
     }
 
@@ -55,34 +49,29 @@ public class ConstraintTest {
     public void test_NOT_EMPTY_constraint_succeed() {
         ValidationResult result;
 
-        when:
-        result = Constraint.NOT_NULL.apply("Rudimentary");
+        when:   result = Constraint.NOT_NULL.apply("Rudimentary");
 
-        then:
-        assertNotNull(result);
+        then:   assertNotNull(result);
         assertTrue(result.isValid());
     }
 
     @Test
     public void test_MIN_constraint() {
-        expect:
-        assertFalse(Constraint.MIN(2).apply(1).isValid());
+        expect: assertFalse(Constraint.MIN(2).apply(1).isValid());
         assertTrue(Constraint.MIN(2).apply(5).isValid());
         assertTrue(Constraint.MIN(2).apply(2).isValid());
     }
 
     @Test
     public void test_MAX_constraint() {
-        expect:
-        assertTrue(Constraint.MAX(2).apply(1).isValid());
+        expect: assertTrue(Constraint.MAX(2).apply(1).isValid());
         assertFalse(Constraint.MAX(2).apply(5).isValid());
         assertTrue(Constraint.MAX(2).apply(2).isValid());
     }
 
     @Test
     public void test_PATTERN_constraint() {
-        expect:
-        assertTrue(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("B_WORD_E").isValid());
+        expect: assertTrue(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("B_WORD_E").isValid());
         assertFalse(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("Test123").isValid());
     }
 
@@ -91,26 +80,20 @@ public class ConstraintTest {
         // setup:
         ValidationResult result;
 
-        when:
-        result = Constraint.CUSTOM((o) -> {
-            return o.toString().equals("1");
-        }, "No reason.").apply("2");
+        when:   result = Constraint.CUSTOM((o) -> {
+                    return o.toString().equals("1");
+                }, "No reason.").apply("2");
 
-        then:
-        assertFalse(result.isValid());
+        then:   assertFalse(result.isValid());
         result.getReason().ifPresent((reason) -> {
             assertTrue(reason.equals("No reason."));
         });
 
-        and:
+        and:    when:   result = Constraint.CUSTOM((o) -> {
+                            return o.toString().equals("1");
+                        }, "No reason.").apply("1");
 
-        when:
-        result = Constraint.CUSTOM((o) -> {
-            return o.toString().equals("1");
-        }, "No reason.").apply("1");
-
-        then:
-        assertTrue(result.isValid());
+        then:   assertTrue(result.isValid());
         assertTrue(result.getReason().isEmpty());
     }
 }

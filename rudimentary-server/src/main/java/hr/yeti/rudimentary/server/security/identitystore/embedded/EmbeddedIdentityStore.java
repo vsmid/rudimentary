@@ -35,8 +35,8 @@ public class EmbeddedIdentityStore implements IdentityStore {
             Identity identity = identitiesMap.get(usernamePassword.getUsername());
 
             if (Objects.nonNull(identity)
-                    && Objects.nonNull(identity.getPassword())
-                    && identity.getPassword().equals(usernamePassword.getPassword())) {
+                && Objects.nonNull(identity.getPassword())
+                && identity.getPassword().equals(usernamePassword.getPassword())) {
                 return true;
             }
         }

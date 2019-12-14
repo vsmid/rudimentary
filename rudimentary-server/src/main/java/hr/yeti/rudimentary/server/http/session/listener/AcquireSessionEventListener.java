@@ -60,7 +60,7 @@ public class AcquireSessionEventListener implements EventListener<AcquireSession
         if (Objects.nonNull(session)) {
             ((HttpSession) session).setLastAccessedTime(System.currentTimeMillis());
         }
-        
+
         event.setSession(session);
     }
 

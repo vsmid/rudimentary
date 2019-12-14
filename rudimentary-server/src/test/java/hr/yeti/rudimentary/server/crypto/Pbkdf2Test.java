@@ -11,11 +11,9 @@ public class Pbkdf2Test {
         Pbkdf2 pbkdf2 = new Pbkdf2();
         String hashedPassword;
 
-        when:
-        hashedPassword = pbkdf2.generate("my_password".toCharArray());
+        when:   hashedPassword = pbkdf2.generate("my_password".toCharArray());
 
-        then:
-        assertTrue(pbkdf2.verify("my_password".toCharArray(), hashedPassword));
+        then:   assertTrue(pbkdf2.verify("my_password".toCharArray(), hashedPassword));
     }
 
 }

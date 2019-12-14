@@ -17,9 +17,11 @@ import java.util.logging.Logger;
 /**
  * A little bit custom implementation of observer pattern.
  *
- * Since this class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup.
+ * Since this class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on
+ * application startup.
  *
- * In practice, the only time you could use an instance of this class if you would want to publish an event. Preferred way of publishing events is shown in {@link Event}.
+ * In practice, the only time you could use an instance of this class if you would want to publish an event. Preferred
+ * way of publishing events is shown in {@link Event}.
  *
  * <pre>
  * {@code
@@ -34,7 +36,8 @@ import java.util.logging.Logger;
 public final class EventPublisher implements Instance {
 
     /**
-     * Enumerated type of how event should be published. This has an effect on the way how listeners process published event.
+     * Enumerated type of how event should be published. This has an effect on the way how listeners process published
+     * event.
      */
     public enum Type {
         SYNC, ASYNC
@@ -65,21 +68,21 @@ public final class EventPublisher implements Instance {
         if (LISTENERS.containsKey(event.getClass())) {
             if (type == Type.SYNC) {
                 LISTENERS.get(event.getClass())
-                        .stream()
-                        .forEach((t) -> {
-                            t.onEvent(event);
-                        });
+                    .stream()
+                    .forEach((t) -> {
+                        t.onEvent(event);
+                    });
             } else {
                 LISTENERS.get(event.getClass())
-                        .stream()
-                        .map(listener -> {
-                            return (Runnable) () -> {
-                                listener.onEvent(event);
-                            };
-                        })
-                        .forEach((runnable) -> {
-                            CompletableFuture.runAsync(runnable, ASYNC_EXECUTOR);
-                        });
+                    .stream()
+                    .map(listener -> {
+                        return (Runnable) () -> {
+                            listener.onEvent(event);
+                        };
+                    })
+                    .forEach((runnable) -> {
+                        CompletableFuture.runAsync(runnable, ASYNC_EXECUTOR);
+                    });
             }
         }
     }
@@ -87,7 +90,7 @@ public final class EventPublisher implements Instance {
     @Override
     public void initialize() {
         Instance.providersOf(EventListener.class)
-                .forEach(this::attach);
+            .forEach(this::attach);
     }
 
     /**

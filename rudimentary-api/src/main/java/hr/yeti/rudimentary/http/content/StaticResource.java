@@ -23,7 +23,8 @@ public final class StaticResource extends Model implements Value<InputStream> {
 
     /**
      * @param staticResource Resource to be loaded.
-     * @param mediaType Type of resource, e.q. for javascript set to {@link MediaType#APPLICATION_JAVASCRIPT}, for others {@link MediaType#APPLICATION_OCTET_STREAM}
+     * @param mediaType Type of resource, e.q. for javascript set to {@link MediaType#APPLICATION_JAVASCRIPT}, for
+     * others {@link MediaType#APPLICATION_OCTET_STREAM}
      */
     public StaticResource(InputStream staticResource, String mediaType) {
         this.staticResource = staticResource;

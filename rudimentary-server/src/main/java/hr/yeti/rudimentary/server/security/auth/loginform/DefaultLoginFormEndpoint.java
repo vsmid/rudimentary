@@ -23,19 +23,19 @@ public class DefaultLoginFormEndpoint implements HttpEndpoint<Empty, Html> {
     @Override
     public Html response(Request<Empty> request) {
         return new Html("<html>\n"
-                + "  <head>\n"
-                + "    <title>Login</title>\n"
-                + "    <meta charset=\"UTF-8\">\n"
-                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                + "  </head>\n"
-                + "  <body>\n"
-                + "    <form action=\"" + redirectAfterSuccessfulLoginURI.value() + "\" method=\"POST\">\n"
-                + "      <input type=\"text\" name=\"" + usernameFieldName.value() + "\">\n"
-                + "      <input type=\"password\" name=\"" + passwordFieldName.value() + "\">\n"
-                + "      <input type=\"submit\">\n"
-                + "    </form>\n"
-                + "  </body>\n"
-                + "</html>");
+            + "  <head>\n"
+            + "    <title>Login</title>\n"
+            + "    <meta charset=\"UTF-8\">\n"
+            + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+            + "  </head>\n"
+            + "  <body>\n"
+            + "    <form action=\"" + redirectAfterSuccessfulLoginURI.value() + "\" method=\"POST\">\n"
+            + "      <input type=\"text\" name=\"" + usernameFieldName.value() + "\">\n"
+            + "      <input type=\"password\" name=\"" + passwordFieldName.value() + "\">\n"
+            + "      <input type=\"submit\">\n"
+            + "    </form>\n"
+            + "  </body>\n"
+            + "</html>");
     }
 
     @Override

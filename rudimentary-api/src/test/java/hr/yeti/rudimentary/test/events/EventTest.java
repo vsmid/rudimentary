@@ -13,26 +13,22 @@ public class EventTest {
     public void test_publish_event() {
         // setup:
         ContextMock context = new ContextMock(
-                Map.of(),
-                BlogReaderOne.class,
-                BlogReaderTwo.class,
-                EventPublisher.class
+            Map.of(),
+            BlogReaderOne.class,
+            BlogReaderTwo.class,
+            EventPublisher.class
         );
 
         when: // Each class extending Event can publish an event.
-        new BlogPost("Post 1.").publish(EventPublisher.Type.SYNC);
+                new BlogPost("Post 1.").publish(EventPublisher.Type.SYNC);
 
-        then:
-        assertEquals("BlogPost{text=Post 1.}", Instance.of(BlogReaderOne.class).getLastMessage());
+        then:   assertEquals("BlogPost{text=Post 1.}", Instance.of(BlogReaderOne.class).getLastMessage());
         assertEquals("BlogPost{text=Post 1.}", Instance.of(BlogReaderTwo.class).getLastMessage());
 
-        and:
+        and:    when: // Event can be published using EventPublisher via Instance.
+                        Instance.of(EventPublisher.class).publish(new BlogPost("Post 2."), EventPublisher.Type.SYNC);
 
-        when: // Event can be published using EventPublisher via Instance.
-        Instance.of(EventPublisher.class).publish(new BlogPost("Post 2."), EventPublisher.Type.SYNC);
-
-        then:
-        assertEquals("BlogPost{text=Post 2.}", Instance.of(BlogReaderOne.class).getLastMessage());
+        then:   assertEquals("BlogPost{text=Post 2.}", Instance.of(BlogReaderOne.class).getLastMessage());
         assertEquals("BlogPost{text=Post 2.}", Instance.of(BlogReaderTwo.class).getLastMessage());
     }
 

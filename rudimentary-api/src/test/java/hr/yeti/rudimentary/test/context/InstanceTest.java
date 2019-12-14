@@ -23,34 +23,30 @@ public class InstanceTest {
     public void test_should_throw_exception_when_instance_does_not_exist() {
         // setup:
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance1.class
+            Map.of(),
+            MockInstance1.class
         );
 
         Instance fetchedInstance;
 
-        when:
-        fetchedInstance = Instance.of(MockInstance2.class);
+        when:   fetchedInstance = Instance.of(MockInstance2.class);
 
-        then:
-        assertNull(fetchedInstance);
+        then:   assertNull(fetchedInstance);
     }
 
     @Test
     public void test_should_return_a_single_instance_of_spi() {
         // setup:
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance1.class
+            Map.of(),
+            MockInstance1.class
         );
 
         Instance fetchedInstance;
 
-        when:
-        fetchedInstance = Instance.of(MockInstance1.class);
+        when:   fetchedInstance = Instance.of(MockInstance1.class);
 
-        then:
-        assertNotNull(fetchedInstance);
+        then:   assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance1);
     }
 
@@ -58,18 +54,16 @@ public class InstanceTest {
     public void test_should_return_first_instance_initialized_when_there_are_no_primary_instances() {
         // setup:
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance4.class,
-                MockInstance2.class
+            Map.of(),
+            MockInstance4.class,
+            MockInstance2.class
         );
 
         Instance fetchedInstance;
 
-        when:
-        fetchedInstance = Instance.of(Instance.class);
+        when:   fetchedInstance = Instance.of(Instance.class);
 
-        then:
-        assertNotNull(fetchedInstance);
+        then:   assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof ConfigMock);
     }
 
@@ -77,18 +71,16 @@ public class InstanceTest {
     public void test_should_return_an_instance_marked_as_primary() {
         // setup:
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance1.class,
-                MockInstance2.class
+            Map.of(),
+            MockInstance1.class,
+            MockInstance2.class
         );
 
         Instance fetchedInstance;
 
-        when:
-        fetchedInstance = Instance.of(Instance.class);
+        when:   fetchedInstance = Instance.of(Instance.class);
 
-        then:
-        assertNotNull(fetchedInstance);
+        then:   assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance1);
     }
 
@@ -97,36 +89,27 @@ public class InstanceTest {
         // setup:
 
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance1.class,
-                MockInstance3.class
+            Map.of(),
+            MockInstance1.class,
+            MockInstance3.class
         );
 
         Instance fetchedInstance;
 
-        when:
-        fetchedInstance = Instance.of(Instance.class);
+        when:   fetchedInstance = Instance.of(Instance.class);
 
-        then:
-        assertNotNull(fetchedInstance);
+        then:   assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance1);
 
-        and:
+        and:    when:   ctx = new ContextMock(
+                            Map.of(),
+                            MockInstance3.class,
+                            MockInstance1.class
+                        );
 
-        when:
-        ctx = new ContextMock(
-                Map.of(),
-                MockInstance3.class,
-                MockInstance1.class
-        );
+        and:    when:   fetchedInstance = Instance.of(Instance.class);
 
-        and:
-
-        when:
-        fetchedInstance = Instance.of(Instance.class);
-
-        then:
-        assertNotNull(fetchedInstance);
+        then:   assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance3);
     }
 
@@ -134,19 +117,17 @@ public class InstanceTest {
     public void test_should_return_all_providers_of_the_given_spi() {
         // setup:
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance1.class,
-                MockInstance2.class,
-                MockInstance3.class
+            Map.of(),
+            MockInstance1.class,
+            MockInstance2.class,
+            MockInstance3.class
         );
 
         List<Instance> fetchedInstances;
 
-        when:
-        fetchedInstances = Instance.providersOf(Instance.class);
+        when:   fetchedInstances = Instance.providersOf(Instance.class);
 
-        then:
-        assertNotNull(fetchedInstances);
+        then:   assertNotNull(fetchedInstances);
         assertTrue(fetchedInstances.size() == 4); // ConfigMock also
     }
 
@@ -154,18 +135,16 @@ public class InstanceTest {
     public void test_should_return_an_instance_with_id() {
         // setup:
         ContextMock ctx = new ContextMock(
-                Map.of(),
-                MockInstance11a.class,
-                MockInstance11b.class
+            Map.of(),
+            MockInstance11a.class,
+            MockInstance11b.class
         );
 
         Instance fetchedInstance;
 
-        when:
-        fetchedInstance = Instance.withId(MockInstance11a.class, "lena");
+        when:   fetchedInstance = Instance.withId(MockInstance11a.class, "lena");
 
-        then:
-        assertNotNull(fetchedInstance);
+        then:   assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance11a);
         assertEquals("lena", fetchedInstance.id());
     }

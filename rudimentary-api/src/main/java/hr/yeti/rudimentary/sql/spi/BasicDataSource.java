@@ -28,7 +28,7 @@ public abstract class BasicDataSource implements DataSource, Instance {
     @Override
     public boolean conditional() {
         ConfigProperty enabled = Config.provider()
-                .property("dataSource" + (id().length() == 0 ? "" : ".") + id() + ".enabled");
+            .property("dataSource" + (id().length() == 0 ? "" : ".") + id() + ".enabled");
 
         return Objects.nonNull(enabled) && enabled.asBoolean();
     }

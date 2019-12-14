@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Contains a list of violated constraints. Violation is represented with {@link ValidationResult}. Constraint violations are returned upon executing
- * {@link Validator#validate(hr.yeti.rudimentary.validation.Constraints...)} method.
+ * Contains a list of violated constraints. Violation is represented with {@link ValidationResult}. Constraint
+ * violations are returned upon executing {@link Validator#validate(hr.yeti.rudimentary.validation.Constraints...)}
+ * method.
  *
  * @author vedransmid@yeti-it.hr
  */

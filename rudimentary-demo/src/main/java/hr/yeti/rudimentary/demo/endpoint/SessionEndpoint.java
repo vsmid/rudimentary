@@ -16,10 +16,10 @@ public class SessionEndpoint implements HttpEndpoint<Empty, Html> {
     @Override
     public Html response(Request<Empty> request) {
         return new Html(
-                "<html>"
-                + "<head></head>"
-                + "<body>Hello! Info: " + request.getSession().getAttributes().get("info") + "</body>"
-                + "</html>"
+            "<html>"
+            + "<head></head>"
+            + "<body>Hello! Info: " + request.getSession().getAttributes().get("info") + "</body>"
+            + "</html>"
         );
     }
 

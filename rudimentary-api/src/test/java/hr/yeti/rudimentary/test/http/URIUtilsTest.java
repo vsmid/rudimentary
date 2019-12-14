@@ -13,8 +13,7 @@ public class URIUtilsTest {
         URI uri1 = URI.create("/cars/:id");
         URI uri2 = URI.create("/cars/:id/owners/:ownerId");
 
-        expect:
-        assertEquals("^/cars/([^/.]+)$", URIUtils.convertToRegex(uri1.toString(), "([^/.]+)").toString());
+        expect: assertEquals("^/cars/([^/.]+)$", URIUtils.convertToRegex(uri1.toString(), "([^/.]+)").toString());
         assertEquals("^/cars/([^/.]+)/owners/([^/.]+)$", URIUtils.convertToRegex(uri2.toString(), "([^/.]+)").toString());
     }
 
@@ -25,8 +24,7 @@ public class URIUtilsTest {
         URI uri2 = URI.create("/uri2");
         URI uri3 = URI.create("/uri3?name=rudimentary");
 
-        expect:
-        assertEquals("uri1", URIUtils.removeSlashPrefix(uri1).toString());
+        expect: assertEquals("uri1", URIUtils.removeSlashPrefix(uri1).toString());
         assertEquals("uri2", URIUtils.removeSlashPrefix(uri2).toString());
         assertEquals("uri3", URIUtils.removeSlashPrefix(uri3).toString());
     }
@@ -37,8 +35,7 @@ public class URIUtilsTest {
         URI uri1 = URI.create("uri1");
         URI uri2 = URI.create("/uri2");
 
-        expect:
-        assertEquals("/uri1", URIUtils.prependSlashPrefix(uri1).toString());
+        expect: assertEquals("/uri1", URIUtils.prependSlashPrefix(uri1).toString());
         assertEquals("/uri2", URIUtils.prependSlashPrefix(uri2).toString());
     }
 

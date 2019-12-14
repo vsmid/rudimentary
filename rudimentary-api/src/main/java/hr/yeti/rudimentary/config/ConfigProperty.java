@@ -86,10 +86,10 @@ public class ConfigProperty {
         if (Objects.isNull(property)) {
             if (Objects.nonNull(Config.provider())) {
                 property = Config.provider().value(name);
-            } 
+            }
         }
-        
-        if(Objects.isNull(property)) {
+
+        if (Objects.isNull(property)) {
             property = value;
         }
 

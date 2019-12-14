@@ -53,9 +53,9 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
         List<OkModel> okModels = request.getBody().asListOf(OkModel.class);
 
         return new Text(
-                okModels.stream()
-                        .map(OkModel::toString)
-                        .collect(Collectors.joining(System.lineSeparator()))
+            okModels.stream()
+                .map(OkModel::toString)
+                .collect(Collectors.joining(System.lineSeparator()))
         );
     }
 

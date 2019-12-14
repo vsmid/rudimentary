@@ -24,9 +24,9 @@ public class Watcher {
 
     private void register(Path dir) throws IOException {
         WatchKey key = dir.register(
-                watcher,
-                new WatchEvent.Kind[]{ ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY },
-                SensitivityWatchEventModifier.HIGH
+            watcher,
+            new WatchEvent.Kind[]{ ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY },
+            SensitivityWatchEventModifier.HIGH
         );
 
         if (trace) {
@@ -46,7 +46,7 @@ public class Watcher {
         Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                    throws IOException {
+                throws IOException {
                 if (!dir.startsWith("target")) {
                     register(dir);
                 }
@@ -109,7 +109,7 @@ public class Watcher {
                 }
 
                 reload = ((child.toString().startsWith("src") && (!child.toString().startsWith("src/test")))
-                        || child.toString().startsWith("pom.xml"));
+                    || child.toString().startsWith("pom.xml"));
             }
 
             if (reload && Objects.nonNull(cmd.pid)) {

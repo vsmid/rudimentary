@@ -51,9 +51,9 @@ public final class ContextMock extends Context {
         });
 
         getContext().values()
-                .forEach((instance) -> {
-                    super.initializeInstance(instance);
-                });
+            .forEach((instance) -> {
+                super.initializeInstance(instance);
+            });
     }
 
     // Method used to test protected Context#isInstanceInitialized method.

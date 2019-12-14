@@ -15,12 +15,12 @@ public class Cookie {
     @Override
     public String toString() {
         return pair(httpCookie.getName(), httpCookie.getValue())
-                + pair("Path", httpCookie.getPath())
-                + pair("Expires", httpCookie.getMaxAge())
-                + pair("Domain", httpCookie.getDomain())
-                + pair("sameSite", sameSiteStrict ? "strict" : "lax")
-                + (httpCookie.isHttpOnly() ? " HttpOnly;" : "")
-                + (httpCookie.getSecure() ? " Secured;" : "");
+            + pair("Path", httpCookie.getPath())
+            + pair("Expires", httpCookie.getMaxAge())
+            + pair("Domain", httpCookie.getDomain())
+            + pair("sameSite", sameSiteStrict ? "strict" : "lax")
+            + (httpCookie.isHttpOnly() ? " HttpOnly;" : "")
+            + (httpCookie.getSecure() ? " Secured;" : "");
     }
 
     private String pair(String name, Object value) {
