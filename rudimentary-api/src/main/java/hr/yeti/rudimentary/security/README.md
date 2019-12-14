@@ -52,7 +52,7 @@ public final class CustomAuthMechanism extends AuthMechanism {
 ```
 You can have only one AuthMechanism you can register it in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.AuthMechanism*. 
 
-**Hint** - take a look at how `BasiAuthMechanism` is implemented.
+**Hint** - take a look at how `BasicAuthMechanism` is implemented.
 
 ### Setting uris which require authentication
 This done by setting `security.urisRequiringAuthentication` property.
