@@ -5,7 +5,7 @@ Both global exception handler and http endpoint exception handler will handle ex
 ## Global exception handler
 You can have only one global exception handler per application/service.
 You can create one by implementing `hr.yeti.rudimentary.exception.spi.ExceptionHandler` and registering it in
-`src/main/resources/META-INF/services/hr.yeti.rudimentary.exception.spi.ExceptionHandler` file like any other Java service provider.
+`src/main/resources/META-INF/services/hr.yeti.rudimentary.exception.spi.ExceptionHandler` file like any other Java service provider. This however, `rudimentary-maven-plugin` already automatically does for you.
 
 ## HttpEndpoint exception handler
 This handler takes precedance over global exception handler if such exists.
