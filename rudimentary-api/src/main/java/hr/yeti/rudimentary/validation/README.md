@@ -9,6 +9,11 @@ Automatic contraint validation will happen in the three below stated cases. This
 ### Generic - defining constraints on the `HttpEndpoint` for any request type
 You can define constraints for any `HttpEndpoint` by overrding `HttpEndpoint#constraints` method.
 ```java
+...
+import static hr.yeti.rudimentary.validation.Constraint.NOT_EMPTY;
+import static hr.yeti.rudimentary.validation.Constraint.NOT_NULL;
+...
+
 public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
     @Override
@@ -20,8 +25,8 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
     ) {
         return new Constraints() {
             {
-                o(body.getValue(), Constraint.NOT_NULL);
-                o(body.getValue(), Constraint.NOT_EMPTY);
+                o(body.getValue(), NOT_NULL);
+                o(body.getValue(), NOT_EMPTY);
             }
         };
     }
@@ -36,6 +41,11 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 ### POJO - defining constraints on the `Model` level 
 If your request body type is a POJO extending `hr.yeti.rudimentary.http.content.Model` class you can define constraints in that POJO. If you also define constraints on the `HttpEndpoint` level then those constraints will be combined.
 ```java
+...
+import static hr.yeti.rudimentary.validation.Constraint.NOT_EMPTY;
+import static hr.yeti.rudimentary.validation.Constraint.NOT_NULL;
+...
+
 public class OkModel extends Model {
 
     private String name;
@@ -80,8 +90,8 @@ public class JsonOkModelEndpoint implements HttpEndpoint<Json, Text> {
                 .asJsonArray()
                 .forEach(
                     json -> {
-                      o(json.asJsonObject().getString("name"), Constraint.NOT_NULL);
-                      o(json.asJsonObject().getString("description"), Constraint.NOT_NULL);
+                      o(json.asJsonObject().getString("name"), NOT_NULL);
+                      o(json.asJsonObject().getString("description"), NOT_NULL);
                     });
           }
         };*/
