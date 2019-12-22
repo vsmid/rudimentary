@@ -1,12 +1,11 @@
 # Exception handling
 Rudimentary offers simple way of defining either global exception handler or per `HttpEndpoint`.
+Both global exception handler and http endpoint exception handler will handle exceptions which occur during response construction.  
 
 ## Global exception handler
 You can have only one global exception handler per application/service.
 You can create one by implementing `hr.yeti.rudimentary.exception.spi.ExceptionHandler` and registering it in
 `src/main/resources/META-INF/services/hr.yeti.rudimentary.exception.spi.ExceptionHandler` file like any other Java service provider.
-
-Global exception handler will handle all exceptions which occur during response construction.  
 
 ## HttpEndpoint exception handler
 This handler takes precedance over global exception handler if such exists.
