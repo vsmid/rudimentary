@@ -26,6 +26,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private static final String EVENT_LISTENER_PROVIDERS = "hr.yeti.rudimentary.events.spi.EventListener";
     private static final String EXCEPTION_HANDLER_PROVIDERS = "hr.yeti.rudimentary.exception.spi.ExceptionHandler";
     private static final String AUTH_MECHANISM_PROVIDERS = "hr.yeti.rudimentary.security.spi.AuthMechanism";
+    private static final String IDENTITY_STORE_PROVIDERS = "hr.yeti.rudimentary.security.spi.IdentityStore";
+    private static final String IDENTITY_DETAILS_PROVIDERS = "hr.yeti.rudimentary.security.spi.IdentityDetails";
 
     private Path projectRootDir;
     private Path servicesDir;
@@ -40,6 +42,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String eventListenerProviderList;
     private String exceptionHandlerProviderList;
     private String authMechanismProviderList;
+    private String identityStoreProviderList;
+    private String identityDetailsProviderList;
 
     public RegisterAsServiceProvider() {
         try {
@@ -55,6 +59,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.eventListenerProviderList = readProviders(servicesDir.resolve(EVENT_LISTENER_PROVIDERS));
             this.exceptionHandlerProviderList = readProviders(servicesDir.resolve(EXCEPTION_HANDLER_PROVIDERS));
             this.authMechanismProviderList = readProviders(servicesDir.resolve(AUTH_MECHANISM_PROVIDERS));
+            this.identityStoreProviderList = readProviders(servicesDir.resolve(IDENTITY_STORE_PROVIDERS));
+            this.identityDetailsProviderList = readProviders(servicesDir.resolve(IDENTITY_DETAILS_PROVIDERS));
 
         } catch (IOException ex) {
             Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,6 +94,10 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 writeProvider(EXCEPTION_HANDLER_PROVIDERS, file);
             } else if (content.contains("extends AuthMechanism") && !content.contains("abstract")) {
                 writeProvider(AUTH_MECHANISM_PROVIDERS, file);
+            } else if (content.contains("implements IdentityStore") && !content.contains("abstract")) {
+                writeProvider(IDENTITY_STORE_PROVIDERS, file);
+            } else if (content.contains("implements IdentityDetails") && !content.contains("abstract")) {
+                writeProvider(IDENTITY_DETAILS_PROVIDERS, file);
             }
         }
         return FileVisitResult.CONTINUE;
@@ -146,6 +156,12 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 break;
             case AUTH_MECHANISM_PROVIDERS:
                 alreadyRegistered = authMechanismProviderList.contains(provider);
+                break;
+            case IDENTITY_STORE_PROVIDERS:
+                alreadyRegistered = identityStoreProviderList.contains(provider);
+                break;
+            case IDENTITY_DETAILS_PROVIDERS:
+                alreadyRegistered = identityDetailsProviderList.contains(provider);
                 break;
             default:
                 break;
