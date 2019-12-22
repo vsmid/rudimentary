@@ -25,6 +25,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private static final String AFTER_INTERCEPTOR_PROVIDERS = "hr.yeti.rudimentary.interceptor.spi.AfterInterceptor";
     private static final String EVENT_LISTENER_PROVIDERS = "hr.yeti.rudimentary.events.spi.EventListener";
     private static final String EXCEPTION_HANDLER_PROVIDERS = "hr.yeti.rudimentary.exception.spi.ExceptionHandler";
+    private static final String AUTH_MECHANISM_PROVIDERS = "hr.yeti.rudimentary.security.spi.AuthMechanism";
 
     private Path projectRootDir;
     private Path servicesDir;
@@ -38,6 +39,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String afterInterceptorProviderList;
     private String eventListenerProviderList;
     private String exceptionHandlerProviderList;
+    private String authMechanismProviderList;
 
     public RegisterAsServiceProvider() {
         try {
@@ -52,6 +54,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.afterInterceptorProviderList = readProviders(servicesDir.resolve(AFTER_INTERCEPTOR_PROVIDERS));
             this.eventListenerProviderList = readProviders(servicesDir.resolve(EVENT_LISTENER_PROVIDERS));
             this.exceptionHandlerProviderList = readProviders(servicesDir.resolve(EXCEPTION_HANDLER_PROVIDERS));
+            this.authMechanismProviderList = readProviders(servicesDir.resolve(AUTH_MECHANISM_PROVIDERS));
 
         } catch (IOException ex) {
             Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,6 +86,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 writeProvider(EVENT_LISTENER_PROVIDERS, file);
             } else if (content.contains("implements ExceptionHandler") && !content.contains("abstract")) {
                 writeProvider(EXCEPTION_HANDLER_PROVIDERS, file);
+            } else if (content.contains("extends AuthMechanism") && !content.contains("abstract")) {
+                writeProvider(AUTH_MECHANISM_PROVIDERS, file);
             }
         }
         return FileVisitResult.CONTINUE;
@@ -136,6 +141,9 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 break;
             case EXCEPTION_HANDLER_PROVIDERS:
                 alreadyRegistered = exceptionHandlerProviderList.contains(provider);
+                break;
+            case AUTH_MECHANISM_PROVIDERS:
+                alreadyRegistered = authMechanismProviderList.contains(provider);
                 break;
             default:
                 break;
