@@ -29,13 +29,4 @@ public interface Constraint extends Function<Object, ValidationResult> {
     static Constraint REGEX(Pattern pattern) {
         return (o) -> new ValidationResult(pattern.matcher(o.toString()).matches(), Optional.of(o + " does not match pattern of " + pattern.pattern()));
     }
-
-    static Constraint CUSTOM(Function<Object, Boolean> constraintDefinition, String reason) {
-        return (o) -> {
-            boolean valid = constraintDefinition.apply(o);
-            Optional<String> message = valid ? Optional.empty() : Optional.ofNullable(reason);
-
-            return new ValidationResult(valid, message);
-        };
-    }
 }

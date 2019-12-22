@@ -75,25 +75,4 @@ public class ConstraintTest {
         assertFalse(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("Test123").isValid());
     }
 
-    @Test
-    public void test_CUSTOM_constraint() {
-        // setup:
-        ValidationResult result;
-
-        when:   result = Constraint.CUSTOM((o) -> {
-                    return o.toString().equals("1");
-                }, "No reason.").apply("2");
-
-        then:   assertFalse(result.isValid());
-        result.getReason().ifPresent((reason) -> {
-            assertTrue(reason.equals("No reason."));
-        });
-
-        and:    when:   result = Constraint.CUSTOM((o) -> {
-                            return o.toString().equals("1");
-                        }, "No reason.").apply("1");
-
-        then:   assertTrue(result.isValid());
-        assertTrue(result.getReason().isEmpty());
-    }
 }
