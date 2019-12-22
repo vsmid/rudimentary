@@ -124,11 +124,11 @@ Validator.validate(new Constraints() {
 For now Rudimentary framework offers some basic, default constraint types implementation.
 At any time you can add your own, custom ones.
 
-* NOT_NULL // Value is not null
-* NOT_EMPTY // Value is not empty, length > 0
-* MIN // Minimal integer value allowed
-* MAX // Maximal integer value allowed
-* REGEX // Value matches regular expression
+* NOT_NULL - Value is not null
+* NOT_EMPTY - Value is not empty, length > 0
+* MIN - Minimal integer value allowed
+* MAX - Maximal integer value allowed
+* REGEX - Value matches regular expression
 
 #### Custom constraint on-the-fly
 ```java
