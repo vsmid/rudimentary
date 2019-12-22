@@ -120,8 +120,8 @@ Validator.validate(new Constraints() {
   }
 });
 ```
-## Constraint types
-For now Rudimentary framework offers some basic, default constraint types implementation.
+## Default constraints
+For now Rudimentary framework offers some basic, default constraints.
 At any time you can add your own, custom ones.
 
 * NOT_NULL - Value is not null
