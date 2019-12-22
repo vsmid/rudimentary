@@ -1,4 +1,4 @@
-# Exceptions
+# Exception handling
 Rudimentary offers simple way of defining either global exception handler or per `HttpEndpoint`.
 
 ## Global exception handler
