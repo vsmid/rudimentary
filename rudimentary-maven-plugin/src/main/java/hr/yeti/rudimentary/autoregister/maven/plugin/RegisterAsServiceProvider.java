@@ -102,9 +102,11 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
     private String extractProvider(Path file) {
         String filePath = file.toAbsolutePath().toString();
+
         int javaSourcesIndex = filePath.indexOf("java") + ("java" + File.separator).length();
         String canonicalProviderName = filePath.substring(javaSourcesIndex, filePath.lastIndexOf("."));
-        String resolvedProviderName = canonicalProviderName.replaceAll(File.separator + File.separator, ".");
+
+        String resolvedProviderName = String.join(".", canonicalProviderName.split(File.separator));
         return resolvedProviderName;
     }
 
