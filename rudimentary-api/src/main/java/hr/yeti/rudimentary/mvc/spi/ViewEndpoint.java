@@ -11,7 +11,7 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
  * {@link ServiceLoader} on application startup.
  *
  * You can have as many different ViewEndpoint providers as you want and you can register them in
- * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.HttpEndpoint</i>
+ * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.http.spi.ViewEndpoint</i>
  * file.
  *
  * For this endpoint to work properly it is required to have {@link ViewEngine} registered.
