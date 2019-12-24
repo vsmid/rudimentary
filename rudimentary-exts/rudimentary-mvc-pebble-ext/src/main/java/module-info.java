@@ -3,7 +3,7 @@ module hr.yeti.rudimentary.exts.mvc.pebble {
 
     exports hr.yeti.rudimentary.exts.mvc.pebble;
 
-    requires pebble;
+    requires io.pebbletemplates;
     requires unbescape;
     requires slf4j.api;
 
