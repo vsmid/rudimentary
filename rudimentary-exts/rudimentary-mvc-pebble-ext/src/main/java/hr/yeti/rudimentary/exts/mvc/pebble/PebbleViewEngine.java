@@ -1,16 +1,22 @@
 package hr.yeti.rudimentary.exts.mvc.pebble;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
+import com.mitchellbosecke.pebble.cache.tag.CaffeineTagCache;
+import com.mitchellbosecke.pebble.cache.template.CaffeineTemplateCache;
 import com.mitchellbosecke.pebble.error.LoaderException;
 import com.mitchellbosecke.pebble.loader.ClasspathLoader;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.mvc.ViewEngineException;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +26,16 @@ public class PebbleViewEngine implements ViewEngine {
 
     private ConfigProperty templatesDir = new ConfigProperty("mvc.templatesDir");
     private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
+
+    private ConfigProperty cacheActive = new ConfigProperty("mvc.ext.pebble.cacheActive", "true");
+    private ConfigProperty strictVariables = new ConfigProperty("mvc.ext.pebble.strictVariables", "false");
+    private ConfigProperty allowUnsafeMethods = new ConfigProperty("mvc.ext.pebble.allowUnsafeMethods", "false");
+    private ConfigProperty literalDecimalTreatedAsInteger = new ConfigProperty("mvc.ext.pebble.literalDecimalTreatedAsInteger", "false");
+    private ConfigProperty greedyMatchMethod = new ConfigProperty("mvc.ext.pebble.greedyMatchMethod", "false");
+    private ConfigProperty executorServiceClass = new ConfigProperty("mvc.ext.pebble.executorServiceClass");
+    private ConfigProperty defaultLocale = new ConfigProperty("mvc.ext.pebble.defaultLocale");
+    private ConfigProperty caffeineTemplateCache = new ConfigProperty("mvc.ext.pebble.caffeineTemplateCache", "false");
+    private ConfigProperty caffeineTagCache = new ConfigProperty("mvc.ext.pebble.caffeineTagCache", "false");
 
     private PebbleEngine engine;
 
@@ -52,9 +68,41 @@ public class PebbleViewEngine implements ViewEngine {
 
         loader.setPrefix(templatesDir.value());
 
-        engine = new PebbleEngine.Builder()
-            .loader(loader)
-            .build();
+        PebbleEngine.Builder engineBuilder = new PebbleEngine.Builder()
+            .cacheActive(cacheActive.asBoolean())
+            .strictVariables(strictVariables.asBoolean())
+            .allowUnsafeMethods(allowUnsafeMethods.asBoolean())
+            .literalDecimalTreatedAsInteger(literalDecimalTreatedAsInteger.asBoolean())
+            .greedyMatchMethod(greedyMatchMethod.asBoolean())
+            .loader(loader);
+
+        if (Objects.nonNull(executorServiceClass.value())) {
+            try {
+                engineBuilder.executorService(
+                    (ExecutorService) Instance.of(Class.forName(executorServiceClass.value()))
+                );
+            } catch (ClassNotFoundException ex) {
+                throw new ViewEngineException("Could not set executor service based on class " + executorServiceClass.value() + ".");
+            }
+        }
+
+        if (Objects.nonNull(defaultLocale.value())) {
+            engineBuilder.defaultLocale(Locale.forLanguageTag(defaultLocale.value()));
+        }
+
+        if (Objects.nonNull(caffeineTemplateCache.value())) {
+            if (caffeineTemplateCache.asBoolean()) {
+                engineBuilder.templateCache(new CaffeineTemplateCache());
+            }
+        }
+
+        if (Objects.nonNull(caffeineTagCache.value())) {
+            if (caffeineTagCache.asBoolean()) {
+                engineBuilder.tagCache(new CaffeineTagCache());
+            }
+        }
+
+        this.engine = engineBuilder.build();
     }
 
 }
