@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class used for static access to database communication. Main goal of this class to reduce boilerplate code as much as
+ * Class used for database communication. Main goal of this class to reduce boilerplate code as much as
  * possible and just write Sql queries on the fly. Connection pool used is HikariCP.
  *
  * @see
