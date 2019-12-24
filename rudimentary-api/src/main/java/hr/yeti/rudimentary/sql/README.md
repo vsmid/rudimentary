@@ -1,4 +1,117 @@
-## Sql
+# Sql
+One of the most commonly used things in almost any application/service is database. Rudimentary offers a really nice and simple way of communicating with the database.
 
-TBD
+## Configuring single datasource
+Configuration is done via configuration properties.
+```properties
+# JDBC Sqlite datasource configuration example
+dataSource.enabled=true
+dataSource.driverClassName=org.sqlite.JDBC
+dataSource.jdbcUrl=jdbc:sqlite:file::memory:?cache=shared
+dataSource.maximumPoolSize=25
+dataSource.username=
+dataSource.password=
+```
+## Default datasource
+Rudimentray uses [HikariCP](https://github.com/brettwooldridge/HikariCP). Implementation of Rudimentary deafult datasource using `HikariCP` can be seen in `hr.yeti.rudimentary.server.jdbc.DefaultDataSource` class.
+
+## Configuring multiple datasources
+Sometimes application/service can communicate with multiple databases. If that is your case, you can configure multiple data sources like this:
+```properties
+# default datasource
+dataSource.enabled=true
+dataSource.driverClassName=org.sqlite.JDBC
+dataSource.jdbcUrl=jdbc:sqlite:file::memory:?cache=shared
+dataSource.maximumPoolSize=25
+dataSource.username=
+dataSource.password=
+
+# otherDs datasource
+dataSource.otherDs.enabled=true
+dataSource.otherDs.driverClassName=org.sqlite.JDBC
+dataSource.otherDs.jdbcUrl=jdbc:sqlite:/otherDb.sql?cache=shared
+dataSource.otherDs.maximumPoolSize=25
+dataSource.otherDs.username=
+dataSource.otherDs.password=
+```
+To see how you can actually query database using another datasource, see *Query using specific datasource* section.
+
+The thing to remember is that `otherDs` in `dataSource.otherDs.*` properties should match `Instance#id` of the class which extends `hr.yeti.rudimentary.sql.spi.BasicDataSource` or `hr.yeti.rudimentary.server.jdbc.DefaultDataSource` class. 
+
+If you extend `DefaultDataSource` you must, for now, manually add canonical class name of the `DefaultDataSource` provider to the *src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.BasicDataSource* file of your application/service. It the example below that would be `hr.yeti.OtherDs`.
+```java
+package hr.yeti;
+
+public class OtherDs extends DefaultDataSource {
+
+  @Override
+  public String id() {
+      return "otherDs;
+  }
+
+}
+```
+## Query for single result
+```java
+  Sql.query().row("select * from users where id=?;", 1);
+```
+## Query for multiple results
+```java
+  Sql.query().rows("select * from users;");
+```
+## Insert, update, delete queries
+```java
+Sql.query().update("insert into users(id, name) values(1, 'M');");
+Sql.query().update("update users set name='Lena' where id=1;");
+Sql.query().update("delete from users where id=1;);
+```
+## Query using specific datasource
+```java
+  Sql.query("otherDs").rows("select * from users;");
+```
+## Query using repository
+Sometimes you wish to reuse Sql queries or you just want to make your code a little bit cleaner if you have a lot of queries. Here is a really simple way of how you can group Sql queries in a repository.
+
+**USER repository class containing Sql queries**
+```java
+public class USER {
+  static SqlQueryDef<Map<String, Object>> getById(long id) {
+    return (sql) -> {
+        return sql.row("select * from users where id=?;", id);
+    };
+  }
+}
+```
+**Using USER repository**
+```java
+...
+Sql.query(USER.getById(1));
+```
+## Transactions
+```java
+Sql.tx((sql) -> {
+  sql.update("insert into users(id, name) values(1, 'M');");
+  sql.update("insert into users(id, name) values(2, 'M');");
+  sql.update("insert into users(id, name) values(3, 'M');");
+  return sql.rows("select * from users;");
+});
+```
+## Transaction rollback
+You can define exceptions for which transaction will or will not be rolled back by setting `Sql#tx` method's `rollbackOn` and `noRollbackOn` parameters . Exceptions defined in `noRollbackOn` parameter have greater priority than the ones defined in `rollbackOn` parameter.
+
+Below example shows how to perform rollback for all exceptions of type `java.lang.Exception` except  `java.io.FileNotFoundException`.
+```java
+Sql.tx(
+  (sql) -> {
+      sql.update("insert into users(id, name) values(1, 'M');");
+      sql.update("insert into users(id, name) values(2, 'M');");
+      sql.update("insert into users(id, name) values(3, 'M');");
+      return sql.rows("select * from users;");
+  },
+  new Class[]{ Exception.class }, // For these exceptions rollback will be performed
+  new Class[]{ FileNotFoundException.class } // For these exceptions rollback will not be performed
+);
+```
+
+
 
