@@ -9,7 +9,6 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,8 +27,8 @@ public class Request<T> {
     private Identity identity;
     private Headers httpHeaders;
     private T body;
-    private Map<String, String> pathVariables;
-    private Map<String, String> queryParameters;
+    private Map<String, Object> pathVariables;
+    private Map<String, Object> queryParameters;
     private URI uri;
     private HttpExchange httpExchange;
 
@@ -37,8 +36,8 @@ public class Request<T> {
         Identity identity,
         Headers httpHeaders,
         T body,
-        Map<String, String> pathVariables,
-        Map<String, String> queryParameters,
+        Map<String, Object> pathVariables,
+        Map<String, Object> queryParameters,
         URI uri,
         HttpExchange httpExchange) {
         this.identity = identity;
@@ -88,11 +87,11 @@ public class Request<T> {
         return body;
     }
 
-    public Map<String, String> getPathVariables() {
+    public Map<String, Object> getPathVariables() {
         return pathVariables;
     }
 
-    public Map<String, String> getQueryParameters() {
+    public Map<String, Object> getQueryParameters() {
         return queryParameters;
     }
 
