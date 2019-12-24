@@ -26,6 +26,7 @@ mvc.staticResourcesDir=static # Directory where static resources such as css, ja
 
 ## Creating new ViewEndpoint
 Creating new ViewEndpoint is as simple as implementing `hr.yeti.rudimentary.mvc.spi.ViewEndpoint` interface.
+Below shown example is using `Pebble` as view rendering engine.
 `Project layout`
 ```
   ...
