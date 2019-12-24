@@ -1,6 +1,9 @@
 # Sql
 One of the most commonly used things in almost any application/service is database. Rudimentary offers a really nice and simple way of communicating with the database.
 
+## Default datasource
+Rudimentray uses [HikariCP](https://github.com/brettwooldridge/HikariCP). Implementation of Rudimentary deafult datasource using `HikariCP` can be seen in `hr.yeti.rudimentary.server.jdbc.DefaultDataSource` class.
+
 ## Configuring single datasource
 Configuration is done via configuration properties.
 ```properties
@@ -12,8 +15,6 @@ dataSource.maximumPoolSize=25
 dataSource.username=
 dataSource.password=
 ```
-## Default datasource
-Rudimentray uses [HikariCP](https://github.com/brettwooldridge/HikariCP). Implementation of Rudimentary deafult datasource using `HikariCP` can be seen in `hr.yeti.rudimentary.server.jdbc.DefaultDataSource` class.
 
 ## Configuring multiple datasources
 Sometimes application/service can communicate with multiple databases. If that is your case, you can configure multiple data sources like this:
