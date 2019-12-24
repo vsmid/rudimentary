@@ -8,7 +8,7 @@ Rudimentary offers simple way to render web page templates in Model-View-Control
 Default view rendering engine is set to `DefaultStaticHTMLViewEngine` which only loads and renders static HTML and is available out-of-the box. Use this if you do not need any dynamic rendering features.
 
 ## Adding view rendering engine
-To use custom view rendering engine you must add Rudimentary extension to your project's `pom.xml`. For now, there is only [Pebble](https://pebbletemplates.io/) extension.
+To use custom view rendering engine you must add Rudimentary extension to your project's `pom.xml`. For now, there is only [Pebble](https://pebbletemplates.io/) extension. Also, only one `ViewEngine` should be registered per project.
 ```xml
 <dependency>
   <groupId>hr.yeti.rudimentary.exts</groupId>
