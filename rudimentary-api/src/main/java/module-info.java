@@ -52,4 +52,6 @@ module hr.yeti.rudimentary.api {
     requires transitive java.sql;
 
     requires transitive jakarta.mail;
+    
+    requires transitive com.zaxxer.hikari;
 }

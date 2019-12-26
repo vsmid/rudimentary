@@ -1,5 +1,7 @@
 package hr.yeti.rudimentary.sql.spi;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
@@ -13,12 +15,43 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
-// TODO Add Javadoc
+/**
+ * Class to extends when you wish to add another datasource.
+ *
+ * <p>
+ * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader}
+ * on application startup. Default datasource used by Rudimentary is registered in <i><rudimentary-server</i> module in
+ * file <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.BasicDataSource</i>.
+ * </p>
+ *
+ * When you add another datasource the main thing to do is to override {@link Instance#id()} method and set it to unused
+ * value. That value used must also be used in datasource configuration found in configuration properties.
+ *
+ * For example, if we set {@link Instance#id()} to value myNewDatasource then all datasource configuration properties
+ * should look something like this:
+ *
+ * <pre>
+ * dataSource.myNewDatasource.enabled=false
+ * dataSource.myNewDatasource.driverClassName=
+ * dataSource.myNewDatasource.jdbcUrl=
+ * dataSource.myNewDatasource.username=
+ * dataSource.myNewDatasource.password=
+ * ...
+ * </pre>
+ *
+ *
+ * @author vedransmid@yeti-it.hr
+ */
 public abstract class BasicDataSource implements DataSource, Instance {
 
     public static final String DEFAULT_DATASOURCE_ID = "";
 
     protected DataSource dataSource;
+
+    @Override
+    public String id() {
+        return DEFAULT_DATASOURCE_ID;
+    }
 
     @Override
     public void initialize() {
@@ -33,7 +66,25 @@ public abstract class BasicDataSource implements DataSource, Instance {
         return Objects.nonNull(enabled) && enabled.asBoolean();
     }
 
-    public abstract DataSource dataSource();
+    public DataSource dataSource() {
+        if (Config.provider().property(propertyName("enabled")).asBoolean()) {
+            if (Config.provider().contains(propertyName("jdbcUrl"))) {
+                HikariConfig config = new HikariConfig();
+                config.setJdbcUrl(Config.provider().property(propertyName("jdbcUrl")).value());
+                config.setDriverClassName(Config.provider().property(
+                    propertyName("driverClassName")
+                ).value());
+                config.setUsername(Config.provider().property(propertyName("username")).value());
+                config.setPassword(Config.provider().property(propertyName("password")).value());
+                config.setMaximumPoolSize(Config.provider().property(
+                    propertyName("maximumPoolSize")).asInt()
+                );
+
+                return new HikariDataSource(config);
+            }
+        }
+        return null;
+    }
 
     public String propertyName(String property) {
         return "dataSource." + (id().length() == 0 ? "" : id() + ".") + property;
