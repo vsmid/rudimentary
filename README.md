@@ -69,6 +69,10 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 You can also execute application by running either `run.sh` or `debug.sh` script found in the root of the generated project. Debug listens on port 1044 by default in case you want to attach debugger.
 7. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **null** or new value set by you as a response
 
+## Rudimentary Maven plugin goals and docs
+Run `mvn help:describe -Dplugin=rudi` to see plugin goals and documentation if you are within some Rudimentary project.
+If you are not within some Rudimentary project, run `mvn help:describe -Dplugin=hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT` command.
+
 ## Javadoc
 
 Check [rudimentary-api](./rudimentary-api) module for Javadoc.
@@ -76,4 +80,4 @@ Check [rudimentary-api](./rudimentary-api) module for Javadoc.
 ## Showcase module
 
 Make sure to check [rudimentary-demo](./rudimentary-demo/src/main/java/hr/yeti/rudimentary/demo/endpoint) for code examples describing what is stated in **notable features** section.
-Showcase can be run by using rudimentary-cli tool(see how hello-world application is run) or by executing `run.sh` script found in the root of the rudimentary-demo module.
+Showcase can be run by using `mvn rudi:run` command (see how hello-world application is run) or by executing `run.sh` script found in the root of the *rudimentary-demo* module.
