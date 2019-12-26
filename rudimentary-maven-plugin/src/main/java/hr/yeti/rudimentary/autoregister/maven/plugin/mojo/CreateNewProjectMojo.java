@@ -16,7 +16,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  *
  * @author vedransmid@yeti-it.hr
  */
-@Mojo(name = "new-project")
+@Mojo(name = "new-project", requiresProject = false)
 public class CreateNewProjectMojo extends AbstractMojo {
 
     /**
@@ -52,7 +52,7 @@ public class CreateNewProjectMojo extends AbstractMojo {
 
         String projectLocation = Objects.isNull(location) ? new File("").getAbsolutePath() : location;
         String rootPackage = Objects.isNull(pckg) ? "app" : pckg;
-        String groupId = Objects.isNull(rootPackage) ? rootPackage : this.group;
+        String groupId = Objects.isNull(group) ? rootPackage : group;
 
         rootPackage = groupId;
 
