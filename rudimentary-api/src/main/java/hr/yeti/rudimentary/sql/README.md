@@ -54,11 +54,11 @@ public class OtherDs extends DefaultDataSource {
 ```
 ## Query for single result
 ```java
-  Sql.query().row("select * from users where id=?;", 1);
+Sql.query().row("select * from users where id=?;", 1);
 ```
 ## Query for multiple results
 ```java
-  Sql.query().rows("select * from users;");
+Sql.query().rows("select * from users;");
 ```
 ## Insert, update, delete queries
 ```java
