@@ -66,9 +66,9 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 3. Execute `mvn install` command
 4. Execute `mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world`command
 5. Go to created *hello-world* directory and execute `mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app`. This will create new Java class named *HelloWorldEndpoint* in *src/main/java/app* directory. You can edit `HelloWorldEndpoint#response` method if you wish.
-6. To run your application, execute `mvn rudi:run` from inside *hello-world* directory (if you are using IDE this goal should be available on click in Maven perspective).
+6. To run your application, execute `mvn rudi:run` from inside *hello-world* directory (if you are using IDE this goal should be available on click in Maven perspective). This will run application in debug mode so you can attach debugger at any time. Also, if you press enter while application is running, you can run tests automatically.
 You can also execute application by running either `run.sh` or `debug.sh` script found in the root of the generated project. Debug listens on port 1044 by default in case you want to attach debugger.
-7. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **Hello World!** response
+7. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **null** or new value set by you as a response
 
 ## Javadoc
 
