@@ -67,6 +67,7 @@ Sql.query().update("update users set name='Lena' where id=1;");
 Sql.query().update("delete from users where id=1;);
 ```
 ## Query using specific datasource
+By default, `Sql#query` method uses default datasource. To use different datasource, just set `Sql#query` method's `dataSourceId` parameter (check *Configuring multiple datasources* section to see how `otherDs` is configured). 
 ```java
   Sql.query("otherDs").rows("select * from users;");
 ```
@@ -98,7 +99,7 @@ Sql.tx((sql) -> {
 });
 ```
 ## Transaction rollback
-You can define exceptions for which transaction will or will not be rolled back by setting `Sql#tx` method's `rollbackOn` and `noRollbackOn` parameters . Exceptions defined in `noRollbackOn` parameter have greater priority than the ones defined in `rollbackOn` parameter.
+You can define exceptions for which transaction will or will not be rolled back by setting `Sql#tx` method's `rollbackOn` and `noRollbackOn` parameters. Exceptions defined in `noRollbackOn` parameter have greater priority than the ones defined in `rollbackOn` parameter.
 
 Below example shows how to perform rollback for all exceptions of type `java.lang.Exception` except  `java.io.FileNotFoundException`.
 ```java
