@@ -37,17 +37,19 @@ dataSource.otherDs.password=
 ```
 To see how you can actually query database using another datasource, see *Query using specific datasource* section.
 
-The thing to remember is that `otherDs` in `dataSource.otherDs.*` properties should match `Instance#id` of the class which extends `hr.yeti.rudimentary.sql.spi.BasicDataSource` or `hr.yeti.rudimentary.server.jdbc.DefaultDataSource` class. 
+The thing to remember is that `otherDs` in `dataSource.otherDs.*` properties should match `Instance#id` of the class which extends `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. 
 
-If you extend `DefaultDataSource` you must, for now, manually add canonical class name of the `DefaultDataSource` provider to the *src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.BasicDataSource* file of your application/service. It the example below that would be `hr.yeti.OtherDs`.
+To create another datasource just extend `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. You can have an many datasources as you like and you can register them in
+ `src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.BasicDataSource` file. 
+This however, `rudimentary-maven-plugin` already automatically does for you.
 ```java
 package hr.yeti;
 
-public class OtherDs extends DefaultDataSource {
+public class OtherDs extends BasicDataSource {
 
   @Override
   public String id() {
-      return "otherDs;
+      return "otherDs";
   }
 
 }
