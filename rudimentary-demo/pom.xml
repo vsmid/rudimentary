@@ -32,6 +32,19 @@
                     </transformers>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>hr.yeti.rudimentary</groupId>
+                <artifactId>rudimentary-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>register-providers</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
