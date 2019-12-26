@@ -69,7 +69,7 @@ Sql.query().update("delete from users where id=1;);
 ## Query using specific datasource
 By default, `Sql#query` method uses default datasource. To use different datasource, just set `Sql#query` method's `dataSourceId` parameter (check *Configuring multiple datasources* section to see how `otherDs` is configured). 
 ```java
-  Sql.query("otherDs").rows("select * from users;");
+Sql.query("otherDs").rows("select * from users;");
 ```
 ## Query using repository
 Sometimes you wish to reuse Sql queries or you just want to make your code a little bit cleaner if you have a lot of queries. Here is a really simple way of how you can group Sql queries in a repository.
