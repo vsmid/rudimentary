@@ -1,3 +1,0 @@
-# Rudimentary CLI
-
-TBD
