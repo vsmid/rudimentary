@@ -20,7 +20,6 @@ A small, simple and opinionated Java based web services/applications framework.
   * [Pooling](rudimentary-api/src/main/java/hr/yeti/rudimentary/pooling/README.md)
   * [Shutdown hook](rudimentary-api/src/main/java/hr/yeti/rudimentary/shutdown/README.md)
   * Logging
-* [Rudimentary CLI](rudimentary-cli/README.md)
 * [Rudimentary Extensions](rudimentary-exts/README.md)
   * [Pebble MVC extension](rudimentary-exts/rudimentary-mvc-pebble-ext/README.md)
 * [Rudimentary Maven Plugin](rudimentary-maven-plugin/README.md)
