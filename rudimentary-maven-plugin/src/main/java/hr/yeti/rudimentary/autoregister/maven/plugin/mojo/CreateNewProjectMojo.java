@@ -173,7 +173,6 @@ public class CreateNewProjectMojo extends AbstractMojo {
             + "        <version>1.0-SNAPSHOT</version>\n"
             + "        <executions>\n"
             + "          <execution>\n"
-            + "            <phase>compile</phase>\n"
             + "            <goals>\n"
             + "              <goal>register-providers</goal>\n"
             + "            </goals>\n"
