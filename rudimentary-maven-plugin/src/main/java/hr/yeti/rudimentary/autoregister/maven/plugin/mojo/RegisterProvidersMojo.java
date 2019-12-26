@@ -1,5 +1,6 @@
-package hr.yeti.rudimentary.autoregister.maven.plugin;
+package hr.yeti.rudimentary.autoregister.maven.plugin.mojo;
 
+import hr.yeti.rudimentary.autoregister.maven.plugin.RegisterAsServiceProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,10 +10,16 @@ import java.util.logging.Logger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
-@Mojo(name = "auto-register")
-public class AutoRegisterMojo extends AbstractMojo {
+/**
+ * Auto registers all Rudimentary service providers.
+ *
+ * @author vedransmid@yeti-it.hr
+ */
+@Mojo(name = "register-providers", defaultPhase = LifecyclePhase.COMPILE)
+public class RegisterProvidersMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -22,7 +29,7 @@ public class AutoRegisterMojo extends AbstractMojo {
         try {
             Files.walkFileTree(sourcesDir, new RegisterAsServiceProvider());
         } catch (IOException ex) {
-            Logger.getLogger(AutoRegisterMojo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegisterProvidersMojo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
