@@ -16,4 +16,4 @@ ContextMock ctx = new ContextMock(
 After this, you can get instance via `Instance#of` method.
 
 ## Why no test server to test http endpoints with http client?
-This will maybe be added in the future but for now you are perfectly fine with testing method result of your `HttpEndpoint` instances. It is much faster and simpler.
+This will maybe be added in the future but for now you are perfectly fine with testing method results of your `HttpEndpoint` instances. It is much faster and simpler.
