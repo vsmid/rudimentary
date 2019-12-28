@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.context.spi;
 
+import hr.yeti.rudimentary.config.spi.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -43,6 +44,18 @@ public abstract class Context implements Instance {
      * Map containing graph of dependent instances.
      */
     protected Map<String, List<String>> instanceDependencyGraph = new HashMap();
+
+    /**
+     * Initialize application/service logger.
+     */
+    public abstract void initLogger();
+
+    /**
+     * Load configuration.
+     * 
+     * @return An instance of {@link Config}.
+     */
+    public abstract Config loadConfig();
 
     /**
      * <pre>
