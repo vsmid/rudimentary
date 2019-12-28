@@ -19,14 +19,16 @@ public class ValidatorTest {
         ConstraintViolations constraintViolations;
         String value = null;
 
-        when:   constraintViolations = Validator.validate(new Constraints() {
-                    {
-                        o(value, NOT_NULL);
-                        o("test2", NOT_EMPTY);
-                    }
-                });
+        when:
+        constraintViolations = Validator.validate(new Constraints() {
+            {
+                o(value, NOT_NULL);
+                o("test2", NOT_EMPTY);
+            }
+        });
 
-        then:   assertNotNull(constraintViolations);
+        then:
+        assertNotNull(constraintViolations);
         assertTrue(!constraintViolations.getList().isEmpty());
         assertEquals("null can not be null.", constraintViolations.getList().get(0).getReason().get());
     }

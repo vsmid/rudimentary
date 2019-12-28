@@ -49,10 +49,10 @@ public interface ViewEngine extends Instance {
     String getTemplatesDirectory();
 
     /**
-     * Set the location of the static resources (css, javascript, images, etc.) directory. Default value is provided via {@link Config} property: {@code mvc.staticResourcesDir=static}
+     * Set the location of the static resources (css, javascript, images, etc.) directory. Default value is provided via
+     * {@link Config} property: {@code mvc.staticResourcesDir=static}
      *
-     * @return A root directory where static resources files can be found. Usually under
-     * src/main/resources directory.
+     * @return A root directory where static resources files can be found. Usually under src/main/resources directory.
      */
     String getStaticResourcesDirectory();
 

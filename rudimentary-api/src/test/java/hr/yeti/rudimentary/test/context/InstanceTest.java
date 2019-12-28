@@ -29,9 +29,11 @@ public class InstanceTest {
 
         Instance fetchedInstance;
 
-        when:   fetchedInstance = Instance.of(MockInstance2.class);
+        when:
+        fetchedInstance = Instance.of(MockInstance2.class);
 
-        then:   assertNull(fetchedInstance);
+        then:
+        assertNull(fetchedInstance);
     }
 
     @Test
@@ -44,9 +46,11 @@ public class InstanceTest {
 
         Instance fetchedInstance;
 
-        when:   fetchedInstance = Instance.of(MockInstance1.class);
+        when:
+        fetchedInstance = Instance.of(MockInstance1.class);
 
-        then:   assertNotNull(fetchedInstance);
+        then:
+        assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance1);
     }
 
@@ -61,9 +65,11 @@ public class InstanceTest {
 
         Instance fetchedInstance;
 
-        when:   fetchedInstance = Instance.of(Instance.class);
+        when:
+        fetchedInstance = Instance.of(Instance.class);
 
-        then:   assertNotNull(fetchedInstance);
+        then:
+        assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof ConfigMock);
     }
 
@@ -78,9 +84,11 @@ public class InstanceTest {
 
         Instance fetchedInstance;
 
-        when:   fetchedInstance = Instance.of(Instance.class);
+        when:
+        fetchedInstance = Instance.of(Instance.class);
 
-        then:   assertNotNull(fetchedInstance);
+        then:
+        assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance1);
     }
 
@@ -96,20 +104,27 @@ public class InstanceTest {
 
         Instance fetchedInstance;
 
-        when:   fetchedInstance = Instance.of(Instance.class);
+        when:
+        fetchedInstance = Instance.of(Instance.class);
 
-        then:   assertNotNull(fetchedInstance);
+        then:
+        assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance1);
 
-        and:    when:   ctx = new ContextMock(
-                            Map.of(),
-                            MockInstance3.class,
-                            MockInstance1.class
-                        );
+        and:
+        when:
+        ctx = new ContextMock(
+            Map.of(),
+            MockInstance3.class,
+            MockInstance1.class
+        );
 
-        and:    when:   fetchedInstance = Instance.of(Instance.class);
+        and:
+        when:
+        fetchedInstance = Instance.of(Instance.class);
 
-        then:   assertNotNull(fetchedInstance);
+        then:
+        assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance3);
     }
 
@@ -125,9 +140,11 @@ public class InstanceTest {
 
         List<Instance> fetchedInstances;
 
-        when:   fetchedInstances = Instance.providersOf(Instance.class);
+        when:
+        fetchedInstances = Instance.providersOf(Instance.class);
 
-        then:   assertNotNull(fetchedInstances);
+        then:
+        assertNotNull(fetchedInstances);
         assertTrue(fetchedInstances.size() == 4); // ConfigMock also
     }
 
@@ -142,9 +159,11 @@ public class InstanceTest {
 
         Instance fetchedInstance;
 
-        when:   fetchedInstance = Instance.withId(MockInstance11a.class, "lena");
+        when:
+        fetchedInstance = Instance.withId(MockInstance11a.class, "lena");
 
-        then:   assertNotNull(fetchedInstance);
+        then:
+        assertNotNull(fetchedInstance);
         assertTrue(fetchedInstance instanceof MockInstance11a);
         assertEquals("lena", fetchedInstance.id());
     }

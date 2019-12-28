@@ -253,7 +253,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                         exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
-                        try ( InputStream is = staticResource.getValue()) {
+                        try (InputStream is = staticResource.getValue()) {
                             responseTransformed = is.readAllBytes();
                         }
 

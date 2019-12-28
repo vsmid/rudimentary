@@ -11,7 +11,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 /**
  * Prints plugin version.
- * 
+ *
  * @author vedransmid@yeti-it.hr
  */
 @Mojo(name = "version")

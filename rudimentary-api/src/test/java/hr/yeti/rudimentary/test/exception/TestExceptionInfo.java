@@ -16,9 +16,11 @@ public class TestExceptionInfo {
         // setup:
         ExceptionInfo exceptionInfo;
 
-        when:   exceptionInfo = ExceptionInfo.defaultExceptionInfo();
+        when:
+        exceptionInfo = ExceptionInfo.defaultExceptionInfo();
 
-        then:   assertNotNull(exceptionInfo);
+        then:
+        assertNotNull(exceptionInfo);
         assertEquals(500, exceptionInfo.getHttpStatus());
         assertEquals("Internal Server Error.", exceptionInfo.getDescription());
         assertNull(exceptionInfo.getDetails());
@@ -30,17 +32,22 @@ public class TestExceptionInfo {
         // setup:
         ExceptionInfo exceptionInfo;
 
-        when:   exceptionInfo = new ExceptionInfo(200, "ok");
+        when:
+        exceptionInfo = new ExceptionInfo(200, "ok");
 
-        then:   assertNotNull(exceptionInfo);
+        then:
+        assertNotNull(exceptionInfo);
         assertEquals(200, exceptionInfo.getHttpStatus());
         assertEquals("ok", exceptionInfo.getDescription());
         assertNull(exceptionInfo.getDetails());
         assertTrue(exceptionInfo.isOverride());
 
-        and:    when:   exceptionInfo = new ExceptionInfo(200, "ok", new HashMap<String, String>());
+        and:
+        when:
+        exceptionInfo = new ExceptionInfo(200, "ok", new HashMap<String, String>());
 
-        then:   assertNotNull(exceptionInfo);
+        then:
+        assertNotNull(exceptionInfo);
         assertEquals(200, exceptionInfo.getHttpStatus());
         assertEquals("ok", exceptionInfo.getDescription());
         assertNull(exceptionInfo.getDetails());

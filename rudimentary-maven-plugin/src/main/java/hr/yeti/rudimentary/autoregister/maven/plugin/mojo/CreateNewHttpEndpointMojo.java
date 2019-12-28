@@ -14,7 +14,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Creates new http endpoint.
- * 
+ *
  * @author vedransmid@yeti-it.hr
  */
 @Mojo(name = "new-endpoint")

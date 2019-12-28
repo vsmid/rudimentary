@@ -25,19 +25,23 @@ public class ConfigTest {
 
     @Test
     public void test_empty() {
-        expect: assertTrue(config.isEmpty());
+        expect:
+        assertTrue(config.isEmpty());
     }
 
     @Test
     public void test_default_sealed_value() {
-        expect: assertFalse(config.isSealed());
+        expect:
+        assertFalse(config.isSealed());
     }
 
     @Test
     public void test_load_config_using_configProperty() {
-        when:   config.load(new ConfigProperty("server.port", "8888"));
+        when:
+        config.load(new ConfigProperty("server.port", "8888"));
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
         assertFalse(config.isSealed());
     }
@@ -46,12 +50,15 @@ public class ConfigTest {
     public void test_load_config_using_Properties() {
         Properties properties;
 
-        given:  properties = new Properties();
+        given:
+        properties = new Properties();
         properties.put("server.port", "8888");
 
-        when:   config.load(properties);
+        when:
+        config.load(properties);
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
         assertFalse(config.isSealed());
     }
@@ -62,16 +69,19 @@ public class ConfigTest {
         Properties properties;
         Properties properties1;
 
-        given:  properties = new Properties();
+        given:
+        properties = new Properties();
         properties.put("server.port", "8888");
         properties.put("server.threadPoolSize", "25");
 
         properties1 = new Properties();
         properties1.put("server.port", "4444");
 
-        when:   config.load(properties, properties1);
+        when:
+        config.load(properties, properties1);
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("4444", config.value("server.port"));
 
         assertTrue(config.contains("server.threadPoolSize"));
@@ -82,18 +92,22 @@ public class ConfigTest {
 
     @Test
     public void test_load_config_using_Map() {
-        when:   config.load(Map.of("server.port", "8888"));
+        when:
+        config.load(Map.of("server.port", "8888"));
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
         assertFalse(config.isSealed());
     }
 
     @Test
     public void test_load_config_using_Properties_file_path() {
-        when:   config.load(getClass().getResource("/config.properties").getPath());
+        when:
+        config.load(getClass().getResource("/config.properties").getPath());
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
         assertFalse(config.isSealed());
     }
@@ -101,12 +115,14 @@ public class ConfigTest {
     @Test
     @DisplayName("Should load multiple config using String paths files honorig order of loading")
     public void test_load_multiple_config_using_Properties_file_paths() {
-        when:   config.load(
-                    getClass().getResource("/config_1.properties").getPath(),
-                    getClass().getResource("/config.properties").getPath()
-                );
+        when:
+        config.load(
+            getClass().getResource("/config_1.properties").getPath(),
+            getClass().getResource("/config.properties").getPath()
+        );
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
 
         assertTrue(config.contains("server.threadPoolSize"));
@@ -117,9 +133,11 @@ public class ConfigTest {
 
     @Test
     public void test_load_config_using_InputStream() {
-        when:   config.load(getClass().getResourceAsStream("/config.properties"));
+        when:
+        config.load(getClass().getResourceAsStream("/config.properties"));
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
         assertFalse(config.isSealed());
     }
@@ -127,12 +145,14 @@ public class ConfigTest {
     @Test
     @DisplayName("Should load multiple config using InputStreams honorig order of loading")
     public void test_load_multiple_config_using_InputStreams() {
-        when:   config.load(
-                    getClass().getResourceAsStream("/config_1.properties"),
-                    getClass().getResourceAsStream("/config.properties")
-                );
+        when:
+        config.load(
+            getClass().getResourceAsStream("/config_1.properties"),
+            getClass().getResourceAsStream("/config.properties")
+        );
 
-        then:   assertTrue(config.contains("server.port"));
+        then:
+        assertTrue(config.contains("server.port"));
         assertEquals("8888", config.value("server.port"));
 
         assertTrue(config.contains("server.threadPoolSize"));
@@ -145,11 +165,14 @@ public class ConfigTest {
     public void test_get_configProperty() {
         ConfigProperty property;
 
-        given:  config.load(new ConfigProperty("server.port", "8888"));
+        given:
+        config.load(new ConfigProperty("server.port", "8888"));
 
-        when:   property = config.property("server.port");
+        when:
+        property = config.property("server.port");
 
-        then:   assertNotNull(property);
+        then:
+        assertNotNull(property);
         assertEquals(property.getName(), "server.port");
         assertEquals(property.value(), "8888");
     }
@@ -158,9 +181,11 @@ public class ConfigTest {
     public void test_get_configProperty_with_default_value() {
         ConfigProperty property;
 
-        when:   property = config.property("server.port", "1234");
+        when:
+        property = config.property("server.port", "1234");
 
-        then:   assertNotNull(property);
+        then:
+        assertNotNull(property);
         assertEquals(property.getName(), "server.port");
         assertEquals(property.value(), "1234");
     }
@@ -176,9 +201,11 @@ public class ConfigTest {
 
     @Test
     public void test_seal() {
-        when:   config.seal();
+        when:
+        config.seal();
 
-        expect: assertTrue(config.isSealed());
+        expect:
+        assertTrue(config.isSealed());
     }
 
     @Test
@@ -193,9 +220,11 @@ public class ConfigTest {
 
         Properties props;
 
-        when:   props = config.getProperties();
+        when:
+        props = config.getProperties();
 
-        expect: assertEquals(2, props.size());
+        expect:
+        assertEquals(2, props.size());
         assertTrue(props.containsKey("k1"));
         assertTrue(props.containsKey("k2"));
     }
@@ -212,14 +241,19 @@ public class ConfigTest {
 
         Properties props;
 
-        when:   props = config.getPropertiesByPrefix("group", true);
+        when:
+        props = config.getPropertiesByPrefix("group", true);
 
-        then:   assertEquals(1, props.size());
+        then:
+        assertEquals(1, props.size());
         assertTrue(props.containsKey("group.k1"));
 
-        and:    when:   props = config.getPropertiesByPrefix("group", false);
+        and:
+        when:
+        props = config.getPropertiesByPrefix("group", false);
 
-        then:   assertEquals(1, props.size());
+        then:
+        assertEquals(1, props.size());
         assertTrue(props.containsKey("k1"));
     }
 
@@ -230,9 +264,11 @@ public class ConfigTest {
             Map.of("k1", "v1")
         );
 
-        when:   config.load(Map.of("k1", "v2"));
+        when:
+        config.load(Map.of("k1", "v2"));
 
-        then:   assertEquals("v2", config.value("k1"));
+        then:
+        assertEquals("v2", config.value("k1"));
 
     }
 }

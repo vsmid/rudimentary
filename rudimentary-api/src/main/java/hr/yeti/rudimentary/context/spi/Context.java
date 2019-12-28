@@ -52,7 +52,7 @@ public abstract class Context implements Instance {
 
     /**
      * Load configuration.
-     * 
+     *
      * @return An instance of {@link Config}.
      */
     public abstract Config loadConfig();

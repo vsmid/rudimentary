@@ -17,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class used for database communication. Main goal of this class to reduce boilerplate code as much as
- * possible and just write Sql queries on the fly. Connection pool used is HikariCP.
+ * Class used for database communication. Main goal of this class to reduce boilerplate code as much as possible and
+ * just write Sql queries on the fly. Connection pool used is HikariCP.
  *
  * @see
  * <a href="https://brettwooldridge.github.io/HikariCP">https://brettwooldridge.github.io/HikariCP</a>

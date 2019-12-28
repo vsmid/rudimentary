@@ -22,7 +22,7 @@ public class ProjectLayout {
 
     public ProjectLayout(String projectLocation, String rootPackage) {
         this.projectDir = Path.of(projectLocation).toAbsolutePath();
-        
+
         this.srcDir = projectDir.resolve(Path.of("src", "main", "java"));
         this.testDir = projectDir.resolve(Path.of("src", "test", "java"));
 
