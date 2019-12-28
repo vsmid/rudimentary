@@ -54,18 +54,7 @@ public class DefaultContextProvider extends Context {
     );
 
     @Override
-    public void initialize() {
-        // Config before any instance is loaded.
-        ServiceLoader.load(Config.class)
-            .stream()
-            .filter(cfg -> cfg.get().conditional())
-            .findFirst()
-            .ifPresent(provider -> {
-                Config config = provider.get();
-                this.initializeInstance(config);
-                add(config);
-            });
-
+    public void initLogger() {
         try {
             String propertiesFile = Config.provider().value("logging.propertiesFile");
             InputStream props;
@@ -80,7 +69,28 @@ public class DefaultContextProvider extends Context {
         } catch (IOException | SecurityException ex) {
             Logger.getLogger(DefaultContextProvider.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
+    @Override
+    public Config loadConfig() {
+        Config[] config = new Config[]{ null };
+
+        ServiceLoader.load(Config.class)
+            .stream()
+            .filter(cfg -> cfg.get().conditional())
+            .findFirst()
+            .ifPresent(provider -> {
+                Config configProvider = provider.get();
+                this.initializeInstance(configProvider);
+                add(configProvider);
+                config[0] = configProvider;
+            });
+
+        return config[0];
+    }
+
+    @Override
+    public void initialize() {
         // Create context map.
         SPIS.forEach((clazz) -> {
             ServiceLoader.load(clazz).
