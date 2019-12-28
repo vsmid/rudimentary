@@ -84,7 +84,7 @@ public class CreateNewProjectMojo extends AbstractMojo {
         return (rootPackage.length() > 0 ? ("package " + rootPackage + ";\n" + "\n") : "")
             + "import hr.yeti.rudimentary.server.Server;\n" + "import java.io.IOException;\n" + "\n"
             + "public class Application {\n" + "\n" + "  public static void main(String[] args) throws IOException {\n"
-            + "    Server.start();\n" + "  }\n" + "}\n" + "";
+            + "    new Server().start();\n" + "  }\n" + "}\n" + "";
     }
 
     private String moduleInfo(String rootPackage) {

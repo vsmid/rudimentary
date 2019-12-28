@@ -50,45 +50,49 @@ public class Server {
     private String trustStorePassword;
 
     private Context context;
+    private Config config;
 
-    private Server() throws IOException {
+    public Server() {
         ServiceLoader.load(Context.class)
             .stream()
             .filter(ctx -> ctx.get() instanceof DefaultContextProvider) // Force default context provider
             .findFirst()
             .ifPresent((ctx) -> {
-                this.context = ctx.get();
-                this.context.initialize();
+                context = ctx.get();
+                config = context.loadConfig();
             });
     }
 
-    public static Server start() {
+    public Server start() {
         try {
             long start = System.currentTimeMillis();
 
+            config.seal();
+            context.initLogger();
+
             LOGGER.log(Level.INFO, "Starting server[Java PID={0}]...", String.valueOf(ProcessHandle.current().pid()));
 
-            Server server = new Server();
+            context.initialize();
 
-            server.port = Config.provider().property("server.port").asInt();
-            server.threadPoolSize = Config.provider().property("server.threadPoolSize").asInt();
-            server.stopDelay = Config.provider().property("server.stopDelay").asInt();
-            server.sslEnabled = Config.provider().property("server.ssl.enabled").asBoolean();
-            server.protocol = Config.provider().property("server.ssl.protocol").value();
-            server.keyStore = Config.provider().property("server.ssl.keyStore").value();
-            server.keyStorePassword = Config.provider().property("server.ssl.keyStorePassword").value();
-            server.trustStore = Config.provider().property("server.ssl.trustStore").value();
-            server.trustStorePassword = Config.provider().property("server.ssl.trustStorePassword").value();
-            server.clientAuth = Config.provider().property("server.ssl.clientAuth").asBoolean();
+            port = Config.provider().property("server.port").asInt();
+            threadPoolSize = Config.provider().property("server.threadPoolSize").asInt();
+            stopDelay = Config.provider().property("server.stopDelay").asInt();
+            sslEnabled = Config.provider().property("server.ssl.enabled").asBoolean();
+            protocol = Config.provider().property("server.ssl.protocol").value();
+            keyStore = Config.provider().property("server.ssl.keyStore").value();
+            keyStorePassword = Config.provider().property("server.ssl.keyStorePassword").value();
+            trustStore = Config.provider().property("server.ssl.trustStore").value();
+            trustStorePassword = Config.provider().property("server.ssl.trustStorePassword").value();
+            clientAuth = Config.provider().property("server.ssl.clientAuth").asBoolean();
 
             // Create server instance
-            if (server.sslEnabled) {
-                server.httpServer = createHttpsServer(server);
+            if (sslEnabled) {
+                httpServer = createHttpsServer();
             } else {
-                server.httpServer = HttpServer.create(new InetSocketAddress(server.port), server.threadPoolSize);
+                httpServer = HttpServer.create(new InetSocketAddress(port), threadPoolSize);
             }
 
-            HttpContext context = server.httpServer.createContext("/", Instance.of(HttpProcessor.class));
+            HttpContext context = httpServer.createContext("/", Instance.of(HttpProcessor.class));
 
             // Load authentication mechanism
             Instance.providersOf(AuthMechanism.class).stream()
@@ -116,15 +120,15 @@ public class Server {
             }
 
             // Start server
-            server.httpServer.start();
+            httpServer.start();
 
             // ServerInfoConsolePrinter.printRegisteredUriInfo(LOGGER);
             // ServerInfoConsolePrinter.printConfigProperties(LOGGER);
             LOGGER.log(Level.INFO, "Server started in {0} ms, listening on port {1}", new Object[]{
-                (String.valueOf(System.currentTimeMillis() - start)), String.valueOf(server.port)
+                (String.valueOf(System.currentTimeMillis() - start)), String.valueOf(port)
             });
 
-            return server;
+            return this;
         } catch (IOException | GeneralSecurityException e) {
             throw new ServerStartupException(e.getMessage(), e);
         }
@@ -139,17 +143,17 @@ public class Server {
         LOGGER.log(Level.INFO, "Server stopped.");
     }
 
-    private static HttpServer createHttpsServer(Server server) throws IOException, NoSuchAlgorithmException, GeneralSecurityException {
-        HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(server.port), server.threadPoolSize);
+    private HttpServer createHttpsServer() throws IOException, NoSuchAlgorithmException, GeneralSecurityException {
+        HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(port), threadPoolSize);
 
-        SSLContext sslContext = createSslContext(server);
+        SSLContext sslContext = createSslContext();
 
         httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
             @Override
             public void configure(HttpsParameters params) {
                 // TODO Set all ssl parameters which can be configured
                 SSLParameters sslparams = sslContext.getDefaultSSLParameters();
-                sslparams.setNeedClientAuth(server.clientAuth);
+                sslparams.setNeedClientAuth(clientAuth);
                 params.setSSLParameters(sslparams);
             }
         });
@@ -157,32 +161,32 @@ public class Server {
         return httpsServer;
     }
 
-    private static SSLContext createSslContext(Server server) throws GeneralSecurityException, IOException {
-
+    private SSLContext createSslContext() throws GeneralSecurityException, IOException {
         KeyStore keystore = null;
         KeyManagerFactory keyManagerFactory = null;
-        if (server.keyStore.length() > 0) {
+        if (keyStore.length() > 0) {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try ( InputStream in = new FileInputStream(server.keyStore)) {
-                keystore.load(in, server.keyStorePassword.toCharArray());
+            try (InputStream in = new FileInputStream(keyStore)) {
+                keystore.load(in, keyStorePassword.toCharArray());
             }
             keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyManagerFactory.init(keystore, server.keyStorePassword.toCharArray());
+            keyManagerFactory.init(keystore, keyStorePassword.toCharArray());
         }
 
         KeyStore truststore = null;
         TrustManagerFactory trustManagerFactory = null;
-        if (server.trustStore.length() > 0) {
+
+        if (trustStore.length() > 0) {
             truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try ( InputStream in = new FileInputStream(server.trustStore)) {
-                truststore.load(in, server.trustStorePassword.toCharArray());
+            try (InputStream in = new FileInputStream(trustStore)) {
+                truststore.load(in, trustStorePassword.toCharArray());
             }
             trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
             trustManagerFactory.init(truststore);
         }
 
-        SSLContext sslContext = SSLContext.getInstance(server.protocol);
+        SSLContext sslContext = SSLContext.getInstance(protocol);
 
         sslContext.init(
             Objects.isNull(keyManagerFactory) ? null : keyManagerFactory.getKeyManagers(),
