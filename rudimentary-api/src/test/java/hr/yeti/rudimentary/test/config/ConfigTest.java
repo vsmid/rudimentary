@@ -166,7 +166,7 @@ public class ConfigTest {
     }
 
     @Test
-    public void test() {
+    public void test_load_from_config_properties_string_location() {
         RuntimeException e = assertThrows(RuntimeException.class, () -> {
             config.load("config.properties");
         });
@@ -221,5 +221,18 @@ public class ConfigTest {
 
         then:   assertEquals(1, props.size());
         assertTrue(props.containsKey("k1"));
+    }
+
+    @Test
+    public void test_should_override_property() {
+        // setup:
+        config.load(
+            Map.of("k1", "v1")
+        );
+
+        when:   config.load(Map.of("k1", "v2"));
+
+        then:   assertEquals("v2", config.value("k1"));
+
     }
 }

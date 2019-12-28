@@ -60,6 +60,7 @@ public abstract class Config implements Instance {
         if (!isSealed()) {
             if (Objects.nonNull(properties)) {
                 for (ConfigProperty property : properties) {
+                    this.configProperties.remove(property.getName());
                     this.configProperties.put(property.getName(), property);
                 }
             }
@@ -77,9 +78,10 @@ public abstract class Config implements Instance {
     public Config load(Properties... properties) {
         if (!isSealed()) {
             for (Properties props : properties) {
-                props.forEach((k, v)
-                    -> this.configProperties.put(k.toString(), new ConfigProperty(k.toString(), v.toString()))
-                );
+                props.forEach((k, v) -> {
+                    this.configProperties.remove(k.toString());
+                    this.configProperties.put(k.toString(), new ConfigProperty(k.toString(), v.toString()));
+                });
             }
         }
 
@@ -94,7 +96,10 @@ public abstract class Config implements Instance {
      */
     public Config load(Map<String, String> properties) {
         if (!isSealed()) {
-            properties.forEach((k, v) -> this.configProperties.put(k, new ConfigProperty(k, v)));
+            properties.forEach((k, v) -> {
+                this.configProperties.remove(k);
+                this.configProperties.put(k, new ConfigProperty(k, v));
+            });
         }
 
         return this;
@@ -110,7 +115,7 @@ public abstract class Config implements Instance {
     public Config load(String... propertiesFileLocations) {
         if (!isSealed()) {
             for (String propertiesFileLocation : propertiesFileLocations) {
-                try ( FileInputStream fis = new FileInputStream(propertiesFileLocation)) {
+                try (FileInputStream fis = new FileInputStream(propertiesFileLocation)) {
                     Properties temp = new Properties();
                     temp.load(fis); // We should make sure that empty properties do not override default ones set in server module.
                     this.load(temp);
@@ -287,7 +292,7 @@ public abstract class Config implements Instance {
     @Override
     public void initialize() {
         try (
-             InputStream defaultConfig = this.getClass().getResourceAsStream("/default-config.properties")) {
+            InputStream defaultConfig = this.getClass().getResourceAsStream("/default-config.properties")) {
             load(defaultConfig, defaultConfig);
         } catch (IOException ex) {
             throw new ConfigException(ex);

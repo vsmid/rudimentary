@@ -161,4 +161,9 @@ public class ConfigPropertyTest {
         then:   assertNotNull(array);
         assertEquals(0, array.length);
     }
+
+    @Test
+    public void test_equal_properties() {
+        expect: assertEquals(new ConfigProperty("a", "b"), new ConfigProperty("a", "b"));
+    }
 }
