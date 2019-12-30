@@ -97,28 +97,6 @@ public class HttpProcessor implements HttpHandler, Instance {
                     );
                     Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
 
-                    // Construct request object
-                    Request request = new Request(
-                        (Identity) exchange.getPrincipal(),
-                        exchange.getRequestHeaders(),
-                        value,
-                        pathVariables,
-                        queryParameters,
-                        exchange.getRequestURI(),
-                        exchange
-                    );
-
-                    // Check authorizations
-                    Predicate<Request> authorizations = httpEndpoint.get().authorizations();
-                    Optional<Predicate<Request>> authorizationChain = Stream.of(authorizations).reduce(Predicate::and);
-                    if (authorizationChain.isPresent()) {
-                        boolean authorized = authorizationChain.get().test(request);
-                        if (!authorized) {
-                            respond(403, ("Not authorized.").getBytes(), exchange);
-                            return;
-                        }
-                    }
-
                     try {
 
                         List<Constraints> constraintsList = new ArrayList<>();
@@ -162,6 +140,28 @@ public class HttpProcessor implements HttpHandler, Instance {
                     } catch (JsonbException e) {
                         respond(405, "Invalid request body.".getBytes(), exchange);
                         return;
+                    }
+                    
+                    // Construct request object
+                    Request request = new Request(
+                        (Identity) exchange.getPrincipal(),
+                        exchange.getRequestHeaders(),
+                        value,
+                        pathVariables,
+                        queryParameters,
+                        exchange.getRequestURI(),
+                        exchange
+                    );
+
+                    // Check authorizations
+                    Predicate<Request> authorizations = httpEndpoint.get().authorizations();
+                    Optional<Predicate<Request>> authorizationChain = Stream.of(authorizations).reduce(Predicate::and);
+                    if (authorizationChain.isPresent()) {
+                        boolean authorized = authorizationChain.get().test(request);
+                        if (!authorized) {
+                            respond(403, ("Not authorized.").getBytes(), exchange);
+                            return;
+                        }
                     }
 
                     // Before interceptor
