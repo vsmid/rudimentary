@@ -20,10 +20,15 @@ hr.yeti.rudimentary.server.Server.handler=java.util.logging.ConsoleHandler
 
 ## Provide you own logging configuration
 To provide you own logging configuration set `logging.propertiesFile` configuration property.
-Default value is `classpath:server-logging.properties`.
+Default value is set to `classpath:server-logging.properties`.
 If your configuration file resides in `src/main/resources` directory you must use `classpath:` prefix just like in a default setting.
 To load configuration file from file system use absolute path.
 
 ## Logging inside HttpEndpoint
-To make things simpler `HttpEndpoint` provides simple way to access logger via `HttpEndpoint#logger`.
+To make things simpler `HttpEndpoint` provides simple way to access logger via `HttpEndpoint#logger` method. This logger is of type `java.lang.System.Logger` because it enables delegation to any underlying logging framework you choose to use. 
+
+## Logging oputside HttpEndpoint
 For now, logging outside `HttpEndpoint` is done in a classic Java way with static `Logger` declaration inside class.
+
+## Using another logging framework
+If you choose to use another logging framework then the above configuration instrcutions do not apply. You must use configuration specific to your new logging framework.
