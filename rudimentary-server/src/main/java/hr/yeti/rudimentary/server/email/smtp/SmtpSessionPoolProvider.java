@@ -11,22 +11,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
 /**
- * A very basic and limited implementation of SMTP protocol.
- *
- * <b>Important!</b>
- *
- * We should add a {@link Config} feature which would be able to load all properties into a single object based on configuration properties prefix. This would further allow loading of all javax.mail
- * properties to enable all configuration properties without stating them in this class.
- *
- * <pre>
- * e.g. for the below configuration properties:
- *  email.properties.mail.smtp.auth
- *  email.properties.mail.smtp.starttls.enable
- *
- * a prefix <b>email.properties</b> would load the folowwing properties:
- *  mail.smtp.auth
- *  mail.smtp.starttls.enable
- * </pre>
+ * Implementation of SMTP session pool provider.
  *
  * @see https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html
  *
