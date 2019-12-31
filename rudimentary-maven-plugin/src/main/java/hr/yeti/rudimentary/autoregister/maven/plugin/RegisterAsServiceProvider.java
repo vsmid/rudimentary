@@ -26,6 +26,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private static final String IDENTITY_STORE_PROVIDERS = "hr.yeti.rudimentary.security.spi.IdentityStore";
     private static final String IDENTITY_DETAILS_PROVIDERS = "hr.yeti.rudimentary.security.spi.IdentityDetails";
     private static final String HEALTH_CHECK_PROVIDERS = "hr.yeti.rudimentary.health.spi.HealthCheck";
+    private static final String OBJECT_POOL_PROVIDERS = "hr.yeti.rudimentary.pooling.spi.ObjectPool";
 
     private Path projectRootDir;
     private Path servicesDir;
@@ -43,6 +44,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String identityStoreProviderList;
     private String identityDetailsProviderList;
     private String healthCheckProviderList;
+    private String objectProviderList;
 
     public RegisterAsServiceProvider() {
         try {
@@ -61,6 +63,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.identityStoreProviderList = readProviders(servicesDir.resolve(IDENTITY_STORE_PROVIDERS));
             this.identityDetailsProviderList = readProviders(servicesDir.resolve(IDENTITY_DETAILS_PROVIDERS));
             this.healthCheckProviderList = readProviders(servicesDir.resolve(HEALTH_CHECK_PROVIDERS));
+            this.objectProviderList = readProviders(servicesDir.resolve(OBJECT_POOL_PROVIDERS));
 
         } catch (IOException ex) {
             Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,6 +103,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 writeProvider(IDENTITY_DETAILS_PROVIDERS, file);
             } else if (content.contains("implements HealthCheck") && !content.contains("abstract")) {
                 writeProvider(HEALTH_CHECK_PROVIDERS, file);
+            } else if (content.contains("extends ObjectPool") && !content.contains("abstract")) {
+                writeProvider(OBJECT_POOL_PROVIDERS, file);
             }
         }
         return FileVisitResult.CONTINUE;
@@ -167,6 +172,9 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 break;
             case HEALTH_CHECK_PROVIDERS:
                 alreadyRegistered = healthCheckProviderList.contains(provider);
+                break;
+            case OBJECT_POOL_PROVIDERS:
+                alreadyRegistered = objectProviderList.contains(provider);
                 break;
             default:
                 break;
