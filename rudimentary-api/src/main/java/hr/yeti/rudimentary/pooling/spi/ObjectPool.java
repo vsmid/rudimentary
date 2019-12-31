@@ -23,10 +23,6 @@ import java.util.ServiceLoader;
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.pooling.spi.ObjectPool</i>
  * file.
  *
- * If you have you own dedicated pool SPI such as {@link JdbcConnectionPool} you will then probably want to use a
- * different file under
- * <i>src/main/resources/META-INF/services</i> to register it.
- *
  * @author vedransmid@gmail.com
  * @param <T> A type managed by the pool e.g. {@link Connection}.
  */

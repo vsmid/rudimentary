@@ -7,7 +7,7 @@ import hr.yeti.rudimentary.pooling.spi.ObjectPool;
  * Basic pool configuration class mandatory for any pool. These properties should be available to the application via
  * {@link Config} but it is not mandatory. To see how these properties are being used by the framework itself using
  * {@link Config}, take a look at the
- * <b>rudimentary-exts/rudimentary-sql-sqlite-ext</b> module implementation.
+ * <b>rudimentary-server's</b> hr.yeti.rudimentary.server.email.smtp.SmtpSessionPoolProvider.
  *
  * @author vedransmid@yeti-it.hr
  */
@@ -19,13 +19,12 @@ public class ObjectPoolSettings {
     private int awaitTerminationInterval;
 
     /**
-     *
-     * @param minSize Set the minimal size of the pool.
-     * @param maxSize Set the maximal size of the pool.
+     * @param minSize Set the minimum size of the pool.
+     * @param maxSize Set the maximum size of the pool.
      * @param validationInterval Period of time in seconds between two pool state validation checks. During validation
      * checks, a pool is populated with new instances if the current number of instances in the pool is lower than
      * minSize or instances are removed from the pool if the current number of instances in the pool is greater than
-     * maxSize. For more technical details on validation check implementation of {@link ObjectPool#initialize()}.
+     * maxSize. For more technical details on validationInterval check implementation of {@link ObjectPool#initialize()}.
      * @param awaitTerminationInterval Period of time in seconds object pool will wait before it terminates itself.
      */
     public ObjectPoolSettings(int minSize, int maxSize, long validationInterval, int awaitTerminationInterval) {
