@@ -1,4 +1,6 @@
 # Email
+
+## Introduction
 Rudimentary offers a very nice and simple way to send emails.
 
 ## Configure SMTP
