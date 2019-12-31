@@ -21,7 +21,7 @@ A small, simple and opinionated Java based web services/applications framework.
   * [Shutdown hook](rudimentary-api/src/main/java/hr/yeti/rudimentary/shutdown/README.md) :white_check_mark:
   * [Logging](rudimentary-api/src/main/java/hr/yeti/rudimentary/logging/README.md) :white_check_mark:
 * [Rudimentary Extensions](rudimentary-exts/README.md)
-  * [Pebble MVC extension](rudimentary-exts/rudimentary-mvc-pebble-ext/README.md)
+  * [Pebble MVC extension](rudimentary-exts/rudimentary-mvc-pebble-ext/README.md) :white_check_mark:
 * [Rudimentary Maven Plugin](rudimentary-maven-plugin/README.md)
 * [Rudimentary Server](rudimentary-server/README.md)
 
