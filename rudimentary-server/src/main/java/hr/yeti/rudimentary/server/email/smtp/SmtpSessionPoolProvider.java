@@ -15,9 +15,8 @@ import javax.mail.Session;
  *
  * <b>Important!</b>
  *
- * We should add a {@link Config} feature which would be able to load all properties into a single object based on
- * configuration properties prefix. This would further allow loading of all javax.mail properties to enable all
- * configuration properties without stating them in this class.
+ * We should add a {@link Config} feature which would be able to load all properties into a single object based on configuration properties prefix. This would further allow loading of all javax.mail
+ * properties to enable all configuration properties without stating them in this class.
  *
  * <pre>
  * e.g. for the below configuration properties:
@@ -36,10 +35,10 @@ import javax.mail.Session;
 public class SmtpSessionPoolProvider extends EmailSessionPool {
 
     // Session pool settings
-    private ConfigProperty minSize = new ConfigProperty("email.smtp.pool.minSize", "25");
-    private ConfigProperty maxSize = new ConfigProperty("email.smtp.pool.maxSize", "50");
-    private ConfigProperty validationInterval = new ConfigProperty("email.smtp.pool.validationInterval", "30");
-    private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.smtp.pool.awaitTerminationInterval", "10");
+    private ConfigProperty minSize = new ConfigProperty("email.smtp.pool.minSize");
+    private ConfigProperty maxSize = new ConfigProperty("email.smtp.pool.maxSize");
+    private ConfigProperty validationInterval = new ConfigProperty("email.smtp.pool.validationInterval");
+    private ConfigProperty awaitTerminationInterval = new ConfigProperty("email.smtp.pool.awaitTerminationInterval");
 
     private ConfigProperty user = new ConfigProperty("email.smtp.user");
     private ConfigProperty password = new ConfigProperty("email.smtp.password");
@@ -50,7 +49,11 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
 
     @Override
     protected Session createObject() throws ObjectPoolException {
-        return Session.getInstance(smtpSessionProperties, authenticator);
+        if (useAuthentication()) {
+            return Session.getInstance(smtpSessionProperties, authenticator);
+        } else {
+            return Session.getInstance(smtpSessionProperties);
+        }
     }
 
     @Override
@@ -66,15 +69,17 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
     @Override
     public void initialize() {
         // Set authenticator.
-        authenticator = new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                    user.value(),
-                    password.value()
-                );
-            }
-        };
+        if (useAuthentication()) {
+            authenticator = new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(
+                        user.value(),
+                        password.value()
+                    );
+                }
+            };
+        }
 
         // This call is required, do not remove.
         super.initialize();
@@ -85,4 +90,7 @@ public class SmtpSessionPoolProvider extends EmailSessionPool {
         return Config.provider().property("email.smtp.enabled").asBoolean();
     }
 
+    public boolean useAuthentication() {
+        return !user.value().isBlank() && !password.value().isBlank();
+    }
 }
