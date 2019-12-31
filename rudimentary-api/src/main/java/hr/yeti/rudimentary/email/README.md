@@ -8,8 +8,8 @@ To send emails you need to configure session pool and SMTP connection. Session p
 ```properties
 # Configure session pool
 email.smtp.enabled=true # Enable SMTP
-email.smtp.pool.minSize=25 # Minimim number of javax.mail.Session in the pool
-email.smtp.pool.maxSize=50 # Maximum number of javax.mail.Session in the pool
+email.smtp.pool.minSize=25 # Minimal number of javax.mail.Session in the pool
+email.smtp.pool.maxSize=50 # Maximal number of javax.mail.Session in the pool
 email.smtp.pool.validationInterval=30 # Time between two checks of pool status in seconds
 email.smtp.pool.awaitTerminationInterval=15 # Time to wait for tasks to finish before termination in seconds
 
