@@ -16,7 +16,7 @@ This mechanism automatically starts user session on successful authentication.
 This is done by setting below listed Rudimentary properties. Values shown are used by default implementation but you can overide them at any time.
 ```properties
 security.loginForm.loginURI=/_login # Login uri
-security.loginForm.redirectAfterSuccessfulLoginURI=_redirectAfterSuccessfulLogin # Uri which redirects to landing view and performs some login before actual redirect to landing view uri
+security.loginForm.redirectAfterSuccessfulLoginURI=_redirectAfterSuccessfulLogin # Dedicated endpoint which redirects to landing view and performs some logic before actual redirect to landing view uri
 security.loginForm.landingViewURI= # Landing view uri (if not set deep linking is used)
 security.loginForm.usernameFieldName=username # Username field name attribute value
 security.loginForm.passwordFieldName=password # Password field name attribute value
