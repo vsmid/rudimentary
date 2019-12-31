@@ -12,7 +12,7 @@ import java.util.ServiceLoader;
  * There should be only one ShutdownHook provider per application.
  *
  * You can register it in
- * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.shutdown.spi.Instance</i>
+ * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.shutdown.spi.ShutdownHook</i>
  * file.
  *
  * @author vedransmid@yeti-it.hr.
