@@ -117,3 +117,21 @@ public Predicate<Request> authorizations() {
     return Authorization.rolesAllowed("rookie");
 }
 ```
+## Configuring CORS
+To configure CORS use these configuration properties.
+```properties
+security.cors.enabled=false # Enable CORS
+security.cors.allowOrigin=* # Comma separated list of origins allowed
+security.cors.allowHeaders=origin, accept, content-type # Comma separated list of http headers allowed
+security.cors.exposeHeaders=location, info # Comma separated list of exposed http headers as part of the response
+security.cors.allowCredentials=true # Indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies, authorization headers or TLS client certificates
+security.cors.allowMethods=GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE # List of allowed http methods
+```
+
+## Configuring CSRF protection
+To configure CSRF protection use these configuration properties.
+```properties
+security.csrf.enabled=false # Enable CSRF protection
+security.csrf.tokenHttpHeaderName=X-CSRF-TOKEN # The name of http header which must be sent on each http request
+security.csrf.tokenCookieName=CSRF-TOKEN # The name of http cookie which holds CSRF token value to be sent in http header
+```
