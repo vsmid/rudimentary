@@ -1,3 +1,0 @@
-# Rudimentary Extensions
-
-TBD
