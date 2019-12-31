@@ -2,11 +2,11 @@
 
 ## Introduction
 In order to monitor how the application/service is behaving a logging mechanism needs to be provided.
-Rudimentary does not offer anything special here. Instead, it relies on Java's own logging mechanism.
+Rudimentary does not offer anything special here. Instead it relies on Java's own logging mechanism.
 You can read more about Java logging [here](https://docs.oracle.com/en/java/javase/13/core/java-logging-overview.html).
 
 ## Default logging configuration
-Rudimentary has default logging configuration store inside `rudimentary-server` module in a file called `server-logging.properties`.
+Rudimentary has default logging configuration stored inside `rudimentary-server` module in a file called `server-logging.properties`.
 ```properties
 handlers=java.util.logging.ConsoleHandler
 .level=INFO
