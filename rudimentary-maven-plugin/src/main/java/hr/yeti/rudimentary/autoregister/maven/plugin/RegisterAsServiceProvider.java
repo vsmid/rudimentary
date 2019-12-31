@@ -27,6 +27,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private static final String IDENTITY_DETAILS_PROVIDERS = "hr.yeti.rudimentary.security.spi.IdentityDetails";
     private static final String HEALTH_CHECK_PROVIDERS = "hr.yeti.rudimentary.health.spi.HealthCheck";
     private static final String OBJECT_POOL_PROVIDERS = "hr.yeti.rudimentary.pooling.spi.ObjectPool";
+    private static final String SHUTDOWN_HOOK_PROVIDERS = "hr.yeti.rudimentary.shutdown.spi.ShutdownHook";
 
     private Path projectRootDir;
     private Path servicesDir;
@@ -44,7 +45,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String identityStoreProviderList;
     private String identityDetailsProviderList;
     private String healthCheckProviderList;
-    private String objectProviderList;
+    private String objectPoolProviderList;
+    private String shutdownHookProviderList;
 
     public RegisterAsServiceProvider() {
         try {
@@ -63,7 +65,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.identityStoreProviderList = readProviders(servicesDir.resolve(IDENTITY_STORE_PROVIDERS));
             this.identityDetailsProviderList = readProviders(servicesDir.resolve(IDENTITY_DETAILS_PROVIDERS));
             this.healthCheckProviderList = readProviders(servicesDir.resolve(HEALTH_CHECK_PROVIDERS));
-            this.objectProviderList = readProviders(servicesDir.resolve(OBJECT_POOL_PROVIDERS));
+            this.objectPoolProviderList = readProviders(servicesDir.resolve(OBJECT_POOL_PROVIDERS));
+            this.shutdownHookProviderList = readProviders(servicesDir.resolve(SHUTDOWN_HOOK_PROVIDERS));
 
         } catch (IOException ex) {
             Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,6 +108,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 writeProvider(HEALTH_CHECK_PROVIDERS, file);
             } else if (content.contains("extends ObjectPool") && !content.contains("abstract")) {
                 writeProvider(OBJECT_POOL_PROVIDERS, file);
+            } else if (content.contains("implements ShutdownHook") && !content.contains("abstract")) {
+                writeProvider(SHUTDOWN_HOOK_PROVIDERS, file);
             }
         }
         return FileVisitResult.CONTINUE;
@@ -174,7 +179,10 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 alreadyRegistered = healthCheckProviderList.contains(provider);
                 break;
             case OBJECT_POOL_PROVIDERS:
-                alreadyRegistered = objectProviderList.contains(provider);
+                alreadyRegistered = objectPoolProviderList.contains(provider);
+                break;
+            case SHUTDOWN_HOOK_PROVIDERS:
+                alreadyRegistered = shutdownHookProviderList.contains(provider);
                 break;
             default:
                 break;
