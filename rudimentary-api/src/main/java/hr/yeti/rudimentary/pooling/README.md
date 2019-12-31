@@ -23,8 +23,8 @@ public class CustomObjectPool extends ObjectPool<String> {
 }
 ```
 ### ObjectPoolSettings
-* minSize - Set the minimal size of the pool.
-* maxSize - Set the maximal size of the pool.
+* minSize - Set the minimum size of the pool.
+* maxSize - Set the maximum size of the pool.
 * validationInterval - Period of time in seconds between two pool state validation checks. During validation
 checks, a pool is populated with new instances if the current number of instances in the pool is lower than
 minSize or instances are removed from the pool if the current number of instances in the pool is greater than
