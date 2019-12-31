@@ -17,7 +17,7 @@ A small, simple and opinionated Java based web services/applications framework.
   * [Testing](rudimentary-api/src/main/java/hr/yeti/rudimentary/test/README.md) :white_check_mark:
   * [Email](rudimentary-api/src/main/java/hr/yeti/rudimentary/email/README.md) :white_check_mark:
   * [Health check](rudimentary-api/src/main/java/hr/yeti/rudimentary/health/README.md) :white_check_mark:
-  * [Pooling](rudimentary-api/src/main/java/hr/yeti/rudimentary/pooling/README.md)
+  * [Pooling](rudimentary-api/src/main/java/hr/yeti/rudimentary/pooling/README.md) :white_check_mark:
   * [Shutdown hook](rudimentary-api/src/main/java/hr/yeti/rudimentary/shutdown/README.md)
   * Logging
 * [Rudimentary Extensions](rudimentary-exts/README.md)
