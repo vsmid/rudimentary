@@ -72,20 +72,22 @@ public class HttpProcessor implements HttpHandler, Instance {
                 URI path = exchange.getRequestURI();
                 HttpMethod httpMethod = HttpMethod.valueOf(exchange.getRequestMethod());
 
-                Optional<HttpEndpoint> httpEndpoint = Instance.of(HttpEndpointContextProvider.class).getHttpEndpoint(path, httpMethod);
+                HttpEndpointContextProvider.HttpEndpointMatchInfo httpEndpointMatchInfo = Instance.of(HttpEndpointContextProvider.class).matchEndpoint(path, httpMethod);
 
-                if (httpEndpoint.isPresent()) {
+                if (httpEndpointMatchInfo.isPathMatchFound()) {
 
-                    if (httpMethod != httpEndpoint.get().httpMethod()) {
+                    if (Objects.isNull(httpEndpointMatchInfo.getHttpEndpoint())) {
                         respond(405, ("Http method " + httpMethod + " is not supported.").getBytes(), exchange);
                         return;
                     }
+                    
+                    HttpEndpoint httpEndpoint = httpEndpointMatchInfo.getHttpEndpoint();
 
                     // Request body
                     Object value = null;
                     Class requestBodyModelType;
                     try {
-                        requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.get().getClass());
+                        requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.getClass());
                     } catch (ClassNotFoundException e) {
                         respond(405, "Invalid request body.".getBytes(), exchange);
                         return;
@@ -93,7 +95,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     // Path & query parsing
                     Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
-                        httpEndpoint.get().path(), path
+                        httpEndpoint.path(), path
                     );
                     Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
 
@@ -125,7 +127,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             constraintsList.add(((Model) value).constraints());
                         }
 
-                        constraintsList.add(httpEndpoint.get().constraints(
+                        constraintsList.add(httpEndpoint.constraints(
                             (Model) value, pathVariables, queryParameters, exchange.getRequestHeaders()
                         ));
 
@@ -154,7 +156,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     );
 
                     // Check authorizations
-                    Predicate<Request> authorizations = httpEndpoint.get().authorizations();
+                    Predicate<Request> authorizations = httpEndpoint.authorizations();
                     Optional<Predicate<Request>> authorizationChain = Stream.of(authorizations).reduce(Predicate::and);
                     if (authorizationChain.isPresent()) {
                         boolean authorized = authorizationChain.get().test(request);
@@ -178,14 +180,14 @@ public class HttpProcessor implements HttpHandler, Instance {
                     });
 
                     // Local http endpoint before interceptor
-                    httpEndpoint.get().before(request);
+                    httpEndpoint.before(request);
 
                     // Creating response
                     Object response = null;
                     try {
-                        response = httpEndpoint.get().response(request);
+                        response = httpEndpoint.response(request);
                     } catch (Exception e) {
-                        ExceptionInfo exceptionInfo = httpEndpoint.get().onException(e);
+                        ExceptionInfo exceptionInfo = httpEndpoint.onException(e);
 
                         if (!exceptionInfo.isOverride()) {
                             // Activate global exception handler if provided and http endpoint does not override
@@ -217,12 +219,12 @@ public class HttpProcessor implements HttpHandler, Instance {
                     }
 
                     // Local http endpoint before interceptor
-                    httpEndpoint.get().after(request, (Model) response);
+                    httpEndpoint.after(request, (Model) response);
 
                     byte[] responseTransformed = null;
 
                     // Set http endpoint defined http headers
-                    exchange.getResponseHeaders().putAll(httpEndpoint.get().responseHttpHeaders(exchange.getRequestHeaders()));
+                    exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(exchange.getRequestHeaders()));
 
                     if (response instanceof Empty) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
@@ -259,7 +261,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     } else if (response instanceof ByteStream) {
                         ByteStream streamOut = (ByteStream) response;
-                        respondWithStream(httpEndpoint.get().httpStatus(), streamOut, exchange);
+                        respondWithStream(httpEndpoint.httpStatus(), streamOut, exchange);
                         return;
                     } else if (response instanceof Redirect) {
                         Redirect redirect = (Redirect) response;
@@ -274,7 +276,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
                     }
 
-                    respond(httpEndpoint.get().httpStatus(), responseTransformed, exchange);
+                    respond(httpEndpoint.httpStatus(), responseTransformed, exchange);
 
                 } else {
                     respond(404, null, exchange);
