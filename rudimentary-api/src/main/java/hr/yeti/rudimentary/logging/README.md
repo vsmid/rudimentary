@@ -25,4 +25,5 @@ If your configuration file resides in `src/main/resources` directory you must us
 To load configuration file from file system use absolute path.
 
 ## Logging inside HttpEndpoint
-HttpEndpoint provides simple way to access logger via `HttpEndpoint#logger`.
+To make things simpler `HttpEndpoint` provides simple way to access logger via `HttpEndpoint#logger`.
+For now, logging outside `HttpEndpoint` is done in a classic Java way with static `Logger` declaration inside class.
