@@ -4,7 +4,6 @@ module hr.yeti.rudimentary.server {
     requires java.logging;
     requires java.sql;
     requires java.net.http;
-    requires hr.yeti.rudimentary.exts.mvc.pebble;
 
     exports hr.yeti.rudimentary.server;
     exports hr.yeti.rudimentary.server.test;    
@@ -28,4 +27,5 @@ module hr.yeti.rudimentary.server {
     uses hr.yeti.rudimentary.http.spi.HttpEndpoint;
     uses hr.yeti.rudimentary.config.spi.Config;
     uses hr.yeti.rudimentary.context.spi.Context;
+    uses hr.yeti.rudimentary.mvc.spi.ViewEngine;
 }
