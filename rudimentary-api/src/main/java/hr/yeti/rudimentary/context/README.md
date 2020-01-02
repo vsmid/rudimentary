@@ -37,19 +37,14 @@ Context instances can be accessed in a static way but that is not the preferred 
 ```
 The preferred way is by using `hr.yeti.rudimentary.context.spi.Instance`.
 ```java
-  // Get exact instance provider by class
+  // Get instance provider by class
   MockInstance mockInstance = Instance.of(MockInstance.class);
   
-  // Get all providers of Instance SPI - these are basically all object instances stored in context.
-  // Every Rudimantary SPI should implement `hr.yeti.rudimentary.context.spi.Instance`. 
-  List<Instance> instances = Instance.of(Instance.class);
-  
-  // Get only providers of specific SPI
-  List<HttpEndpoint> instances = Instance.of(HttpEndpoint.class);
+  // Get all providers of HttpEndpoint SPI.
+  List<HttpEndpoint> instances = Instance.providersOf(HttpEndpoint.class);
   
   // Get dataSource provider of BasicDataSource SPI by Instance#id
   DefaultDataSource ds = Instance.withId(BasicDataSource.class, "myDataSourceId");
-  
 ```
 ### Registering custom Instance provider with Rudimentary context
 Simply put, if you want Rudimentray context to automatically initialize custom instance for you, just make your class implement 
@@ -117,7 +112,6 @@ public class A implements Instance {
 You can give an instance a custom id in case you have multiple providers of the same SPI. 
 This is helpful if you are not fetching instance by the exact class but by SPI class.
 Example is how Rudimentary handle multiple `hr.yeti.rudimentary.sql.spi.BasicDataSource` providers.
-
 
 #### Primary
 In case you have multiple providers of the same SPI and you want to return the specific one, set primary to true;
