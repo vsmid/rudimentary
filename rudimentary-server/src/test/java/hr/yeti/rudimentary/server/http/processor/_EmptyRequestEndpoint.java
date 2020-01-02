@@ -5,16 +5,16 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 
-public class EmptyBodyEndpoint implements HttpEndpoint<Empty, Empty> {
+public class _EmptyRequestEndpoint implements HttpEndpoint<Empty, Empty> {
 
   @Override
   public URI path() {
-    return URI.create("emptybody");
+    return URI.create("emptyrequest");
   }
 
   @Override
   public Empty response(Request<Empty> request) {
-    return request.getBody();
+      return new Empty();
   }
 
 }
