@@ -40,7 +40,7 @@ The preferred way is by using `hr.yeti.rudimentary.context.spi.Instance`.
   // Get instance provider by class
   MockInstance mockInstance = Instance.of(MockInstance.class);
   
-  // Get all providers of HttpEndpoint SPI.
+  // Get all providers of HttpEndpoint SPI
   List<HttpEndpoint> instances = Instance.providersOf(HttpEndpoint.class);
   
   // Get dataSource provider of BasicDataSource SPI by Instance#id
