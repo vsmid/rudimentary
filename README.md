@@ -60,7 +60,7 @@ Majority of features are a work in progress but are usable and show the intent.
 
 Since there are no publicly available artifacts in jcenter or maven central of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
 
-1. Clone this repository from your terminal (`git clone https://github.com/vsmid/rudimentary.git)
+1. Clone this repository from your terminal (`git clone https://github.com/vsmid/rudimentary.git`)
 2. Go to the root of cloned project
 3. Execute `mvn install` command
 4. Execute `mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world`command
