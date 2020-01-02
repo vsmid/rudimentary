@@ -14,11 +14,6 @@
       <artifactId>rudimentary-api</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>hr.yeti.rudimentary.exts</groupId>
-      <artifactId>rudimentary-mvc-pebble-ext</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
