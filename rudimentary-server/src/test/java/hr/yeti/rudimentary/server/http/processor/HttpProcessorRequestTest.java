@@ -25,7 +25,8 @@ public class HttpProcessorRequestTest {
                 _FormRequestEndpoint.class,
                 _JsonRequestEndpoint.class,
                 _ByteStreamRequestEndpoint.class,
-                _HtmlRequestEndpoint.class
+                _HtmlRequestEndpoint.class,
+                _PojoRequestEndpoint.class
             )
             .build();
         testServer.start();
@@ -120,6 +121,22 @@ public class HttpProcessorRequestTest {
         URI uri = testServer.buildUri("htmlrequest");
         HttpRequest POST = HttpRequest.newBuilder(uri)
             .POST(HttpRequest.BodyPublishers.ofString("<html></html>"))
+            .build();
+        HttpResponse<String> response;
+
+        when:
+        response = HttpClient.newHttpClient().send(POST, HttpResponse.BodyHandlers.ofString());
+
+        then:
+        assertEquals(200, response.statusCode());
+    }
+    
+    @Test
+    public void test_should_convert_json_body_to_pojo() throws IOException, InterruptedException {
+        // setup:
+        URI uri = testServer.buildUri("pojorequest");
+        HttpRequest POST = HttpRequest.newBuilder(uri)
+            .POST(HttpRequest.BodyPublishers.ofString("{\"manufacturer\":\"Mazda\"}"))
             .build();
         HttpResponse<String> response;
 

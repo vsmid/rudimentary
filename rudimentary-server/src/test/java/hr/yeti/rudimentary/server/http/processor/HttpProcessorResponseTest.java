@@ -28,6 +28,7 @@ public class HttpProcessorResponseTest {
                 _JsonResponseEndpoint.class,
                 _JsonArrayResponseEndpoint.class,
                 _RedirectResponseEndpoint.class,
+                _PojoResponseEndpoint.class,
                 _StaticResourceResponseEndpoint.class
             )
             .viewEndpoints(_ViewStaticResponseEndpoint.class)
@@ -186,5 +187,20 @@ public class HttpProcessorResponseTest {
         assertEquals(200, response.statusCode());
         assertEquals(MediaType.TEXT_HTML, response.headers().firstValue("content-type").get());
         Assertions.assertTrue(response.body().contains("<div>Rudimentary framework.</div>"));
+    }
+
+    @Test
+    public void test_should_convert_pojo_response_to_json() throws IOException, InterruptedException {
+        // setup:
+        URI uri = testServer.buildUri("pojoresponse");
+        HttpRequest GET = HttpRequest.newBuilder(uri).build();
+        HttpResponse<String> response;
+
+        when:
+        response = HttpClient.newHttpClient().send(GET, HttpResponse.BodyHandlers.ofString());
+
+        then:
+        assertEquals(200, response.statusCode());
+        assertEquals("{\"manufacturer\":\"Mazda\"}", response.body());
     }
 }
