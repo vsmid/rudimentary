@@ -61,13 +61,27 @@ Majority of features are a work in progress but are usable and show the intent.
 Since there are no publicly available artifacts in jcenter or maven central of Rudimentary framework yet, here are the steps to easily create Rudimentary project:
 
 1. Clone this repository from your terminal (`git clone https://github.com/vsmid/rudimentary.git`)
-2. Go to the root of cloned project
+2. Go to the root of cloned project (`cd rudimentary`)
 3. Execute `mvn install` command
-4. Execute `mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world`command
-5. Go to created *hello-world* directory and execute `mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app`. This will create new Java class named *HelloWorldEndpoint* in *src/main/java/app* directory. You can edit `HelloWorldEndpoint#response` method if you wish.
-6. To run your application, execute `mvn rudi:run` from inside *hello-world* directory (if you are using IDE this goal should be available on click in Maven perspective). This will run application in debug mode so you can attach debugger at any time. Also, if you press enter while application is running, you can run tests automatically.
+4. Leave rudimentary directory (`cd ..`)
+5. Execute `mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world`command
+6. Go to created *hello-world* directory (`cd hello-world`) and execute `mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app`. This will create new Java class named *HelloWorldEndpoint* in *src/main/java/app* directory. You can edit `HelloWorldEndpoint#response` method if you wish.
+7. To run your application, execute `mvn rudi:run` from inside *hello-world* directory (if you are using IDE this goal should be available on click in Maven perspective). This will run application in debug mode so you can attach debugger at any time. Also, if you press enter while application is running, you can run tests automatically.
 You can also execute application by running either `run.sh` or `debug.sh` script found in the root of the generated project. Debug listens on port 1044 by default in case you want to attach debugger.
-7. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **null** or new value set by you as a response
+8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **null** or new value set by you as a response.
+
+*Full script for the first time project creation - (copy & paste to terminal)*
+```script
+git clone https://github.com/vsmid/rudimentary.git
+cd ./rudimentary
+mvn install
+cd ..
+mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world
+cd hello-world
+mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app
+```
+
+**If you already cloned and installed Rudimentary start from step 5.**
 
 ## Rudimentary Maven plugin goals and docs
 Run `mvn help:describe -Dplugin=rudi` to see plugin goals and documentation if you are within some Rudimentary project.
