@@ -111,7 +111,7 @@ public class A implements Instance {
 #### Id
 You can give an instance a custom id in case you have multiple providers of the same SPI. 
 This is helpful if you are not fetching instance by the exact class but by SPI class.
-Example is how Rudimentary handle multiple `hr.yeti.rudimentary.sql.spi.BasicDataSource` providers.
+Example is how Rudimentary handles multiple `hr.yeti.rudimentary.sql.spi.BasicDataSource` providers.
 
 #### Primary
 In case you have multiple providers of the same SPI and you want to return the specific one, set primary to true;
