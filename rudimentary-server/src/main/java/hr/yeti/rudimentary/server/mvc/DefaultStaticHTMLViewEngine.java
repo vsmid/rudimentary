@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,9 +39,8 @@ public class DefaultStaticHTMLViewEngine implements ViewEngine {
     }
 
     @Override
-    public boolean conditional() {
-        // Only load when no other view engine is provided.
-        return ServiceLoader.load(ViewEngine.class).stream().count() == 1;
+    public boolean primary() {
+        return false;
     }
 
 }
