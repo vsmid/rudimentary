@@ -23,6 +23,8 @@ public final class Json extends Model implements Value<JsonValue> {
     private JsonValue value;
 
     /**
+     * Creates {@link Json} object from {@link JsonValue}.
+     *
      * @param value Value received through request body or value to sent in a response.
      */
     public Json(JsonValue value) {
@@ -30,7 +32,7 @@ public final class Json extends Model implements Value<JsonValue> {
     }
 
     /**
-     * Used for setting response body when you want to return single JSON object.
+     * Creates {@link Json} object from {@link Map}.
      *
      * @param value A value that will internally be converted to JSON and sent in a response.
      */
@@ -39,12 +41,23 @@ public final class Json extends Model implements Value<JsonValue> {
     }
 
     /**
-     * Used for setting response body when you want to return an array of JSON objects.
+     * Creates {@link Json} object from {@link List} of {@link Map}.
      *
      * @param value A value that will internally be converted to JSON and sent in a response.
      */
     public Json(List<Map<String, Object>> value) {
         this.value = javax.json.Json.createArrayBuilder(value).build();
+    }
+
+    /**
+     * Creates {@link Json} object from object(s) of type {@link Model}.
+     *
+     * @param value A value that will internally be converted to JSON and sent in a response.
+     */
+    public Json(Model... value) {
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(value);
+        this.value = jsonb.fromJson(json, JsonValue.class);
     }
 
     @Override
