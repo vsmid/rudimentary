@@ -89,7 +89,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     try {
                         requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.getClass());
                     } catch (ClassNotFoundException e) {
-                        respond(405, "Invalid request body.".getBytes(), exchange);
+                        respond(500, "Internal server error.".getBytes(), exchange);
                         return;
                     }
 
