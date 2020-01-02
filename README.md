@@ -70,7 +70,7 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 You can also execute application by running either `run.sh` or `debug.sh` script found in the root of the generated project. Debug listens on port 1044 by default in case you want to attach debugger.
 8. Using default values, `curl http://localhost:8888/helloWorldEndpoint` should return **null** or new value set by you as a response.
 
-*Full script for the first time project creation - (copy & paste to terminal)*
+*Full script for the first time project creation and startup - (copy & paste to terminal)*
 ```script
 git clone https://github.com/vsmid/rudimentary.git
 cd ./rudimentary
@@ -79,6 +79,7 @@ cd ..
 mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world
 cd hello-world
 mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app
+mvn rudi:run
 ```
 
 *Note: If you already cloned and installed Rudimentary start from step 5.*
