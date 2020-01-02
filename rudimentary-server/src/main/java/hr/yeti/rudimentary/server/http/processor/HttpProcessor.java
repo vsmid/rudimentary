@@ -121,7 +121,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             try {
                                 value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
                             } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
-                                respond(405, "Invalid request body.".getBytes(), exchange);
+                                respond(400, "Bad request".getBytes(), exchange);
                                 return;
                             }
                             constraintsList.add(((Model) value).constraints());
@@ -135,12 +135,12 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                         ConstraintViolations violations = Validator.validate(constraints);
                         if (!violations.getList().isEmpty()) {
-                            respond(400, "Constraint violations detected.".getBytes(), exchange);
+                            respond(400, "Bad request".getBytes(), exchange);
                             return;
                         }
 
                     } catch (JsonbException e) {
-                        respond(405, "Invalid request body.".getBytes(), exchange);
+                        respond(400, "Bad request.".getBytes(), exchange);
                         return;
                     }
                     
