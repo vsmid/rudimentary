@@ -81,7 +81,7 @@ cd hello-world
 mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app
 ```
 
-*If you already cloned and installed Rudimentary start from step 5.*
+*Note: If you already cloned and installed Rudimentary start from step 5.*
 
 ## Rudimentary Maven plugin goals and docs
 Run `mvn help:describe -Dplugin=rudi` to see plugin goals and documentation if you are within some Rudimentary project.
