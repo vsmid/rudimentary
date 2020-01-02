@@ -5,7 +5,6 @@ import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ServiceLoader;
 
 public final class DefaultConfigProvider extends Config {
 
@@ -29,11 +28,6 @@ public final class DefaultConfigProvider extends Config {
     @Override
     public boolean primary() {
         return false;
-    }
-
-    @Override
-    public boolean conditional() {
-        return ServiceLoader.load(Config.class).stream().count() == 1;
     }
 
 }
