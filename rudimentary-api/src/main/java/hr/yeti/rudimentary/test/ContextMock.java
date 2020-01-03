@@ -50,7 +50,7 @@ public final class ContextMock extends Context {
             super.checkForCircularDependencies(instance, null);
         });
 
-        getContext().values()
+        CONTEXT.values()
             .forEach((instance) -> {
                 super.initializeInstance(instance);
             });

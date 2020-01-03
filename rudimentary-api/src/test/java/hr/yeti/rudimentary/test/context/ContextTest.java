@@ -28,8 +28,8 @@ public class ContextTest {
         ContextMock ctx = new ContextMock(Map.of());
 
         expect:
-        assertNotNull(ContextMock.getContext());
-        assertFalse(ContextMock.getContext().isEmpty());
+        assertNotNull(ContextMock.acquire());
+        assertFalse(ContextMock.acquire().isEmpty());
 
         assertNotNull(ContextMock.getInitializedInstances());
         assertFalse(ContextMock.getInitializedInstances().isEmpty());
@@ -44,8 +44,8 @@ public class ContextTest {
         ctx = new ContextMock(Map.of(), MockInstance1.class);
 
         then:
-        assertTrue(ContextMock.getContext().size() == 2);
-        assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
+        assertTrue(ContextMock.acquire().size() == 2);
+        assertTrue(ContextMock.acquire().containsKey(MockInstance1.class.getCanonicalName()));
 
         assertTrue(ContextMock.getInitializedInstances().size() == 2);
         assertTrue(ContextMock.getInitializedInstances().contains(MockInstance1.class.getCanonicalName()));
@@ -55,7 +55,7 @@ public class ContextTest {
         ctx = new ContextMock(Map.of());
 
         then:
-        assertEquals(1, ContextMock.getContext().size());
+        assertEquals(1, ContextMock.acquire().size());
         assertEquals(1, ContextMock.getInitializedInstances().size());
     }
 
@@ -65,11 +65,11 @@ public class ContextTest {
         ContextMock ctx = new ContextMock(Map.of(), MockInstance1.class);
 
         expect: // Value is 10 after initialization.
-        assertEquals("10", ((MockInstance1) ContextMock.getContext().get(MockInstance1.class.getCanonicalName())).getValue());
+        assertEquals("10", ((MockInstance1) ContextMock.acquire().get(MockInstance1.class.getCanonicalName())).getValue());
 
         //Instance is put to context map.
-        assertTrue(ContextMock.getContext().size() == 2);
-        assertTrue(ContextMock.getContext().containsKey(MockInstance1.class.getCanonicalName()));
+        assertTrue(ContextMock.acquire().size() == 2);
+        assertTrue(ContextMock.acquire().containsKey(MockInstance1.class.getCanonicalName()));
 
         // Instance is initialized.
         assertTrue(ContextMock.getInitializedInstances().size() == 2);
@@ -133,6 +133,6 @@ public class ContextTest {
         ctx = new ContextMock(Map.of("val", "Hello World"), MockInstance10.class);
 
         then:
-        assertEquals("Hello World", ((MockInstance10) ContextMock.getContext().get(MockInstance10.class.getCanonicalName())).getVal());
+        assertEquals("Hello World", ((MockInstance10) ContextMock.acquire().get(MockInstance10.class.getCanonicalName())).getVal());
     }
 }

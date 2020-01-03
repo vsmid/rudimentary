@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.context.spi;
 
 import hr.yeti.rudimentary.config.spi.Config;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,7 +30,7 @@ public abstract class Context implements Instance {
 
     /**
      * <pre>
-     * Map intended only for reading.
+     * Map intended only for internal reading.
      * Contains all initialized instances loaded via {@link ServiceLoader}.
      * </pre>
      */
@@ -67,8 +68,8 @@ public abstract class Context implements Instance {
      *
      * @return An active application context.
      */
-    public static Map<String, Instance> getContext() {
-        return CONTEXT;
+    public static Map<String, Instance> acquire() {
+        return Collections.unmodifiableMap(CONTEXT);
     }
 
     /**
@@ -80,7 +81,7 @@ public abstract class Context implements Instance {
      * @return A list of canonical class name string values representing already initialized instances.
      */
     public static List<String> getInitializedInstances() {
-        return INITIALIZED_INSTANCES;
+        return Collections.unmodifiableList(INITIALIZED_INSTANCES);
     }
 
     /**
@@ -182,7 +183,7 @@ public abstract class Context implements Instance {
      * Builds graph of dependent instances in form of map.
      */
     protected void buildInstanceDependenciesGraph() {
-        getContext().forEach((key, value) -> {
+        CONTEXT.forEach((key, value) -> {
             instanceDependencyGraph.put(
                 key,
                 List.of(value.dependsOn()).stream()

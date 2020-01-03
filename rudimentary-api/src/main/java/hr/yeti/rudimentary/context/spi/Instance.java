@@ -55,7 +55,7 @@ public interface Instance {
      * @return An instance of given @param class.
      */
     static <T> T of(Class<T> clazz) {
-        T instance = (T) Context.getContext().get(clazz.getCanonicalName());
+        T instance = (T) Context.acquire().get(clazz.getCanonicalName());
 
         if (Objects.isNull(instance)) {
             List<T> providersOf = providersOf(clazz);
@@ -109,7 +109,7 @@ public interface Instance {
      * @return A list of instances of given @param class type.
      */
     static <T> List<T> providersOf(Class<T> clazz) {
-        return (List<T>) Context.getContext()
+        return (List<T>) Context.acquire()
             .values()
             .stream()
             .filter(instance -> clazz.isAssignableFrom(instance.getClass()))

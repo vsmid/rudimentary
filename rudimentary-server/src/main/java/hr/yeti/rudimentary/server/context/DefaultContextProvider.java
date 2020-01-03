@@ -107,7 +107,7 @@ public class DefaultContextProvider extends Context {
         });
 
         // Initialize instances.
-        getContext().values()
+        CONTEXT.values()
             .forEach((instance) -> {
                 this.initializeInstance(instance);
             });
