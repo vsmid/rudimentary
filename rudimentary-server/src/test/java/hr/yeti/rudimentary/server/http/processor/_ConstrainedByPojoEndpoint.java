@@ -6,12 +6,7 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 
-public class _PojoRequestEndpoint implements HttpEndpoint<_CarModel, Empty> {
-
-    @Override
-    public URI path() {
-        return URI.create("pojorequest");
-    }
+public class _ConstrainedByPojoEndpoint implements HttpEndpoint<_PojoConstrained, Empty> {
 
     @Override
     public HttpMethod httpMethod() {
@@ -19,7 +14,12 @@ public class _PojoRequestEndpoint implements HttpEndpoint<_CarModel, Empty> {
     }
 
     @Override
-    public Empty response(Request<_CarModel> request) {
+    public URI path() {
+        return URI.create("pojoconstrainedrequest");
+    }
+
+    @Override
+    public Empty response(Request<_PojoConstrained> request) {
         return new Empty();
     }
 
