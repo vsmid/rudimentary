@@ -13,7 +13,7 @@ public interface Authorization extends Predicate<Request> {
         }
 
         return (request) -> {
-            return Stream.of(roles)
+            return Objects.nonNull(request.getIdentity()) && Stream.of(roles)
                 .anyMatch(role -> request.getIdentity().getRoles().contains(role));
         };
     }
@@ -24,7 +24,7 @@ public interface Authorization extends Predicate<Request> {
         }
 
         return (request) -> {
-            return Stream.of(groups)
+            return Objects.nonNull(request.getIdentity()) && Stream.of(groups)
                 .anyMatch(group -> request.getIdentity().getGroups().contains(group));
         };
     }
