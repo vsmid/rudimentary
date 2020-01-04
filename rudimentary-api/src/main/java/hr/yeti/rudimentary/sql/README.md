@@ -35,6 +35,25 @@ dataSource.otherDs.jdbcUrl=jdbc:sqlite:/otherDb.sql?cache=shared
 dataSource.otherDs.username=
 dataSource.otherDs.password=
 ```
+To see how you can actually query database using another datasource, see *Query using specific datasource* section.
+
+The thing to remember is that `otherDs` in `dataSource.otherDs.*` properties should match `Instance#id` of the class which extends `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. 
+
+To create another datasource just extend `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. You can have an many datasources as you like and you can register them in
+ `src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.BasicDataSource` file. 
+This however, `rudimentary-maven-plugin` already automatically does for you.
+```java
+package hr.yeti;
+
+public class OtherDs extends BasicDataSource {
+
+  @Override
+  public String id() {
+      return "otherDs";
+  }
+
+}
+```
 ## Configuring datasource and dataSource properties using dataSource.properties.* approach
 To add dataSource properties just use `dataSource.properties.*` notation. Take a look at [HikariCP initialization section](https://github.com/brettwooldridge/HikariCP) for more details on configuration options. You can also use this approach to fully configure dataSource without using classic DriverManager approach.
 
@@ -59,26 +78,6 @@ dataSource.properties.jdbcUrl=
 # otherDs datasource, below examples are the same
 dataSource.otherDs.jdbcUrl=
 dataSource.otherDs.properties.jdbcUrl=
-```
-
-To see how you can actually query database using another datasource, see *Query using specific datasource* section.
-
-The thing to remember is that `otherDs` in `dataSource.otherDs.*` properties should match `Instance#id` of the class which extends `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. 
-
-To create another datasource just extend `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. You can have an many datasources as you like and you can register them in
- `src/main/resources/META-INF/services/hr.yeti.rudimentary.sql.spi.BasicDataSource` file. 
-This however, `rudimentary-maven-plugin` already automatically does for you.
-```java
-package hr.yeti;
-
-public class OtherDs extends BasicDataSource {
-
-  @Override
-  public String id() {
-      return "otherDs";
-  }
-
-}
 ```
 ## Query for single result
 ```java
