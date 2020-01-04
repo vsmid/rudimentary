@@ -269,6 +269,24 @@ public class ConfigTest {
 
         then:
         assertEquals("v2", config.value("k1"));
+    }
 
+    @Test
+    public void test_containsNotBlank() {
+        // setup:
+        config.load(
+            Map.of(
+                "k1", "",
+                "k2", "   ",
+                "k3", "Lena"
+            )
+        );
+
+        expect:
+        assertFalse(config.containsNotBlank("k1", false));
+        assertFalse(config.containsNotBlank("k1", true));
+        assertTrue(config.containsNotBlank("k2", false));
+        assertTrue(config.containsNotBlank("k3", false));
+        assertFalse(config.containsNotBlank("k2", true));
     }
 }

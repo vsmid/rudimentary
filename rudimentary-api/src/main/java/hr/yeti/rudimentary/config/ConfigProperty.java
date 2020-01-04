@@ -46,8 +46,7 @@ public class ConfigProperty {
     private final String value;
 
     /**
-     * Constructor used to set property value without setting the default value if the configuration property is
-     * missing.
+     * Constructor used to set property value without setting the default value if the configuration property is missing.
      *
      * @param name The name of the property.
      */
@@ -57,8 +56,7 @@ public class ConfigProperty {
     }
 
     /**
-     * Constructor used to set property value by also providing the default value if the configuration property is
-     * missing.
+     * Constructor used to set property value by also providing the default value if the configuration property is missing.
      *
      * @param name The name of the property.
      * @param defaultValue The default value of the property if the configuration property is missing.
@@ -193,9 +191,8 @@ public class ConfigProperty {
     }
 
     /**
-     * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as
-     * already constructed path or in a form of part1,part2,part3... in which case the path will be constructed by this
-     * method.
+     * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as already constructed path or in a form of part1,part2,part3... in which case the
+     * path will be constructed by this method.
      *
      * @return Configuration property value as {@link Path}.
      */
@@ -224,13 +221,14 @@ public class ConfigProperty {
     }
 
     /**
-     * Gets property value as string.
-     *
-     * @return Configuration property value as string.
+     * Checks is value is blank.
+     * 
+     * @param trim Perform {@link String#trim()} on property value before returning result.
+     * @return Whether or not value is blank(length = 0) as boolean.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public boolean isBlank(boolean trim) {
+        String val = trim ? this.value.trim() : this.value;
+        return val.length() == 0;
     }
 
     /**
@@ -240,6 +238,16 @@ public class ConfigProperty {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Gets property value as string.
+     *
+     * @return Configuration property value as string.
+     */
+    @Override
+    public String toString() {
+        return this.value;
     }
 
     @Override

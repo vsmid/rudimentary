@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.TreeMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -182,5 +183,16 @@ public class ConfigPropertyTest {
     public void test_equal_properties() {
         expect:
         assertEquals(new ConfigProperty("a", "b"), new ConfigProperty("a", "b"));
+    }
+
+    @Test
+    public void test_isBlank() {
+        expect:
+        assertTrue(new ConfigProperty("val", "").isBlank(false));
+        assertTrue(new ConfigProperty("val", "").isBlank(true));
+        assertTrue(new ConfigProperty("val", "   ").isBlank(true));
+        assertFalse(new ConfigProperty("val", "   ").isBlank(false));
+        assertFalse(new ConfigProperty("val", "val").isBlank(false));
+        assertFalse(new ConfigProperty("val", "val").isBlank(true));
     }
 }

@@ -20,18 +20,15 @@ import java.util.stream.Stream;
  * There should be only one Config provider per application.
  * </pre>
  * <p>
- * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader}
- * on application startup. Currently, <i>rudimentary-server</i> module provides Config provider so there is no need for
- * you to add an additional one. It is registered in the module's file
+ * Since this abstract class implements {@link Instance} it means it is loaded automatically via {@link ServiceLoader} on application startup. Currently, <i>rudimentary-server</i> module provides
+ * Config provider so there is no need for you to add an additional one. It is registered in the module's file
  * <i>src/main/resources/META-INF/services/hr.yeti.rudimentary.config.spi.Config</i>
  *
- * Configuration is loaded honouring priority loading mechanism. This means that property value is resolved based on the
- * following order(top to bottom, top has the highest priority):
+ * Configuration is loaded honouring priority loading mechanism. This means that property value is resolved based on the following order(top to bottom, top has the highest priority):
  * <ul>
  * <li>system property.</li>
  * <li>environment property.</li>
- * <li>config.properties file located in src/main/resources directory or any other kind of properties loading mechanism
- * using {@link Config#load} methods.</li>
+ * <li>config.properties file located in src/main/resources directory or any other kind of properties loading mechanism using {@link Config#load} methods.</li>
  * <li>default value provided on the spot (e.g. {@code new ConfigProperty("val", "defaultValue")}).</li>
  * </ul>
  *
@@ -45,8 +42,7 @@ public abstract class Config implements Instance {
     protected final Map<String, ConfigProperty> configProperties = new ConcurrentHashMap<>();
 
     /**
-     * A property indicating whether current configuration instance is sealed or not. When configuration instance is
-     * sealed it means no additional property can be added.
+     * A property indicating whether current configuration instance is sealed or not. When configuration instance is sealed it means no additional property can be added.
      */
     protected boolean sealed = false;
 
@@ -108,8 +104,7 @@ public abstract class Config implements Instance {
     /**
      * A method used to load properties using an array of strings representing paths to properties files.
      *
-     * @param propertiesFileLocations An array of strings, each representing path to the properties file to be added to
-     * configuration.
+     * @param propertiesFileLocations An array of strings, each representing path to the properties file to be added to configuration.
      * @return An instance of {@link Config}.
      */
     public Config load(String... propertiesFileLocations) {
@@ -133,8 +128,7 @@ public abstract class Config implements Instance {
     /**
      * A method used to load properties using an array of {@link InputStream}.
      *
-     * @param properties An array of configuration properties loaded from {@link InputStream} to be added to
-     * configuration.
+     * @param properties An array of configuration properties loaded from {@link InputStream} to be added to configuration.
      * @return An instance of {@link Config}.
      */
     public Config load(InputStream... properties) {
@@ -197,8 +191,7 @@ public abstract class Config implements Instance {
     }
 
     /**
-     * Seals configuration instance making it ineligible for additional configuration property addition by using any of
-     * the load methods provided.
+     * Seals configuration instance making it ineligible for additional configuration property addition by using any of the load methods provided.
      */
     public void seal() {
         this.sealed = true;
@@ -214,8 +207,7 @@ public abstract class Config implements Instance {
     }
 
     /**
-     * Destroys configuration instance by clearing properties object holder making it eligible for configuration
-     * properties addition.
+     * Destroys configuration instance by clearing properties object holder making it eligible for configuration properties addition.
      */
     @Override
     public void destroy() {
@@ -226,13 +218,28 @@ public abstract class Config implements Instance {
     /**
      * Whether or not configuration instance contains property or not.
      *
-     * @param property The name of the property you wish to check whether or not is contained withing configuration
-     * instance.
+     * @param property The name of the property you wish to check whether or not is contained withing configuration instance.
      *
      * @return true if configuration instance contains property, otherwise false.
      */
     public boolean contains(String property) {
         return this.configProperties.containsKey(property);
+    }
+
+    /**
+     * Whether or not configuration instance contains property or not.
+     *
+     * @param property The name of the property you wish to check whether or not is contained withing configuration instance.
+     * @param trim Perform {@link String#trim()} on @param property before checking.
+     *
+     * @return true if configuration instance contains property, otherwise false.
+     */
+    public boolean containsNotBlank(String property, boolean trim) {
+        ConfigProperty value = null;
+        if (this.configProperties.containsKey(property)) {
+            value = this.configProperties.get(property);
+        }
+        return Objects.nonNull(value) && !value.isBlank(trim);
     }
 
     /**
@@ -245,9 +252,8 @@ public abstract class Config implements Instance {
     }
 
     /**
-     * Convenience method to be used to access {@link Config} properties without having to initialize a dedicated class
-     * field using {@link Instance#of(java.lang.Class)}. This method is usable when a provider of {@link Context} is
-     * also present.
+     * Convenience method to be used to access {@link Config} properties without having to initialize a dedicated class field using {@link Instance#of(java.lang.Class)}. This method is usable when a
+     * provider of {@link Context} is also present.
      *
      * @return An instance of Config class.
      */
@@ -266,8 +272,7 @@ public abstract class Config implements Instance {
      * @param prefix Properties group name prefix.
      * @param keepPrefix Should prefix be kept as part of property name.
      *
-     * @return A group of active configuration properties in {@link Properties} format filtered by properties group name
-     * prefix.
+     * @return A group of active configuration properties in {@link Properties} format filtered by properties group name prefix.
      */
     public Properties getPropertiesByPrefix(String prefix, final boolean keepPrefix) {
         Properties props = new Properties();

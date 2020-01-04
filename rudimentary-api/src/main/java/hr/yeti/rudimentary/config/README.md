@@ -15,7 +15,6 @@ Property value is resolved based on the following order(top to bottom, top has t
 
 ## Accessing configuration properties
 There are multiple ways of accessing property values depending on your needs and preferred style.
-
 ```java
   Config.provider().property("name"); // Static access, returns ConfigProperty instance for property named 'name'
   Config.provider().property("name", "Lena"); // Static access which also sets default value if no property is found within provider for property named 'name', returns ConfigProperty instance
@@ -26,10 +25,11 @@ There are multiple ways of accessing property values depending on your needs and
   new ConfigProperty("name", "Lena"); // Class level property named 'name' which also sets default value if no property is found within provider
 ```
 
-## Property value converters
+## ConfigProperty value converters
 ConfigProperty type comes with a set of default value converters.
-
 ```java
+  // Config.provider().property("name") returns an instance of ConfigProperty
+
   Config.provider().property("name").value(); // Returns value as String
   new ConfigProperty("name").value(); // Returns value as String, same as above example
   Config.provider().property("name").toString(); // Returns value as String
@@ -42,6 +42,19 @@ ConfigProperty type comes with a set of default value converters.
   Config.provider().property("uri").asURI(); // Returns value as URI
   Config.provider().property("array").asArray(); // Requires comma separated values format, e.q. a,b,c,d
   Config.provider().property("name").transform(String::toUpperCase); // Custom transformation on the fly
+```
+
+## Checking for blank values
+* You can check whether or not configuration property is blank
+```java
+  new ConfigProperty("name").isBlank(true); // If boolean parameter is set to true, trim operation will be performed on the "name" property value before checking for blank
+```
+
+* You can also check whether or not `Config` contains property with value which is not blank
+```java
+  // If boolean parameter is set to true, trim operation will be performed on the "name" property value before checking for blank. 
+  // Under the hood delegates to ConfigProperty#isBlank method.
+  Config.provider().containsNotBlank("name", true); 
 ```
 
 ## Configuration provider
