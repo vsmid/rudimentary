@@ -179,6 +179,9 @@ For now, you can not add additional, custom response type. It is planned for nex
 * **Text** - use when you want to send text in a response.
 * **View** - use when you want to send processed view in a response. You can find more on this in [MVC](../mvc/README.md) section.
 
+## API documentation
+You access the list and description of all registered `HttpEndpoint` and `ViewEndpoint` providers via `_/apidocs` uri.
+
 ## Http session
 This functionality provides means to identify the same user across multuple http requests.
 During the lifetime of http session you can store information about user and state in session.
