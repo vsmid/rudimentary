@@ -35,10 +35,6 @@ import javax.sql.DataSource;
  * dataSource.myNewDatasource.jdbcUrl=
  * dataSource.myNewDatasource.username=
  * dataSource.myNewDatasource.password=
- *
- * # Or if used with properties.*
- * dataSource.myNewDatasource.properties.dataSource.username=
- * ...
  * </pre>
  *
  * @see https://github.com/brettwooldridge/HikariCP for how to use and configure HikariCP.
