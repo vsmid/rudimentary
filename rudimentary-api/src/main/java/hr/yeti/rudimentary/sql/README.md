@@ -54,7 +54,7 @@ public class OtherDs extends BasicDataSource {
 
 }
 ```
-## Configuring datasource and dataSource properties using dataSource.properties.* approach
+## Configuring datasource and datasource properties using dataSource.properties.* approach
 To add dataSource properties just use `dataSource.properties.*` notation. Take a look at [HikariCP initialization section](https://github.com/brettwooldridge/HikariCP) for more details on configuration options. You can also use this approach to fully configure dataSource without using classic DriverManager approach.
 
 * To set specific dataSource property depending on database provider use prefix `dataSource.properties.dataSource.*=`.
