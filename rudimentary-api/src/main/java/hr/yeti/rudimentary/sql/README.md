@@ -50,7 +50,7 @@ dataSource.otherDs.properties.dataSource.databaseName=
 dataSource.otherDs.properties.dataSource.portNumber=
 dataSource.otherDs.properties.dataSource.cachePrepStmts=false
 ```
-*To set HikariConfig property use prefix `dataSource.properties.*=`. 
+* To set HikariConfig property use prefix `dataSource.properties.*=`. 
 ```properties
 # default datasource, below examples are the same
 dataSource.jdbcUrl=
