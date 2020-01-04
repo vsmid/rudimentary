@@ -7,8 +7,6 @@ import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.session.Session;
 import java.net.HttpCookie;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +71,7 @@ public class HttpRequestUtils {
             Stream.of(query.split("&"))
                 .forEach(pair -> {
                     String[] keyValue = pair.split("=");
-                    queryParameters.put(keyValue[0], URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
+                    queryParameters.put(keyValue[0], keyValue[1]);
                 });
         }
 
