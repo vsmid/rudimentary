@@ -2,39 +2,62 @@
 One of the most commonly used things in almost any application/service is database. Rudimentary offers a really nice and simple way of communicating with the database.
 
 ## Default datasource
-Rudimentray uses [HikariCP](https://github.com/brettwooldridge/HikariCP). Implementation of Rudimentary basic datasource using `HikariCP` can be seen in `hr.yeti.rudimentary.sql.spi.BasicDataSource` class.
+Rudimentray uses [HikariCP](https://github.com/brettwooldridge/HikariCP). Implementation of Rudimentary basic datasource using `HikariCP` can be seen in `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. 
 
-## Configuring single datasource
+## Configuring single datasource - classic DriverManager approach
 Configuration is done via configuration properties.
 ```properties
 # JDBC Sqlite datasource configuration example
 dataSource.enabled=true
+dataSource.maximumPoolSize=25
 dataSource.driverClassName=org.sqlite.JDBC
 dataSource.jdbcUrl=jdbc:sqlite:file::memory:?cache=shared
-dataSource.maximumPoolSize=25
 dataSource.username=
 dataSource.password=
 ```
-
-## Configuring multiple datasources
+## Configuring multiple datasources - classic DriverManager approach
 Sometimes application/service can communicate with multiple databases. If that is your case, you can configure multiple data sources like this:
 ```properties
 # default datasource
 dataSource.enabled=true
+dataSource.maximumPoolSize=25
 dataSource.driverClassName=org.sqlite.JDBC
 dataSource.jdbcUrl=jdbc:sqlite:file::memory:?cache=shared
-dataSource.maximumPoolSize=25
 dataSource.username=
 dataSource.password=
 
 # otherDs datasource
 dataSource.otherDs.enabled=true
+dataSource.otherDs.maximumPoolSize=25
 dataSource.otherDs.driverClassName=org.sqlite.JDBC
 dataSource.otherDs.jdbcUrl=jdbc:sqlite:/otherDb.sql?cache=shared
-dataSource.otherDs.maximumPoolSize=25
 dataSource.otherDs.username=
 dataSource.otherDs.password=
 ```
+## Configuring datasource properties
+To add dataSource properties just use `dataSource.properties.*` notation. Take a look at [HikariCP initialization section](https://github.com/brettwooldridge/HikariCP) for more details on configuration options. You can also use this approach to fully configure dataSource without using classic DriverManager approach.
+```properties
+# default datasource
+dataSource.enabled=true
+dataSource.maximumPoolSize=25
+dataSource.properties.dataSourceClassName=org.postgresql.ds.PGSimpleDataSource
+dataSource.properties.user=test
+dataSource.properties.password=test
+dataSource.properties.databaseName=mydb
+dataSource.properties.portNumber=5432
+dataSource.properties.serverName=localhost
+
+# otherDs datasource
+dataSource.otherDs.enabled=true
+dataSource.otherDs.maximumPoolSize=25
+dataSource.otherDs.properties.dataSourceClassName=org.postgresql.ds.PGSimpleDataSource
+dataSource.otherDs.properties.user=test
+dataSource.otherDs.properties.password=test
+dataSource.otherDs.properties.databaseName=mydb2
+dataSource.otherDs.properties.portNumber=5432
+dataSource.otherDs.properties.serverName=localhost
+```
+
 To see how you can actually query database using another datasource, see *Query using specific datasource* section.
 
 The thing to remember is that `otherDs` in `dataSource.otherDs.*` properties should match `Instance#id` of the class which extends `hr.yeti.rudimentary.sql.spi.BasicDataSource` class. 
