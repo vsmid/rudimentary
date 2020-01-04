@@ -9,6 +9,8 @@ Configuration is done via configuration properties.
 ```properties
 # JDBC Sqlite datasource configuration example
 dataSource.enabled=true
+
+# Available HikariConfig properties you can set. Other HikariConfig properties can be set by using dataSource.properties.* approach (see below section)
 dataSource.maximumPoolSize=25
 dataSource.driverClassName=org.sqlite.JDBC
 dataSource.jdbcUrl=jdbc:sqlite:file::memory:?cache=shared
