@@ -45,7 +45,7 @@ ConfigProperty type comes with a set of default value converters.
 ```
 
 ## Checking for blank values
-* You can check whether or not configuration property is blank
+* You can check whether or not configuration property value is blank
 ```java
   new ConfigProperty("name").isBlank(true); // If boolean parameter is set to true, trim operation will be performed on the "name" property value before checking for blank
 ```
