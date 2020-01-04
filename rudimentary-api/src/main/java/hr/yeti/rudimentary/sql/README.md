@@ -7,8 +7,7 @@ Rudimentray uses [HikariCP](https://github.com/brettwooldridge/HikariCP). Implem
 ## Configuring single datasource - classic DriverManager approach
 Configuration is done via configuration properties.
 ```properties
-# JDBC Sqlite datasource configuration example
-dataSource.enabled=true
+dataSource.enabled=true # Set to true to enable datasource initialization
 
 # Available HikariConfig properties you can set. Other HikariConfig properties can be set by using dataSource.properties.* approach (see below section)
 dataSource.maximumPoolSize=25
@@ -44,10 +43,12 @@ To add dataSource properties just use `dataSource.properties.*` notation. Take a
 # default datasource
 dataSource.properties.dataSource.databaseName=
 dataSource.properties.dataSource.portNumber=
+dataSource.properties.dataSource.cachePrepStmts=false
 
 # otherDs datasource
 dataSource.otherDs.properties.dataSource.databaseName=
 dataSource.otherDs.properties.dataSource.portNumber=
+dataSource.otherDs.properties.dataSource.cachePrepStmts=false
 ```
 *To set HikariConfig property use prefix `dataSource.properties.*=`. 
 ```properties
