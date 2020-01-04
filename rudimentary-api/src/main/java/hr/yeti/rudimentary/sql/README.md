@@ -39,14 +39,23 @@ To add dataSource properties just use `dataSource.properties.*` notation. Take a
 
 * To set specific dataSource property depending on database provider use prefix `dataSource.properties.dataSource.*=`.
 ```properties
-datasource.properties.dataSource.databaseName=
-datasource.properties.dataSource.portNumber=
+# default datasource
+dataSource.properties.dataSource.databaseName=
+dataSource.properties.dataSource.portNumber=
+
+# otherDs datasource
+dataSource.otherDs.properties.dataSource.databaseName=
+dataSource.otherDs.properties.dataSource.portNumber=
 ```
 *To set HikariConfig property use prefix `dataSource.properties.*=`. 
 ```properties
-# Below examples are the same
+# default datasource, below examples are the same
 dataSource.jdbcUrl=
-datasource.properties.jdbcUrl=
+dataSource.properties.jdbcUrl=
+
+# otherDs datasource, below examples are the same
+dataSource.otherDs.jdbcUrl=
+dataSource.otherDs.properties.jdbcUrl=
 ```
 
 To see how you can actually query database using another datasource, see *Query using specific datasource* section.
