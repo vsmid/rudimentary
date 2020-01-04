@@ -34,28 +34,19 @@ dataSource.otherDs.jdbcUrl=jdbc:sqlite:/otherDb.sql?cache=shared
 dataSource.otherDs.username=
 dataSource.otherDs.password=
 ```
-## Configuring datasource properties
+## Configuring datasource and dataSource properties using dataSource.properties.* approach
 To add dataSource properties just use `dataSource.properties.*` notation. Take a look at [HikariCP initialization section](https://github.com/brettwooldridge/HikariCP) for more details on configuration options. You can also use this approach to fully configure dataSource without using classic DriverManager approach.
-```properties
-# default datasource
-dataSource.enabled=true
-dataSource.maximumPoolSize=25
-dataSource.properties.dataSourceClassName=org.postgresql.ds.PGSimpleDataSource
-dataSource.properties.user=test
-dataSource.properties.password=test
-dataSource.properties.databaseName=mydb
-dataSource.properties.portNumber=5432
-dataSource.properties.serverName=localhost
 
-# otherDs datasource
-dataSource.otherDs.enabled=true
-dataSource.otherDs.maximumPoolSize=25
-dataSource.otherDs.properties.dataSourceClassName=org.postgresql.ds.PGSimpleDataSource
-dataSource.otherDs.properties.user=test
-dataSource.otherDs.properties.password=test
-dataSource.otherDs.properties.databaseName=mydb2
-dataSource.otherDs.properties.portNumber=5432
-dataSource.otherDs.properties.serverName=localhost
+* To set specific dataSource property depending on database provider use prefix `dataSource.properties.dataSource.*=`.
+```properties
+datasource.properties.dataSource.databaseName=
+datasource.properties.dataSource.portNumber=
+```
+*To set HikariConfig property use prefix `dataSource.properties.*=`. 
+```properties
+# Below examples are the same
+dataSource.jdbcUrl=
+datasource.properties.jdbcUrl=
 ```
 
 To see how you can actually query database using another datasource, see *Query using specific datasource* section.
