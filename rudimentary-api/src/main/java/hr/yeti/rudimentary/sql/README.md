@@ -81,11 +81,15 @@ dataSource.otherDs.properties.jdbcUrl=
 ```
 ## Query for single result
 ```java
-Sql.query().row("select * from users where id=?;", 1);
+Sql.query().row("select * from users where id=?;", 1); // Returns result as a Map
+Sql.query().row("select * from users where id=?;", MyObject.class, 1); // Returns result as MyObject
+Sql.query().row("select * from users where id=?;", row -> row.toString(), 1); // Returns result as a String produced by custom mapper function
 ```
 ## Query for multiple results
 ```java
-Sql.query().rows("select * from users;");
+Sql.query().rows("select * from users;"); // Returns result as a List of Map
+Sql.query().rows("select * from users;", MyObject.class); // Returns result as a List of MyObject
+Sql.query().rows("select * from users;", row -> row.toString()); // Returns result as a List of String produced by custom mapper function 
 ```
 ## Insert, update, delete queries
 ```java
