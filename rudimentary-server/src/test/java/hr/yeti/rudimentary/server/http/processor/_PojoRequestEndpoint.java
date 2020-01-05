@@ -6,7 +6,7 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 
-public class _PojoRequestEndpoint implements HttpEndpoint<_CarModel, Empty> {
+public class _PojoRequestEndpoint implements HttpEndpoint<Models._CarModel, Empty> {
 
     @Override
     public URI path() {
@@ -19,7 +19,7 @@ public class _PojoRequestEndpoint implements HttpEndpoint<_CarModel, Empty> {
     }
 
     @Override
-    public Empty response(Request<_CarModel> request) {
+    public Empty response(Request<Models._CarModel> request) {
         return new Empty();
     }
 
