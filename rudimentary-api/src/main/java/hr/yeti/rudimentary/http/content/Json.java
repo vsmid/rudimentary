@@ -4,6 +4,7 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.json.JsonValue;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -50,14 +51,18 @@ public final class Json extends Model implements Value<JsonValue> {
     }
 
     /**
-     * Creates {@link Json} object from object(s) of type {@link Model}.
+     * Creates {@link Json} object from object.
      *
      * @param value A value that will internally be converted to JSON and sent in a response.
      */
-    public Json(Model... value) {
-        Jsonb jsonb = JsonbBuilder.create();
-        String json = jsonb.toJson(value);
-        this.value = jsonb.fromJson(json, JsonValue.class);
+    public Json(Object value) {
+        if (Objects.nonNull(value)) {
+            Jsonb jsonb = JsonbBuilder.create();
+            String json = jsonb.toJson(value);
+            this.value = jsonb.fromJson(json, JsonValue.class);
+        } else {
+            this.value = JsonValue.NULL;
+        }
     }
 
     @Override
