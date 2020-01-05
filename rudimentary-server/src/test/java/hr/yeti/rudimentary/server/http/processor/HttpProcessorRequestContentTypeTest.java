@@ -20,13 +20,13 @@ public class HttpProcessorRequestContentTypeTest {
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
             .httpEndpoints(
-                _EmptyRequestEndpoint.class,
-                _TextRequestEndpoint.class,
-                _FormRequestEndpoint.class,
-                _JsonRequestEndpoint.class,
-                _ByteStreamRequestEndpoint.class,
-                _HtmlRequestEndpoint.class,
-                _PojoRequestEndpoint.class
+                _HttpEndpoints.EmptyRequestEndpoint.class,
+                _HttpEndpoints.TextRequestEndpoint.class,
+                _HttpEndpoints.FormRequestEndpoin.class,
+                _HttpEndpoints.JsonRequestEndpoint.class,
+                _HttpEndpoints.ByteStreamRequestEndpoint.class,
+                _HttpEndpoints.HtmlRequestEndpoint.class,
+                _HttpEndpoints.PojoRequestEndpoint.class
             )
             .build();
         testServer.start();

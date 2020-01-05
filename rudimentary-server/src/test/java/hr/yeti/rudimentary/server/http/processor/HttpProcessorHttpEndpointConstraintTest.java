@@ -20,7 +20,7 @@ public class HttpProcessorHttpEndpointConstraintTest {
     @BeforeAll
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
-            .httpEndpoints(_ConstrainedByHttpEndpointEndpoint.class)
+            .httpEndpoints(_HttpEndpoints.ConstrainedByHttpEndpointEndpoint.class)
             .build();
         testServer.start();
     }

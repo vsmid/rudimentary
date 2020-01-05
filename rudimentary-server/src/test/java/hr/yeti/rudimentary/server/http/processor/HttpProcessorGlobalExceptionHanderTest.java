@@ -20,7 +20,7 @@ public class HttpProcessorGlobalExceptionHanderTest {
     @BeforeAll
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
-            .httpEndpoints(_GlobalExceptionHandlerEndpoint.class)
+            .httpEndpoints(_HttpEndpoints.GlobalExceptionHandlerEndpoint.class)
             .exceptionHandler(MyGlobalExceptionHandler.class)
             .build();
         testServer.start();

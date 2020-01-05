@@ -21,8 +21,8 @@ public class HttpProcessorPojoConstraintTest {
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
             .httpEndpoints(
-                _ConstrainedByHttpEndpointEndpoint.class,
-                _ConstrainedByPojoEndpoint.class
+                _HttpEndpoints.ConstrainedByHttpEndpointEndpoint.class,
+                _HttpEndpoints.ConstrainedByPojoEndpoint.class
             )
             .build();
         testServer.start();

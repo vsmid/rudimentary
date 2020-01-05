@@ -21,17 +21,17 @@ public class HttpProcessorResponseContentTypeTest {
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
             .httpEndpoints(
-                _ByteStreamResponseEndpoint.class,
-                _EmptyResponseEndpoint.class,
-                _TextResponseEndpoint.class,
-                _HtmlResponseEndpoint.class,
-                _JsonResponseEndpoint.class,
-                _JsonArrayResponseEndpoint.class,
-                _RedirectResponseEndpoint.class,
-                _PojoResponseEndpoint.class,
-                _StaticResourceResponseEndpoint.class
+                _HttpEndpoints.ByteStreamResponseEndpoint.class,
+                _HttpEndpoints.EmptyResponseEndpoint.class,
+                _HttpEndpoints.TextResponseEndpoint.class,
+                _HttpEndpoints.HtmlResponseEndpoint.class,
+                _HttpEndpoints.JsonResponseEndpoint.class,
+                _HttpEndpoints.JsonArrayResponseEndpoint.class,
+                _HttpEndpoints.RedirectResponseEndpoint.class,
+                _HttpEndpoints.PojoResponseEndpoint.class,
+                _HttpEndpoints.StaticResourceResponseEndpoint.class
             )
-            .viewEndpoints(_ViewStaticResponseEndpoint.class)
+            .viewEndpoints(_HttpEndpoints.ViewStaticResponseEndpoint.class)
             .build();
         testServer.start();
     }

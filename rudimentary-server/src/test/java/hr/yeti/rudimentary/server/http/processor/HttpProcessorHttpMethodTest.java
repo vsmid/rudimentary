@@ -18,7 +18,7 @@ public class HttpProcessorHttpMethodTest {
     @BeforeAll
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
-            .httpEndpoints(_EmptyRequestEndpoint.class)
+            .httpEndpoints(_HttpEndpoints.EmptyRequestEndpoint.class)
             .build();
         testServer.start();
     }

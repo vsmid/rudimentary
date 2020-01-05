@@ -5,7 +5,7 @@ import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.util.regex.Pattern;
 
-public class Models {
+public class _Models {
 
     public static class _CarModel extends Model {
 
