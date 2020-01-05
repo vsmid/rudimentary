@@ -1,9 +1,5 @@
 package hr.yeti.rudimentary.server.http.processor;
 
-import hr.yeti.rudimentary.server.http.processor._Interceptors.AfterInterceptor1;
-import hr.yeti.rudimentary.server.http.processor._Interceptors.AfterInterceptor2;
-import hr.yeti.rudimentary.server.http.processor._Interceptors.BeforeInterceptor1;
-import hr.yeti.rudimentary.server.http.processor._Interceptors.BeforeInterceptor2;
 import hr.yeti.rudimentary.server.test.TestServer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -238,7 +234,7 @@ public class HttpProcessorInterceptorsTest {
     }
 
     @Test
-    public void test_httpEndpoint_after_executes_after_global_after_interceptor() throws IOException, InterruptedException {
+    public void test_httpEndpoint_after_executes_before_global_after_interceptor() throws IOException, InterruptedException {
         // setup:
         TestServer testServer = TestServer.newBuilder()
             .afterInterceptors(_Interceptors.AfterInterceptorForURI.class)
