@@ -6,7 +6,7 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 
-public class _ConstrainedByPojoEndpoint implements HttpEndpoint<_PojoConstrained, Empty> {
+public class _ConstrainedByPojoEndpoint implements HttpEndpoint<Models._PojoConstrained, Empty> {
 
     @Override
     public HttpMethod httpMethod() {
@@ -19,7 +19,7 @@ public class _ConstrainedByPojoEndpoint implements HttpEndpoint<_PojoConstrained
     }
 
     @Override
-    public Empty response(Request<_PojoConstrained> request) {
+    public Empty response(Request<Models._PojoConstrained> request) {
         return new Empty();
     }
 
