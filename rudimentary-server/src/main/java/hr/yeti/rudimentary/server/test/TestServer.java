@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
@@ -58,6 +59,7 @@ public class TestServer {
 
         private Random portGenerator = new Random();
         private Context context;
+
         private Map<String, String> config = new HashMap<>() {
             {
                 put("server.threadPoolSize", "10");
@@ -75,11 +77,18 @@ public class TestServer {
         private List<Class<? extends HttpEndpoint>> httpEndpoints = new ArrayList<>();
         private List<Class<? extends ViewEndpoint>> viewEndpoints = new ArrayList<>();
         private Class<? extends ViewEngine> viewEngine;
+        private Class<? extends ExceptionHandler> exceptionHandler;
+
         private HttpServer server;
         private HttpContext httpContext;
 
         public Builder config(Map<String, String> config) {
             this.config.putAll(config);
+            return this;
+        }
+
+        public Builder exceptionHandler(Class<? extends ExceptionHandler> exceptionHandler) {
+            this.exceptionHandler = exceptionHandler;
             return this;
         }
 
@@ -116,6 +125,10 @@ public class TestServer {
 
             if (Objects.nonNull(viewEngine)) {
                 providers.add(viewEngine);
+            }
+
+            if (Objects.nonNull(exceptionHandler)) {
+                providers.add(exceptionHandler);
             }
 
             this.context = new ContextMock(
