@@ -206,6 +206,9 @@ public class HttpProcessor implements HttpHandler, Instance {
                             return;
                         }
 
+                        // Local http endpoint after interceptor
+                        httpEndpoint.after(request, (Model) response);
+
                         // After interceptor
                         List<AfterInterceptor> afterInterceptors = Instance.providersOf(AfterInterceptor.class);
                         afterInterceptors.sort(Comparator.comparing(AfterInterceptor::order));
@@ -219,9 +222,6 @@ public class HttpProcessor implements HttpHandler, Instance {
                             }
 
                         }
-
-                        // Local http endpoint before interceptor
-                        httpEndpoint.after(request, (Model) response);
 
                         byte[] responseTransformed = null;
 
