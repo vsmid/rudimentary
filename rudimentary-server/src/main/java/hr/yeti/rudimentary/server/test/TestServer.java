@@ -8,6 +8,8 @@ import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
+import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
@@ -76,6 +78,8 @@ public class TestServer {
         };
         private List<Class<? extends HttpEndpoint>> httpEndpoints = new ArrayList<>();
         private List<Class<? extends ViewEndpoint>> viewEndpoints = new ArrayList<>();
+        private List<Class<? extends BeforeInterceptor>> beforeInterceptors = new ArrayList<>();
+        private List<Class<? extends AfterInterceptor>> afterInterceptors = new ArrayList<>();
         private Class<? extends ViewEngine> viewEngine;
         private Class<? extends ExceptionHandler> exceptionHandler;
 
@@ -92,6 +96,29 @@ public class TestServer {
             return this;
         }
 
+        public Builder beforeInterceptors(Class<? extends BeforeInterceptor>... beforeInterceptors) {
+            if (Objects.nonNull(beforeInterceptors)) {
+                this.beforeInterceptors.addAll(
+                    Arrays.asList(beforeInterceptors)
+                );
+            }
+            return this;
+        }
+
+        public Builder afterInterceptors(Class<? extends AfterInterceptor>... afterInterceptors) {
+            if (Objects.nonNull(afterInterceptors)) {
+                this.afterInterceptors.addAll(
+                    Arrays.asList(afterInterceptors)
+                );
+            }
+            return this;
+        }
+
+        public Builder afterInterceptors(Class<? extends ExceptionHandler> exceptionHandler) {
+            this.exceptionHandler = exceptionHandler;
+            return this;
+        }
+
         public Builder viewEngine(Class<? extends ViewEngine> viewEngine) {
             this.viewEngine = viewEngine;
             return this;
@@ -99,7 +126,7 @@ public class TestServer {
 
         public Builder httpEndpoints(Class<? extends HttpEndpoint>... httpEndpoints) {
             if (Objects.nonNull(httpEndpoints)) {
-                providers.addAll(
+                this.httpEndpoints.addAll(
                     Arrays.asList(httpEndpoints)
                 );
             }
@@ -117,6 +144,18 @@ public class TestServer {
 
         public TestServer build() {
             assignPort();
+
+            if (!httpEndpoints.isEmpty()) {
+                providers.addAll(httpEndpoints);
+            }
+
+            if (!beforeInterceptors.isEmpty()) {
+                providers.addAll(beforeInterceptors);
+            }
+
+            if (!afterInterceptors.isEmpty()) {
+                providers.addAll(afterInterceptors);
+            }
 
             if (!viewEndpoints.isEmpty() && Objects.isNull(viewEngine)) {
                 viewEngine = DefaultStaticHTMLViewEngine.class;

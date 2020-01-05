@@ -399,4 +399,90 @@ public class _HttpEndpoints {
         }
 
     }
+
+    public static class BeforeInterceptorForURIEndpoint implements HttpEndpoint<Empty, Empty> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("uriinterceptbefore");
+        }
+
+        @Override
+        public Empty response(Request<Empty> request) {
+            return new Empty();
+        }
+
+    }
+
+    public static class AfterInterceptorForURIEndpoint implements HttpEndpoint<Empty, Empty> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("uriinterceptafter");
+        }
+
+        @Override
+        public Empty response(Request<Empty> request) {
+            return new Empty();
+        }
+
+    }
+
+    public static class HttpEndpointWithBeforeInterceptEndpoint implements HttpEndpoint<Empty, Empty> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("uriinterceptwithbefore");
+        }
+
+        @Override
+        public void before(Request<Empty> request) {
+            System.out.print("2");
+        }
+
+        @Override
+        public Empty response(Request<Empty> request) {
+            return new Empty();
+        }
+
+    }
+
+    public static class HttpEndpointWithAfterInterceptEndpoint implements HttpEndpoint<Empty, Empty> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("uriinterceptwithafter");
+        }
+
+        @Override
+        public void before(Request<Empty> request) {
+            System.out.print("2");
+        }
+
+        @Override
+        public Empty response(Request<Empty> request) {
+            return new Empty();
+        }
+
+    }
 }
