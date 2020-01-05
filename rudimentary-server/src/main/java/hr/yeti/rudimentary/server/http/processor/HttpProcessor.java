@@ -53,13 +53,14 @@ import javax.json.stream.JsonParsingException;
 public class HttpProcessor implements HttpHandler, Instance {
 
     private ExecutorService executorService;
-    private ExceptionHandler globalExceptionHandler = Instance.of(ExceptionHandler.class);
+    private ExceptionHandler globalExceptionHandler;
 
     @Override
     public void initialize() {
         this.executorService = Executors.newFixedThreadPool(
             Config.provider().property("server.threadPoolSize").asInt()
         );
+        this.globalExceptionHandler = Instance.of(ExceptionHandler.class);
     }
 
     @Override
