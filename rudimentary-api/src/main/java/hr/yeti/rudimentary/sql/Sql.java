@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.sql;
 
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,10 +16,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
- * Class used for database communication. Main goal of this class to reduce boilerplate code as much as possible and
- * just write Sql queries on the fly. Connection pool used is HikariCP.
+ * Class used for database communication. Main goal of this class to reduce boilerplate code as much
+ * as possible and just write Sql queries on the fly. Connection pool used is HikariCP.
  *
  * @see
  * <a href="https://brettwooldridge.github.io/HikariCP">https://brettwooldridge.github.io/HikariCP</a>
@@ -43,6 +45,36 @@ public final class Sql {
         }
 
         this.tx = tx;
+    }
+
+    /**
+     * Retrieve a list of results from database as type.
+     *
+     * @param sql Sql query.
+     * @param type Type to which Sql result will be converted.
+     * @param params Ordered Sql query parameters.
+     * @return A typed object.
+     */
+    public <T> List<T> rows(String sql, Class<T> type, Object... params) {
+        List<Map<String, Object>> rows = rows(sql, params);
+        return new Json(rows).asListOf(type);
+    }
+
+    /**
+     * Retrieve a list of results from database using row mapper function.
+     *
+     * @param sql Sql query.
+     * @param rowMapper Function which describes how columns are mapped to some object.
+     * @param params Ordered Sql query parameters.
+     * @return A typed object.
+     */
+    public <T> List<T> rows(String sql, RowMapper<T> rowMapper, Object... params) {
+        List<Map<String, Object>> rows = rows(sql, params);
+
+        return (List<T>) rows
+            .stream()
+            .map(rowMapper::map)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -98,7 +130,33 @@ public final class Sql {
     }
 
     /**
-     * Retrieve a single result from database.
+     * Retrieve a single result from database as type.
+     *
+     * @param sql Sql query.
+     * @param type Type to which Sql result will be converted.
+     * @param params Ordered Sql query parameters.
+     * @return A typed object.
+     */
+    public <T> T row(String sql, Class<T> type, Object... params) {
+        Map<String, Object> row = row(sql, params);
+        return new Json(row).as(type);
+    }
+
+    /**
+     * Retrieve a single result from database using row mapper function.
+     *
+     * @param sql Sql query.
+     * @param rowMapper Function which describes how columns are mapped to some object.
+     * @param params Ordered Sql query parameters.
+     * @return A typed object.
+     */
+    public <T> T row(String sql, RowMapper<T> rowMapper, Object... params) {
+        Map<String, Object> row = row(sql, params);
+        return (T) rowMapper.map(row);
+    }
+
+    /**
+     * Retrieve a single result from database as {@link Map}.
      *
      * @param sql Sql query.
      * @param params Ordered Sql query parameters.
@@ -206,7 +264,8 @@ public final class Sql {
     }
 
     /**
-     * Execute Sql transaction.By default, transaction will be rolled back for any {@link Exception}.
+     * Execute Sql transaction.By default, transaction will be rolled back for any
+     * {@link Exception}.
      *
      * @param <T> Type of result returned from transaction.
      * @param dataSourceId Id of the dataSource you want to use for the transactional query.
@@ -221,7 +280,8 @@ public final class Sql {
     }
 
     /**
-     * Execute Sql transaction. By default, transaction will be rolled back for any {@link Exception}.
+     * Execute Sql transaction. By default, transaction will be rolled back for any
+     * {@link Exception}.
      *
      * @param <T> Type of result returned from transaction.
      * @param txDef Transaction definition as functional interface.
@@ -243,8 +303,8 @@ public final class Sql {
      * @param dataSourceId Id of the dataSource you want to use for the transactional query.
      * @param txDef Transaction definition as functional interface.
      * @param rollbackOn Exceptions for which transaction will be rolled back.
-     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
-     * rollbackOn.
+     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
+     * priority than @param rollbackOn.
      * @return Transaction result.
      * @throws TransactionException
      *
@@ -300,8 +360,8 @@ public final class Sql {
      * @param <T> Type of result returned from transaction.
      * @param txDef Transaction definition as functional interface.
      * @param rollbackOn Exceptions for which transaction will be rolled back.
-     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
-     * rollbackOn.
+     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
+     * priority than @param rollbackOn.
      * @return Transaction result.
      * @throws TransactionException
      *
