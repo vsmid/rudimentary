@@ -1,5 +1,6 @@
-package hr.yeti.rudimentary.server.http.processor;
+package hr.yeti.rudimentary.server;
 
+import hr.yeti.rudimentary.events.Event;
 import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
@@ -49,6 +50,19 @@ public class _Models {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+    }
+
+    public static class BlogPost extends Model implements Event {
+
+        public String text;
+
+        public BlogPost() {
+        }
+        
+        public BlogPost(String text) {
+            this.text = text;
         }
 
     }

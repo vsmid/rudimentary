@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.server.http.processor;
+package hr.yeti.rudimentary.server;
 
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;

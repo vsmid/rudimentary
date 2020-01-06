@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.server.http.processor;
 
+import hr.yeti.rudimentary.server._HttpEndpoints;
 import hr.yeti.rudimentary.server.test.TestServer;
 import java.io.IOException;
 import java.net.URI;

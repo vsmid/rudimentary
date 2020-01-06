@@ -1,6 +1,8 @@
-package hr.yeti.rudimentary.server.http.processor;
+package hr.yeti.rudimentary.server;
 
+import hr.yeti.rudimentary.server._Models;
 import com.sun.net.httpserver.Headers;
+import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.MediaType;
 import hr.yeti.rudimentary.http.Request;
@@ -482,6 +484,33 @@ public class _HttpEndpoints {
         @Override
         public Empty response(Request<Empty> request) {
             return new Empty();
+        }
+
+    }
+
+    public static class BlogPostEventPublishingEndpoint implements HttpEndpoint<_Models.BlogPost, Text> {
+
+        public String text;
+        
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.POST;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("blogpost");
+        }
+
+        @Override
+        public Text response(Request<_Models.BlogPost> request) {            
+            if (request.getQueryParameters().get("type").equals("async")) {
+                request.getBody().publish(EventPublisher.Type.ASYNC);
+            } else {
+                request.getBody().publish(EventPublisher.Type.SYNC);
+            }
+            text = request.getBody().text;
+            return new Text(request.getBody().text);
         }
 
     }

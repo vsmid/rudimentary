@@ -1,7 +1,7 @@
 package hr.yeti.rudimentary.server.http.processor;
 
-import hr.yeti.rudimentary.exception.ExceptionInfo;
-import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
+import hr.yeti.rudimentary.server._ExceptionHandlers;
+import hr.yeti.rudimentary.server._HttpEndpoints;
 import hr.yeti.rudimentary.server.test.TestServer;
 import java.io.IOException;
 import java.net.URI;
@@ -21,7 +21,7 @@ public class HttpProcessorGlobalExceptionHanderTest {
     public static void beforeAll() {
         testServer = TestServer.newBuilder()
             .httpEndpoints(_HttpEndpoints.GlobalExceptionHandlerEndpoint.class)
-            .exceptionHandler(MyGlobalExceptionHandler.class)
+            .exceptionHandler(_ExceptionHandlers.MyGlobalExceptionHandler.class)
             .build();
         testServer.start();
     }
@@ -44,15 +44,6 @@ public class HttpProcessorGlobalExceptionHanderTest {
         then:
         assertEquals(999, response.statusCode());
         assertEquals("Damn!", response.body());
-    }
-
-    public static class MyGlobalExceptionHandler implements ExceptionHandler {
-
-        @Override
-        public ExceptionInfo onException(Exception e) {
-            return new ExceptionInfo(999, e.getMessage());
-        }
-
     }
 
 }
