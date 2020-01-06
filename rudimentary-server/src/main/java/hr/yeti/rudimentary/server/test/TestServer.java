@@ -21,6 +21,7 @@ import hr.yeti.rudimentary.security.spi.IdentityStore;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.mvc.DefaultStaticHTMLViewEngine;
+import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import hr.yeti.rudimentary.test.ContextMock;
 import java.io.IOException;
@@ -96,6 +97,7 @@ public class TestServer {
         private Class<? extends IdentityDetails> identityDetails;
         private Class<? extends ViewEngine> viewEngine;
         private Class<? extends ExceptionHandler> exceptionHandler;
+        private Class<? extends ShutdownHook> shutdownHook;
 
         private HttpServer server;
         private HttpContext httpContext;
@@ -162,6 +164,11 @@ public class TestServer {
 
         public Builder viewEngine(Class<? extends ViewEngine> viewEngine) {
             this.viewEngine = viewEngine;
+            return this;
+        }
+
+        public Builder shutdownHook(Class<? extends ShutdownHook> shutdownHook) {
+            this.shutdownHook = shutdownHook;
             return this;
         }
 
@@ -245,6 +252,10 @@ public class TestServer {
 
             if (Objects.nonNull(exceptionHandler)) {
                 providers.add(exceptionHandler);
+            }
+
+            if (Objects.nonNull(shutdownHook)) {
+                providers.add(shutdownHook);
             }
 
             if (Objects.nonNull(authMechanism)) {
