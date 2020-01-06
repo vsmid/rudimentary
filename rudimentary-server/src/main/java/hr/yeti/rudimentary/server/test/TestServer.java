@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpServer;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Context;
 import hr.yeti.rudimentary.context.spi.Instance;
+import hr.yeti.rudimentary.events.EventPublisher;
+import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
@@ -80,6 +82,7 @@ public class TestServer {
         private List<Class<? extends ViewEndpoint>> viewEndpoints = new ArrayList<>();
         private List<Class<? extends BeforeInterceptor>> beforeInterceptors = new ArrayList<>();
         private List<Class<? extends AfterInterceptor>> afterInterceptors = new ArrayList<>();
+        private List<Class<? extends EventListener>> eventListeners = new ArrayList<>();
         private Class<? extends ViewEngine> viewEngine;
         private Class<? extends ExceptionHandler> exceptionHandler;
 
@@ -109,6 +112,15 @@ public class TestServer {
             if (Objects.nonNull(afterInterceptors)) {
                 this.afterInterceptors.addAll(
                     Arrays.asList(afterInterceptors)
+                );
+            }
+            return this;
+        }
+
+        public Builder eventListeners(Class<? extends EventListener>... eventListeners) {
+            if (Objects.nonNull(eventListeners)) {
+                this.eventListeners.addAll(
+                    Arrays.asList(eventListeners)
                 );
             }
             return this;
@@ -157,13 +169,17 @@ public class TestServer {
                 providers.addAll(afterInterceptors);
             }
 
-            if (!viewEndpoints.isEmpty() && Objects.isNull(viewEngine)) {
-                viewEngine = DefaultStaticHTMLViewEngine.class;
-                providers.addAll(viewEndpoints);
+            if (!eventListeners.isEmpty()) {
+                providers.add(EventPublisher.class);
+                providers.addAll(eventListeners);
             }
 
-            if (Objects.nonNull(viewEngine)) {
+            if (!viewEndpoints.isEmpty()) {
+                if (Objects.isNull(viewEngine)) {
+                    viewEngine = DefaultStaticHTMLViewEngine.class;
+                }
                 providers.add(viewEngine);
+                providers.addAll(viewEndpoints);
             }
 
             if (Objects.nonNull(exceptionHandler)) {
