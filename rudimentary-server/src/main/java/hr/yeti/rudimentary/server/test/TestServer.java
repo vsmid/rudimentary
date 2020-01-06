@@ -18,6 +18,7 @@ import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.mvc.DefaultStaticHTMLViewEngine;
+import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import hr.yeti.rudimentary.test.ContextMock;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -85,6 +86,7 @@ public class TestServer {
         private List<Class<? extends AfterInterceptor>> afterInterceptors = new ArrayList<>();
         private List<Class<? extends EventListener>> eventListeners = new ArrayList<>();
         private List<Class<? extends HttpFilter>> httpFilters = new ArrayList<>();
+        private List<Class<? extends BasicDataSource>> dataSources = new ArrayList<>();
         private Class<? extends ViewEngine> viewEngine;
         private Class<? extends ExceptionHandler> exceptionHandler;
 
@@ -123,6 +125,15 @@ public class TestServer {
             if (Objects.nonNull(eventListeners)) {
                 this.eventListeners.addAll(
                     Arrays.asList(eventListeners)
+                );
+            }
+            return this;
+        }
+
+        public Builder dataSources(Class<? extends BasicDataSource>... dataSources) {
+            if (Objects.nonNull(dataSources)) {
+                this.dataSources.addAll(
+                    Arrays.asList(dataSources)
                 );
             }
             return this;
@@ -187,6 +198,10 @@ public class TestServer {
 
             if (!httpFilters.isEmpty()) {
                 providers.addAll(httpFilters);
+            }
+
+            if (!dataSources.isEmpty()) {
+                providers.addAll(dataSources);
             }
 
             if (!viewEndpoints.isEmpty()) {

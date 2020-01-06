@@ -18,6 +18,8 @@ import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
+import hr.yeti.rudimentary.sql.Sql;
+import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.net.URI;
@@ -491,7 +493,7 @@ public class _HttpEndpoints {
     public static class BlogPostEventPublishingEndpoint implements HttpEndpoint<_Models.BlogPost, Text> {
 
         public String text;
-        
+
         @Override
         public HttpMethod httpMethod() {
             return HttpMethod.POST;
@@ -503,7 +505,7 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public Text response(Request<_Models.BlogPost> request) {            
+        public Text response(Request<_Models.BlogPost> request) {
             if (request.getQueryParameters().get("type").equals("async")) {
                 request.getBody().publish(EventPublisher.Type.ASYNC);
             } else {
@@ -511,6 +513,41 @@ public class _HttpEndpoints {
             }
             text = request.getBody().text;
             return new Text(request.getBody().text);
+        }
+
+    }
+
+    public static class SqlEndpoint implements HttpEndpoint<Empty, Json> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("sql");
+        }
+
+        @Override
+        public Json response(Request<Empty> request) {
+            return new Json(Sql.query().rows("SELECT * FROM USERS;"));
+        }
+
+        @Override
+        public void initialize() {
+            Sql.tx((sql) -> {
+                sql.update("DROP TABLE IF EXISTS USERS;");
+                sql.update("CREATE TABLE USERS(ID, NAME);");
+                sql.update("INSERT INTO USERS(ID, NAME) VALUES(?, ?);", 1, "Lena");
+                sql.update("INSERT INTO USERS(ID, NAME) VALUES(?, ?);", 2, "Martina");
+                return null;
+            });
+        }
+
+        @Override
+        public Class[] dependsOn() {
+            return new Class[]{ BasicDataSource.class };
         }
 
     }
