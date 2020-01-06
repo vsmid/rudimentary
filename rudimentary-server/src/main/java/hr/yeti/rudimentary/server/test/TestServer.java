@@ -15,6 +15,9 @@ import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import hr.yeti.rudimentary.mvc.spi.ViewEngine;
+import hr.yeti.rudimentary.security.spi.AuthMechanism;
+import hr.yeti.rudimentary.security.spi.IdentityDetails;
+import hr.yeti.rudimentary.security.spi.IdentityStore;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.mvc.DefaultStaticHTMLViewEngine;
@@ -87,6 +90,9 @@ public class TestServer {
         private List<Class<? extends EventListener>> eventListeners = new ArrayList<>();
         private List<Class<? extends HttpFilter>> httpFilters = new ArrayList<>();
         private List<Class<? extends BasicDataSource>> dataSources = new ArrayList<>();
+        private Class<? extends AuthMechanism> authMechanism;
+        private Class<? extends IdentityStore> identityStore;
+        private Class<? extends IdentityDetails> identityDetails;
         private Class<? extends ViewEngine> viewEngine;
         private Class<? extends ExceptionHandler> exceptionHandler;
 
@@ -176,6 +182,21 @@ public class TestServer {
             return this;
         }
 
+        public Builder authMechanism(
+            Class<? extends AuthMechanism> authMechanism,
+            Class<? extends IdentityStore> identityStore,
+            Class<? extends IdentityDetails> identityDetails
+        ) {
+            if (Objects.nonNull(authMechanism)) {
+                this.authMechanism = authMechanism;
+                if (Objects.nonNull(identityStore)) {
+                    this.identityStore = identityStore;
+                    this.identityDetails = identityDetails;
+                }
+            }
+            return this;
+        }
+
         public TestServer build() {
             assignPort();
 
@@ -216,6 +237,19 @@ public class TestServer {
                 providers.add(exceptionHandler);
             }
 
+            if (Objects.nonNull(authMechanism)) {
+                providers.add(authMechanism);
+                if (Objects.nonNull(identityStore)) {
+                    providers.add(identityStore);
+                    if (Objects.nonNull(identityDetails)) {
+                        providers.add(identityDetails);
+                    }
+                }
+                if(eventListeners.isEmpty()) {
+                    providers.add(EventPublisher.class);
+                }
+            }
+
             this.context = new ContextMock(
                 this.config,
                 providers.toArray(Class[]::new)
@@ -231,6 +265,9 @@ public class TestServer {
             }
 
             httpContext = server.createContext("/", Instance.of(HttpProcessor.class));
+            if (Objects.nonNull(authMechanism)) {
+                httpContext.setAuthenticator(Instance.of(AuthMechanism.class));
+            }
 
             return new TestServer(this);
         }

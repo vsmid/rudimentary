@@ -551,4 +551,24 @@ public class _HttpEndpoints {
         }
 
     }
+
+    public static class AuthMechanismEndpoint implements HttpEndpoint<Empty, Text> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public URI path() {
+            return URI.create("auth");
+        }
+
+        @Override
+        public Text response(Request<Empty> request) {
+            return new Text(request.getIdentity().toString());
+        }
+
+    }
+
 }
