@@ -90,6 +90,7 @@ public class TestServer {
         private List<Class<? extends EventListener>> eventListeners = new ArrayList<>();
         private List<Class<? extends HttpFilter>> httpFilters = new ArrayList<>();
         private List<Class<? extends BasicDataSource>> dataSources = new ArrayList<>();
+        private List<Class<? extends Instance>> instances = new ArrayList<>();
         private Class<? extends AuthMechanism> authMechanism;
         private Class<? extends IdentityStore> identityStore;
         private Class<? extends IdentityDetails> identityDetails;
@@ -197,6 +198,15 @@ public class TestServer {
             return this;
         }
 
+        public Builder instances(Class<? extends Instance>... instances) {
+            if (Objects.nonNull(instances)) {
+                this.instances.addAll(
+                    Arrays.asList(instances)
+                );
+            }
+            return this;
+        }
+
         public TestServer build() {
             assignPort();
 
@@ -245,9 +255,13 @@ public class TestServer {
                         providers.add(identityDetails);
                     }
                 }
-                if(eventListeners.isEmpty()) {
+                if (eventListeners.isEmpty()) {
                     providers.add(EventPublisher.class);
                 }
+            }
+
+            if (!instances.isEmpty()) {
+                providers.addAll(instances);
             }
 
             this.context = new ContextMock(
