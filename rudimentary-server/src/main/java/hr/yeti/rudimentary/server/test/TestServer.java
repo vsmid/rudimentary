@@ -9,6 +9,7 @@ import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.URIUtils;
+import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
@@ -83,6 +84,7 @@ public class TestServer {
         private List<Class<? extends BeforeInterceptor>> beforeInterceptors = new ArrayList<>();
         private List<Class<? extends AfterInterceptor>> afterInterceptors = new ArrayList<>();
         private List<Class<? extends EventListener>> eventListeners = new ArrayList<>();
+        private List<Class<? extends HttpFilter>> httpFilters = new ArrayList<>();
         private Class<? extends ViewEngine> viewEngine;
         private Class<? extends ExceptionHandler> exceptionHandler;
 
@@ -121,6 +123,15 @@ public class TestServer {
             if (Objects.nonNull(eventListeners)) {
                 this.eventListeners.addAll(
                     Arrays.asList(eventListeners)
+                );
+            }
+            return this;
+        }
+
+        public Builder httpFilters(Class<? extends HttpFilter>... httpFilters) {
+            if (Objects.nonNull(httpFilters)) {
+                this.httpFilters.addAll(
+                    Arrays.asList(httpFilters)
                 );
             }
             return this;
@@ -172,6 +183,10 @@ public class TestServer {
             if (!eventListeners.isEmpty()) {
                 providers.add(EventPublisher.class);
                 providers.addAll(eventListeners);
+            }
+
+            if (!httpFilters.isEmpty()) {
+                providers.addAll(httpFilters);
             }
 
             if (!viewEndpoints.isEmpty()) {
