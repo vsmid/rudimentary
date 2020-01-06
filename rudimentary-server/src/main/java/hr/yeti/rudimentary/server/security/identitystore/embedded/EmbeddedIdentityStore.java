@@ -2,7 +2,6 @@ package hr.yeti.rudimentary.server.security.identitystore.embedded;
 
 import com.sun.net.httpserver.HttpPrincipal;
 import hr.yeti.rudimentary.config.ConfigProperty;
-import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.security.Credential;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.security.IdentityStoreException;
@@ -25,7 +24,6 @@ public class EmbeddedIdentityStore implements IdentityStore {
 
     private ConcurrentHashMap<String, Identity> identitiesMap = new ConcurrentHashMap<>();
 
-    // TODO Implement password salt pattern.
     @Override
     public boolean validate(Credential credential) {
         // For now only UernamePasswordCredential is supported.
@@ -46,10 +44,6 @@ public class EmbeddedIdentityStore implements IdentityStore {
     @Override
     public Identity<?> getIdentity(HttpPrincipal principal) {
         Identity identity = identitiesMap.get(principal.getUsername());
-        if (Objects.nonNull(identityDetails)) {
-            Object details = identityDetails.details(principal.getUsername(), principal.getRealm());
-            return new Identity(identity, details);
-        }
         return identity;
     }
 
@@ -94,7 +88,6 @@ public class EmbeddedIdentityStore implements IdentityStore {
             identitiesMap.put(username, new Identity(List.of(groups), List.of(roles), Objects.nonNull(detailsMap) ? detailsMap : null, username, password, realm.value()));
         }
 
-        identityDetails = Instance.of(IdentityDetails.class);
     }
 
     @Override
