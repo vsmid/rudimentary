@@ -279,6 +279,14 @@ public class TestServer {
                 this.config,
                 providers.toArray(Class[]::new)
             );
+            
+            if (Objects.nonNull(shutdownHook)) {
+                Runtime.getRuntime().addShutdownHook(
+                    new Thread(() -> {
+                        Instance.of(ShutdownHook.class).onShutdown();
+                    })
+                );
+            }
 
             try {
                 server = HttpServer.create(
