@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -44,7 +45,6 @@ public class HttpEndpointContextProvider implements Instance {
         PATTERN_PATHS_MAPPING.clear();
     }
 
-    // TODO Fix this, 405 is not reported
     public HttpEndpointMatchInfo matchEndpoint(URI path, HttpMethod httpMethod) {
         URI resolvedURI = URIUtils.removeSlashPrefix(path);
 
@@ -60,13 +60,22 @@ public class HttpEndpointContextProvider implements Instance {
         if (!match.isEmpty()) {
             pathMatchFound = true;
 
-            for (Map.Entry<Pattern, URI> entry : match) {
-                httpEndpoint = HTTP_ENDPOINTS.get(httpMethod + "@" + entry.getValue().toString());
-                if (Objects.nonNull(httpEndpoint)) {
-                    break;
+            Optional<Map.Entry<Pattern, URI>> exactMatch = match.stream()
+                .filter(entry -> {
+                    return entry.getValue().equals(URIUtils.removeSlashPrefix(path));
+                })
+                .findFirst();
+
+            if (exactMatch.isPresent()) {
+                httpEndpoint = HTTP_ENDPOINTS.get(httpMethod + "@" + exactMatch.get().getValue().toString());
+            } else {
+                for (Map.Entry<Pattern, URI> entry : match) {
+                    httpEndpoint = HTTP_ENDPOINTS.get(httpMethod + "@" + entry.getValue().toString());
+                    if (Objects.nonNull(httpEndpoint)) {
+                        break;
+                    }
                 }
             }
-
         }
         return new HttpEndpointMatchInfo(pathMatchFound, httpEndpoint);
     }
