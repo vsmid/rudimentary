@@ -39,7 +39,7 @@ Text response = endpoint.response(request));
 assertEquals("[]", response.getValue());
 ```
 
-### Using TestServer for real http tests
+### Testing aginst TestServer for real http tests
 To write real http test you can use `hr.yeti.rudimentary.server.test.TestServer`.
 This way you configure real http server and you will use http client to send http requests. You can check examples of 
 how `TestServer` is used and configured in rudimentary tests [here](https://github.com/vsmid/rudimentary/tree/master/rudimentary-server/src/test/java/hr/yeti/rudimentary/server/http/processor).
