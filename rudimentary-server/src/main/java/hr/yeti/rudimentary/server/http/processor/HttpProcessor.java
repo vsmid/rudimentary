@@ -226,7 +226,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         byte[] responseTransformed = null;
 
                         // Set http endpoint defined http headers
-                        exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(exchange.getRequestHeaders()));
+                        exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
 
                         if (response instanceof Empty) {
                             exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
@@ -257,7 +257,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                             exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
-                            try (InputStream is = staticResource.getValue()) {
+                            try ( InputStream is = staticResource.getValue()) {
                                 responseTransformed = is.readAllBytes();
                             }
 

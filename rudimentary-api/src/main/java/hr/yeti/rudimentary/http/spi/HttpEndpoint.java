@@ -88,14 +88,14 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
      */
     O response(Request<I> request);
 
-    // TODO Maybe use custom model for http headers ?
     /**
      * Sets HTTP headers to be return in a response.
      *
-     * @param requestHeaders Incoming http request headers.
+     * @param request Incoming HTTP request abstraction.
+     * @param response Outgoing response.
      * @return HTTP headers.
      */
-    default Headers responseHttpHeaders(Headers requestHeaders) {
+    default Headers responseHttpHeaders(Request<I> request, O response) {
         return new Headers();
     }
 

@@ -76,10 +76,9 @@ public Text response(Request<Empty> request) {
 ```
 ### Returning http headers
 In order to set which http headers to return, override *responseHttpHeaders* method.
-The same can also be achived through *response* method by using `request.getHttpExchange().getResponseHeaders()`.
 ```java
 @Override
-public Headers responseHttpHeaders(Headers requestHeaders) {
+public Headers responseHttpHeaders(Request<I> request, O response) {
     Headers newHeaders = new Headers();
     newHeaders.add("key", "value");
     return newHeaders;
