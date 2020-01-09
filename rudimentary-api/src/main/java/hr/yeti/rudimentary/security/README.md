@@ -87,9 +87,9 @@ mmeglic:pass::read,write;\
 ```
 ### Creating custom identity store
 Creating custom identity store is done by implementing `hr.yeti.rudimentary.security.spi.IdentityStore` interface.
-For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore* file. 
+For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore* file. This is already done by *rudimentary-maven-plugin* automatically.
 Federated identity store will perhaps be added in the future.
-Important thing to note is that you must ensure conditional loading of your custom IdentityStore provider. Here is the example:
+Important thing to note is that you must ensure conditional loading of your custom IdentityStore provider by checking `security.realm` property value. Here is the example:
 ```java
 public class CustomIdentityStore implements IdentityStore {
 ...
