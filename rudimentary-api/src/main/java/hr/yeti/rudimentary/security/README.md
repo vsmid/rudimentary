@@ -31,11 +31,6 @@ public final class CustomAuthMechanism extends AuthMechanism {
   public Result doAuth(HttpExchange exchange) {
     ...
   }
-  
-  @Override
-  public Identity getIdentity(HttpPrincipal principal) {
-    ...
-  }
 
   @Override
   public Class[] dependsOn() {
@@ -103,7 +98,7 @@ public boolean conditional() {
 
 #### Identity store interface
 * public boolean validate(Credential credential) - implement how user credentials are validated agains a resource. Intended use is in overriden `AuthMechanism#doAuth` method.
-* public Identity<?> getIdentity(HttpPrincipal principal) - implement how user info is retrieved. Intended use is in overriden  `IdentityStore#getIdentity` method.
+* public Identity<?> getIdentity(HttpPrincipal principal) - implement how user info is retrieved. Intended use is in overriden  `AuthMechanism#doAuth` method when setting new `Authenticator#Success` result.
 
 **Hint** - take a look at how `EmbeddedIdentityStore` is implemented.
 
