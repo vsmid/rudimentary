@@ -17,7 +17,6 @@ import hr.yeti.rudimentary.security.spi.IdentityDetails;
 public class EmbeddedIdentityStore implements IdentityStore {
 
     private ConfigProperty identities = new ConfigProperty("security.identityStore.embedded.identities");
-    private ConfigProperty enabled = new ConfigProperty("security.identityStore.embedded.enabled");
     private ConfigProperty realm = new ConfigProperty("security.realm");
 
     private IdentityDetails identityDetails;
@@ -92,12 +91,12 @@ public class EmbeddedIdentityStore implements IdentityStore {
 
     @Override
     public void destroy() {
-        
+
     }
 
     @Override
     public boolean conditional() {
-        return enabled.asBoolean();
+        return realm.value().equals("embedded");
     }
 
 }

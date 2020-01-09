@@ -6,6 +6,7 @@ module hr.yeti.rudimentary.server {
     requires java.net.http;
 
     exports hr.yeti.rudimentary.server;
+    exports hr.yeti.rudimentary.server.crypto;
     exports hr.yeti.rudimentary.server.test;    
     exports hr.yeti.rudimentary.server.http to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.http.processor to hr.yeti.rudimentary.api;

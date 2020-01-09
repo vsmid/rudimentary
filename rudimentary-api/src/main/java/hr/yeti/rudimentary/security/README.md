@@ -71,11 +71,11 @@ To start authenticated session on first successful authentication set `security.
 
 ## IdentityStore
 `hr.yeti.rudimentary.security.spi.IdentityStore` SPI is used to validate user credentials and to retrieve user's identity.
-Identity store should always be provided otherwise authentication machanism will not work.
+Identity store should always be provided otherwise authentication mechanism will not work. To enable specific IdentityStore you need to set `security.realm` to corresponding value.
+By default `security.realm` is set to `none`. Rudimentary for now offers only embedded identity store.
 
 ### Embedded identity store
-Rudimentary for now provides only embedded identity store. You can enable it by setting
-`security.identityStore.embedded.enabled`property to true.
+User identities are stored in memory. You can enable it by setting `security.realm`property to `embedded.
 
 #### Configuring embedded identity store identities
 This is done by setting `security.identityStore.embedded.identities`property.
@@ -87,7 +87,19 @@ mmeglic:pass::read,write;\
 ```
 ### Creating custom identity store
 Creating custom identity store is done by implementing `hr.yeti.rudimentary.security.spi.IdentityStore` interface.
-For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore* file. Federated identity store will be added in the future.
+For now only one provider is allowed and it can be registered in *src/main/resources/META-INF/services/hr.yeti.rudimentary.security.spi.IdentityStore* file. 
+Federated identity store will perhaps be added in the future.
+Important thing to note is that you must ensure conditional loading of your custom IdentityStore provider. Here is the example:
+```java
+public class CustomIdentityStore implements IdentityStore {
+...
+
+@Override
+public boolean conditional() {
+    return Config.provider().property("security.realm").value().equals("custom");
+}
+...
+```
 
 #### Identity store interface
 * public boolean validate(Credential credential) - implement how user credentials are validated agains a resource. Intended use is in overriden `AuthMechanism#doAuth` method.

@@ -26,8 +26,7 @@ public class HttpProcessorAuthMechanismTest {
             .config(
                 Map.of(
                     "security.basic.enabled", "true",
-                    "security.realm", "demo",
-                    "security.identityStore.embedded.enabled", "true",
+                    "security.realm", "embedded",
                     "security.identityStore.embedded.identities", "vsmid:pass:admins:rookie:email=vsmid@gmail.com,city=Zagreb;mmeglic:pass::read,write;",
                     "security.urisRequiringAuthentication", "auth",
                     "security.urisNotRequiringAuthentication", ""
@@ -56,7 +55,7 @@ public class HttpProcessorAuthMechanismTest {
 
         then:
         assertEquals(200, response.statusCode());
-        assertEquals("Identity{username=vsmid, realm=demo, groups=[admins], roles=[rookie], details={city=Zagreb, email=vsmid@gmail.com}}", response.body());
+        assertEquals("Identity{username=vsmid, realm=embedded, groups=[admins], roles=[rookie], details={city=Zagreb, email=vsmid@gmail.com}}", response.body());
     }
     
     @Test
