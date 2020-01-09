@@ -32,7 +32,7 @@ public class InactiveHttpSessionFilter extends HttpFilter {
     public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
         Map<String, HttpCookie> cookies = HttpRequestUtils.parseCookies(exchange.getRequestHeaders());
 
-        if (!cookies.isEmpty() || cookies.containsKey(Session.COOKIE)) {
+        if (!cookies.isEmpty() && cookies.containsKey(Session.COOKIE)) {
             String RSID = cookies.get(Session.COOKIE).getValue();
             Session session = (Session) exchange.getAttribute(RSID);
 
