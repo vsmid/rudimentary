@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.server.crypto;
 
 import hr.yeti.rudimentary.config.ConfigProperty;
+import hr.yeti.rudimentary.context.spi.Instance;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -8,7 +9,7 @@ import java.util.Base64;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class Pbkdf2 {
+public class Pbkdf2 implements Instance {
 
     private static final String ALGORITHM = "PBKDF2WithHmacSHA256";
 
