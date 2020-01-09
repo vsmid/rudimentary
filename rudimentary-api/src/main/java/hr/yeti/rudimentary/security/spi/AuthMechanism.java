@@ -2,14 +2,11 @@ package hr.yeti.rudimentary.security.spi;
 
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpPrincipal;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.EventPublisher;
-import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.session.Session;
-import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.security.event.AuthenticatedSessionEvent;
 import java.net.URI;
@@ -76,17 +73,6 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
      * @return Authentication result.
      */
     public abstract Result doAuth(HttpExchange exchange);
-
-    /**
-     * Implement user data retrieval.
-     *
-     * @param principal Current user in the form of {@link HttpPrincipal}.
-     * @return Fully identified user with details which will be available through
-     * {@link Request#getIdentity()} in {@link HttpEndpoint}.
-     *
-     * @See EmbeddedIdentityStore in rudimentary-server module for example.
-     */
-    public abstract Identity getIdentity(HttpPrincipal principal);
 
     /**
      * A method which is being called internally to execute authentication. This method should not

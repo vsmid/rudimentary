@@ -8,7 +8,6 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.content.Form;
-import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.security.UsernamePasswordCredential;
 import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.security.spi.IdentityStore;
@@ -63,7 +62,7 @@ public class LoginFormAuthMechanism extends AuthMechanism {
 
         if (identityStore.validate(new UsernamePasswordCredential(username, password))) {
             return new Authenticator.Success(
-                getIdentity(
+                identityStore.getIdentity(
                     new HttpPrincipal(
                         username, realm.value()
                     )
@@ -75,11 +74,6 @@ public class LoginFormAuthMechanism extends AuthMechanism {
             return new Authenticator.Failure(401);
         }
 
-    }
-
-    @Override
-    public Identity getIdentity(HttpPrincipal principal) {
-        return identityStore.getIdentity(principal);
     }
 
     @Override
