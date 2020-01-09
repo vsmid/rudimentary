@@ -36,9 +36,10 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
     protected List<Pattern> urisNotRequiringAuthenticationCache = new ArrayList<>();
 
     /**
-     * Set an array of string based URI's which require authentication. URI's should be in {@link Pattern} compatible
-     * format. Internally, during authentication each URI is treated as Pattern to see whether it matches incoming HTTP
-     * request URI. If match, authentication is performed.
+     * Set an array of string based URI's which require authentication. URI's should be in
+     * {@link Pattern} compatible format. Internally, during authentication each URI is treated as
+     * Pattern to see whether it matches incoming HTTP request URI. If match, authentication is
+     * performed.
      *
      * @return An array of strings representing URI's which require authentication.
      */
@@ -47,9 +48,10 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
     }
 
     /**
-     * Set an array of string based URI's which do not require authentication. URI's should be in {@link Pattern}
-     * compatible format. Internally, during authentication each URI is treated as Pattern to see whether it matches
-     * incoming HTTP request URI. If match, no authentication will be executed.
+     * Set an array of string based URI's which do not require authentication. URI's should be in
+     * {@link Pattern} compatible format. Internally, during authentication each URI is treated as
+     * Pattern to see whether it matches incoming HTTP request URI. If match, no authentication will
+     * be executed.
      *
      * @return An array of strings representing URI's which require authentication.
      */
@@ -58,8 +60,8 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
     }
 
     /**
-     * When user session is authenticated RSID is issued and Identity is tied to it to prevent full authentication
-     * process on subsequent requests.
+     * When user session is authenticated RSID is issued and Identity is tied to it to prevent full
+     * authentication process on subsequent requests.
      *
      * @return Whether or not successful authentication starts user authenticated session or not.
      */
@@ -78,28 +80,24 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
     /**
      * Implement user data retrieval.
      *
-     * @see rudimentary/rudimentary-exts/rudimentary-security-auth-basic-ext module for the usage of
-     * {@link IdentityStore}.
-     *
-     * @see rudimentary/rudimentary-exts/rudimentary-security-identitystore-embedded-ext module for the implementation
-     * of {@link IdentityStore}.
-     *
      * @param principal Current user in the form of {@link HttpPrincipal}.
-     * @return Fully identified user with details which will be available through {@link Request#getIdentity()} in
-     * {@link HttpEndpoint}.
+     * @return Fully identified user with details which will be available through
+     * {@link Request#getIdentity()} in {@link HttpEndpoint}.
+     *
+     * @See EmbeddedIdentityStore in rudimentary-server module for example.
      */
     public abstract Identity getIdentity(HttpPrincipal principal);
 
     /**
-     * A method which is being called internally to execute authentication. This method should not be used unless you
-     * really know what you are doing. This method internally calls
+     * A method which is being called internally to execute authentication. This method should not
+     * be used unless you really know what you are doing. This method internally calls
      * {@link AuthMechanism#doAuth(com.sun.net.httpserver.HttpExchange)} method.
      *
-     * Upon successful authentication for session based applications, a new {@link AuthenticatedSessionEvent} is
-     * published.
+     * Upon successful authentication for session based applications, a new
+     * {@link AuthenticatedSessionEvent} is published.
      *
-     * If URI does not require authentication or authentication is disabled, a user with default name of 'anonymous' is
-     * used as principal.
+     * If URI does not require authentication or authentication is disabled, a user with default
+     * name of 'anonymous' is used as principal.
      *
      * @param exchange Incoming HTTP request in the form of {@link HttpExchange}.
      * @return Authentication result.
@@ -117,8 +115,7 @@ public abstract class AuthMechanism extends Authenticator implements Instance {
 
                 if (result instanceof Success) {
                     // Set principal as identity with full identity info
-                    Identity identity = getIdentity(((Success) result).getPrincipal());
-                    result = new Authenticator.Success(identity);
+                    Identity identity = (Identity) ((Success) result).getPrincipal();
 
                     if (startAuthenticatedSessionOnSuccessfulAuth()) {
                         Session newSession = Session.acquire(exchange, true);

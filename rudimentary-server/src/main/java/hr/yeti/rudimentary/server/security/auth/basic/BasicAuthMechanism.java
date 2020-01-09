@@ -46,8 +46,10 @@ public final class BasicAuthMechanism extends AuthMechanism {
 
         if (identityStore.validate(new UsernamePasswordCredential(username, password))) {
             return new Authenticator.Success(
-                new HttpPrincipal(
-                    username, realm.value()
+                getIdentity(
+                    new HttpPrincipal(
+                        username, realm.value()
+                    )
                 )
             );
         } else {
