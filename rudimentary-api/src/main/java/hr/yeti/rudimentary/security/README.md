@@ -71,8 +71,8 @@ To start authenticated session on first successful authentication set `security.
 
 ## IdentityStore
 `hr.yeti.rudimentary.security.spi.IdentityStore` SPI is used to validate user credentials and to retrieve user's identity.
-Identity store should always be provided otherwise authentication mechanism will not work. To enable specific IdentityStore you need to set `security.realm` to corresponding value.
-By default `security.realm` is set to `none`. Rudimentary for now offers only embedded identity store.
+If security is enabled, identity store should(but not mandatory) be provided to make things more clear and standard. To enable specific IdentityStore you need to set `security.realm` to corresponding value.
+By default `security.realm` is set to `none`. Rudimentary for now offers only embedded identity store but you can easily add your own. Currently, only one provider of IdentityStore per application/service is supported.
 
 ### Embedded identity store
 User identities are stored in memory. You can enable it by setting `security.realm`property to `embedded.
