@@ -95,7 +95,7 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     public boolean mavenCompileProject() throws IOException, InterruptedException {
-        ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""), "compile", "package");
+        ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""), "compile", "package", "-DskipTests", "-DskipITs");
         builder.redirectErrorStream(true);
 
         Process compile = builder.start();
