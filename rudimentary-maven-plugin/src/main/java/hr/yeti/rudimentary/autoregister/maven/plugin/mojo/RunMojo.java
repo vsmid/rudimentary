@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -68,13 +69,17 @@ public class RunMojo extends AbstractMojo implements Command {
 
             if (Boolean.valueOf(debug)) {
                 debugSettings = " -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + debugPort + " ";
-                System.out.println("Debugger is listening on port " + debugPort);
             }
 
             systemProperties = Objects.isNull(props) ? "" : props;
             mainClass = parsePOMForMainClass();
 
-            mavenRunRudyApplication();
+            System.out.println("[Build #0]");
+            
+            if (mavenCompileProject()) {
+                mavenRunRudyApplication();
+            }
+
             registerTestRunner();
             readProcessStdOut();
 
@@ -83,21 +88,48 @@ public class RunMojo extends AbstractMojo implements Command {
                 watcher.processEvents();
             }
 
-        } catch (IOException | RuntimeException ex) {
+        } catch (IOException | RuntimeException | InterruptedException ex) {
             System.err.println(ex.getMessage());
             // Noop.
         }
     }
 
-    public void mavenRunRudyApplication() throws IOException {
-        System.out.println("...");
+    public boolean mavenCompileProject() throws IOException, InterruptedException {
+        ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""), "compile", "package");
+        builder.redirectErrorStream(true);
 
+        Process compile = builder.start();
+        compile.waitFor();
+
+        boolean success = compile.exitValue() == 0;
+
+        if (!success) {
+            String error = new String(compile.getInputStream().readAllBytes())
+                .lines()
+                .collect(Collectors.joining(System.lineSeparator()));
+
+            error
+                .substring(
+                    error.indexOf("[ERROR] COMPILATION ERROR : "),
+                    error.indexOf("[INFO] BUILD FAILURE")
+                )
+                .lines()
+                .filter(line -> line.startsWith("[ERROR]"))
+                .forEach(System.out::println);
+
+        }
+
+        return success;
+    }
+
+    public void mavenRunRudyApplication() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
             "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
             "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "compile", "package", "exec:exec");
 
         builder.redirectErrorStream(true);
         process = builder.start();
+        System.out.println("Debugger is listening on port " + debugPort);
     }
 
     public void readProcessStdOut() {

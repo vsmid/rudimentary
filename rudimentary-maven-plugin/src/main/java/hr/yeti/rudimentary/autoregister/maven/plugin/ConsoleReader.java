@@ -18,21 +18,24 @@ public class ConsoleReader implements Runnable {
 
     @Override
     public void run() {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(cmd.process.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null && !stop) {
-                if (Objects.isNull(cmd.pid)) {
-                    if (line.contains("[Java PID=") && line.endsWith("]...")) {
-                        cmd.pid = line.substring(line.indexOf("=") + 1, line.indexOf("]"));
+        if (Objects.nonNull(cmd.process)) {
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(cmd.process.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null && !stop) {
+                    if (Objects.isNull(cmd.pid)) {
+                        if (line.contains("[Java PID=") && line.endsWith("]...")) {
+                            cmd.pid = line.substring(line.indexOf("=") + 1, line.indexOf("]"));
+                            System.out.println(line);
+                        }
+                    } else {
                         System.out.println(line);
                     }
-                } else {
-                    System.out.println(line);
                 }
+
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
         }
     }
 

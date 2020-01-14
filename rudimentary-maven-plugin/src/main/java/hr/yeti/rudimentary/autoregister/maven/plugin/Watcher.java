@@ -8,6 +8,7 @@ import static java.nio.file.LinkOption.*;
 import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Watcher {
 
@@ -17,6 +18,8 @@ public class Watcher {
     private boolean trace = false;
 
     private RunMojo cmd;
+    
+    private AtomicInteger buildCounter = new AtomicInteger(1);
 
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>) event;
@@ -71,7 +74,7 @@ public class Watcher {
         this.trace = false;
     }
 
-    public void processEvents() throws IOException {
+    public void processEvents() throws IOException, InterruptedException {
         for (;;) {
 
             WatchKey key;
@@ -112,15 +115,20 @@ public class Watcher {
                     || child.toString().startsWith("pom.xml"));
             }
 
-            if (reload && Objects.nonNull(cmd.pid)) {
-                System.out.println(System.lineSeparator() + "Changes detected...initiating reload....");
+            if (reload) {
+                System.out.println(System.lineSeparator() + "[Build #" +  buildCounter.getAndIncrement() + "]");
 
-                ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
-                cmd.consoleReader.setStop(true);
-                cmd.pid = null;
+                if (cmd.mavenCompileProject()) {
+                    if (Objects.nonNull(cmd.pid)) {
+                        ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
+                        cmd.consoleReader.setStop(true);
+                        cmd.pid = null;
+                    }
 
-                cmd.mavenRunRudyApplication();
-                cmd.readProcessStdOut();
+                    cmd.mavenRunRudyApplication();
+                    cmd.readProcessStdOut();
+                }
+
             }
 
             boolean valid = key.reset();
