@@ -74,7 +74,7 @@ public class RunMojo extends AbstractMojo implements Command {
             systemProperties = Objects.isNull(props) ? "" : props;
             mainClass = parsePOMForMainClass();
 
-            System.out.println("[Build #0]");
+            System.out.println("[Iteration #0]");
             
             if (mavenCompileProject()) {
                 mavenRunRudyApplication();

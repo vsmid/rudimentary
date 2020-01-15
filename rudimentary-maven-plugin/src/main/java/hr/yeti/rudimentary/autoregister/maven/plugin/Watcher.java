@@ -18,7 +18,7 @@ public class Watcher {
     private boolean trace = false;
 
     private RunMojo cmd;
-    
+
     private AtomicInteger buildCounter = new AtomicInteger(1);
 
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -116,12 +116,12 @@ public class Watcher {
             }
 
             if (reload) {
-                System.out.println(System.lineSeparator() + "[Build #" +  buildCounter.getAndIncrement() + "]");
+                System.out.println(System.lineSeparator() + "[Iteration #" + buildCounter.getAndIncrement() + "]");
 
                 if (cmd.mavenCompileProject()) {
                     if (Objects.nonNull(cmd.pid)) {
-                        ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
                         cmd.consoleReader.setStop(true);
+                        ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
                         cmd.pid = null;
                     }
 
