@@ -44,6 +44,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.json.JsonValue;
 import javax.json.bind.JsonbBuilder;
@@ -137,6 +138,14 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                             ConstraintViolations violations = Validator.validate(constraints);
                             if (!violations.getList().isEmpty()) {
+                                
+                                String message = violations.getList()
+                                    .stream()
+                                    .filter(vr -> vr.getReason().isPresent())
+                                    .map(vr -> vr.getReason().get())
+                                    .collect(Collectors.joining("." + System.lineSeparator()));
+                                
+                                exchange.getResponseHeaders().add("Reason", message);
                                 respond(400, "Bad request".getBytes(), exchange);
                                 return;
                             }

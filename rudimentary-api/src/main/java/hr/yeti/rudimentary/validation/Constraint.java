@@ -28,11 +28,11 @@ public interface Constraint extends Function<Object, ValidationResult> {
     }
 
     static Constraint MIN_LENGTH(int value) {
-        return (o) -> new ValidationResult(Objects.nonNull(o) && o.toString().length() >= value, Optional.of(o.toString().length() + " < " + value + "."));
+        return (o) -> new ValidationResult(Objects.nonNull(o) && o.toString().length() >= value, Optional.of("String length is " + o.toString().length() + ". Minimum allowed length is < " + value + "."));
     }
 
     static Constraint MAX_LENGTH(int value) {
-        return (o) -> new ValidationResult(Objects.nonNull(o) && o.toString().length() <= value, Optional.of(o.toString().length() + " > " + value + "."));
+        return (o) -> new ValidationResult(Objects.nonNull(o) && o.toString().length() <= value, Optional.of("String length is " + o.toString().length() + ". Maximum allowed value is > " + value + "."));
     }
 
     static Constraint REGEX(Pattern pattern) {
