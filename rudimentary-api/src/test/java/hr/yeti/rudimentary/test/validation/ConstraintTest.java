@@ -86,4 +86,20 @@ public class ConstraintTest {
         assertFalse(Constraint.REGEX(Pattern.compile("B_\\w+_E")).apply("Test123").isValid());
     }
 
+    @Test
+    public void test_MIN_LENGTH_constraint() {
+        expect:
+        assertTrue(Constraint.MIN_LENGTH(2).apply("Test").isValid());
+        assertTrue(Constraint.MIN_LENGTH(2).apply("Te").isValid());
+        assertFalse(Constraint.MIN_LENGTH(2).apply("T").isValid());
+    }
+
+    @Test
+    public void test_MAX_LENGTH_constraint() {
+        expect:
+        assertTrue(Constraint.MAX_LENGTH(2).apply("T").isValid());
+        assertTrue(Constraint.MAX_LENGTH(2).apply("Te").isValid());
+        assertFalse(Constraint.MAX_LENGTH(2).apply("Test").isValid());
+    }
+
 }
