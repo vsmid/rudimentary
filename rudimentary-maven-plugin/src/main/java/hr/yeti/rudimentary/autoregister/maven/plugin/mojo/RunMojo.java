@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -67,6 +69,20 @@ public class RunMojo extends AbstractMojo implements Command {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
+
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        if (isWindowsOS()) {
+                            Runtime.getRuntime().exec("taskkill /F /PID " + pid);
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(RunMojo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            });
 
             if (Boolean.valueOf(debug)) {
                 debugSettings = " -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=" + debugPort + " ";
@@ -142,6 +158,7 @@ public class RunMojo extends AbstractMojo implements Command {
     public void readProcessStdOut() {
         this.consoleReader = new ConsoleReader(this);
         new Thread(this.consoleReader).start();
+
     }
 
     public void registerTestRunner() {

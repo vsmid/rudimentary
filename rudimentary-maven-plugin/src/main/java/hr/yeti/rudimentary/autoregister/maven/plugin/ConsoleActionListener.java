@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.autoregister.maven.plugin;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -18,10 +19,14 @@ public class ConsoleActionListener implements Runnable {
         Scanner in = new Scanner(System.in);
 
         while (true) {
-            String entry = in.nextLine();
+            try {
+                String entry = in.nextLine();
 
-            if (entry.equals(reactOn)) {
-                action.accept(entry);
+                if (entry.equals(reactOn)) {
+                    action.accept(entry);
+                }
+            } catch (NoSuchElementException e) {
+                // Noop.
             }
         }
 
