@@ -75,7 +75,7 @@ public class RunMojo extends AbstractMojo implements Command {
             mainClass = parsePOMForMainClass();
 
             System.out.println("[Iteration #0]");
-            
+
             if (mavenCompileProject()) {
                 mavenRunRudyApplication();
             }
@@ -95,7 +95,7 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     public boolean mavenCompileProject() throws IOException, InterruptedException {
-        ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""), "compile", "package", "-DskipTests", "-DskipITs");
+        ProcessBuilder builder = new ProcessBuilder(mvn(), "compile", "package", "-DskipTests", "-DskipITs");
         builder.redirectErrorStream(true);
 
         Process compile = builder.start();
@@ -123,7 +123,7 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     public void mavenRunRudyApplication() throws IOException {
-        ProcessBuilder builder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
+        ProcessBuilder builder = new ProcessBuilder(mvn(),
             "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
             "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "compile", "package", "exec:exec");
 
@@ -140,12 +140,12 @@ public class RunMojo extends AbstractMojo implements Command {
     public void registerTestRunner() {
         new Thread(new ConsoleActionListener(ENTER, (input) -> {
             try {
-                ProcessBuilder testBuilder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
+                ProcessBuilder testBuilder = new ProcessBuilder(mvn(),
                     "test-compile", "surefire:test");
                 Process test = testBuilder.inheritIO().start();
                 test.waitFor();
 
-                ProcessBuilder iTestBuilder = new ProcessBuilder(mvn() + "/bin/mvn" + (isWindowsOS() ? ".cmd" : ""),
+                ProcessBuilder iTestBuilder = new ProcessBuilder(mvn(),
                     "failsafe:integration-test");
                 Process iTest = iTestBuilder.inheritIO().start();
                 iTest.waitFor();
@@ -156,7 +156,7 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     private String parsePOMForMainClass() {
-        try (FileInputStream pom = new FileInputStream("pom.xml")) {
+        try ( FileInputStream pom = new FileInputStream("pom.xml")) {
             String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
 
             Matcher matcher = pattern.matcher(pomContent);
@@ -173,23 +173,17 @@ public class RunMojo extends AbstractMojo implements Command {
     private String mvn() {
         String mvn = System.getenv("M2_HOME");
 
-        if (Objects.nonNull(mvn)) {
-            return mvn;
+        if (Objects.isNull(mvn)) {
+            mvn = System.getenv("MAVEN_HOME");
+            if (Objects.nonNull(mvn)) {
+                mvn = System.getProperty("maven.home");
+            }
+        }
+        if (Objects.isNull(mvn)) {
+            throw new RuntimeException("Is Maven installed on your machine? Try setting M2_HOME env. variable.");
         }
 
-        mvn = System.getenv("MAVEN_HOME");
-
-        if (Objects.nonNull(mvn)) {
-            return mvn;
-        }
-
-        mvn = System.getProperty("maven.home");
-
-        if (Objects.nonNull(mvn)) {
-            return mvn;
-        }
-
-        throw new RuntimeException("Is Maven installed on your machine? Try setting M2_HOME env. variable.");
+        return mvn + File.separator + "bin" + File.separator + "mvn" + (isWindowsOS() ? ".cmd" : "");
     }
 
 }
