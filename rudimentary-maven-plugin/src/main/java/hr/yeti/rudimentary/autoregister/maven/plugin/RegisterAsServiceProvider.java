@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
@@ -128,7 +129,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
         int javaSourcesIndex = filePath.indexOf("java") + ("java" + File.separator).length();
         String canonicalProviderName = filePath.substring(javaSourcesIndex, filePath.lastIndexOf("."));
 
-        String resolvedProviderName = String.join(".", canonicalProviderName.split(File.separator));
+        String resolvedProviderName = String.join(".", canonicalProviderName.split(Pattern.quote(File.separator)));
         return resolvedProviderName;
     }
 
