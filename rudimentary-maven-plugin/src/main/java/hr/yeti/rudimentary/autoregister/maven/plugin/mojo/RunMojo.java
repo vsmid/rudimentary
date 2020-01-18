@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,13 +99,19 @@ public class RunMojo extends AbstractMojo implements Command {
         ProcessBuilder builder = new ProcessBuilder(mvn(), "compile", "package", "-DskipTests", "-DskipITs");
         builder.redirectErrorStream(true);
 
+        File output = File.createTempFile("output", "rudi");
+        builder.redirectOutput(output);
+
+        File input = File.createTempFile("input", "rudi");
+        builder.redirectInput(input);
+
         Process compile = builder.start();
         compile.waitFor();
 
         boolean success = compile.exitValue() == 0;
 
         if (!success) {
-            String error = new String(compile.getInputStream().readAllBytes())
+            String error = new String(Files.readAllBytes(output.toPath()))
                 .lines()
                 .collect(Collectors.joining(System.lineSeparator()));
 
