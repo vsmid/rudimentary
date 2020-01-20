@@ -4,6 +4,7 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,6 +39,23 @@ public class I18n {
      */
     public static String text(String key, Object... params) {
         return text(key, resolveDefaultLocale(), params);
+    }
+
+    /**
+     * Get text message for the default locale with default message provided.Default message will be
+     * used in case no value is found for the key in any of the resource bundles.
+     *
+     * @param key Property key under which value is stored in property file.
+     * @param defaultMessage Default message.
+     * @param params Parameters passed to {@link MessageFormat#format} method.
+     * @return Formatted text message.
+     */
+    public static String text(String key, String defaultMessage, Object... params) {
+        try {
+            return text(key, resolveDefaultLocale(), params);
+        } catch (MissingResourceException e) {
+            return MessageFormat.format(defaultMessage, params);
+        }
     }
 
     /**

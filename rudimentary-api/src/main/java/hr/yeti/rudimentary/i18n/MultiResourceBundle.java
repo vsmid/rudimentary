@@ -5,10 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -62,11 +62,10 @@ public class MultiResourceBundle extends ResourceBundle {
     private void set(Locale locale) {
         ConfigProperty bundles = new ConfigProperty("i18n.bundles");
 
-        delegates = new ArrayList<>();
+        delegates = new LinkedList<>();
 
-        Set<String> bundlesList = new HashSet<>();
+        Set<String> bundlesList = new LinkedHashSet<>();
         bundlesList.addAll(List.of(bundles.asArray()));
-        bundlesList.add("classpath:validation");
 
         bundlesList.forEach((bundle) -> {
             ResourceBundle resourceBundle = null;
