@@ -65,7 +65,9 @@ public class MultiResourceBundle extends ResourceBundle {
         delegates = new LinkedList<>();
 
         Set<String> bundlesList = new LinkedHashSet<>();
-        bundlesList.addAll(List.of(bundles.asArray()));
+        if (!bundles.isNull()) {
+            bundlesList.addAll(List.of(bundles.asArray()));
+        }
 
         bundlesList.forEach((bundle) -> {
             ResourceBundle resourceBundle = null;
