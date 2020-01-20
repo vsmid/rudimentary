@@ -20,6 +20,7 @@ import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.security.spi.IdentityStore;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
+import hr.yeti.rudimentary.server.i18n.MultiResourceBundle;
 import hr.yeti.rudimentary.server.mvc.DefaultStaticHTMLViewEngine;
 import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
@@ -76,6 +77,7 @@ public class TestServer {
                 put("server.stopDelay", "0");
                 put("mvc.templatesDir", "view");
                 put("mvc.staticResourcesDir", "static");
+                put("i18n.locale", "");
             }
         };
         private Set<Class<? extends Instance>> providers = new HashSet<>() {
@@ -217,6 +219,10 @@ public class TestServer {
         public TestServer build() {
             assignPort();
 
+            if (config.containsKey("i18n.bundles")) {
+                this.providers.add(MultiResourceBundle.class);
+            }
+
             if (!httpEndpoints.isEmpty()) {
                 providers.addAll(httpEndpoints);
             }
@@ -279,7 +285,7 @@ public class TestServer {
                 this.config,
                 providers.toArray(Class[]::new)
             );
-            
+
             if (Objects.nonNull(shutdownHook)) {
                 Runtime.getRuntime().addShutdownHook(
                     new Thread(() -> {

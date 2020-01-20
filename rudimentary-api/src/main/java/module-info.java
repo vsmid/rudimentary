@@ -39,6 +39,8 @@ module hr.yeti.rudimentary.api {
     exports hr.yeti.rudimentary.sql.spi;
 
     exports hr.yeti.rudimentary.validation;
+    
+    exports hr.yeti.rudimentary.i18n;
 
     exports hr.yeti.rudimentary.shutdown.spi;
 
