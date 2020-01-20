@@ -227,6 +227,9 @@ public class ConfigProperty {
      * @return Whether or not value is blank(length = 0) as boolean.
      */
     public boolean isBlank(boolean trim) {
+        if(Objects.isNull(value)) {
+            return false;
+        }
         String val = trim ? this.value.trim() : this.value;
         return val.length() == 0;
     }
