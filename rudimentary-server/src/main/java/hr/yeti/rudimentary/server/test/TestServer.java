@@ -20,7 +20,6 @@ import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.security.spi.IdentityStore;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
-import hr.yeti.rudimentary.server.i18n.MultiResourceBundle;
 import hr.yeti.rudimentary.server.mvc.DefaultStaticHTMLViewEngine;
 import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
@@ -218,10 +217,6 @@ public class TestServer {
 
         public TestServer build() {
             assignPort();
-
-            if (config.containsKey("i18n.bundles")) {
-                this.providers.add(MultiResourceBundle.class);
-            }
 
             if (!httpEndpoints.isEmpty()) {
                 providers.addAll(httpEndpoints);

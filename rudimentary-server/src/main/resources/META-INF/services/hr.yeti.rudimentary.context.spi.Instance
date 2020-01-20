@@ -4,4 +4,3 @@ hr.yeti.rudimentary.events.EventPublisher
 hr.yeti.rudimentary.server.security.csrf.CsrfTokenStore
 hr.yeti.rudimentary.server.email.smtp.SmtpSessionPoolProvider
 hr.yeti.rudimentary.server.crypto.Pbkdf2
-hr.yeti.rudimentary.server.i18n.MultiResourceBundle

@@ -24,7 +24,6 @@ module hr.yeti.rudimentary.server {
     exports hr.yeti.rudimentary.server.healthcheck to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.apidocs to hr.yeti.rudimentary.api; 
     exports hr.yeti.rudimentary.server.config to hr.yeti.rudimentary.api;
-    exports hr.yeti.rudimentary.server.i18n to hr.yeti.rudimentary.api;
     
     uses hr.yeti.rudimentary.http.spi.HttpEndpoint;
     uses hr.yeti.rudimentary.config.spi.Config;
