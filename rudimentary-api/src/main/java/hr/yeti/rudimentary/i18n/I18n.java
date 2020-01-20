@@ -4,7 +4,6 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,7 +40,7 @@ public class I18n {
         return text(key, resolveDefaultLocale(), params);
     }
 
-     /**
+    /**
      * Get text message for the given locale.
      *
      * @param key Property key under which value is stored in property file.
@@ -65,7 +64,7 @@ public class I18n {
 
     public static Locale resolveDefaultLocale() {
         ConfigProperty localeProperty = new ConfigProperty("i18n.locale");
-        if (Objects.isNull(localeProperty.value()) || localeProperty.isBlank(true)) {
+        if (localeProperty.isNull() || localeProperty.isBlank(true)) {
             return Locale.getDefault();
         }
         return Locale.forLanguageTag(localeProperty.value());

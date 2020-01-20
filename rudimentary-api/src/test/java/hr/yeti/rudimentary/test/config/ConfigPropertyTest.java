@@ -195,4 +195,11 @@ public class ConfigPropertyTest {
         assertFalse(new ConfigProperty("val", "val").isBlank(false));
         assertFalse(new ConfigProperty("val", "val").isBlank(true));
     }
+
+    @Test
+    public void test_isNull() {
+        expect:
+        assertTrue(new ConfigProperty("val", null).isNull());
+        assertFalse(new ConfigProperty("val", "1").isNull());
+    }
 }
