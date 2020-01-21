@@ -1,11 +1,12 @@
 package hr.yeti.rudimentary.security;
 
 import hr.yeti.rudimentary.http.Request;
+import hr.yeti.rudimentary.http.content.Model;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public interface Authorization extends Predicate<Request> {
+public interface Authorization<I extends Model> extends Predicate<Request<I>> {
 
     static Predicate<Request> rolesAllowed(String... roles) {
         if (Objects.isNull(roles) || roles.length == 0) {

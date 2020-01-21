@@ -2,6 +2,7 @@ package hr.yeti.rudimentary.http;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.security.Identity;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
  * @author vedransmid@yeti-it.hr
  * @param <T> Incoming HTTP request body type.
  */
-public class Request<T> {
+public class Request<T extends Model> {
 
     private Identity identity;
     private Headers httpHeaders;

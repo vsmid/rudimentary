@@ -139,7 +139,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         Request request = new Request(
                             (Identity) exchange.getPrincipal(),
                             exchange.getRequestHeaders(),
-                            value,
+                            (Model) value,
                             pathVariables,
                             queryParameters,
                             exchange.getRequestURI(),
