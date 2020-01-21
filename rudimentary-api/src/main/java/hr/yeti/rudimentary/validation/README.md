@@ -121,6 +121,8 @@ At any time you can add your own, custom ones.
 * NOT_EMPTY - Value is not empty, length > 0
 * MIN - Minimum integer value allowed
 * MAX - Maximum integer value allowed
+* MIN_LENGTH - Minimum length of string allowed
+* MAX_LENGTH - Maximum length of string allowed
 * REGEX - Value matches regular expression
 
 #### Custom constraint on-the-fly
