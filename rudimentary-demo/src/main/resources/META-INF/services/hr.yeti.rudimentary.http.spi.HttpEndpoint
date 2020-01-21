@@ -14,3 +14,4 @@ hr.yeti.rudimentary.demo.endpoint.SessionEndpoint
 hr.yeti.rudimentary.demo.endpoint.StreamOutEndpoint
 hr.yeti.rudimentary.demo.endpoint.StreamInEndpoint
 hr.yeti.rudimentary.demo.endpoint.AuthorizedEndpoint
+hr.yeti.rudimentary.demo.endpoint.I18nEndpoint
