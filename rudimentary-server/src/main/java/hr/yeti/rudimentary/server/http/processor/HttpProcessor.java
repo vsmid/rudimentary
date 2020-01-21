@@ -102,9 +102,9 @@ public class HttpProcessor implements HttpHandler, Instance {
                         );
                         Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
 
-                        try {
+                        List<Constraints> constraintsList = new ArrayList<>();
 
-                            List<Constraints> constraintsList = new ArrayList<>();
+                        try {
 
                             if (requestBodyModelType.isAssignableFrom(Empty.class)) {
                                 value = new Empty();
@@ -130,26 +130,6 @@ public class HttpProcessor implements HttpHandler, Instance {
                                 constraintsList.add(((Model) value).constraints());
                             }
 
-                            constraintsList.add(httpEndpoint.constraints(
-                                (Model) value, pathVariables, queryParameters, exchange.getRequestHeaders()
-                            ));
-
-                            Constraints[] constraints = constraintsList.stream().toArray(Constraints[]::new);
-
-                            ConstraintViolations violations = Validator.validate(constraints);
-                            if (!violations.getList().isEmpty()) {
-                                
-                                String message = violations.getList()
-                                    .stream()
-                                    .filter(vr -> vr.getReason().isPresent())
-                                    .map(vr -> vr.getReason().get())
-                                    .collect(Collectors.joining("." + System.lineSeparator()));
-                                
-                                exchange.getResponseHeaders().add("Reason", message);
-                                respond(400, "Bad request".getBytes(), exchange);
-                                return;
-                            }
-
                         } catch (JsonbException e) {
                             respond(400, "Bad request.".getBytes(), exchange);
                             return;
@@ -165,6 +145,24 @@ public class HttpProcessor implements HttpHandler, Instance {
                             exchange.getRequestURI(),
                             exchange
                         );
+
+                        constraintsList.add(httpEndpoint.constraints(request));
+
+                        Constraints[] constraints = constraintsList.stream().toArray(Constraints[]::new);
+
+                        ConstraintViolations violations = Validator.validate(constraints);
+                        if (!violations.getList().isEmpty()) {
+
+                            String message = violations.getList()
+                                .stream()
+                                .filter(vr -> vr.getReason().isPresent())
+                                .map(vr -> vr.getReason().get())
+                                .collect(Collectors.joining("." + System.lineSeparator()));
+
+                            exchange.getResponseHeaders().add("Reason", message);
+                            respond(400, "Bad request".getBytes(), exchange);
+                            return;
+                        }
 
                         // Check authorizations
                         Predicate<Request> authorizations = httpEndpoint.authorizations();

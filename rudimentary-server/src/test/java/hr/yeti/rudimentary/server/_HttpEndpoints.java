@@ -1,7 +1,6 @@
 package hr.yeti.rudimentary.server;
 
 import hr.yeti.rudimentary.server._Models;
-import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.MediaType;
@@ -310,10 +309,10 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public Constraints constraints(Text body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
+        public Constraints constraints(Request<Text> request) {
             return new Constraints() {
                 {
-                    o(body.getValue(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
+                    o(request.getBody().getValue(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
                 }
             };
         }
@@ -370,10 +369,10 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public Constraints constraints(Text body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
+        public Constraints constraints(Request<Text> request) {
             return new Constraints() {
                 {
-                    o(body.getValue(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
+                    o(request.getBody().getValue(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
                 }
             };
         }

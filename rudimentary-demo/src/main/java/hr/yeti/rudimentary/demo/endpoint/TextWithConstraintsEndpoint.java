@@ -1,6 +1,5 @@
 package hr.yeti.rudimentary.demo.endpoint;
 
-import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
@@ -9,7 +8,6 @@ import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.net.URI;
-import java.util.Map;
 
 public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
@@ -31,15 +29,10 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
     }
 
     @Override
-    public Constraints constraints(
-        Text body,
-        Map<String, String> pathVariables,
-        Map<String, String> queryParameters,
-        Headers httpHeaders
-    ) {
+    public Constraints constraints(Request<Text> request) {
         return new Constraints() {
             {
-                o(body.getValue(), Constraint.NOT_EMPTY);
+                o(request.getBody().getValue(), Constraint.NOT_EMPTY);
             }
         };
     }

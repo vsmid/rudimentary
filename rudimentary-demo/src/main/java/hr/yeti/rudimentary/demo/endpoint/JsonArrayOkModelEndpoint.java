@@ -1,7 +1,6 @@
 package hr.yeti.rudimentary.demo.endpoint;
 
 import hr.yeti.rudimentary.demo.model.OkModel;
-import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Json;
@@ -9,7 +8,6 @@ import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.net.URI;
-import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,11 +29,11 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
     }
 
     @Override
-    public Constraints constraints(Json body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
+    public Constraints constraints(Request<Json> request) {
         //Manually define constraints for raw JSON array if you do not have a type
         /*new Constraints() {
       {
-        body.getValue()
+        request.getBody().getValue()
             .asJsonArray()
             .forEach(
                 json -> {
@@ -45,7 +43,7 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
       }
     };*/
 
-        return new Constraints(body, OkModel.class);
+        return new Constraints(request.getBody(), OkModel.class);
     }
 
     @Override

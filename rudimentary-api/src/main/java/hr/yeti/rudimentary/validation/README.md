@@ -17,16 +17,11 @@ import static hr.yeti.rudimentary.validation.Constraint.NOT_NULL;
 public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
     @Override
-    public Constraints constraints(
-        Text body,
-        Map<String, String> pathVariables,
-        Map<String, String> queryParameters,
-        Headers httpHeaders
-    ) {
+    public Constraints constraints(Request<Text> request) {
         return new Constraints() {
             {
-                o(body.getValue(), NOT_NULL);
-                o(body.getValue(), NOT_EMPTY);
+                o(request.getBody().getValue(), NOT_NULL);
+                o(request.getBody().getValue(), NOT_EMPTY);
             }
         };
     }
@@ -80,13 +75,11 @@ If you wish to work with incoming request body as `Json` but still have a `POJO`
 public class JsonOkModelEndpoint implements HttpEndpoint<Json, Text> {
 
     @Override
-    public Constraints constraints(
-      Json body, Map<String, String> pathVariables, Map<String, String> queryParameters, Headers httpHeaders) {
-        
+    public Constraints constraints(Request<Json> request) {        
         // a) Generic - manually define constraints for raw JSON array (or JSON object) if you do not know a type
         /*new Constraints() {
           {
-            body.getValue()
+            request.getBody().getValue()
                 .asJsonArray()
                 .forEach(
                     json -> {
@@ -97,7 +90,7 @@ public class JsonOkModelEndpoint implements HttpEndpoint<Json, Text> {
         };*/
         
         // b) POJO - if you do know the type, delegate constraint definitions to Model and use it like this
-        return new Constraints(body, OkModel.class);
+        return new Constraints(request.getBody(), OkModel.class);
     }
 
     @Override

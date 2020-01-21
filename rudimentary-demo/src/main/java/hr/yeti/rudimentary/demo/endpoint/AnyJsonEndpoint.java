@@ -1,6 +1,5 @@
 package hr.yeti.rudimentary.demo.endpoint;
 
-import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
@@ -11,7 +10,6 @@ import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.lang.System.Logger.Level;
 import java.net.URI;
-import java.util.Map;
 
 public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
 
@@ -33,17 +31,12 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
     }
 
     @Override
-    public Constraints constraints(
-        Json body,
-        Map<String, String> pathVariables,
-        Map<String, String> queryParameters,
-        Headers httpHeaders) {
-
+    public Constraints constraints(Request<Json> request) {
         // If you would have an exact type to map json to e.g. OkModel you would simply
         // use new Constraints(body, OkModel.class);
         return new Constraints() {
             {
-                o(body.getValue().asJsonObject().getString("name"), Constraint.NOT_NULL);
+                o(request.getBody().getValue().asJsonObject().getString("name"), Constraint.NOT_NULL);
             }
         };
     }
