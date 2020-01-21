@@ -19,13 +19,13 @@ public interface Constraint extends Function<Object, ValidationResult> {
     static Constraint NOT_NULL = (o) -> new ValidationResult(
         Objects.nonNull(o),
         Optional.of(
-            I18n.text("constraint.notNull", "{0} can not be null.", o))
+            I18n.text("constraint.notNull", "Can not be null.", o))
     );
 
     static Constraint NOT_EMPTY = (o) -> new ValidationResult(
         Objects.nonNull(o) && !o.equals(""),
         Optional.of(
-            I18n.text("constraint.notEmpty", "{0} can not be empty.", o))
+            I18n.text("constraint.notEmpty", "Can not be empty.", o))
     );
 
     static Constraint MIN(int value) {

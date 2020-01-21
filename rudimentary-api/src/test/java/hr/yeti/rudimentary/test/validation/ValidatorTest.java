@@ -30,7 +30,7 @@ public class ValidatorTest {
         then:
         assertNotNull(constraintViolations);
         assertTrue(!constraintViolations.getList().isEmpty());
-        assertEquals("null can not be null.", constraintViolations.getList().get(0).getReason().get());
+        assertEquals("Can not be null.", constraintViolations.getList().get(0).getReason().get());
     }
 
 }
