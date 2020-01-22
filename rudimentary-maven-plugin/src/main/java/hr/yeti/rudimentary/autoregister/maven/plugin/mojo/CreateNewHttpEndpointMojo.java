@@ -60,11 +60,11 @@ public class CreateNewHttpEndpointMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         if (Objects.isNull(pckg)) {
-            System.err.println("Please set --package value.");
+            System.err.println("Please set -Dpackage value.");
         }
 
         if (Objects.isNull(className)) {
-            System.err.println("Please set --className value.");
+            System.err.println("Please set -DclassName value.");
         }
 
         if (Objects.isNull(pckg) || Objects.isNull(className)) {
