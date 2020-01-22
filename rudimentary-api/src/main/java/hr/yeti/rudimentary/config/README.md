@@ -158,4 +158,6 @@ security.cors.allowCredentials=true # Indicates whether or not cross-site Access
 security.cors.allowMethods=GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE # List of allowed http methods
 security.cors.maxAge=600 # Indicates how long the results of a preflight request can be cached in seconds
 logging.propertiesFile=classpath:server-logging.properties # Logging configuration file
+i81n.locale= # Set default locale
+i18n.bundles= # Comma separated list of .properties files without .properties extension. For files on classpath use prefix classpath:, e.g. classpath:myMessages, otherwise use file absolute path without .properties prefix (/Users/dummy/messages)
 ```

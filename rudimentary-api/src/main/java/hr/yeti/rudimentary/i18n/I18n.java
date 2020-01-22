@@ -14,11 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <pre>
  * i18n.locale=en # Locale language/country combination e.g. en or en_US. If no locale is set, system default Locale is used
- * i18n.bundles=classpath:messages # Comma separated list of .properties files without .properties extension. For files on classpath use prefix classpath:, e.g. classpath:myMessages, otherwise use file absolute path without locale and .properties prefix (/Users/dummy/messages)
+ * i18n.bundles=classpath:messages # Comma separated list of .properties files without .properties extension. For files on classpath use prefix classpath:, e.g. classpath:myMessages, otherwise use file absolute path without .properties prefix (/Users/dummy/messages)
  * </pre>
  *
  * <pre>
- * For the above properties, a file with name messages_en.properties should be placed in
+ * For the above properties, a file with name messages.properties or messages_en.properties should be placed in
  * src/main/resources directory.
  *
  * Supported message format is the one used in {@link MessageFormat}.
