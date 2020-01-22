@@ -1,1 +1,1 @@
-hr.yeti.rudimentary.server.jdbc.DefaultDataSource
+hr.yeti.rudimentary.server.sql.DefaultDataSource

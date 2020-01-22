@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.server.jdbc;
+package hr.yeti.rudimentary.server.sql;
 
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 

@@ -11,7 +11,7 @@ module hr.yeti.rudimentary.server {
     exports hr.yeti.rudimentary.server.http to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.http.processor to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.http.staticresources to hr.yeti.rudimentary.api;
-    exports hr.yeti.rudimentary.server.jdbc to hr.yeti.rudimentary.api;
+    exports hr.yeti.rudimentary.server.sql to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.security.csrf to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.security.cors to hr.yeti.rudimentary.api;
     exports hr.yeti.rudimentary.server.security.identitystore.embedded to hr.yeti.rudimentary.api;
