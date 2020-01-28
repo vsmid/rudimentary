@@ -25,8 +25,7 @@ A small, simple and opinionated Java based web services/applications framework.
   * [Pebble MVC extension](rudimentary-exts/rudimentary-mvc-pebble-ext/README.md) :white_check_mark:
 
 ## Current status
-
-Closing in on the initial release feature set. Slowly but steadily adding documentation. Usable :-)
+Pretty much set for initial release. Usable :-)
 
 ## Introduction
 
