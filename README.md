@@ -64,9 +64,14 @@ Since there are no publicly available artifacts in jcenter or maven central of R
 2. Go to the root of cloned project (`cd rudimentary`)
 3. Execute `mvn install` command
 4. Leave rudimentary directory (`cd ..`)
-5. Execute `mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world`command
+5. Execute command: 
+
+`mvn hr.yeti.rudimentary:rudimentary-maven-plugin:1.0-SNAPSHOT:new-project -Dname=hello-world`
+
 6. Go to created *hello-world* directory (`cd hello-world`) and execute 
-`mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app`. 
+
+`mvn rudi:new-endpoint -DclassName=HelloWorldEndpoint -Dpackage=app`.
+
 This will create new Java class named *HelloWorldEndpoint* in *src/main/java/app* directory. You can edit `HelloWorldEndpoint#response` method if you wish.
 7. To run your application, execute `mvn rudi:run` from inside *hello-world* directory (if you are using IDE this goal should be available on click in Maven perspective). This will run application in debug mode so you can attach debugger at any time. Also, if you press enter while application is running, you can run tests automatically.
 You can also execute application by running either `run.sh` or `debug.sh` script found in the root of the generated project. Debug listens on port 1044 by default in case you want to attach debugger. Each time you make a change, application/service will reload automatically.
