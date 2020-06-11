@@ -157,7 +157,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                                 .stream()
                                 .filter(vr -> vr.getReason().isPresent())
                                 .map(vr -> vr.getReason().get())
-                                .collect(Collectors.joining("." + System.lineSeparator()));
+                                .collect(Collectors.joining("."));
 
                             exchange.getResponseHeaders().add("Reason", message);
                             respond(400, "Bad request".getBytes(), exchange);
