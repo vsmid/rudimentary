@@ -8,7 +8,6 @@ import static java.nio.file.LinkOption.*;
 import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Watcher {
 
@@ -18,8 +17,6 @@ public class Watcher {
     private boolean trace = false;
 
     private RunMojo cmd;
-
-    private AtomicInteger buildCounter = new AtomicInteger(1);
 
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>) event;
@@ -50,10 +47,9 @@ public class Watcher {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
                 throws IOException {
-                if (!dir.startsWith("target")) {
+                if (!dir.toString().startsWith("target") && !dir.toString().contains("META-INF")) {
                     register(dir);
                 }
-
                 return FileVisitResult.CONTINUE;
             }
         });
@@ -116,27 +112,27 @@ public class Watcher {
             }
 
             if (reload) {
-                System.out.println(System.lineSeparator() + "[Iteration #" + buildCounter.getAndIncrement() + "]");
+                if (Objects.nonNull(cmd.pid)) {
+                    if (cmd.mavenCompileProject()) {
+                        if (Objects.nonNull(cmd.pid)) {
+                            cmd.consoleReader.setStop(true);
+                            ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
+                            cmd.pid = null;
+                        }
 
-                if (cmd.mavenCompileProject()) {
-                    if (Objects.nonNull(cmd.pid)) {
-                        cmd.consoleReader.setStop(true);
-                        ProcessHandle.of(Long.valueOf(cmd.pid)).get().destroy();
-                        cmd.pid = null;
+                        cmd.mavenRunRudyApplication();
+                        cmd.readProcessStdOut();
+
                     }
-
-                    cmd.mavenRunRudyApplication();
-                    cmd.readProcessStdOut();
                 }
 
-            }
+                boolean valid = key.reset();
+                if (!valid) {
+                    keys.remove(key);
 
-            boolean valid = key.reset();
-            if (!valid) {
-                keys.remove(key);
-
-                if (keys.isEmpty()) {
-                    break;
+                    if (keys.isEmpty()) {
+                        break;
+                    }
                 }
             }
         }

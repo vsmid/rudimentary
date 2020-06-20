@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,8 +92,6 @@ public class RunMojo extends AbstractMojo implements Command {
             systemProperties = Objects.isNull(props) ? "" : props;
             mainClass = parsePOMForMainClass();
 
-            System.out.println("[Iteration #0]");
-
             if (mavenCompileProject()) {
                 mavenRunRudyApplication();
             }
@@ -112,6 +111,12 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     public boolean mavenCompileProject() throws IOException, InterruptedException {
+        Path services = new File("").toPath().toAbsolutePath().resolve("src").resolve("main").resolve("resources").resolve("META-INF").resolve("services");
+
+        for (File f : services.toFile().listFiles()) {
+            f.delete();
+        }
+
         ProcessBuilder builder = new ProcessBuilder(mvn(), "compile", "package", "-DskipTests", "-DskipITs");
         builder.redirectErrorStream(true);
 
@@ -148,7 +153,7 @@ public class RunMojo extends AbstractMojo implements Command {
     public void mavenRunRudyApplication() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(mvn(),
             "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
-            "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "compile", "package", "exec:exec");
+            "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "exec:exec");
 
         builder.redirectErrorStream(true);
         process = builder.start();
@@ -180,7 +185,7 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     private String parsePOMForMainClass() {
-        try ( FileInputStream pom = new FileInputStream("pom.xml")) {
+        try (FileInputStream pom = new FileInputStream("pom.xml")) {
             String pomContent = new String(pom.readAllBytes(), StandardCharsets.UTF_8);
 
             Matcher matcher = pattern.matcher(pomContent);
