@@ -96,6 +96,14 @@ public class Request<T extends Model> {
         return queryParameters;
     }
 
+    public Object pathVar(String name) {
+        return getPathVariables().get(name);
+    }
+
+    public Object queryParam(String name) {
+        return getQueryParameters().get(name);
+    }
+
     public URI getUri() {
         return uri;
     }
