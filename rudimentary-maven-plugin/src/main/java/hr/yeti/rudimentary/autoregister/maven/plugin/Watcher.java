@@ -47,7 +47,7 @@ public class Watcher {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
                 throws IOException {
-                if (!dir.toString().startsWith("target") && !dir.toString().contains("META-INF")) {
+                if (!dir.toString().startsWith("target")) {
                     register(dir);
                 }
                 return FileVisitResult.CONTINUE;

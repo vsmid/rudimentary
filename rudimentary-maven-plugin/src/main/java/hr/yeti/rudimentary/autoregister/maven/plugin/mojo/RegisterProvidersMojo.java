@@ -1,10 +1,10 @@
 package hr.yeti.rudimentary.autoregister.maven.plugin.mojo;
 
+import hr.yeti.rudimentary.autoregister.maven.plugin.ProjectLayout;
 import hr.yeti.rudimentary.autoregister.maven.plugin.RegisterAsServiceProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.maven.plugin.AbstractMojo;
@@ -21,15 +21,21 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "register-providers", defaultPhase = LifecyclePhase.COMPILE)
 public class RegisterProvidersMojo extends AbstractMojo {
 
+    private ProjectLayout projectLayout = new ProjectLayout(new File("").getAbsolutePath(), "");
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        Path projectDir = new File("").toPath();
-        Path sourcesDir = projectDir.resolve("src").resolve("main").resolve("java");
-
         try {
-            Files.walkFileTree(sourcesDir, new RegisterAsServiceProvider());
+            deleteProviders();
+            Files.walkFileTree(projectLayout.getSrcDir(), new RegisterAsServiceProvider());
         } catch (IOException ex) {
             Logger.getLogger(RegisterProvidersMojo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void deleteProviders() {
+        for (File f : projectLayout.getServicesDir().toFile().listFiles()) {
+            f.delete();
         }
     }
 

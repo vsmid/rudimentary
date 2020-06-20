@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -111,12 +110,6 @@ public class RunMojo extends AbstractMojo implements Command {
     }
 
     public boolean mavenCompileProject() throws IOException, InterruptedException {
-        Path services = new File("").toPath().toAbsolutePath().resolve("src").resolve("main").resolve("resources").resolve("META-INF").resolve("services");
-
-        for (File f : services.toFile().listFiles()) {
-            f.delete();
-        }
-
         ProcessBuilder builder = new ProcessBuilder(mvn(), "compile", "package", "-DskipTests", "-DskipITs");
         builder.redirectErrorStream(true);
 
