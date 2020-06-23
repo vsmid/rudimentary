@@ -47,7 +47,7 @@ public class Watcher {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
                 throws IOException {
-                if (!dir.toString().startsWith("target")) {
+                if (dir.toString().startsWith("src/") || dir.toString().equals("pom.xml")) {
                     register(dir);
                 }
                 return FileVisitResult.CONTINUE;
@@ -86,6 +86,7 @@ public class Watcher {
                 continue;
             }
             boolean reload = false;
+            
             for (WatchEvent<?> event : key.pollEvents()) {
                 WatchEvent.Kind kind = event.kind();
 
@@ -96,7 +97,7 @@ public class Watcher {
                 WatchEvent<Path> ev = cast(event);
                 Path name = ev.context();
                 Path child = dir.resolve(name);
-
+                
                 if (recursive && (kind == ENTRY_CREATE)) {
                     try {
                         if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
@@ -107,10 +108,10 @@ public class Watcher {
                     }
                 }
 
-                reload = ((child.toString().startsWith("src") && (!child.toString().startsWith("src/test")))
+                reload = ((child.toString().startsWith("src") && (!child.toString().startsWith("src/test")) && !(child.toString().startsWith("src/main/resources/META-INF/services")))
                     || child.toString().startsWith("pom.xml"));
             }
-
+            
             if (reload) {
                 if (Objects.nonNull(cmd.pid)) {
                     if (cmd.mavenCompileProject()) {
