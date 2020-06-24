@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
-import java.net.URI;
 
 public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
 
@@ -19,8 +18,8 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/textWithConstraints");
+    public String path() {
+        return "/textWithConstraints";
     }
 
     @Override

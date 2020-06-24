@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.http.content.Form;
 import hr.yeti.rudimentary.http.content.Redirect;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import java.net.URI;
 
 public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, Redirect> {
 
@@ -21,8 +20,8 @@ public class RedirectAfterSuccessfulLoginEndpoint implements HttpEndpoint<Form, 
     }
 
     @Override
-    public URI path() {
-        return URI.create(redirectAfterSuccessfulLoginURI.value());
+    public String path() {
+        return redirectAfterSuccessfulLoginURI.value();
     }
 
     @Override

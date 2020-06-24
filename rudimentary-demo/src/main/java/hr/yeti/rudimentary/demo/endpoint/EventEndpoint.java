@@ -6,7 +6,6 @@ import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import java.net.URI;
 
 public class EventEndpoint implements HttpEndpoint<BlogPost, Text> {
 
@@ -16,8 +15,8 @@ public class EventEndpoint implements HttpEndpoint<BlogPost, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/blogpost");
+    public String path() {
+        return "/blogpost";
     }
 
     @Override

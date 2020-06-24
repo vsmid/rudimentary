@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Text;
 import java.lang.System.Logger.Level;
-import java.net.URI;
 
 public class EmptyEndpoint implements HttpEndpoint<Empty, Text> {
 
@@ -19,8 +18,8 @@ public class EmptyEndpoint implements HttpEndpoint<Empty, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/empty");
+    public String path() {
+        return "/empty";
     }
 
     @Override

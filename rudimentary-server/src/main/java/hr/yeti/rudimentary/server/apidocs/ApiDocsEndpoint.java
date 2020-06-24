@@ -37,8 +37,8 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/_apidocs");
+    public String path() {
+        return "/_apidocs";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
             .map(endpoint
                 -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                 endpoint.httpMethod(),
-                URIUtils.prependSlashPrefix(endpoint.path()),
+                URIUtils.prependSlashPrefix(URI.create(endpoint.path())),
                 endpoint.httpStatus(),
                 Optional.ofNullable(endpoint.description()).orElse(""))
             )

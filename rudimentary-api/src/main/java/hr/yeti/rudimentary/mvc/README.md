@@ -60,8 +60,8 @@ Below shown example is using `Pebble` as view rendering engine.
 public class CustomViewEndpoint implements ViewEndpoint<Form> {
 
   @Override
-  public URI path() {
-      return URI.create("/dynamicView");
+  public String path() {
+      return "/dynamicView";
   }
 
   @Override

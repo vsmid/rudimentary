@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.http.content;
 
+import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.net.URI;
 
 /**
@@ -23,8 +24,8 @@ public class Redirect extends Model implements Value<URI> {
         this.httpStatus = 302;
     }
 
-    public Redirect(URI redirectUri, int httpStatus) {
-        this.redirectUri = redirectUri;
+    public Redirect(String redirectUri, int httpStatus) {
+        this.redirectUri = URI.create(redirectUri);
         this.httpStatus = httpStatus;
     }
 

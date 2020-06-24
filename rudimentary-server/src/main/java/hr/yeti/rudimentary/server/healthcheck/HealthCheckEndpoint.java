@@ -9,7 +9,6 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,8 +31,8 @@ public class HealthCheckEndpoint implements HttpEndpoint<Empty, HealthCheckRepor
     }
 
     @Override
-    public URI path() {
-        return URI.create("/_health");
+    public String path() {
+        return "/_health";
     }
 
     @Override

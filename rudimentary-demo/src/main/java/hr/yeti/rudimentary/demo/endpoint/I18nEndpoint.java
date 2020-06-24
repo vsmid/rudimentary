@@ -5,15 +5,14 @@ import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.i18n.I18n;
-import java.net.URI;
 import java.util.Locale;
 import java.util.Map;
 
 public class I18nEndpoint implements HttpEndpoint<Empty, Json> {
 
     @Override
-    public URI path() {
-        return URI.create("i18n");
+    public String path() {
+        return "i18n";
     }
 
     @Override

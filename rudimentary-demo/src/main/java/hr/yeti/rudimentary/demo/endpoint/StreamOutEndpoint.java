@@ -6,14 +6,13 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import java.net.URI;
 import java.util.List;
 
 public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
 
     @Override
-    public URI path() {
-        return URI.create("/streamOut");
+    public String path() {
+        return "/streamOut";
     }
 
     @Override
@@ -36,8 +35,6 @@ public class StreamOutEndpoint implements HttpEndpoint<Empty, ByteStream> {
         responseHeaders.put("Content-Disposition", List.of("attachment;filename=streamOut.txt"));
         return responseHeaders;
     }
-    
-    
 
     @Override
     public String description() {

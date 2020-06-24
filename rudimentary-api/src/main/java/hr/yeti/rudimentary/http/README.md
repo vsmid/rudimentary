@@ -48,15 +48,15 @@ If class name was `CustomHttpEndpoint` the default path would then be `customHtt
 To set new http endpoint uri path override *path* method.
 ```java
 @Override
-public URI path() {
-    return URI.create("/custom");
+public String path() {
+    return "/custom";
 }
 ```
 If you would like to have parameter as part of you uri path define path as:
 ```java
 @Override
-public URI path() {
-    return URI.create("/custom/:id"); // Define id as path variable. You can multiple path variables, e.g. /custom/:id1/dummy/:id2
+public String path() {
+    return "/custom/:id"; // Define id as path variable. You can multiple path variables, e.g. /custom/:id1/dummy/:id2
 }
 
 @Override

@@ -9,7 +9,6 @@ import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.lang.System.Logger.Level;
-import java.net.URI;
 
 public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
 
@@ -21,8 +20,8 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/json");
+    public String path() {
+        return "/json";
     }
 
     @Override

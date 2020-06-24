@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.validation.Constraints;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +18,8 @@ public class JsonArrayOkModelEndpoint implements HttpEndpoint<Json, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/array");
+    public String path() {
+        return "/array";
     }
 
     @Override

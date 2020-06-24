@@ -10,7 +10,6 @@ import hr.yeti.rudimentary.http.content.StaticResource;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Objects;
 
 public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResource> {
@@ -18,8 +17,8 @@ public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResour
     private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
 
     @Override
-    public URI path() {
-        return URI.create(staticResourcesDir.value() + "/.*");
+    public String path() {
+        return staticResourcesDir.value() + "/.*";
     }
 
     @Override

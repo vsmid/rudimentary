@@ -1,6 +1,5 @@
 package hr.yeti.rudimentary.server;
 
-import hr.yeti.rudimentary.server._Models;
 import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.MediaType;
@@ -21,7 +20,6 @@ import hr.yeti.rudimentary.sql.Sql;
 import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
-import java.net.URI;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -30,8 +28,8 @@ public class _HttpEndpoints {
     public static class EmptyResponseEndpoint implements HttpEndpoint<Empty, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("emptyresponse");
+        public String path() {
+            return "emptyresponse";
         }
 
         @Override
@@ -44,8 +42,8 @@ public class _HttpEndpoints {
     public static class EmptyRequestEndpoint implements HttpEndpoint<Empty, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("emptyrequest");
+        public String path() {
+            return "emptyrequest";
         }
 
         @Override
@@ -58,8 +56,8 @@ public class _HttpEndpoints {
     public static class TextRequestEndpoint implements HttpEndpoint<Text, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("textrequest");
+        public String path() {
+            return "textrequest";
         }
 
         @Override
@@ -77,8 +75,8 @@ public class _HttpEndpoints {
     public static class TextResponseEndpoint implements HttpEndpoint<Empty, Text> {
 
         @Override
-        public URI path() {
-            return URI.create("textresponse");
+        public String path() {
+            return "textresponse";
         }
 
         @Override
@@ -91,8 +89,8 @@ public class _HttpEndpoints {
     public static class PojoResponseEndpoint implements HttpEndpoint<Empty, _Models._CarModel> {
 
         @Override
-        public URI path() {
-            return URI.create("pojoresponse");
+        public String path() {
+            return "pojoresponse";
         }
 
         @Override
@@ -105,8 +103,8 @@ public class _HttpEndpoints {
     public static class PojoRequestEndpoint implements HttpEndpoint<_Models._CarModel, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("pojorequest");
+        public String path() {
+            return "pojorequest";
         }
 
         @Override
@@ -124,8 +122,8 @@ public class _HttpEndpoints {
     public static class HtmlResponseEndpoint implements HttpEndpoint<Empty, Html> {
 
         @Override
-        public URI path() {
-            return URI.create("htmlresponse");
+        public String path() {
+            return "htmlresponse";
         }
 
         @Override
@@ -138,8 +136,8 @@ public class _HttpEndpoints {
     public static class HtmlRequestEndpoint implements HttpEndpoint<Html, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("htmlrequest");
+        public String path() {
+            return "htmlrequest";
         }
 
         @Override
@@ -157,8 +155,8 @@ public class _HttpEndpoints {
     public static class JsonResponseEndpoint implements HttpEndpoint<Empty, Json> {
 
         @Override
-        public URI path() {
-            return URI.create("jsonresponse");
+        public String path() {
+            return "jsonresponse";
         }
 
         @Override
@@ -173,8 +171,8 @@ public class _HttpEndpoints {
     public static class JsonRequestEndpoint implements HttpEndpoint<Json, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("jsonrequest");
+        public String path() {
+            return "jsonrequest";
         }
 
         @Override
@@ -192,8 +190,8 @@ public class _HttpEndpoints {
     public static class ByteStreamResponseEndpoint implements HttpEndpoint<ByteStream, ByteStream> {
 
         @Override
-        public URI path() {
-            return URI.create("bytestreamresponse");
+        public String path() {
+            return "bytestreamresponse";
         }
 
         @Override
@@ -217,8 +215,8 @@ public class _HttpEndpoints {
     public static class ByteStreamRequestEndpoint implements HttpEndpoint<ByteStream, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("bytestreamrequest");
+        public String path() {
+            return "bytestreamrequest";
         }
 
         @Override
@@ -236,8 +234,8 @@ public class _HttpEndpoints {
     public static class FormRequestEndpoin implements HttpEndpoint<Form, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("formrequest");
+        public String path() {
+            return "formrequest";
         }
 
         @Override
@@ -255,8 +253,8 @@ public class _HttpEndpoints {
     public static class ViewStaticResponseEndpoint implements ViewEndpoint<Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("staticviewresponse");
+        public String path() {
+            return "staticviewresponse";
         }
 
         @Override
@@ -269,8 +267,8 @@ public class _HttpEndpoints {
     public static class StaticResourceResponseEndpoint implements HttpEndpoint<Empty, StaticResource> {
 
         @Override
-        public URI path() {
-            return URI.create("staticresourceresponse");
+        public String path() {
+            return "staticresourceresponse";
         }
 
         @Override
@@ -283,13 +281,13 @@ public class _HttpEndpoints {
     public static class RedirectResponseEndpoint implements HttpEndpoint<Empty, Redirect> {
 
         @Override
-        public URI path() {
-            return URI.create("redirectresponse");
+        public String path() {
+            return "redirectresponse";
         }
 
         @Override
         public Redirect response(Request<Empty> request) {
-            return new Redirect(URI.create("redirected"), 302);
+            return new Redirect("redirected", 302);
         }
 
     }
@@ -304,8 +302,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("pojoconstrainedrequest");
+        public String path() {
+            return "pojoconstrainedrequest";
         }
 
         @Override
@@ -327,8 +325,8 @@ public class _HttpEndpoints {
     public static class JsonArrayResponseEndpoint implements HttpEndpoint<Empty, Json> {
 
         @Override
-        public URI path() {
-            return URI.create("jsonarrayresponse");
+        public String path() {
+            return "jsonarrayresponse";
         }
 
         @Override
@@ -343,8 +341,8 @@ public class _HttpEndpoints {
     public static class GlobalExceptionHandlerEndpoint implements HttpEndpoint<Empty, Empty> {
 
         @Override
-        public URI path() {
-            return URI.create("globalexceptionhandlerrequest");
+        public String path() {
+            return "globalexceptionhandlerrequest";
         }
 
         @Override
@@ -364,8 +362,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("constrainedrequest");
+        public String path() {
+            return "constrainedrequest";
         }
 
         @Override
@@ -392,8 +390,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("pojoconstrainedrequest");
+        public String path() {
+            return "pojoconstrainedrequest";
         }
 
         @Override
@@ -411,8 +409,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("uriinterceptbefore");
+        public String path() {
+            return "uriinterceptbefore";
         }
 
         @Override
@@ -430,8 +428,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("uriinterceptafter");
+        public String path() {
+            return "uriinterceptafter";
         }
 
         @Override
@@ -449,8 +447,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("uriinterceptwithbefore");
+        public String path() {
+            return "uriinterceptwithbefore";
         }
 
         @Override
@@ -473,8 +471,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("uriinterceptwithafter");
+        public String path() {
+            return "uriinterceptwithafter";
         }
 
         @Override
@@ -499,8 +497,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("blogpost");
+        public String path() {
+            return "blogpost";
         }
 
         @Override
@@ -524,8 +522,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("sql");
+        public String path() {
+            return "sql";
         }
 
         @Override
@@ -559,8 +557,8 @@ public class _HttpEndpoints {
         }
 
         @Override
-        public URI path() {
-            return URI.create("auth");
+        public String path() {
+            return "auth";
         }
 
         @Override

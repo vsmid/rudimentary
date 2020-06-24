@@ -6,7 +6,6 @@ import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.IOException;
-import java.net.URI;
 
 public class StreamInEndpoint implements HttpEndpoint<ByteStream, Text> {
 
@@ -16,8 +15,8 @@ public class StreamInEndpoint implements HttpEndpoint<ByteStream, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/streamIn");
+    public String path() {
+        return "/streamIn";
     }
 
     @Override

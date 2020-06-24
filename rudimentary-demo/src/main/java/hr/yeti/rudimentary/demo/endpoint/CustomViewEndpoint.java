@@ -6,13 +6,12 @@ import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import static hr.yeti.rudimentary.validation.Constraint.NOT_NULL;
 import hr.yeti.rudimentary.validation.Constraints;
-import java.net.URI;
 
 public class CustomViewEndpoint implements ViewEndpoint<Empty> {
 
     @Override
-    public URI path() {
-        return URI.create("/dynamicView");
+    public String path() {
+        return "/dynamicView";
     }
 
     @Override

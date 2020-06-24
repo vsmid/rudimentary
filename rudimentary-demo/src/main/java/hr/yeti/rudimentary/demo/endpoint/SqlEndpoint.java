@@ -6,14 +6,13 @@ import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.sql.Sql;
 import hr.yeti.rudimentary.sql.SqlQueryDef;
-import java.net.URI;
 import java.util.Map;
 
 public class SqlEndpoint implements HttpEndpoint<Text, Json> {
 
     @Override
-    public URI path() {
-        return URI.create("/sql");
+    public String path() {
+        return "/sql";
     }
 
     @Override

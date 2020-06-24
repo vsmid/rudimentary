@@ -128,6 +128,6 @@ public class CreateNewHttpEndpointMojo extends AbstractMojo {
             return "";
         }
 
-        return "\n" + "  @Override\n" + "  public URI path() {\n" + "    return URI.create(\"" + path + "\");\n" + "  }\n";
+        return "\n" + "  @Override\n" + "  public String path() {\n" + "    return \"" + path + "\";\n" + "  }\n";
     }
 }

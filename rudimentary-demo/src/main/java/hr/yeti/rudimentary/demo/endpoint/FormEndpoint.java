@@ -5,7 +5,6 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Form;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import java.net.URI;
 
 public class FormEndpoint implements HttpEndpoint<Form, Text> {
 
@@ -15,8 +14,8 @@ public class FormEndpoint implements HttpEndpoint<Form, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/form");
+    public String path() {
+        return "/form";
     }
 
     @Override

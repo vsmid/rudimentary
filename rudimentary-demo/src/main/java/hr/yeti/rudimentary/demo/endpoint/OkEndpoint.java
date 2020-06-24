@@ -7,7 +7,6 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.http.content.Text;
 import java.lang.System.Logger.Level;
-import java.net.URI;
 
 public class OkEndpoint implements HttpEndpoint<OkModel, Text> {
 
@@ -19,8 +18,8 @@ public class OkEndpoint implements HttpEndpoint<OkModel, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/ok/:id");
+    public String path() {
+        return "/ok/:id";
     }
 
     @Override

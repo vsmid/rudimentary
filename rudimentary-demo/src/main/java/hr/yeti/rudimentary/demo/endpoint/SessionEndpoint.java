@@ -4,13 +4,12 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import java.net.URI;
 
 public class SessionEndpoint implements HttpEndpoint<Empty, Html> {
 
     @Override
-    public URI path() {
-        return URI.create("/session");
+    public String path() {
+        return "/session";
     }
 
     @Override

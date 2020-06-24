@@ -51,11 +51,11 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
      *
      * @return URI on which implementing class will be available.
      */
-    default URI path() {
+    default String path() {
         String path = this.getClass().getSimpleName();
-        return URI.create(
+        return 
             "/" + path.substring(0, 1).toLowerCase() + path.substring(1)
-        );
+        ;
     }
 
     /**

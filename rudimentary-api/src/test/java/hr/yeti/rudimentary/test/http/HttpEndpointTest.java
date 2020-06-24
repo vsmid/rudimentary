@@ -28,7 +28,7 @@ public class HttpEndpointTest {
     @DisplayName("Default path() method should return simple class name with first letter lowercased")
     public void test_path_method() {
         expect:
-        assertEquals(URI.create("/okEndpoint"), okEndpoint.path());
+        assertEquals("/okEndpoint", okEndpoint.path());
     }
 
     @Test

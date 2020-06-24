@@ -9,7 +9,6 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.lang.System.Logger.Level;
-import java.net.URI;
 import java.util.TreeMap;
 
 public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
@@ -35,8 +34,8 @@ public class ConfigEndpoint implements HttpEndpoint<Empty, Html> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/_config");
+    public String path() {
+        return "/_config";
     }
 
     @Override

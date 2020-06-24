@@ -27,12 +27,13 @@ public class HttpEndpointContextProvider implements Instance {
 
         Instance.providersOf(HttpEndpoint.class)
             .forEach((httpEndpoint) -> {
-                checkForDuplicateMapping(URIUtils.removeSlashPrefix(httpEndpoint.path()), httpEndpoint.httpMethod());
+                URI path = URI.create(httpEndpoint.path());
+                checkForDuplicateMapping(URIUtils.removeSlashPrefix(path), httpEndpoint.httpMethod());
 
-                HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(), httpEndpoint);
+                HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.removeSlashPrefix(path).toString(), httpEndpoint);
                 PATTERN_PATHS_MAPPING.put(
-                    URIUtils.convertToRegex(URIUtils.removeSlashPrefix(httpEndpoint.path()).toString(),
-                        "([^/.]+)"), URIUtils.removeSlashPrefix(httpEndpoint.path())
+                    URIUtils.convertToRegex(URIUtils.removeSlashPrefix(path).toString(),
+                        "([^/.]+)"), URIUtils.removeSlashPrefix(path)
                 );
             });
     }
@@ -83,7 +84,7 @@ public class HttpEndpointContextProvider implements Instance {
     public List<HttpEndpoint> getRegisteredUris() {
         return HTTP_ENDPOINTS.values().stream()
             .sorted(Comparator.comparing((httpEndpoint) -> {
-                return httpEndpoint.path().toString();
+                return httpEndpoint.path();
             }))
             .collect(Collectors.toList());
     }
@@ -93,7 +94,7 @@ public class HttpEndpointContextProvider implements Instance {
 
         boolean match = HTTP_ENDPOINTS.entrySet().stream()
             .filter(httpEndpoint -> httpEndpoint.getValue().httpMethod() == httpMethod)
-            .map(httpEndpoint -> URIUtils.removeSlashPrefix(httpEndpoint.getValue().path()).toString())
+            .map(httpEndpoint -> URIUtils.removeSlashPrefix(URI.create(httpEndpoint.getValue().path())).toString())
             .anyMatch(pattern);
 
         if (match) {

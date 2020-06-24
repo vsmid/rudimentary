@@ -5,7 +5,6 @@ import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
-import java.net.URI;
 
 public class DefaultLoginFormEndpoint implements HttpEndpoint<Empty, Html> {
 
@@ -16,8 +15,8 @@ public class DefaultLoginFormEndpoint implements HttpEndpoint<Empty, Html> {
     private ConfigProperty passwordFieldName = new ConfigProperty("security.loginForm.passwordFieldName");
 
     @Override
-    public URI path() {
-        return URI.create(loginURI.value());
+    public String path() {
+        return loginURI.value();
     }
 
     @Override

@@ -5,7 +5,6 @@ import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.http.content.Text;
-import java.net.URI;
 
 public class TextEndpoint implements HttpEndpoint<Text, Text> {
 
@@ -17,8 +16,8 @@ public class TextEndpoint implements HttpEndpoint<Text, Text> {
     }
 
     @Override
-    public URI path() {
-        return URI.create("/text");
+    public String path() {
+        return "/text";
     }
 
     @Override
