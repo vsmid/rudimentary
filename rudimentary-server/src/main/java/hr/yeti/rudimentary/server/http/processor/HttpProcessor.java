@@ -312,8 +312,12 @@ public class HttpProcessor implements HttpHandler, Instance {
         if (Objects.nonNull(stream)) {
             httpExchange.sendResponseHeaders(httpStatus, 0);
             stream.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
-            httpExchange.getResponseBody().flush();
-            httpExchange.getResponseBody().close();
+            try {
+                httpExchange.getResponseBody().flush();
+                httpExchange.getResponseBody().close();
+            } catch (IOException ex) {
+                //noop
+            }
         }
         httpExchange.close();
     }
