@@ -20,7 +20,7 @@ public class FormEndpoint implements HttpEndpoint<Form, Text> {
 
     @Override
     public Text response(Request<Form> request) {
-        return new Text(request.getBody().getValue().toString());
+        return new Text(request.getBody().get().toString());
     }
 
 }

@@ -14,7 +14,7 @@ import java.net.URI;
  *
  * @author vedransmid@yeti-it.hr
  */
-public class Redirect extends Model implements Value<URI> {
+public class Redirect extends Model implements ContentValue<URI> {
 
     private URI redirectUri;
     private int httpStatus;
@@ -30,7 +30,7 @@ public class Redirect extends Model implements Value<URI> {
     }
 
     @Override
-    public URI getValue() {
+    public URI get() {
         return redirectUri;
     }
 

@@ -57,8 +57,8 @@ public class LoginFormAuthMechanism extends AuthMechanism {
 
         Form form = new Form(formData);
 
-        String username = form.getValue().getOrDefault(usernameFieldName.value(), "").toString();
-        String password = form.getValue().getOrDefault(passwordFieldName.value(), "").toString();
+        String username = form.get().getOrDefault(usernameFieldName.value(), "").toString();
+        String password = form.get().getOrDefault(passwordFieldName.value(), "").toString();
 
         if (identityStore.validate(new UsernamePasswordCredential(username, password))) {
             return new Authenticator.Success(

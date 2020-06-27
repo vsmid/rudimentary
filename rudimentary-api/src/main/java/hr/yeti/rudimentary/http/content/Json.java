@@ -19,7 +19,7 @@ import javax.json.bind.JsonbBuilder;
  *
  * @author vedransmid@yeti-it.hr
  */
-public final class Json extends Model implements Value<JsonValue> {
+public final class Json extends Model implements ContentValue<JsonValue> {
 
     private JsonValue value;
 
@@ -66,7 +66,7 @@ public final class Json extends Model implements Value<JsonValue> {
     }
 
     @Override
-    public JsonValue getValue() {
+    public JsonValue get() {
         return value;
     }
 

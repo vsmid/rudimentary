@@ -240,20 +240,20 @@ public class HttpProcessor implements HttpHandler, Instance {
                             responseTransformed = "".getBytes();
                         } else if (response instanceof Json) {
                             exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-                            responseTransformed = ((Json) response).getValue().toString().getBytes();
+                            responseTransformed = ((Json) response).get().toString().getBytes();
                         } else if (response instanceof Text) {
                             exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
-                            responseTransformed = ((Text) response).getValue().getBytes();
+                            responseTransformed = ((Text) response).get().getBytes();
                         } else if (response instanceof Html) {
                             exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-                            responseTransformed = ((Html) response).getValue().getBytes();
+                            responseTransformed = ((Html) response).get().getBytes();
                         } else if (response instanceof View) {
                             exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
 
                             View view = (View) response;
 
                             if (Objects.nonNull(Instance.of(ViewEngine.class))) {
-                                responseTransformed = view.getValue().getBytes();
+                                responseTransformed = view.get().getBytes();
                             } else {
                                 respond(500, "Could not resolve view.".getBytes(), exchange);
                                 return;
@@ -264,7 +264,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                             exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
-                            try ( InputStream is = staticResource.getValue()) {
+                            try ( InputStream is = staticResource.get()) {
                                 responseTransformed = is.readAllBytes();
                             }
 
@@ -275,7 +275,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         } else if (response instanceof Redirect) {
                             Redirect redirect = (Redirect) response;
                             if (Objects.nonNull(redirect)) {
-                                exchange.getResponseHeaders().add("location", redirect.getValue().toString());
+                                exchange.getResponseHeaders().add("location", redirect.get().toString());
                                 respond(redirect.getHttpStatus(), null, exchange);
                                 return;
                             }

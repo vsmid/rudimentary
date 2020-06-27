@@ -11,7 +11,7 @@ package hr.yeti.rudimentary.http.content;
  *
  * @author vedransmid@yeti-it.hr
  */
-public final class Html extends Model implements Value<String> {
+public final class Html extends Model implements ContentValue<String> {
 
     private String value;
 
@@ -23,7 +23,7 @@ public final class Html extends Model implements Value<String> {
     }
 
     @Override
-    public String getValue() {
+    public String get() {
         return value;
     }
 

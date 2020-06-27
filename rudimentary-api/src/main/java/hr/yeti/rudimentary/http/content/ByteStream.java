@@ -20,7 +20,7 @@ import hr.yeti.rudimentary.http.stream.StreamOutWriteDef;
  *
  * @author vedransmid@yeti-it.hr
  */
-public class ByteStream extends Model implements Value<InputStream> {
+public class ByteStream extends Model implements ContentValue<InputStream> {
 
     /**
      *
@@ -67,7 +67,7 @@ public class ByteStream extends Model implements Value<InputStream> {
      * @return Incoming data stream as {@link InputSteram}.
      */
     @Override
-    public InputStream getValue() {
+    public InputStream get() {
         return this.inputStream;
     }
 

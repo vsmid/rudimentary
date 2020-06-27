@@ -16,7 +16,7 @@ import java.io.InputStream;
  *
  * @author vedransmid@yeti-it.hr
  */
-public final class StaticResource extends Model implements Value<InputStream> {
+public final class StaticResource extends Model implements ContentValue<InputStream> {
 
     private InputStream staticResource;
     private String mediaType;
@@ -32,7 +32,7 @@ public final class StaticResource extends Model implements Value<InputStream> {
     }
 
     @Override
-    public InputStream getValue() {
+    public InputStream get() {
         return staticResource;
     }
 

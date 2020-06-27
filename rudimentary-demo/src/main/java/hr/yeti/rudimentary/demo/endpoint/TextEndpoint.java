@@ -27,7 +27,7 @@ public class TextEndpoint implements HttpEndpoint<Text, Text> {
 
     @Override
     public Text response(Request<Text> request) {
-        return new Text("Hello " + request.getBody().getValue());
+        return new Text("Hello " + request.getBody().get());
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author vedransmid@yeti-it.hr
  */
-public final class View extends Model implements Value<String> {
+public final class View extends Model implements ContentValue<String> {
 
     private String templatePath;
     private Map<String, Object> context;
@@ -44,7 +44,7 @@ public final class View extends Model implements Value<String> {
      * @return A string HTML representation of the view to be sent in a response. For this, an instance {@link ViewEngine] provider is used.
      */
     @Override
-    public String getValue() {
+    public String get() {
         return Instance.of(ViewEngine.class)
             .render(this);
     }

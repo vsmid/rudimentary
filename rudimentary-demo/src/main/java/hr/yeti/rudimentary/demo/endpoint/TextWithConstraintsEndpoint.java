@@ -31,14 +31,14 @@ public class TextWithConstraintsEndpoint implements HttpEndpoint<Text, Text> {
     public Constraints constraints(Request<Text> request) {
         return new Constraints() {
             {
-                o(request.getBody().getValue(), Constraint.NOT_EMPTY);
+                o(request.getBody().get(), Constraint.NOT_EMPTY);
             }
         };
     }
 
     @Override
     public Text response(Request<Text> request) {
-        return new Text("Hello " + request.getBody().getValue());
+        return new Text("Hello " + request.getBody().get());
     }
 
 }

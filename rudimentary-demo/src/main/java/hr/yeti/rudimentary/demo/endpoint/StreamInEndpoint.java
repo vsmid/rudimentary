@@ -24,7 +24,7 @@ public class StreamInEndpoint implements HttpEndpoint<ByteStream, Text> {
         byte[] stream = null;
 
         try {
-            stream = request.getBody().getValue().readAllBytes();
+            stream = request.getBody().get().readAllBytes();
         } catch (IOException ex) {
             logger().log(System.Logger.Level.ERROR, ex.getMessage());
         }

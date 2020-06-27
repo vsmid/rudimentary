@@ -203,7 +203,7 @@ public class _HttpEndpoints {
         public ByteStream response(Request<ByteStream> request) {
             return new ByteStream((outputStream) -> {
                 int c;
-                while ((c = request.getBody().getValue().read()) != -1) {
+                while ((c = request.getBody().get().read()) != -1) {
                     outputStream.write((char) c);
                     outputStream.flush();
                 }
@@ -310,7 +310,7 @@ public class _HttpEndpoints {
         public Constraints constraints(Request<Text> request) {
             return new Constraints() {
                 {
-                    o(request.getBody().getValue(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
+                    o(request.getBody().get(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
                 }
             };
         }
@@ -370,7 +370,7 @@ public class _HttpEndpoints {
         public Constraints constraints(Request<Text> request) {
             return new Constraints() {
                 {
-                    o(request.getBody().getValue(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
+                    o(request.getBody().get(), Constraint.NOT_EMPTY, Constraint.REGEX(onlyLetters));
                 }
             };
         }

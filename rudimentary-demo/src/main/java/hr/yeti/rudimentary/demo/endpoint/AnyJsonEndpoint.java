@@ -35,7 +35,7 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
         // use new Constraints(body, OkModel.class);
         return new Constraints() {
             {
-                o(request.getBody().getValue().asJsonObject().getString("name"), Constraint.NOT_NULL);
+                o(request.getBody().get().asJsonObject().getString("name"), Constraint.NOT_NULL);
             }
         };
     }
