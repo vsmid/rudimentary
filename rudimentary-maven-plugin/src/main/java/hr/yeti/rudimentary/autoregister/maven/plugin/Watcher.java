@@ -47,7 +47,7 @@ public class Watcher {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
                 throws IOException {
-                if (dir.toString().startsWith("src/") || dir.toString().equals("pom.xml")) {
+                if (dir.toString().startsWith("src" + File.separator) || dir.toString().equals("pom.xml")) {
                     register(dir);
                 }
                 return FileVisitResult.CONTINUE;
@@ -108,7 +108,7 @@ public class Watcher {
                     }
                 }
 
-                reload = ((child.toString().startsWith("src") && (!child.toString().startsWith("src/test")) && !(child.toString().startsWith("src/main/resources/META-INF/services")))
+                reload = ((child.toString().startsWith("src" + File.separator) && (!child.toString().startsWith("src" + File.separator + "test")) && !(child.toString().startsWith("src" + File.separator + "main" + File.separator + "resources" + File.separator + "META-INF" + File.separator + "services")))
                     || child.toString().startsWith("pom.xml"));
             }
             
