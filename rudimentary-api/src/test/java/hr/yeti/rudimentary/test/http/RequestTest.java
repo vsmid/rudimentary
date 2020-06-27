@@ -16,19 +16,19 @@ public class RequestTest {
     @Test
     public void get_path_variable() {
         // setup:
-        Request<Text> request = new Request<Text>(null, null, null, Map.of("title", "pathVar"), null, null, null);
+        Request<Text> request = new Request<>(null, null, null, Map.of("title", "pathVar"), null, null, null);
 
         expect:
-        assertEquals("pathVar", request.pathVar("title"));
+        assertEquals("pathVar", request.pathVar("title").value());
     }
 
     @Test
     public void get_query_parameter() {
         // setup:
-        Request<Text> request = new Request<Text>(null, null, null, null, Map.of("title", "queryParam"), null, null);
+        Request<Text> request = new Request<>(null, null, null, null, Map.of("title", "queryParam"), null, null);
 
         expect:
-        assertEquals("queryParam", request.queryParam("title"));
+        assertEquals("queryParam", request.queryParam("title").value());
     }
 
 }

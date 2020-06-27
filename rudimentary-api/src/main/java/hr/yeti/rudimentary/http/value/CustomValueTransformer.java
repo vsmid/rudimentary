@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.utils;
+package hr.yeti.rudimentary.http.value;
 
 /**
  * <pre>

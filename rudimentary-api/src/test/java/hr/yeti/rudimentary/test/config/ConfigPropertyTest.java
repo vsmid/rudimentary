@@ -3,7 +3,7 @@ package hr.yeti.rudimentary.test.config;
 import hr.yeti.rudimentary.config.ConfigException;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.test.ConfigMock;
-import hr.yeti.rudimentary.utils.Transformable;
+import hr.yeti.rudimentary.http.value.Transformable;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
@@ -74,7 +74,16 @@ public class ConfigPropertyTest {
         ConfigProperty value = new ConfigProperty("val", "1");
 
         expect:
-        assertEquals(1l, value.asLong().longValue());
+        assertEquals(1l, value.asLong());
+    }
+
+    @Test
+    public void test_asDouble_method() {
+        // setup:
+        ConfigProperty value = new ConfigProperty("val", "1");
+
+        expect:
+        assertEquals(1d, value.asDouble());
     }
 
     @Test

@@ -1,7 +1,7 @@
 package hr.yeti.rudimentary.config;
 
 import hr.yeti.rudimentary.config.spi.Config;
-import hr.yeti.rudimentary.utils.Transformable;
+import hr.yeti.rudimentary.http.value.Transformable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;

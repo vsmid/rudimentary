@@ -6,6 +6,8 @@ import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.session.Session;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.security.Identity;
+import hr.yeti.rudimentary.http.value.Transformable;
+import hr.yeti.rudimentary.http.value.TransformableValue;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
@@ -96,12 +98,12 @@ public class Request<T extends Model> {
         return queryParameters;
     }
 
-    public Object pathVar(String name) {
-        return getPathVariables().get(name);
+    public Transformable pathVar(String name) {
+        return new TransformableValue(getPathVariables().get(name).toString());
     }
 
-    public Object queryParam(String name) {
-        return getQueryParameters().get(name);
+    public Transformable queryParam(String name) {
+        return new TransformableValue(getQueryParameters().get(name).toString());
     }
 
     public URI getUri() {

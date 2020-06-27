@@ -1,4 +1,4 @@
-package hr.yeti.rudimentary.utils;
+package hr.yeti.rudimentary.http.value;
 
 import hr.yeti.rudimentary.config.ConfigException;
 import java.net.MalformedURLException;
@@ -26,6 +26,15 @@ public abstract class Transformable {
      */
     public Long asLong() {
         return Long.valueOf(value);
+    }
+
+    /**
+     * Gets value as double.
+     *
+     * @return Value as double.
+     */
+    public Double asDouble() {
+        return Double.valueOf(value);
     }
 
     /**
