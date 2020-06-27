@@ -3,6 +3,7 @@ package hr.yeti.rudimentary.test.config;
 import hr.yeti.rudimentary.config.ConfigException;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.test.ConfigMock;
+import hr.yeti.rudimentary.utils.Transformable;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
@@ -16,6 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Also tests {@link  Transformable}.
+ *
+ * @author vedransmid@yeti-it.hr
+ */
 public class ConfigPropertyTest {
 
     // Mimics configuration instance which will be loaded via ServiceLoader.

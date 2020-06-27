@@ -1,6 +1,7 @@
 package hr.yeti.rudimentary.config;
 
 import hr.yeti.rudimentary.config.spi.Config;
+import hr.yeti.rudimentary.utils.Transformable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -33,17 +34,12 @@ import java.util.stream.Stream;
  *
  * @author vedransmid@yeti-it.hr
  */
-public class ConfigProperty {
+public class ConfigProperty extends Transformable {
 
     /**
      * Holds the name of the property.
      */
     private final String name;
-
-    /**
-     * Holds property value.
-     */
-    private final String value;
 
     /**
      * Constructor used to set property value without setting the default value if the configuration property is missing.
@@ -52,7 +48,7 @@ public class ConfigProperty {
      */
     public ConfigProperty(String name) {
         this.name = name;
-        this.value = setValue(null);
+        value = setValue(null);
     }
 
     /**
@@ -63,11 +59,11 @@ public class ConfigProperty {
      */
     public ConfigProperty(String name, String defaultValue) {
         this.name = name;
-        this.value = setValue(defaultValue);
+        value = setValue(defaultValue);
     }
 
     /**
-     * Sets the property value honouring priority loading mechanism.
+     * Sets the property value honoring priority loading mechanism.
      *
      * @see Config for more info about priority loading mechanism.
      *
@@ -95,171 +91,12 @@ public class ConfigProperty {
     }
 
     /**
-     * Gets property value.
-     *
-     * @return Configuration property value as string.
-     */
-    public String value() {
-        return this.value;
-    }
-
-    /**
-     * Gets property value as integer.
-     *
-     * @return Configuration property value as integer.
-     */
-    public Integer asInt() {
-        return Integer.valueOf(this.value);
-    }
-
-    /**
-     * Gets property value as long.
-     *
-     * @return Configuration property value as long.
-     */
-    public Long asLong() {
-        return Long.valueOf(this.value);
-    }
-
-    /**
-     * Gets property value as boolean.
-     *
-     * @return Configuration property value as boolean.
-     */
-    public Boolean asBoolean() {
-        return Boolean.valueOf(this.value);
-    }
-
-    /**
-     * <pre>
-     * Gets property value as array of strings.
-     * It is mandatory that property value is given as comma separated string values.
-     *
-     * e.g. cities=Zagreb, Podlonk, Zali Log.
-     *
-     * </pre>
-     *
-     * @return Configuration property value as array of string.
-     */
-    public String[] asArray() {
-        return Stream.of(this.value.split(","))
-            .map(String::trim)
-            .filter(val -> !val.isEmpty())
-            .toArray(String[]::new);
-    }
-
-    /**
-     * Gets property value as {@link URI}.
-     *
-     * @return Configuration property value as {@link URI}.
-     */
-    public URI asURI() {
-        return URI.create(this.value);
-    }
-
-    /**
-     * Gets property value as {@link URL}.
-     *
-     * @return Configuration property value as {@link URL}.
-     */
-    public URL asURL() {
-        try {
-            return new URL(this.value);
-        } catch (MalformedURLException ex) {
-            throw new ConfigException(ex);
-        }
-    }
-
-    /**
-     * Gets property value as {@link Map}. Property value must be in form of k1=v1,k2=v2...
-     *
-     * @return Configuration property value as {@link Map}.
-     */
-    public Map<String, String> asMap() {
-        String[] values = this.value.split(",");
-
-        return Stream.of(values)
-            .map(kv -> kv.split("="))
-            .collect(
-                Collectors.toMap(
-                    kv -> kv[0].trim(),
-                    kv -> kv[1].trim(),
-                    (v1, v2) -> v2,
-                    TreeMap::new
-                )
-            );
-    }
-
-    /**
-     * Gets property value as {@link Path}. Property value can be in form of part1/part2/part3 which will be treated as already constructed path or in a form of part1,part2,part3... in which case the
-     * path will be constructed by this method.
-     *
-     * @return Configuration property value as {@link Path}.
-     */
-    public Path asPath() {
-        String[] path = this.value.split(",");
-
-        String[] remainingPath = Stream.of(path)
-            .map(String::trim)
-            .skip(1)
-            .toArray(String[]::new);
-
-        return Path.of(
-            path[0].trim(),
-            remainingPath
-        );
-    }
-
-    /**
-     * Gets property value after transformer function appliance.
-     *
-     * @param transformer TRansformer function.
-     * @return Transformed property value.
-     */
-    public Object transform(ConfigValueTransformer transformer) {
-        return transformer.transform(this.value);
-    }
-
-    /**
-     * Checks is value is blank.
-     * 
-     * @param trim Perform {@link String#trim()} on property value before returning result.
-     * @return Whether or not value is blank(length = 0) as boolean.
-     */
-    public boolean isBlank(boolean trim) {
-        if(isNull()) {
-            return false;
-        }
-        String val = trim ? this.value.trim() : this.value;
-        return val.length() == 0;
-    }
-    
-     /**
-     * Checks is value is null.
-     * 
-     * @return Whether or not value is null.
-     */
-    public boolean isNull() {
-        return Objects.isNull(this.value);
-    }
-
-    /**
      * Gets property name.
      *
      * @return Property name as string.
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Gets property value as string.
-     *
-     * @return Configuration property value as string.
-     */
-    @Override
-    public String toString() {
-        return this.value;
     }
 
     @Override
@@ -283,7 +120,7 @@ public class ConfigProperty {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.value, other.value)) {
+        if (!Objects.equals(value, other.value)) {
             return false;
         }
         return true;
