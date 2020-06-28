@@ -36,7 +36,7 @@ public HttpMethod httpMethod() {
 ### Setting endpoint http status
 Default http status which endpoint returns is set to 200. To set new http statuse override *httpStatus* method.
 As an alternative, you can also use `Request.setResponseHttpStatus(int status)`.
-If both are used, the former one takes precedence.
+If both are used, the latter takes precedence.
 ```java
 @Override
 public int httpStatus() {
@@ -80,7 +80,7 @@ public Text response(Request<Empty> request) {
 In order to set which http headers to return, override *responseHttpHeaders* method.
 The same can be achieved in `response` method by using `request.getHttpExchange().getResponseHeaders().add` method or 
 by using `Request.addResponseHeader(java.lang.String, java.lang.String)` method. 
-Aside from verbosity difference, the former two options are exactly the same.
+Aside from verbosity difference, the latter two options are exactly the same.
 `Request.addResponseHeader(java.lang.String, java.lang.String)` and `request.getHttpExchange().getResponseHeaders().add(java.lang.String, java.lang.String)` take precedence over *responseHttpHeaders* method.
 ```java
 @Override
