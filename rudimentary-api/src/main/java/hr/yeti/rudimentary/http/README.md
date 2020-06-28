@@ -36,7 +36,7 @@ public HttpMethod httpMethod() {
 ### Setting endpoint http status
 Default http status which endpoint returns is set to 200. To set new http statuse override *httpStatus* method.
 As an alternative, you can also use `Request.setResponseHttpStatus(int status)`.
-If both are used, `Request.setResponseHttpStatus(int status) takes precedence.
+If both are used, the former one takes precedence.
 ```java
 @Override
 public int httpStatus() {
