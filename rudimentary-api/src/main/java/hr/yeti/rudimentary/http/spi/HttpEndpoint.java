@@ -56,6 +56,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
 
     /**
      * Sets response HTTP status. Defaults to 200 - OK.
+     * As an alternative, you can also use {@link Request#setResponseHttpStatus(int) }.
+     * If both are used, {@link Request#setResponseHttpStatus(int) } takes precedence.
      *
      * @return HTTP status returned in a response.
      */
@@ -85,7 +87,9 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     O response(Request<I> request);
 
     /**
-     * Sets HTTP headers to be return in a response.
+     * Sets HTTP headers to be returned in a response.
+     * As an alternative, you can also use {@link Request#addResponseHeader(java.lang.String, java.lang.String) }.
+     * If both are used, {@link Request#addResponseHeader(java.lang.String, java.lang.String) } takes precedence.
      *
      * @param request Incoming HTTP request abstraction.
      * @param response Outgoing response.

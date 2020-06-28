@@ -195,6 +195,10 @@ public class HttpProcessor implements HttpHandler, Instance {
                         Object response = null;
                         try {
                             response = httpEndpoint.response(request);
+                            // Set http endpoint defined http headers
+                            exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
+                            // Set http header set during response method execution
+                            exchange.getResponseHeaders().putAll(request.getResponseHttpHeaders());
                         } catch (Exception e) {
                             ExceptionInfo exceptionInfo = httpEndpoint.onException(e);
 
@@ -233,8 +237,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         byte[] responseTransformed = null;
 
                         // Set http endpoint defined http headers
-                        exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
-
+                        //exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
                         if (response instanceof Empty) {
                             exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
                             responseTransformed = "".getBytes();
@@ -270,13 +273,13 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                         } else if (response instanceof ByteStream) {
                             ByteStream streamOut = (ByteStream) response;
-                            respondWithStream(httpEndpoint.httpStatus(), streamOut, exchange);
+                            respondWithStream(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : httpEndpoint.httpStatus(), streamOut, exchange);
                             return;
                         } else if (response instanceof Redirect) {
                             Redirect redirect = (Redirect) response;
                             if (Objects.nonNull(redirect)) {
                                 exchange.getResponseHeaders().add("location", redirect.get().toString());
-                                respond(redirect.getHttpStatus(), null, exchange);
+                                respond(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : redirect.getHttpStatus(), null, exchange);
                                 return;
                             }
                         } else {
@@ -285,7 +288,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
                         }
 
-                        respond(httpEndpoint.httpStatus(), responseTransformed, exchange);
+                        respond(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : httpEndpoint.httpStatus(), responseTransformed, exchange);
 
                     } else {
                         respond(404, null, exchange);

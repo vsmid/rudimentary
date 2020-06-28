@@ -35,6 +35,8 @@ public HttpMethod httpMethod() {
 
 ### Setting endpoint http status
 Default http status which endpoint returns is set to 200. To set new http statuse override *httpStatus* method.
+As an alternative, you can also use `Request.setResponseHttpStatus(int status)`.
+If both are used, `Request.setResponseHttpStatus(int status) takes precedence.
 ```java
 @Override
 public int httpStatus() {
@@ -52,6 +54,7 @@ public String path() {
     return "/custom";
 }
 ```
+
 If you would like to have parameter as part of you uri path define path as:
 ```java
 @Override
@@ -63,7 +66,6 @@ public String path() {
 public Text response(Request<Empty> request) {
     return new Text(request.getPathVariables().get("id"))); // Send value of id path variable as response
 }
-
 ```
 
 ### Returning http response
@@ -76,7 +78,10 @@ public Text response(Request<Empty> request) {
 ```
 ### Returning http headers
 In order to set which http headers to return, override *responseHttpHeaders* method.
-The same can be achieved in `response` method by using `request.getHttpExchange().getResponseHeaders().add` method.
+The same can be achieved in `response` method by using `request.getHttpExchange().getResponseHeaders().add` method or 
+by using `Request.addResponseHeader(java.lang.String, java.lang.String)` method. 
+Aside from verbosity difference, the former two options are exactly the same.
+`Request.addResponseHeader(java.lang.String, java.lang.String)` and `request.getHttpExchange().getResponseHeaders().add(java.lang.String, java.lang.String)` take precedence over *responseHttpHeaders* method.
 ```java
 @Override
 public Headers responseHttpHeaders(Request<I> request, O response) {

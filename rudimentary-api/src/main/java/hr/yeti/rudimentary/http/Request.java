@@ -12,6 +12,7 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,12 +29,15 @@ import java.util.stream.Stream;
 public class Request<T extends Model> {
 
     private Identity identity;
-    private Headers httpHeaders;
+    private Headers requestHttpHeaders;
     private T body;
     private Map<String, Object> pathVariables;
     private Map<String, Object> queryParameters;
     private URI uri;
     private HttpExchange httpExchange;
+
+    private int responseHttpStatus;
+    private Headers responseHttpHeaders;
 
     public Request(
         Identity identity,
@@ -44,12 +48,13 @@ public class Request<T extends Model> {
         URI uri,
         HttpExchange httpExchange) {
         this.identity = identity;
-        this.httpHeaders = httpHeaders;
+        this.requestHttpHeaders = httpHeaders;
         this.body = body;
         this.pathVariables = pathVariables;
         this.queryParameters = queryParameters;
         this.uri = uri;
         this.httpExchange = httpExchange;
+        this.responseHttpHeaders = Objects.nonNull(httpExchange) ? httpExchange.getResponseHeaders() : new Headers();
     }
 
     /**
@@ -58,7 +63,7 @@ public class Request<T extends Model> {
      * @return List of HTTP cookies.
      */
     public List<HttpCookie> getCookies() {
-        return httpHeaders.get("Cookie")
+        return requestHttpHeaders.get("Cookie")
             .stream()
             .map(c -> c.split("; "))
             .flatMap(Stream::of)
@@ -82,8 +87,8 @@ public class Request<T extends Model> {
         return identity;
     }
 
-    public Headers getHttpHeaders() {
-        return httpHeaders;
+    public Headers getRequestHttpHeaders() {
+        return requestHttpHeaders;
     }
 
     public T getBody() {
@@ -116,6 +121,34 @@ public class Request<T extends Model> {
 
     public HttpExchange getHttpExchange() {
         return httpExchange;
+    }
+
+    public int getResponseHttpStatus() {
+        return responseHttpStatus;
+    }
+
+    /**
+     * Overrides {@link HttpEndpoint#httpStatus() }.
+     *
+     * @param responseHttpStatus Http response status to be returned.
+     */
+    public void setResponseHttpStatus(int responseHttpStatus) {
+        this.responseHttpStatus = responseHttpStatus;
+    }
+
+    public Headers getResponseHttpHeaders() {
+        return responseHttpHeaders;
+    }
+
+    /**
+     * Overrides {@link HttpEndpoint#responseHttpHeaders(hr.yeti.rudimentary.http.Request, hr.yeti.rudimentary.http.content.Model)
+     * }.
+     *
+     * @param name Http header name.
+     * @param value Http header value.
+     */
+    public void addResponseHeader(String name, String value) {
+        this.responseHttpHeaders.add(name, value);
     }
 
 }

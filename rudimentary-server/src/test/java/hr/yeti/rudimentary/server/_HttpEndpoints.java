@@ -568,4 +568,53 @@ public class _HttpEndpoints {
 
     }
 
+    public static class CustomHttpStatusInResponseMethodEndpoint implements HttpEndpoint<Empty, Text> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public int httpStatus() {
+            return 200;
+        }
+
+        @Override
+        public String path() {
+            return "customHttpStatusInResponseMethodEndpoint";
+        }
+
+        @Override
+        public Text response(Request<Empty> request) {
+            request.setResponseHttpStatus(204);
+            return new Text("ok");
+        }
+
+    }
+    
+    public static class CustomHttpHeaderInResponseMethodEndpoint implements HttpEndpoint<Empty, Text> {
+
+        @Override
+        public HttpMethod httpMethod() {
+            return HttpMethod.GET;
+        }
+
+        @Override
+        public int httpStatus() {
+            return 200;
+        }
+
+        @Override
+        public String path() {
+            return "customHttpHeaderInResponseMethodEndpoint";
+        }
+
+        @Override
+        public Text response(Request<Empty> request) {
+            request.addResponseHeader("Super-Cute", "Lena");
+            return new Text("ok");
+        }
+
+    }
 }
