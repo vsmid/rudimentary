@@ -14,6 +14,7 @@ public class LoggingBeforeInterceptor implements BeforeInterceptor {
   public int order() {
       return 1;
   }
+  
   @Override
   public void intercept(Request request) {
       System.out.println("Logging interceptor message: " + request.getUri().toString());
