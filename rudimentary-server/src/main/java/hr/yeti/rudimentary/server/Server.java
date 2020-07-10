@@ -24,6 +24,7 @@ import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.KeyManagerFactory;
@@ -89,9 +90,10 @@ public class Server {
             if (sslEnabled) {
                 httpServer = createHttpsServer();
             } else {
-                httpServer = HttpServer.create(new InetSocketAddress(port), threadPoolSize);
+                httpServer = HttpServer.create(new InetSocketAddress(port), 0);
             }
 
+            httpServer.setExecutor(Executors.newFixedThreadPool(threadPoolSize));
             HttpContext context = httpServer.createContext("/", Instance.of(HttpProcessor.class));
 
             // Load authentication mechanism
@@ -144,7 +146,7 @@ public class Server {
     }
 
     private HttpServer createHttpsServer() throws IOException, NoSuchAlgorithmException, GeneralSecurityException {
-        HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(port), threadPoolSize);
+        HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(port), 0);
 
         SSLContext sslContext = createSslContext();
 
