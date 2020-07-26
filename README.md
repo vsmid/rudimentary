@@ -1,6 +1,6 @@
 # Rudimentary framework
 
-A small, simple and opinionated Java based web services/applications framework. 
+A small, simple and opinionated Java based web services/applications framework experiment. 
 
 # Table of contents
 * Rudimentary API
