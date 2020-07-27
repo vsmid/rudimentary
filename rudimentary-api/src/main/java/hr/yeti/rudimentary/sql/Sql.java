@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Class used for database communication. Main goal of this class to reduce boilerplate code as much
- * as possible and just write Sql queries on the fly. Connection pool used is HikariCP.
+ * Class used for database communication. Main goal of this class to reduce boilerplate code as much as possible and
+ * just write Sql queries on the fly. Connection pool used is HikariCP.
  *
  * @see
  * <a href="https://brettwooldridge.github.io/HikariCP">https://brettwooldridge.github.io/HikariCP</a>
@@ -264,33 +264,31 @@ public final class Sql {
     }
 
     /**
-     * Execute Sql transaction.By default, transaction will be rolled back for any
-     * {@link Exception}.
+     * Execute Sql transaction.By default, transaction will be rolled back for any {@link Exception}.
      *
      * @param <T> Type of result returned from transaction.
      * @param dataSourceId Id of the dataSource you want to use for the transactional query.
      * @param txDef Transaction definition as functional interface.
      * @return Transaction result.
-     * @throws TransactionException
+     * @throws TxException
      *
      * @see TxDef
      */
-    public static <T> T tx(String dataSourceId, TxDef<T> txDef) throws TransactionException {
+    public static <T> T tx(String dataSourceId, TxDef<T> txDef) throws TxException {
         return (T) tx(dataSourceId, txDef, new Class[]{ Exception.class }, null);
     }
 
     /**
-     * Execute Sql transaction. By default, transaction will be rolled back for any
-     * {@link Exception}.
+     * Execute Sql transaction. By default, transaction will be rolled back for any {@link Exception}.
      *
      * @param <T> Type of result returned from transaction.
      * @param txDef Transaction definition as functional interface.
      * @return Transaction result.
-     * @throws TransactionException
+     * @throws TxException
      *
      * @see TxDef
      */
-    public static <T> T tx(TxDef<T> txDef) throws TransactionException {
+    public static <T> T tx(TxDef<T> txDef) throws TxException {
         return (T) tx(
             BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, new Class[]{ Exception.class }, null
         );
@@ -303,8 +301,8 @@ public final class Sql {
      * @param dataSourceId Id of the dataSource you want to use for the transactional query.
      * @param txDef Transaction definition as functional interface.
      * @param rollbackOn Exceptions for which transaction will be rolled back.
-     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
-     * priority than @param rollbackOn.
+     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
+     * rollbackOn.
      * @return Transaction result.
      * @throws TransactionException
      *
@@ -360,15 +358,15 @@ public final class Sql {
      * @param <T> Type of result returned from transaction.
      * @param txDef Transaction definition as functional interface.
      * @param rollbackOn Exceptions for which transaction will be rolled back.
-     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater
-     * priority than @param rollbackOn.
+     * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
+     * rollbackOn.
      * @return Transaction result.
-     * @throws TransactionException
+     * @throws TxException
      *
      * @see TxDef
      */
     public static <T> T tx(TxDef<T> txDef, Class<? extends Exception>[] rollbackOn, Class<? extends Exception>[] noRollbackOn)
-        throws TransactionException {
+        throws TxException {
         return tx(BasicDataSource.DEFAULT_DATASOURCE_ID, txDef, rollbackOn, noRollbackOn);
     }
 

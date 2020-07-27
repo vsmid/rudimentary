@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+
 public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
     private static final String HTTP_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.http.spi.HttpEndpoint";
@@ -48,9 +49,15 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String healthCheckProviderList;
     private String objectPoolProviderList;
     private String shutdownHookProviderList;
+    
+//    new SimpleFileVisitor<Path>(){
+//    }
 
     public RegisterAsServiceProvider() {
         try {
+            
+           
+            
             this.projectRootDir = new File("").toPath().toAbsolutePath();
             this.servicesDir = this.projectRootDir.resolve("src").resolve("main").resolve("resources").resolve("META-INF").resolve("services");
             this.httpEndpointProvidersList = readProviders(servicesDir.resolve(HTTP_ENDPOINT_PROVIDERS));
@@ -77,7 +84,6 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (file.toString().endsWith(".java") && !file.toString().contains("module-info.java")) {
-
             byte[] readAllBytes = Files.readAllBytes(file);
             String content = new String(readAllBytes);
 
