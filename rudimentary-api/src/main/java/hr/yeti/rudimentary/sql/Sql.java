@@ -304,7 +304,7 @@ public final class Sql {
      * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
      * rollbackOn.
      * @return Transaction result.
-     * @throws TransactionException
+     * @throws TxException 
      *
      * @see TxDef
      */
@@ -313,7 +313,7 @@ public final class Sql {
         TxDef<T> txDef,
         Class<? extends Exception>[] rollbackOn,
         Class<? extends Exception>[] noRollbackOn
-    ) {
+    ) throws TxException  {
         Sql sql = new Sql(dataSourceId, true);
         try {
             sql.conn.setAutoCommit(false);
