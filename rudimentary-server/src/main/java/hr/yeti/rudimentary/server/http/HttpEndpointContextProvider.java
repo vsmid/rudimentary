@@ -47,8 +47,6 @@ public class HttpEndpointContextProvider implements Instance {
     }
 
     public HttpEndpointMatchInfo matchEndpoint(URI path, HttpMethod httpMethod) {
-        URI resolvedURI = URIUtils.removeSlashPrefix(path);
-
         boolean pathMatchFound = false;
         HttpEndpoint httpEndpoint = null;
 
