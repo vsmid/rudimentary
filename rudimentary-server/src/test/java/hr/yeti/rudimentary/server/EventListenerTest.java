@@ -68,7 +68,7 @@ public class EventListenerTest {
         and:
 
         when:
-        TimeUnit.MILLISECONDS.sleep(30);
+        TimeUnit.MILLISECONDS.sleep(50);
         assertEquals("HELLO WORLD.", Instance.of(_HttpEndpoints.BlogPostEventPublishingEndpoint.class).text);
     }
 
