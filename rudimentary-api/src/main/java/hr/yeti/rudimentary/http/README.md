@@ -135,15 +135,11 @@ Http endpoint provides convenient way to define constraints for parts of incomin
 To define custom constraints, override *constraints* method. More information about validation can be found in [Validation](../validation/README.md) section.
 ```java
 @Override
-public Constraints constraints(
-        Text body,
-        Map<String, String> pathVariables,
-        Map<String, String> queryParameters,
-        Headers httpHeaders
-) {
+public Constraints constraints(Request<Text> request) {
     return new Constraints() {
         {
-            o(body.getValue(), Constraint.NOT_NULL, Constraint.NOT_EMPTY);
+            o(request.getBody().getValue(), NOT_NULL);
+            o(request.getBody().getValue(), NOT_EMPTY);
         }
     };
 }
