@@ -29,7 +29,7 @@ public class OkEndpoint implements HttpEndpoint<OkModel, Text> {
 
     @Override
     public Text response(Request<OkModel> request) {
-        logger().log(Level.INFO, Thread.currentThread().getName() + ":: PV ::" + request.getPathVariables().get("id") + ":: QP ::" + request.getQueryParameters().get("name"));
+        logger().log(Level.INFO, Thread.currentThread().getName() + ":: PV ::" + request.pathVar("id") + ":: QP ::" + request.queryParam("name"));
 
         return new Text("Hello " + request.getBody().getName());
     }
