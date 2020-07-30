@@ -612,7 +612,7 @@ public class _HttpEndpoints {
 
         @Override
         public Text response(Request<Empty> request) {
-            request.addResponseHeader("Super-Cute", "Lena");
+            request.addResponseHttpHeader("Super-Cute", "Lena");
             return new Text("ok");
         }
 

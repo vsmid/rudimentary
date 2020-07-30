@@ -88,8 +88,8 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
 
     /**
      * Sets HTTP headers to be returned in a response.
-     * As an alternative, you can also use {@link Request#addResponseHeader(java.lang.String, java.lang.String) }.
-     * If both are used, {@link Request#addResponseHeader(java.lang.String, java.lang.String) } takes precedence.
+     * As an alternative, you can also use {@link Request#addResponseHttpHeader(java.lang.String, java.lang.String) }.
+     * If both are used, {@link Request#addResponseHttpHeader(java.lang.String, java.lang.String) } takes precedence.
      *
      * @param request Incoming HTTP request abstraction.
      * @param response Outgoing response.

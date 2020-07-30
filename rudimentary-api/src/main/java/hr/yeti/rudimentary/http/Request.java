@@ -147,7 +147,7 @@ public class Request<T extends Model> {
      * @param name Http header name.
      * @param value Http header value.
      */
-    public void addResponseHeader(String name, String value) {
+    public void addResponseHttpHeader(String name, String value) {
         this.responseHttpHeaders.add(name, value);
     }
 
