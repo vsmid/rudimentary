@@ -186,11 +186,9 @@ public class HttpProcessor implements HttpHandler, Instance {
                     // Creating response
                     Object response = null;
                     try {
-                        response = httpEndpoint.response(request);
                         // Set http endpoint defined http headers
                         exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
-                        // Set http header set during response method execution
-                        exchange.getResponseHeaders().putAll(request.getResponseHttpHeaders());
+                        response = httpEndpoint.response(request);
                     } catch (Exception e) {
                         ExceptionInfo exceptionInfo = httpEndpoint.onException(e);
 

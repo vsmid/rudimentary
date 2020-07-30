@@ -37,7 +37,6 @@ public class Request<T extends Model> {
     private HttpExchange httpExchange;
 
     private int responseHttpStatus;
-    private Headers responseHttpHeaders;
 
     public Request(
         Identity identity,
@@ -54,7 +53,6 @@ public class Request<T extends Model> {
         this.queryParameters = queryParameters;
         this.uri = uri;
         this.httpExchange = httpExchange;
-        this.responseHttpHeaders = Objects.nonNull(httpExchange) ? httpExchange.getResponseHeaders() : new Headers();
     }
 
     /**
@@ -137,7 +135,7 @@ public class Request<T extends Model> {
     }
 
     public Headers getResponseHttpHeaders() {
-        return responseHttpHeaders;
+        return this.httpExchange.getResponseHeaders();
     }
 
     /**
@@ -148,7 +146,7 @@ public class Request<T extends Model> {
      * @param value Http header value.
      */
     public void addResponseHttpHeader(String name, String value) {
-        this.responseHttpHeaders.add(name, value);
+        getResponseHttpHeaders().add(name, value);
     }
 
 }
