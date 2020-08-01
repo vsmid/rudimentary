@@ -13,18 +13,29 @@ public class URIUtils {
     }
 
     public static URI removeSlashPrefix(URI uri) {
-        if (uri.getPath().startsWith("/")) {
-            return URI.create(uri.getPath().substring(1));
+        String uriString = uri.getPath();
+        return removeSlashPrefix(uriString);
+    }
+    
+    public static URI removeSlashPrefix(String uri) {
+        if (uri.startsWith("/")) {
+            return URI.create(uri.substring(1));
         } else {
-            return URI.create(uri.getPath());
+            return URI.create(uri);
         }
     }
 
     public static URI prependSlashPrefix(URI uri) {
-        if (!uri.getPath().startsWith("/")) {
-            return URI.create("/" + uri.toString());
+        String uriString = uri.getPath();
+        return prependSlashPrefix(uriString);
+    }
+
+    public static URI prependSlashPrefix(String uri) {
+        if (!uri.startsWith("/")) {
+            return URI.create("/" + uri);
         } else {
-            return uri;
+            return URI.create(uri);
         }
     }
+
 }

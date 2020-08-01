@@ -90,7 +90,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     // Path & query parsing
                     Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
-                        URI.create(httpEndpoint.path()), path
+                        URIUtils.prependSlashPrefix(httpEndpoint.path()), path
                     );
                     Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
 
