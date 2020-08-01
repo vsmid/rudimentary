@@ -8,7 +8,7 @@ import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
-import java.lang.System.Logger.Level;
+import javax.json.JsonValue;
 
 public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
 
@@ -35,17 +35,14 @@ public class AnyJsonEndpoint implements HttpEndpoint<Json, Text> {
         // use new Constraints(body, OkModel.class);
         return new Constraints() {
             {
-                o(request.getBody().get().asJsonObject().getString("name"), Constraint.NOT_NULL);
+                o(request.getBody().get().asJsonObject().getString("name", null), Constraint.NOT_NULL);
             }
         };
     }
 
     @Override
     public Text response(Request<Json> request) {
-        logger().log(Level.INFO, Thread.currentThread().getName() + ":: PV ::"
-            + request.getPathVariables().get("id") + ":: QP ::" + request.getQueryParameters().get("name"));
-
-        return new Text("Hello " + request.getBody().toString());
+        return new Text("Hello " + request.getBody().as(JsonValue.class));
     }
 
     @Override
