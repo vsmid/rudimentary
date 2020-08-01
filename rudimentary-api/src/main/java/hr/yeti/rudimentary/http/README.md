@@ -68,6 +68,26 @@ public Text response(Request<Empty> request) {
 }
 ```
 
+#### Getting path variables
+```java
+@Override
+public Text response(Request<Empty> request) {
+    request.getPathVariables(); // Get all path variables
+    request.pathVar("pathVarName"); // Get specific path variable which also gives you various value transformation options
+    return new Text("");
+}
+```
+
+#### Getting query parameters
+```java
+@Override
+public Text response(Request<Empty> request) {
+    request.getQueryParameters(); // Get all query parameters
+    request.queryParam("queryParamName"); // Get specific query parameter which also gives you various value transformation options
+    return new Text("");
+}
+```
+
 ### Returning http response
 To return something as a http response override *response* method.
 ```java
