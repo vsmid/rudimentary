@@ -105,4 +105,9 @@ public class PebbleViewEngine implements ViewEngine {
         this.engine = engineBuilder.build();
     }
 
+    @Override
+    public boolean primary() {
+        return true;
+    }
+
 }
