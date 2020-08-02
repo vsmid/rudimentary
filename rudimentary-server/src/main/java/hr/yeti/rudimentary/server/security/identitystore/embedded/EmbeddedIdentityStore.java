@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EmbeddedIdentityStore implements IdentityStore {
 
@@ -70,8 +72,12 @@ public class EmbeddedIdentityStore implements IdentityStore {
 
             String username = values[0].trim();
             String password = values[1].trim();
-            String groups = values[2].trim();
-            String roles = values[3].trim();
+            List<String> groups = Stream.of(values[2].split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
+            List<String> roles = Stream.of(values[3].split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
             String details = values.length == 5 ? values[4] : null;
 
             Map<String, String> detailsMap = null;
@@ -84,7 +90,14 @@ public class EmbeddedIdentityStore implements IdentityStore {
                 }
 
             }
-            identitiesMap.put(username, new Identity(List.of(groups), List.of(roles), Objects.nonNull(detailsMap) ? detailsMap : null, username, password, realm.value()));
+            identitiesMap.put(username, new Identity(
+                groups,
+                roles,
+                Objects.nonNull(detailsMap) ? detailsMap : null,
+                username,
+                password,
+                realm.value()
+            ));
         }
 
     }
