@@ -33,6 +33,7 @@ import hr.yeti.rudimentary.validation.Validator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -203,7 +204,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             }
                         }
 
-                        respond(exceptionInfo.getHttpStatus(), exceptionInfo.getDescription().getBytes(), exchange);
+                        respond(exceptionInfo.getHttpStatus(), exceptionInfo.getDescription().getBytes(StandardCharsets.UTF_8), exchange);
                         return;
                     }
 
@@ -230,25 +231,25 @@ public class HttpProcessor implements HttpHandler, Instance {
                     //exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
                     if (response instanceof Empty) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
-                        responseTransformed = "".getBytes();
+                        responseTransformed = "".getBytes(StandardCharsets.UTF_8);
                     } else if (response instanceof Json) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-                        responseTransformed = ((Json) response).get().toString().getBytes();
+                        responseTransformed = ((Json) response).get().toString().getBytes(StandardCharsets.UTF_8);
                     } else if (response instanceof Text) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
-                        responseTransformed = ((Text) response).get().getBytes();
+                        responseTransformed = ((Text) response).get().getBytes(StandardCharsets.UTF_8);
                     } else if (response instanceof Html) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-                        responseTransformed = ((Html) response).get().getBytes();
+                        responseTransformed = ((Html) response).get().getBytes(StandardCharsets.UTF_8);
                     } else if (response instanceof View) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
 
                         View view = (View) response;
 
                         if (Objects.nonNull(Instance.of(ViewEngine.class))) {
-                            responseTransformed = view.get().getBytes();
+                            responseTransformed = view.get().getBytes(StandardCharsets.UTF_8);
                         } else {
-                            respond(500, "Could not resolve view.".getBytes(), exchange);
+                            respond(500, "Could not resolve view.".getBytes(StandardCharsets.UTF_8), exchange);
                             return;
                         }
 
@@ -275,7 +276,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     } else {
                         // POJO assumed
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-                        responseTransformed = JsonbBuilder.create().toJson((response)).getBytes();
+                        responseTransformed = JsonbBuilder.create().toJson((response)).getBytes(StandardCharsets.UTF_8);
                     }
 
                     respond(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : httpEndpoint.httpStatus(), responseTransformed, exchange);
