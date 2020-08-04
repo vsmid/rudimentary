@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.lang.reflect.ParameterizedType;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class HttpRequestUtils {
@@ -71,7 +73,7 @@ public class HttpRequestUtils {
             Stream.of(query.split("&"))
                 .forEach(pair -> {
                     String[] keyValue = pair.split("=");
-                    queryParameters.put(keyValue[0], keyValue[1]);
+                    queryParameters.put(keyValue[0], URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
                 });
         }
 
