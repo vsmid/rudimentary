@@ -25,7 +25,6 @@ public final class BasicAuthMechanism extends AuthMechanism {
 
         if (auth == null) {
             Headers map = exchange.getResponseHeaders();
-            map.set("WWW-Authenticate", "Basic realm=" + "\"" + realm.value() + "\"");
             return new Authenticator.Retry(401);
         }
 
@@ -53,7 +52,6 @@ public final class BasicAuthMechanism extends AuthMechanism {
             );
         } else {
             Headers map = exchange.getResponseHeaders();
-            map.set("WWW-Authenticate", "Basic realm=" + "\"" + realm.value() + "\"");
             return new Authenticator.Failure(401);
         }
 
