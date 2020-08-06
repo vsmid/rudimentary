@@ -25,6 +25,13 @@ public final class View extends Model implements ContentValue<String> {
 
     /**
      * @param templatePath Path to HTML template.
+     */
+    public View(String templatePath) {
+        this.templatePath = templatePath;
+    }
+
+    /**
+     * @param templatePath Path to HTML template.
      * @param context A map of values to be applied against HTML template.
      */
     public View(String templatePath, Map<String, Object> context) {

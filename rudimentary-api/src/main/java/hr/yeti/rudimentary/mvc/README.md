@@ -66,6 +66,7 @@ public class CustomViewEndpoint implements ViewEndpoint<Form> {
 
   @Override
   public View response(Request<Form> request) {
+      // You can also use return View constructor without context, e.g. return new View("dynamicView.html")
       return new View("dynamicView.html", request.getBody().getValue()); // request.getBody().getValue() is already an instance of java.util.Map
   }
 
