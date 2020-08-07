@@ -113,16 +113,10 @@ public class HttpProcessor implements HttpHandler, Instance {
                             value = new ByteStream(exchange.getRequestBody());
                         } else {
                             // POJO assumed
-                            try {
-                                value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
-                            } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
-                                respond(400, "Bad request".getBytes(), exchange);
-                                return;
-                            }
+                            value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
                             constraintsList.add(((Model) value).constraints());
                         }
-
-                    } catch (JsonbException e) {
+                    } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
                         return;
                     }
