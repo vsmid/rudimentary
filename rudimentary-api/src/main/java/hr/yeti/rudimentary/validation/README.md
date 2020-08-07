@@ -141,5 +141,6 @@ new Constraints() {
 }
 ```
 ## Reading/Reporting constraint violation messages
-Constraint violation messages, if there were any, are automatically reported through http header **Reason** as part of the http response.
+Constraint violation messages, if there were any, are automatically reported through http header **Reason** as part of the http response. For multiple violations, multiple Reason
+http header will be reported.
 
