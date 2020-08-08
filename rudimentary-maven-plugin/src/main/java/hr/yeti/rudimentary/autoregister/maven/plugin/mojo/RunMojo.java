@@ -145,7 +145,7 @@ public class RunMojo extends AbstractMojo implements Command {
 
     public void mavenRunRudyApplication() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(mvn(),
-            "\"-Dexec.args=" + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
+            "\"-Dexec.args=" + "--enable-preview " + systemProperties + " -classpath %classpath " + debugSettings + mainClass + "\"",
             "-Dexec.executable=java", "-Dexec.classpathScope=runtime", "exec:exec");
 
         builder.redirectErrorStream(true);
