@@ -49,7 +49,7 @@ This framework also promotes static access to various resources such as sql, ema
 
 ## Prerequisites
 
-* Java 11+
+* Java 14+ (enable-preview is active)
 * Maven - Set M2_HOME environment variable or maven.home system property
 
 ## Getting started - writing Hello World
