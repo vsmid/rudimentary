@@ -14,4 +14,9 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
  */
 final public class Empty extends Model {
 
+    /**
+     * Convenient static access to default empty instance.
+     * This should be used when returning empty response.
+     */
+    public static final Empty INSTANCE = new Empty();
 }
