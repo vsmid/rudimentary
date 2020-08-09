@@ -73,7 +73,7 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
                     </tr>
                     """,
                 endpoint.httpMethod(),
-                URIUtils.prependSlashPrefix(URI.create(endpoint.path())),
+                URIUtils.prependSlash(URI.create(endpoint.path())),
                 endpoint.httpStatus(),
                 Optional.ofNullable(endpoint.description()).orElse(""))
             )

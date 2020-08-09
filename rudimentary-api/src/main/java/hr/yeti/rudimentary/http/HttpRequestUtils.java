@@ -45,7 +45,7 @@ public class HttpRequestUtils {
     public static Map<String, String> parsePathVariables(URI endpointPath, URI uri) {
         Map<String, String> pathVariables = new HashMap<>();
 
-        URI normalizedPath = URIUtils.prependSlashPrefix(endpointPath);
+        URI normalizedPath = URIUtils.prependSlash(endpointPath);
 
         if (uri.toString().length() > 0) {
             Pattern regex = convertToRegex(normalizedPath.toString(), "([^/.]+)");

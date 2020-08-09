@@ -27,13 +27,13 @@ public class HttpEndpointContextProvider implements Instance {
 
         Instance.providersOf(HttpEndpoint.class)
             .forEach((httpEndpoint) -> {
-                URI path = URIUtils.prependSlashPrefix(httpEndpoint.path());
+                URI path = URIUtils.prependSlash(httpEndpoint.path());
                 checkForDuplicateMapping(path, httpEndpoint.httpMethod());
 
-                HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.prependSlashPrefix(path).toString(), httpEndpoint);
+                HTTP_ENDPOINTS.put(httpEndpoint.httpMethod() + "@" + URIUtils.prependSlash(path).toString(), httpEndpoint);
                 PATTERN_PATHS_MAPPING.put(
-                    URIUtils.convertToRegex(URIUtils.prependSlashPrefix(path).toString(),
-                        "([^/.]+)"), URIUtils.prependSlashPrefix(path)
+                    URIUtils.convertToRegex(URIUtils.prependSlash(path).toString(),
+                        "([^/.]+)"), URIUtils.prependSlash(path)
                 );
             });
     }
@@ -52,7 +52,7 @@ public class HttpEndpointContextProvider implements Instance {
 
         List<Map.Entry<Pattern, URI>> match = PATTERN_PATHS_MAPPING.entrySet().stream()
             .filter(e -> {
-                return e.getKey().asPredicate().test(URIUtils.prependSlashPrefix(path).toString());
+                return e.getKey().asPredicate().test(URIUtils.prependSlash(path).toString());
             })
             .collect(Collectors.toList());
 
@@ -88,15 +88,15 @@ public class HttpEndpointContextProvider implements Instance {
     }
 
     private void checkForDuplicateMapping(URI uri, HttpMethod httpMethod) {
-        Predicate pattern = URIUtils.convertToRegex(URIUtils.prependSlashPrefix(uri).toString(), ":.*").asPredicate();
+        Predicate pattern = URIUtils.convertToRegex(URIUtils.prependSlash(uri).toString(), ":.*").asPredicate();
 
         boolean match = HTTP_ENDPOINTS.entrySet().stream()
             .filter(httpEndpoint -> httpEndpoint.getValue().httpMethod() == httpMethod)
-            .map(httpEndpoint -> URIUtils.prependSlashPrefix(httpEndpoint.getValue().path()).toString())
+            .map(httpEndpoint -> URIUtils.prependSlash(httpEndpoint.getValue().path()).toString())
             .anyMatch(pattern);
 
         if (match) {
-            throw new RuntimeException("Duplicate http mapping found: " + URIUtils.prependSlashPrefix(uri).getPath());
+            throw new RuntimeException("Duplicate http mapping found: " + URIUtils.prependSlash(uri).getPath());
         }
     }
 

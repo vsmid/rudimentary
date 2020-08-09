@@ -38,8 +38,8 @@ public class URIUtilsTest {
         URI uri2 = URI.create("/uri2");
 
         expect:
-        assertEquals("/uri1", URIUtils.prependSlashPrefix(uri1).toString());
-        assertEquals("/uri2", URIUtils.prependSlashPrefix(uri2).toString());
+        assertEquals("/uri1", URIUtils.prependSlash(uri1).toString());
+        assertEquals("/uri2", URIUtils.prependSlash(uri2).toString());
     }
 
 }

@@ -25,12 +25,12 @@ public class URIUtils {
         }
     }
 
-    public static URI prependSlashPrefix(URI uri) {
+    public static URI prependSlash(URI uri) {
         String uriString = uri.getPath();
-        return prependSlashPrefix(uriString);
+        return prependSlash(uriString);
     }
 
-    public static URI prependSlashPrefix(String uri) {
+    public static URI prependSlash(String uri) {
         if (!uri.startsWith("/")) {
             return URI.create("/" + uri);
         } else {
