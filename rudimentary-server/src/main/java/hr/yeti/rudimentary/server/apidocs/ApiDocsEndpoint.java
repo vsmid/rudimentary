@@ -64,7 +64,14 @@ public class ApiDocsEndpoint implements HttpEndpoint<Empty, Html> {
         String rowsHTML = Instance.providersOf(HttpEndpoint.class)
             .stream()
             .map(endpoint
-                -> String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                -> String.format("""
+                    <tr>
+                       <td>%s</td>
+                       <td>%s</td>
+                       <td>%s</td>
+                       <td>%s</td>
+                    </tr>
+                    """,
                 endpoint.httpMethod(),
                 URIUtils.prependSlashPrefix(URI.create(endpoint.path())),
                 endpoint.httpStatus(),
