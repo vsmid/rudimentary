@@ -81,7 +81,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     // Request body
                     Object value;
                     Class requestBodyModelType;
-                    
+
                     try {
                         requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.getClass());
                     } catch (ClassNotFoundException e) {
@@ -144,9 +144,8 @@ public class HttpProcessor implements HttpHandler, Instance {
                             .stream()
                             .filter(vr -> vr.getReason().isPresent())
                             .map(vr -> vr.getReason().get())
-                            .forEach((reason) -> {
-                                exchange.getResponseHeaders().add("Reason", reason);
-                            });
+                            .forEach(reason -> exchange.getResponseHeaders().add("Reason", reason));
+                        
                         respond(400, "Bad request".getBytes(), exchange);
                         return;
                     }
