@@ -39,12 +39,12 @@ public class HttpProcessorHttpFilterTest {
         URI uri = testServer.buildUri("emptyrequest");
         HttpRequest GET = HttpRequest.newBuilder(uri)
             .GET().build();
-        HttpResponse<String> response;
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         when:
         System.setOut(new PrintStream(baos));
-        response = HttpClient.newHttpClient().send(GET, HttpResponse.BodyHandlers.ofString());
+        HttpClient.newHttpClient().send(GET, HttpResponse.BodyHandlers.ofString());
 
         then:
         assertEquals("", new String(baos.toByteArray()));
