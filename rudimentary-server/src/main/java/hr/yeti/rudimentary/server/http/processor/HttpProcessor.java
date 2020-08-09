@@ -79,8 +79,9 @@ public class HttpProcessor implements HttpHandler, Instance {
                     HttpEndpoint httpEndpoint = httpEndpointMatchInfo.getHttpEndpoint();
 
                     // Request body
-                    Object value = null;
+                    Object value;
                     Class requestBodyModelType;
+                    
                     try {
                         requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.getClass());
                     } catch (ClassNotFoundException e) {
@@ -225,19 +226,17 @@ public class HttpProcessor implements HttpHandler, Instance {
                     if (response instanceof Empty) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
                         responseTransformed = "".getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof Json) {
+                    } else if (response instanceof Json json) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-                        responseTransformed = ((Json) response).get().toString().getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof Text) {
+                        responseTransformed = json.get().toString().getBytes(StandardCharsets.UTF_8);
+                    } else if (response instanceof Text text) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
-                        responseTransformed = ((Text) response).get().getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof Html) {
+                        responseTransformed = text.get().getBytes(StandardCharsets.UTF_8);
+                    } else if (response instanceof Html html) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-                        responseTransformed = ((Html) response).get().getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof View) {
+                        responseTransformed = html.get().getBytes(StandardCharsets.UTF_8);
+                    } else if (response instanceof View view) {
                         exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-
-                        View view = (View) response;
 
                         if (Objects.nonNull(Instance.of(ViewEngine.class))) {
                             responseTransformed = view.get().getBytes(StandardCharsets.UTF_8);
@@ -246,8 +245,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             return;
                         }
 
-                    } else if (response instanceof StaticResource) {
-                        StaticResource staticResource = (StaticResource) response;
+                    } else if (response instanceof StaticResource staticResource) {
 
                         exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
 
@@ -255,15 +253,23 @@ public class HttpProcessor implements HttpHandler, Instance {
                             responseTransformed = is.readAllBytes();
                         }
 
-                    } else if (response instanceof ByteStream) {
-                        ByteStream streamOut = (ByteStream) response;
-                        respondWithStream(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : httpEndpoint.httpStatus(), streamOut, exchange);
+                    } else if (response instanceof ByteStream streamOut) {
+                        respondWithStream(request.getResponseHttpStatus() != 0
+                            ? request.getResponseHttpStatus()
+                            : httpEndpoint.httpStatus(),
+                            streamOut,
+                            exchange
+                        );
                         return;
-                    } else if (response instanceof Redirect) {
-                        Redirect redirect = (Redirect) response;
+                    } else if (response instanceof Redirect redirect) {
                         if (Objects.nonNull(redirect)) {
                             exchange.getResponseHeaders().add("location", redirect.get().toString());
-                            respond(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : redirect.getHttpStatus(), null, exchange);
+                            respond(request.getResponseHttpStatus() != 0
+                                ? request.getResponseHttpStatus()
+                                : redirect.getHttpStatus(),
+                                null,
+                                exchange
+                            );
                             return;
                         }
                     } else {
@@ -272,7 +278,12 @@ public class HttpProcessor implements HttpHandler, Instance {
                         responseTransformed = JsonbBuilder.create().toJson((response)).getBytes(StandardCharsets.UTF_8);
                     }
 
-                    respond(request.getResponseHttpStatus() != 0 ? request.getResponseHttpStatus() : httpEndpoint.httpStatus(), responseTransformed, exchange);
+                    respond(request.getResponseHttpStatus() != 0
+                        ? request.getResponseHttpStatus()
+                        : httpEndpoint.httpStatus(),
+                        responseTransformed,
+                        exchange
+                    );
 
                 } else {
                     respond(404, null, exchange);
@@ -287,26 +298,28 @@ public class HttpProcessor implements HttpHandler, Instance {
     }
 
     private void respond(int httpStatus, byte[] message, HttpExchange httpExchange) throws IOException {
-        httpExchange.sendResponseHeaders(httpStatus, Objects.isNull(message) ? 0 : message.length);
-        if (Objects.nonNull(message)) {
-            httpExchange.getResponseBody().write(message);
-            httpExchange.getResponseBody().flush();
+        try (httpExchange) {
+            httpExchange.sendResponseHeaders(httpStatus, Objects.isNull(message) ? 0 : message.length);
+            if (Objects.nonNull(message)) {
+                httpExchange.getResponseBody().write(message);
+                httpExchange.getResponseBody().flush();
+            }
         }
-        httpExchange.close();
     }
 
     private void respondWithStream(int httpStatus, ByteStream stream, HttpExchange httpExchange) throws IOException {
-        if (Objects.nonNull(stream)) {
-            httpExchange.sendResponseHeaders(httpStatus, 0);
-            stream.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
-            try {
-                httpExchange.getResponseBody().flush();
-                httpExchange.getResponseBody().close();
-            } catch (IOException ex) {
-                //noop
+        try (httpExchange) {
+            if (Objects.nonNull(stream)) {
+                httpExchange.sendResponseHeaders(httpStatus, 0);
+                stream.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
+                try {
+                    httpExchange.getResponseBody().flush();
+                    httpExchange.getResponseBody().close();
+                } catch (IOException ex) {
+                    //noop
+                }
             }
         }
-        httpExchange.close();
     }
 
     @Override
