@@ -43,7 +43,7 @@ public class ApiDocsEndpointTest {
         then:
         assertEquals(200, response.statusCode());
         assertEquals(MediaType.TEXT_HTML, response.headers().firstValue("content-type").get());
-        assertTrue(response.body().contains("<tr><td>GET</td><td>/_apidocs</td><td>200</td><td>Shows API documentation in HTML format.</td></tr>"));
+        assertTrue(response.body().contains("<td>Shows API documentation in HTML format.</td>"));
     }
 
 }
