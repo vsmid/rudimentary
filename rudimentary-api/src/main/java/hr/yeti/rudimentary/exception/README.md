@@ -1,6 +1,6 @@
 # Exception handling
-Rudimentary offers simple way of defining either global exception handler or per `HttpEndpoint`.
-Both global exception handler and http endpoint exception handler will handle exceptions which occur during response construction.  
+Rudimentary offers simple way of defining either global exception handler or per `HttpEndpoint/ViewEndpoint`.
+Both global exception handler and `HttpEndpoint/ViewEndpoint` exception handler will handle exceptions which occur during response construction.  
 
 ## Global exception handler
 You can have only one global exception handler per application/service.
@@ -18,7 +18,7 @@ public class OnExceptionEndpoint implements HttpEndpoint<Json, Text> {
   @Override
   public ExceptionInfo onException(Exception e) {
       if(e instanceof IllegalArgumentException) {
-          return new ExceptionInfo(400, "Illegal.");
+          return new ExceptionInfo(400, "Illegal.".getBytes());
       }
       
       return ExceptionInfo.defaultExceptionInfo();

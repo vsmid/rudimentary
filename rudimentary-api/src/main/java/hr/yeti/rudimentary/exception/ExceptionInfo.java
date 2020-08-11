@@ -2,12 +2,13 @@ package hr.yeti.rudimentary.exception;
 
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import java.nio.charset.StandardCharsets;
 
 /**
  * <pre>
  * Simple model describing how to respond in case
  * of application exception being thrown.
- * <pre>
+ * </pre>
  *
  * @author vedransmid@yeti-it.hr
  */
@@ -21,37 +22,24 @@ public class ExceptionInfo {
     /**
      * Error response description message.
      */
-    private String description;
+    private byte[] content;
 
     /**
-     * Error response details.
-     */
-    private Object details;
-
-    /**
-     * Flag indicating whether default interface implementation of {@link HttpEndpoint#onException(java.lang.Exception)}
-     * has been overridden or not. {@link HttpEndpoint#onException(java.lang.Exception)} has greater priority than the
-     * one implemented through {@link ExceptionHandler#onException(java.lang.Exception)} if overridden by the given http
-     * endpoint provider class.
+     * Flag indicating whether default interface implementation of {@link HttpEndpoint#onException(java.lang.Exception)} has been overridden or not.
+     * {@link HttpEndpoint#onException(java.lang.Exception)} has greater priority than the one implemented through {@link ExceptionHandler#onException(java.lang.Exception)} if overridden by the given
+     * http endpoint provider class.
      */
     private boolean override;
 
-    public ExceptionInfo(int httpStatus, String description) {
+    public ExceptionInfo(int httpStatus, byte[] content) {
         this.httpStatus = httpStatus;
-        this.description = description;
-        this.override = true;
-    }
-
-    public ExceptionInfo(int httpStatus, String description, Object details) {
-        this.httpStatus = httpStatus;
-        this.description = description;
-        this.details = details;
+        this.content = content;
         this.override = true;
     }
 
     private ExceptionInfo() {
         this.httpStatus = 500;
-        this.description = "Internal Server Error.";
+        this.content = "Internal Server Error.".getBytes(StandardCharsets.UTF_8);
         this.override = false;
     }
 
@@ -68,12 +56,8 @@ public class ExceptionInfo {
         return httpStatus;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public Object getDetails() {
-        return details;
+    public byte[] getContent() {
+        return content;
     }
 
     public boolean isOverride() {

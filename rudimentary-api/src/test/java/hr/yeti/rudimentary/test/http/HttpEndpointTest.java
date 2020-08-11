@@ -3,7 +3,6 @@ package hr.yeti.rudimentary.test.http;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
-import java.net.URI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,7 +47,7 @@ public class HttpEndpointTest {
 
         then:
         assertEquals(500, exceptionInfo.getHttpStatus());
-        assertEquals("Internal Server Error.", exceptionInfo.getDescription());
+        assertEquals("Internal Server Error.", new String(exceptionInfo.getContent()));
     }
 
     @Test

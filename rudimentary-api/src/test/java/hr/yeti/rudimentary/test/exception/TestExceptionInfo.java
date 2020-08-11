@@ -1,11 +1,9 @@
 package hr.yeti.rudimentary.test.exception;
 
 import hr.yeti.rudimentary.exception.ExceptionInfo;
-import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +20,7 @@ public class TestExceptionInfo {
         then:
         assertNotNull(exceptionInfo);
         assertEquals(500, exceptionInfo.getHttpStatus());
-        assertEquals("Internal Server Error.", exceptionInfo.getDescription());
-        assertNull(exceptionInfo.getDetails());
+        assertEquals("Internal Server Error.", exceptionInfo.getContent());
         assertFalse(exceptionInfo.isOverride());
     }
 
@@ -33,25 +30,22 @@ public class TestExceptionInfo {
         ExceptionInfo exceptionInfo;
 
         when:
-        exceptionInfo = new ExceptionInfo(200, "ok");
+        exceptionInfo = new ExceptionInfo(200, "ok".getBytes());
 
         then:
         assertNotNull(exceptionInfo);
         assertEquals(200, exceptionInfo.getHttpStatus());
-        assertEquals("ok", exceptionInfo.getDescription());
-        assertNull(exceptionInfo.getDetails());
+        assertEquals("ok", exceptionInfo.getContent());
         assertTrue(exceptionInfo.isOverride());
 
         and:
         when:
-        exceptionInfo = new ExceptionInfo(200, "ok", new HashMap<String, String>());
+        exceptionInfo = new ExceptionInfo(200, "ok".getBytes());
 
         then:
         assertNotNull(exceptionInfo);
         assertEquals(200, exceptionInfo.getHttpStatus());
-        assertEquals("ok", exceptionInfo.getDescription());
-        assertNull(exceptionInfo.getDetails());
-        assertTrue(exceptionInfo.getDetails().getClass().isAssignableFrom(HashMap.class));
+        assertEquals("ok", exceptionInfo.getContent());
         assertTrue(exceptionInfo.isOverride());
     }
 

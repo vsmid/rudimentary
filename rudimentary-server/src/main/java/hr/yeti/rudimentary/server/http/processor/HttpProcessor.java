@@ -145,7 +145,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             .filter(vr -> vr.getReason().isPresent())
                             .map(vr -> vr.getReason().get())
                             .forEach(reason -> exchange.getResponseHeaders().add("Reason", reason));
-                        
+
                         respond(400, "Bad request".getBytes(), exchange);
                         return;
                     }
@@ -197,7 +197,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             }
                         }
 
-                        respond(exceptionInfo.getHttpStatus(), exceptionInfo.getDescription().getBytes(StandardCharsets.UTF_8), exchange);
+                        respond(exceptionInfo.getHttpStatus(), exceptionInfo.getContent(), exchange);
                         return;
                     }
 

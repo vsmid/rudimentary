@@ -9,7 +9,7 @@ public class _ExceptionHandlers {
 
         @Override
         public ExceptionInfo onException(Exception e) {
-            return new ExceptionInfo(999, e.getMessage());
+            return new ExceptionInfo(999, e.getMessage().getBytes());
         }
 
     }

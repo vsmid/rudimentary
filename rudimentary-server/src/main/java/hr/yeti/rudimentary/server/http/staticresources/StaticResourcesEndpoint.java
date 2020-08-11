@@ -55,7 +55,7 @@ public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResour
 
     @Override
     public ExceptionInfo onException(Exception e) {
-        return new ExceptionInfo(404, "Could not load resource " + e.getMessage() + ".");
+        return new ExceptionInfo(404, ("Could not load resource " + e.getMessage() + ".").getBytes());
     }
 
 }
