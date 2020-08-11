@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.server.http.staticresources;
 
+import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.config.ConfigProperty;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
 import hr.yeti.rudimentary.http.MediaType;
@@ -54,7 +55,7 @@ public class StaticResourcesEndpoint implements HttpEndpoint<Empty, StaticResour
     }
 
     @Override
-    public ExceptionInfo onException(Exception e) {
+    public ExceptionInfo onException(Exception e, Headers responseHttpHeaders) {
         return new ExceptionInfo(404, ("Could not load resource " + e.getMessage() + ".").getBytes());
     }
 

@@ -16,7 +16,7 @@ public class OnExceptionEndpoint implements HttpEndpoint<Json, Text> {
   ...
   
   @Override
-  public ExceptionInfo onException(Exception e) {
+  public ExceptionInfo onException(Exception e, Headers responseHttpHeaders) {
       if(e instanceof IllegalArgumentException) {
           return new ExceptionInfo(400, "Illegal.".getBytes());
       }

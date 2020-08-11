@@ -1,5 +1,6 @@
 package hr.yeti.rudimentary.test.http;
 
+import com.sun.net.httpserver.Headers;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.Request;
@@ -43,7 +44,7 @@ public class HttpEndpointTest {
         ExceptionInfo exceptionInfo;
 
         when:
-        exceptionInfo = okEndpoint.onException(new RuntimeException());
+        exceptionInfo = okEndpoint.onException(new RuntimeException(), new Headers());
 
         then:
         assertEquals(500, exceptionInfo.getHttpStatus());

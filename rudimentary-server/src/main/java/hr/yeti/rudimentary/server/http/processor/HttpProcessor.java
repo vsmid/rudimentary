@@ -184,13 +184,13 @@ public class HttpProcessor implements HttpHandler, Instance {
                         exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
                         response = httpEndpoint.response(request);
                     } catch (Exception e) {
-                        ExceptionInfo exceptionInfo = httpEndpoint.onException(e);
+                        ExceptionInfo exceptionInfo = httpEndpoint.onException(e, exchange.getResponseHeaders());
 
                         if (!exceptionInfo.isOverride()) {
                             // Activate global exception handler if provided and http endpoint does not override
                             // default onException.
                             if (Objects.nonNull(globalExceptionHandler)) {
-                                exceptionInfo = globalExceptionHandler.onException(e);
+                                exceptionInfo = globalExceptionHandler.onException(e, exchange.getResponseHeaders());
                             } else if (Objects.isNull(globalExceptionHandler)) {
                                 // Print stack trace if no custom exception handler is provided.
                                 e.printStackTrace();

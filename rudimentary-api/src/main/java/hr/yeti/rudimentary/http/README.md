@@ -115,7 +115,7 @@ Sometimes exceptions occur during code execution. If you want to handle exceptio
 `onException` method. This takes priority over global exception handler if you provide one.
 ```java
 @Override
-public ExceptionInfo onException(Exception e) {
+public ExceptionInfo onException(Exception e, Headers responseHttpHeaders) {
     if(e instanceof SqlException) {
       return new ExceptionInfo(500, "Something went wrong!");
     }

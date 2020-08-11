@@ -112,14 +112,15 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * Local exception handler. This interceptor will apply only to implementing class. If this method is implemented it
-     * will have greater priority that the global {@link ExceptionHandler} when handling exceptions.
+     * Local exception handler.This interceptor will apply only to implementing class. If this method is implemented it
+ will have greater priority that the global {@link ExceptionHandler} when handling exceptions.
      *
      * @param e Exception thrown during {@link HttpEndpoint#response(hr.yeti.rudimentary.http.Request)} method
      * execution.
+     * @param responseHttpHeaders Response http headers.
      * @return Exception information.
      */
-    default ExceptionInfo onException(Exception e) {
+    default ExceptionInfo onException(Exception e, Headers responseHttpHeaders) {
         return ExceptionInfo.defaultExceptionInfo();
     }
 
