@@ -12,7 +12,6 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -106,7 +105,9 @@ public class Request<T extends Model> {
     }
 
     public Transformable queryParam(String name) {
-        return new TransformableValue(getQueryParameters().get(name).toString());
+        return getQueryParameters().containsKey(name)
+            ? new TransformableValue(getQueryParameters().get(name).toString())
+            : null;
     }
 
     public URI getUri() {
