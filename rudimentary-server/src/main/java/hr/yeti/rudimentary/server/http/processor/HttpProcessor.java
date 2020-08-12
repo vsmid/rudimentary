@@ -115,12 +115,13 @@ public class HttpProcessor implements HttpHandler, Instance {
                         } else {
                             // POJO assumed
                             value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
-                            constraintsList.add(((Model) value).constraints());
                         }
                     } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
                         return;
                     }
+                    
+                    constraintsList.add(((Model) value).constraints());
 
                     // Construct request object
                     Request request = new Request(
