@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -44,6 +45,7 @@ public class HttpProcessorGlobalExceptionHanderTest {
         then:
         assertEquals(999, response.statusCode());
         assertEquals("Damn!", response.body());
+        assertTrue(response.headers().firstValue("Custom-Header").isPresent());
     }
 
 }

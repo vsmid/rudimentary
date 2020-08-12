@@ -10,6 +10,7 @@ public class _ExceptionHandlers {
 
         @Override
         public ExceptionInfo onException(Exception e, Headers responseHttpHeaders) {
+            responseHttpHeaders.add("Custom-Header", "Lena");
             return new ExceptionInfo(999, e.getMessage().getBytes());
         }
 
