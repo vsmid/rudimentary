@@ -20,7 +20,7 @@ import hr.yeti.rudimentary.http.stream.StreamOutWriteDef;
  *
  * @author vedransmid@yeti-it.hr
  */
-public class ByteStream extends Model implements ContentValue<InputStream> {
+public final class ByteStream extends Model implements ContentValue<InputStream> {
 
     /**
      *

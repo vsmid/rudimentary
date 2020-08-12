@@ -14,7 +14,7 @@ import java.net.URI;
  *
  * @author vedransmid@yeti-it.hr
  */
-public class Redirect extends Model implements ContentValue<URI> {
+public final class Redirect extends Model implements ContentValue<URI> {
 
     private URI redirectUri;
     private int httpStatus;
