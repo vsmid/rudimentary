@@ -3,9 +3,7 @@ package hr.yeti.rudimentary.http;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import static hr.yeti.rudimentary.http.URIUtils.convertToRegex;
-import hr.yeti.rudimentary.http.content.Model;
 import hr.yeti.rudimentary.http.session.Session;
-import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.lang.reflect.ParameterizedType;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -81,19 +78,6 @@ public class HttpRequestUtils {
         }
 
         return queryParameters;
-    }
-
-    public static Class<? extends Request<? extends Model>> getRequestBodyType(Class<?> clazz) throws ClassNotFoundException {
-        try {
-            String className = ((ParameterizedType) clazz.getGenericInterfaces()[0]).getActualTypeArguments()[0].getTypeName();
-            return (Class<? extends Request<? extends Model>>) Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Class is not parametrized with generic type.", e);
-        }
-    }
-
-    public static boolean isViewEndpoint(Class<?> clazz) {
-        return clazz.getGenericInterfaces()[0].getTypeName().startsWith(ViewEndpoint.class.getCanonicalName());
     }
 
     public static Optional<Session> extractSession(HttpExchange exchange) {

@@ -6,6 +6,7 @@ import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
+import hr.yeti.rudimentary.http.HttpEndpointUtils;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.MediaType;
@@ -83,7 +84,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     Class requestBodyModelType;
 
                     try {
-                        requestBodyModelType = HttpRequestUtils.getRequestBodyType(httpEndpoint.getClass());
+                        requestBodyModelType = HttpEndpointUtils.getRequestBodyType(httpEndpoint.getClass());
                     } catch (ClassNotFoundException e) {
                         respond(500, "Internal server error.".getBytes(), exchange);
                         return;
@@ -120,7 +121,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         respond(400, "Bad request.".getBytes(), exchange);
                         return;
                     }
-                    
+
                     constraintsList.add(((Model) value).constraints());
 
                     // Construct request object
