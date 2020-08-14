@@ -12,6 +12,7 @@ import java.util.ServiceLoader;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
+import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
@@ -39,6 +40,7 @@ public class DefaultContextProvider extends Context {
         ExceptionHandler.class,
         EventListener.class,
         HealthCheck.class,
+        ContentHandler.class,
         HttpEndpoint.class,
         HttpEndpointContextProvider.class,
         HttpFilter.class,

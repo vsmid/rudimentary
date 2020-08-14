@@ -18,6 +18,7 @@ module hr.yeti.rudimentary.api {
     exports hr.yeti.rudimentary.http.session;
     exports hr.yeti.rudimentary.http.spi;
     exports hr.yeti.rudimentary.http.content;
+    exports hr.yeti.rudimentary.http.content.handler.spi;
     exports hr.yeti.rudimentary.http.stream;
     exports hr.yeti.rudimentary.http.value;
 
@@ -40,7 +41,7 @@ module hr.yeti.rudimentary.api {
     exports hr.yeti.rudimentary.sql.spi;
 
     exports hr.yeti.rudimentary.validation;
-    
+
     exports hr.yeti.rudimentary.i18n;
 
     exports hr.yeti.rudimentary.shutdown.spi;
@@ -50,7 +51,7 @@ module hr.yeti.rudimentary.api {
     requires transitive java.json.bind;
     requires transitive java.json;
 
-    requires transitive jdk.httpserver; // Maybe this should be removed, not worth having just because of HttpHeaders
+    requires transitive jdk.httpserver;
 
     requires transitive java.sql;
 

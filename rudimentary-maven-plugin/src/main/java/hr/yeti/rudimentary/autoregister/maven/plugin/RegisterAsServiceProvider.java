@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-
 public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
 
     private static final String HTTP_ENDPOINT_PROVIDERS = "hr.yeti.rudimentary.http.spi.HttpEndpoint";
@@ -30,6 +29,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private static final String HEALTH_CHECK_PROVIDERS = "hr.yeti.rudimentary.health.spi.HealthCheck";
     private static final String OBJECT_POOL_PROVIDERS = "hr.yeti.rudimentary.pooling.spi.ObjectPool";
     private static final String SHUTDOWN_HOOK_PROVIDERS = "hr.yeti.rudimentary.shutdown.spi.ShutdownHook";
+    private static final String CONTENT_HANDLER = "hr.yeti.rudimentary.http.content.handler.spi.ContentHandler";
 
     private Path projectRootDir;
     private Path servicesDir;
@@ -49,15 +49,10 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
     private String healthCheckProviderList;
     private String objectPoolProviderList;
     private String shutdownHookProviderList;
-    
-//    new SimpleFileVisitor<Path>(){
-//    }
+    private String contentHandlerProviderList;
 
     public RegisterAsServiceProvider() {
         try {
-            
-           
-            
             this.projectRootDir = new File("").toPath().toAbsolutePath();
             this.servicesDir = this.projectRootDir.resolve("src").resolve("main").resolve("resources").resolve("META-INF").resolve("services");
             this.httpEndpointProvidersList = readProviders(servicesDir.resolve(HTTP_ENDPOINT_PROVIDERS));
@@ -75,6 +70,7 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
             this.healthCheckProviderList = readProviders(servicesDir.resolve(HEALTH_CHECK_PROVIDERS));
             this.objectPoolProviderList = readProviders(servicesDir.resolve(OBJECT_POOL_PROVIDERS));
             this.shutdownHookProviderList = readProviders(servicesDir.resolve(SHUTDOWN_HOOK_PROVIDERS));
+            this.contentHandlerProviderList = readProviders(servicesDir.resolve(CONTENT_HANDLER));
 
         } catch (IOException ex) {
             Logger.getLogger(RegisterAsServiceProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,6 +113,8 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 writeProvider(OBJECT_POOL_PROVIDERS, file);
             } else if (content.contains("implements ShutdownHook") && !content.contains("abstract")) {
                 writeProvider(SHUTDOWN_HOOK_PROVIDERS, file);
+            } else if (content.contains("implements ContentHandler") && !content.contains("abstract")) {
+                writeProvider(CONTENT_HANDLER, file);
             }
         }
         return FileVisitResult.CONTINUE;
@@ -190,6 +188,9 @@ public class RegisterAsServiceProvider extends SimpleFileVisitor<Path> {
                 break;
             case SHUTDOWN_HOOK_PROVIDERS:
                 alreadyRegistered = shutdownHookProviderList.contains(provider);
+                break;
+            case CONTENT_HANDLER:
+                alreadyRegistered = contentHandlerProviderList.contains(provider);
                 break;
             default:
                 break;
