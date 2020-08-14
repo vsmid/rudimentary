@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author vedransmid@yeti-it.hr
  */
-public final class Form extends Model implements ContentValue< Map<String, Object>> {
+public final class Form extends Model implements ContentValue<Map<String, Object>> {
 
     private Map<String, Object> value;
 
