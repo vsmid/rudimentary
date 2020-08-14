@@ -21,7 +21,8 @@ import java.util.logging.Logger;
  * application startup.
  *
  * In practice, the only time you could use an instance of this class if you would want to publish an event. Preferred
- * way of publishing events is shown in {@link Event}.
+ * way of publishing events is shown in {@link Event}. By default, an instance of EventPublisher should be provided by the implementation which in our
+ * case is rudimentary-server module.
  *
  * <pre>
  * {@code
