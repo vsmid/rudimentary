@@ -79,6 +79,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     List<Constraints> constraintsList = new ArrayList<>();
 
+                    // Read request body
                     try {
                         Optional<ContentHandler> o = Instance.providersOf(ContentHandler.class)
                             .stream()
@@ -195,6 +196,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     }
 
+                    // Write response
                     Optional<ContentHandler> o = Instance.providersOf(ContentHandler.class)
                         .stream()
                         .filter(ch -> ch.activateWriter(httpEndpoint.getClass(), exchange))
