@@ -16,13 +16,11 @@ public class RedirectContentHandler implements ContentHandler<Redirect> {
 
     @Override
     public void write(int httpStatus, Redirect data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        try (httpExchange) {
-            if (Objects.isNull(data)) {
-                httpExchange.sendResponseHeaders(500, -1);
-            } else {
-                httpExchange.getResponseHeaders().add("Location", data.get().toString());
-                httpExchange.sendResponseHeaders(data.getHttpStatus(), -1);
-            }
+        if (Objects.isNull(data)) {
+            httpExchange.sendResponseHeaders(500, -1);
+        } else {
+            httpExchange.getResponseHeaders().add("Location", data.get().toString());
+            httpExchange.sendResponseHeaders(data.getHttpStatus(), -1);
         }
     }
 

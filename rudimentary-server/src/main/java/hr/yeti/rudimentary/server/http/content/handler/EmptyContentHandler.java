@@ -17,10 +17,8 @@ public class EmptyContentHandler implements ContentHandler<Empty> {
 
     @Override
     public void write(int httpStatus, Empty data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        try (httpExchange) {
-            httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
-            httpExchange.sendResponseHeaders(httpStatus, -1);
-        }
+        httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
+        httpExchange.sendResponseHeaders(httpStatus, -1);
     }
 
 }

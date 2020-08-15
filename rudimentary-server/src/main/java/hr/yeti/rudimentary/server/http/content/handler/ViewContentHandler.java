@@ -21,22 +21,20 @@ public class ViewContentHandler implements ContentHandler<View> {
 
     @Override
     public void write(int httpStatus, View data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        try (httpExchange) {
-            httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-            if (Objects.isNull(data)) {
-                httpExchange.sendResponseHeaders(httpStatus, -1);
+        httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
+        if (Objects.isNull(data)) {
+            httpExchange.sendResponseHeaders(httpStatus, -1);
+        } else {
+            byte[] response;
+            if (Objects.nonNull(Instance.of(ViewEngine.class))) {
+                response = data.get().getBytes(StandardCharsets.UTF_8);
             } else {
-                byte[] response;
-                if (Objects.nonNull(Instance.of(ViewEngine.class))) {
-                    response = data.get().getBytes(StandardCharsets.UTF_8);
-                } else {
-                    response = "Could not resolve view.".getBytes();
-                    httpStatus = 500;
-                }
-                httpExchange.sendResponseHeaders(httpStatus, response.length);
-                httpExchange.getResponseBody().write(response);
-                httpExchange.getResponseBody().flush();
+                response = "Could not resolve view.".getBytes();
+                httpStatus = 500;
             }
+            httpExchange.sendResponseHeaders(httpStatus, response.length);
+            httpExchange.getResponseBody().write(response);
+            httpExchange.getResponseBody().flush();
         }
     }
 

@@ -18,17 +18,15 @@ public class StaticResourceContentHandler implements ContentHandler<StaticResour
 
     @Override
     public void write(int httpStatus, StaticResource data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        try (httpExchange) {
-            if (Objects.isNull(data)) {
-                httpExchange.sendResponseHeaders(httpStatus, -1);
-            } else {
-                httpExchange.getResponseHeaders().put("Content-Type", List.of(data.getMediaType()));
-                try ( InputStream is = data.get()) {
-                    byte[] response = is.readAllBytes();
-                    httpExchange.sendResponseHeaders(httpStatus, response.length);
-                    httpExchange.getResponseBody().write(response);
-                    httpExchange.getResponseBody().flush();
-                }
+        if (Objects.isNull(data)) {
+            httpExchange.sendResponseHeaders(httpStatus, -1);
+        } else {
+            httpExchange.getResponseHeaders().put("Content-Type", List.of(data.getMediaType()));
+            try ( InputStream is = data.get()) {
+                byte[] response = is.readAllBytes();
+                httpExchange.sendResponseHeaders(httpStatus, response.length);
+                httpExchange.getResponseBody().write(response);
+                httpExchange.getResponseBody().flush();
             }
         }
     }

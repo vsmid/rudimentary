@@ -16,15 +16,13 @@ public class ByteStreamContentHandler implements ContentHandler<ByteStream> {
 
     @Override
     public void write(int httpStatus, ByteStream data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        try (httpExchange) {
-            if (Objects.isNull(data)) {
-                httpExchange.sendResponseHeaders(httpStatus, -1);
-            } else {
-                httpExchange.sendResponseHeaders(httpStatus, 0);
-                data.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
-                httpExchange.getResponseBody().flush();
-                httpExchange.getResponseBody().close();
-            }
+        if (Objects.isNull(data)) {
+            httpExchange.sendResponseHeaders(httpStatus, -1);
+        } else {
+            httpExchange.sendResponseHeaders(httpStatus, 0);
+            data.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
+            httpExchange.getResponseBody().flush();
+            httpExchange.getResponseBody().close();
         }
     }
 

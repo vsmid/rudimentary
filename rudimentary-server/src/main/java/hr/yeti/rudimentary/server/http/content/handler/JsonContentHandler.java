@@ -22,16 +22,14 @@ public class JsonContentHandler implements ContentHandler<Json> {
 
     @Override
     public void write(int httpStatus, Json data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        try (httpExchange) {
-            httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-            if (Objects.isNull(data)) {
-                httpExchange.sendResponseHeaders(httpStatus, -1);
-            } else {
-                byte[] response = data.get().toString().getBytes(StandardCharsets.UTF_8);
-                httpExchange.sendResponseHeaders(httpStatus, response.length);
-                httpExchange.getResponseBody().write(response);
-                httpExchange.getResponseBody().flush();
-            }
+        httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
+        if (Objects.isNull(data)) {
+            httpExchange.sendResponseHeaders(httpStatus, -1);
+        } else {
+            byte[] response = data.get().toString().getBytes(StandardCharsets.UTF_8);
+            httpExchange.sendResponseHeaders(httpStatus, response.length);
+            httpExchange.getResponseBody().write(response);
+            httpExchange.getResponseBody().flush();
         }
     }
 
