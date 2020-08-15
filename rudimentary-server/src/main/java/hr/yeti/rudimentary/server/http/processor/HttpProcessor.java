@@ -69,15 +69,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     HttpEndpoint httpEndpoint = httpEndpointMatchInfo.getHttpEndpoint();
 
                     // Request body
-                    Object value = null;
-                    Class requestBodyModelType;
-
-                    try {
-                        requestBodyModelType = HttpEndpointUtils.getRequestBodyType(httpEndpoint.getClass());
-                    } catch (ClassNotFoundException e) {
-                        respond(500, "Internal server error.".getBytes(), exchange);
-                        return;
-                    }
+                    Object body = null;
 
                     // Path & query parsing
                     Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
@@ -101,10 +93,10 @@ public class HttpProcessor implements HttpHandler, Instance {
                             .findFirst();
 
                         if (o.isPresent()) {
-                            value = o.get().read(exchange, httpEndpoint.getClass());
-                            constraintsList.add(((Model) value).constraints());
+                            body = o.get().read(exchange, httpEndpoint.getClass());
+                            constraintsList.add(((Model) body).constraints());
                         }
-                        // Handle if not present.
+                        // TODO Handle if not present.
 
                     } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
@@ -115,7 +107,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     Request request = new Request(
                         (Identity) exchange.getPrincipal(),
                         exchange.getRequestHeaders(),
-                        (Model) value,
+                        (Model) body,
                         pathVariables,
                         queryParameters,
                         exchange.getRequestURI(),
@@ -228,7 +220,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             httpEndpoint.getClass()
                         );
                     }
-                    // Handle if not present.
+                    // TODO Handle if not present.
 
                 } else {
                     respond(404, null, exchange);

@@ -5,6 +5,9 @@ import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import java.lang.reflect.ParameterizedType;
 
+// TODO Move to ReflectionUtils
+// TODO Add tests
+// TODO Maybe only getGenericType is needed
 public class HttpEndpointUtils {
 
     public static Class<? extends Model> getRequestBodyType(Class<?> clazz) throws ClassNotFoundException {
