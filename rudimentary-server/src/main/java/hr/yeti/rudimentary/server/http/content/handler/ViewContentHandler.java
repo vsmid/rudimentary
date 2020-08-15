@@ -15,12 +15,12 @@ import java.util.Objects;
 public class ViewContentHandler implements ContentHandler<View> {
 
     @Override
-    public View read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public View read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void write(int httpStatus, View data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, View data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
             httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
             if (Objects.isNull(data)) {

@@ -2,10 +2,12 @@ package hr.yeti.rudimentary.http.content.handler.spi;
 
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.context.spi.Instance;
-import hr.yeti.rudimentary.http.HttpEndpointUtils;
 import hr.yeti.rudimentary.http.content.Model;
+import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +39,7 @@ public interface ContentHandler<T extends Model> extends Instance {
      * @return
      * @throws java.io.IOException
      */
-    T read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException;
+    T read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException;
 
     /**
      *
@@ -47,18 +49,17 @@ public interface ContentHandler<T extends Model> extends Instance {
      * @param httpEndpoint
      * @throws java.io.IOException
      */
-    void write(int httpStatus, T data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException;
+    void write(int httpStatus, T data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException;
 
     /**
      *
      * @param httpEndpoint
-     * @param model
      * @param httpExchange
      * @return
      */
-    default boolean activateReader(Class<HttpEndpoint> httpEndpoint, Class<T> model, HttpExchange httpExchange) {
+    default boolean activateReader(Class<? extends HttpEndpoint> httpEndpoint, HttpExchange httpExchange) {
         try {
-            return HttpEndpointUtils.getRequestBodyType(httpEndpoint).isAssignableFrom(model);
+            return getGenericType(httpEndpoint, 0).isAssignableFrom(getGenericType(this.getClass(), 0));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -72,13 +73,26 @@ public interface ContentHandler<T extends Model> extends Instance {
      * @param httpExchange
      * @return
      */
-    default boolean activateWriter(Class<HttpEndpoint> httpEndpoint, Class<T> model, HttpExchange httpExchange) {
+    default boolean activateWriter(Class<? extends HttpEndpoint> httpEndpoint, HttpExchange httpExchange) {
         try {
-            
-            return HttpEndpointUtils.getResponseBodyType(httpEndpoint).isAssignableFrom(model);
+            Class<? extends Model> clazz = isViewEndpoint(httpEndpoint) ? View.class : getGenericType(httpEndpoint, 1);
+            return clazz.isAssignableFrom(getGenericType(this.getClass(), 0));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+
+    public static Class<? extends Model> getGenericType(Class<?> clazz, int index) throws ClassNotFoundException {
+        try {
+            String className = ((ParameterizedType) clazz.getGenericInterfaces()[0]).getActualTypeArguments()[index].getTypeName();
+            return (Class<? extends Model>) Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("Class is not parametrized with generic type.", e);
+        }
+    }
+
+    public static boolean isViewEndpoint(Class<?> clazz) {
+        return clazz.getGenericInterfaces()[0].getTypeName().startsWith(ViewEndpoint.class.getCanonicalName());
     }
 }

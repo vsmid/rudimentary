@@ -10,12 +10,12 @@ import java.util.Objects;
 public class ByteStreamContentHandler implements ContentHandler<ByteStream> {
 
     @Override
-    public ByteStream read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public ByteStream read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         return new ByteStream(httpExchange.getRequestBody());
     }
 
     @Override
-    public void write(int httpStatus, ByteStream data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, ByteStream data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
             if (Objects.isNull(data)) {
                 httpExchange.sendResponseHeaders(httpStatus, -1);

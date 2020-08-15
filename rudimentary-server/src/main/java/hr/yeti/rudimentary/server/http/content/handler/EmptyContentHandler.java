@@ -11,12 +11,12 @@ import java.util.List;
 public class EmptyContentHandler implements ContentHandler<Empty> {
 
     @Override
-    public Empty read(HttpExchange exchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public Empty read(HttpExchange exchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         return Empty.INSTANCE;
     }
 
     @Override
-    public void write(int httpStatus, Empty data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, Empty data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
             httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
             httpExchange.sendResponseHeaders(httpStatus, -1);

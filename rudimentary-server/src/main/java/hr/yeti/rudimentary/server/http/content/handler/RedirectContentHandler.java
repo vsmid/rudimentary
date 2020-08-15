@@ -10,12 +10,12 @@ import java.util.Objects;
 public class RedirectContentHandler implements ContentHandler<Redirect> {
 
     @Override
-    public Redirect read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public Redirect read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void write(int httpStatus, Redirect data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, Redirect data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
             if (Objects.isNull(data)) {
                 httpExchange.sendResponseHeaders(500, -1);

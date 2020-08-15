@@ -6,7 +6,6 @@ import hr.yeti.rudimentary.config.spi.Config;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.exception.ExceptionInfo;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
-import hr.yeti.rudimentary.http.HttpEndpointUtils;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.Request;
@@ -32,14 +31,15 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.json.bind.JsonbException;
 import javax.json.stream.JsonParsingException;
 
+// TODO Cache content handler mapping to http endpoint
 public class HttpProcessor implements HttpHandler, Instance {
+
+    private static final System.Logger LOGGER = System.getLogger(HttpProcessor.class.getName());
 
     private ExceptionHandler globalExceptionHandler;
 
@@ -72,9 +72,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     Object body = null;
 
                     // Path & query parsing
-                    Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(
-                        URIUtils.prependSlash(httpEndpoint.path()), path
-                    );
+                    Map<String, String> pathVariables = HttpRequestUtils.parsePathVariables(URIUtils.prependSlash(httpEndpoint.path()), path);
                     Map<String, Object> queryParameters = HttpRequestUtils.parseQueryParameters(path.getQuery());
 
                     List<Constraints> constraintsList = new ArrayList<>();
@@ -82,21 +80,17 @@ public class HttpProcessor implements HttpHandler, Instance {
                     try {
                         Optional<ContentHandler> o = Instance.providersOf(ContentHandler.class)
                             .stream()
-                            .filter(ch -> {
-                                try {
-                                    return ch.activateReader(httpEndpoint.getClass(), HttpEndpointUtils.getGenericType(ch.getClass(), 0), exchange);
-                                } catch (ClassNotFoundException ex) {
-                                    Logger.getLogger(HttpProcessor.class.getName()).log(Level.SEVERE, null, ex);
-                                    return false;
-                                }
-                            })
+                            .filter(ch -> ch.activateReader(httpEndpoint.getClass(), exchange))
                             .findFirst();
 
                         if (o.isPresent()) {
                             body = o.get().read(exchange, httpEndpoint.getClass());
                             constraintsList.add(((Model) body).constraints());
+                        } else {
+                            LOGGER.log(System.Logger.Level.ERROR, "No suitable request body content handler found.");
+                            respond(500, "Internal Server Error".getBytes(), exchange);
+                            return;
                         }
-                        // TODO Handle if not present.
 
                     } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
@@ -201,14 +195,7 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     Optional<ContentHandler> o = Instance.providersOf(ContentHandler.class)
                         .stream()
-                        .filter(ch -> {
-                            try {
-                                return ch.activateWriter(httpEndpoint.getClass(), HttpEndpointUtils.getGenericType(ch.getClass(), 0), exchange);
-                            } catch (ClassNotFoundException ex) {
-                                Logger.getLogger(HttpProcessor.class.getName()).log(Level.SEVERE, null, ex);
-                                return false;
-                            }
-                        })
+                        .filter(ch -> ch.activateWriter(httpEndpoint.getClass(), exchange))
                         .findFirst();
 
                     if (o.isPresent()) {
@@ -219,8 +206,11 @@ public class HttpProcessor implements HttpHandler, Instance {
                             exchange,
                             httpEndpoint.getClass()
                         );
+                    } else {
+                        LOGGER.log(System.Logger.Level.ERROR, "No suitable response body content handler found.");
+                        respond(500, "Internal Server Error".getBytes(), exchange);
+                        return;
                     }
-                    // TODO Handle if not present.
 
                 } else {
                     respond(404, null, exchange);
@@ -229,7 +219,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                 respond(500, null, exchange);
             }
         } catch (IOException e) {
-            System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, e);
+            LOGGER.log(System.Logger.Level.ERROR, e);
         }
 
     }

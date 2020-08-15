@@ -10,7 +10,7 @@ import java.io.IOException;
 public class FormContentHandler implements ContentHandler<Form> {
 
     @Override
-    public Form read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public Form read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         byte[] data = httpExchange.getRequestBody().readAllBytes();
         return new Form(
             HttpRequestUtils.parseQueryParameters(new String(data))
@@ -18,7 +18,7 @@ public class FormContentHandler implements ContentHandler<Form> {
     }
 
     @Override
-    public void write(int httpStatus, Form data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, Form data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

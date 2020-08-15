@@ -13,13 +13,13 @@ import java.util.Objects;
 public class HtmlContentHandler implements ContentHandler<Html> {
 
     @Override
-    public Html read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public Html read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         byte[] data = httpExchange.getRequestBody().readAllBytes();
         return new Html(new String(data));
     }
 
     @Override
-    public void write(int httpStatus, Html data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, Html data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
             httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
             if (Objects.isNull(data)) {

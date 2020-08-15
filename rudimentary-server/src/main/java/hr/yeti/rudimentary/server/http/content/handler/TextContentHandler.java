@@ -13,13 +13,13 @@ import java.util.Objects;
 public class TextContentHandler implements ContentHandler<Text> {
 
     @Override
-    public Text read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public Text read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         byte[] data = httpExchange.getRequestBody().readAllBytes();
         return new Text(new String(data));
     }
 
     @Override
-    public void write(int httpStatus, Text data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
+    public void write(int httpStatus, Text data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
             httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
             if (Objects.isNull(data)) {
