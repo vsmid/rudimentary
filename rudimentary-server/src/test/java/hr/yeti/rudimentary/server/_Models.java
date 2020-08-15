@@ -1,14 +1,14 @@
 package hr.yeti.rudimentary.server;
 
 import hr.yeti.rudimentary.events.Event;
-import hr.yeti.rudimentary.http.content.Model;
+import hr.yeti.rudimentary.http.content.Pojo;
 import hr.yeti.rudimentary.validation.Constraint;
 import hr.yeti.rudimentary.validation.Constraints;
 import java.util.regex.Pattern;
 
 public class _Models {
 
-    public static class _CarModel extends Model {
+    public static class _CarModel extends Pojo {
 
         private String manufacturer;
 
@@ -29,7 +29,7 @@ public class _Models {
 
     }
 
-    public static class _PojoConstrained extends Model {
+    public static class _PojoConstrained extends Pojo {
 
         final Pattern onlyLetters = Pattern.compile("[a-zA-Z]+");
 
@@ -54,7 +54,7 @@ public class _Models {
 
     }
 
-    public static class BlogPost extends Model implements Event {
+    public static class BlogPost extends Pojo implements Event {
 
         public String text;
 

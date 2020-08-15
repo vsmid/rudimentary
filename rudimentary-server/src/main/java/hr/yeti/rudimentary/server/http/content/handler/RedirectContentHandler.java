@@ -17,9 +17,11 @@ public class RedirectContentHandler implements ContentHandler<Redirect> {
     @Override
     public void write(int httpStatus, Redirect data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
         try (httpExchange) {
-            httpExchange.sendResponseHeaders(httpStatus, -1);
-            if (Objects.nonNull(data)) {
-                httpExchange.getResponseHeaders().add("location", data.get().toString());
+            if (Objects.isNull(data)) {
+                httpExchange.sendResponseHeaders(500, -1);
+            } else {
+                httpExchange.getResponseHeaders().add("Location", data.get().toString());
+                httpExchange.sendResponseHeaders(data.getHttpStatus(), -1);
             }
         }
     }

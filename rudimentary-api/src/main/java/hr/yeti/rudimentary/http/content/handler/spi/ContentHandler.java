@@ -74,6 +74,7 @@ public interface ContentHandler<T extends Model> extends Instance {
      */
     default boolean activateWriter(Class<HttpEndpoint> httpEndpoint, Class<T> model, HttpExchange httpExchange) {
         try {
+            
             return HttpEndpointUtils.getResponseBodyType(httpEndpoint).isAssignableFrom(model);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);

@@ -9,6 +9,7 @@ import hr.yeti.rudimentary.events.EventPublisher;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.URIUtils;
+import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.filter.spi.HttpFilter;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
@@ -19,6 +20,16 @@ import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.security.spi.IdentityDetails;
 import hr.yeti.rudimentary.security.spi.IdentityStore;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
+import hr.yeti.rudimentary.server.http.content.handler.ByteStreamContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.EmptyContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.FormContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.HtmlContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.JsonContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.JsonPojoContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.RedirectContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.StaticResourceContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.TextContentHandler;
+import hr.yeti.rudimentary.server.http.content.handler.ViewContentHandler;
 import hr.yeti.rudimentary.server.http.processor.HttpProcessor;
 import hr.yeti.rudimentary.server.mvc.DefaultStaticHTMLViewEngine;
 import hr.yeti.rudimentary.shutdown.spi.ShutdownHook;
@@ -93,6 +104,20 @@ public class TestServer {
         private List<Class<? extends HttpFilter>> httpFilters = new ArrayList<>();
         private List<Class<? extends BasicDataSource>> dataSources = new ArrayList<>();
         private List<Class<? extends Instance>> instances = new ArrayList<>();
+        private List<Class<? extends ContentHandler>> contentHandlers = new ArrayList<>() {
+            {
+                add(EmptyContentHandler.class);
+                add(TextContentHandler.class);
+                add(ByteStreamContentHandler.class);
+                add(FormContentHandler.class);
+                add(HtmlContentHandler.class);
+                add(JsonContentHandler.class);
+                add(JsonPojoContentHandler.class);
+                add(RedirectContentHandler.class);
+                add(StaticResourceContentHandler.class);
+                add(ViewContentHandler.class);
+            }
+        };
         private Class<? extends AuthMechanism> authMechanism;
         private Class<? extends IdentityStore> identityStore;
         private Class<? extends IdentityDetails> identityDetails;
@@ -215,6 +240,15 @@ public class TestServer {
             return this;
         }
 
+        public Builder contentHandlers(Class<? extends ContentHandler>... contentHandlers) {
+            if (Objects.nonNull(contentHandlers)) {
+                this.contentHandlers.addAll(
+                    Arrays.asList(contentHandlers)
+                );
+            }
+            return this;
+        }
+
         public TestServer build() {
             assignPort();
 
@@ -274,6 +308,10 @@ public class TestServer {
 
             if (!instances.isEmpty()) {
                 providers.addAll(instances);
+            }
+
+            if (!contentHandlers.isEmpty()) {
+                providers.addAll(contentHandlers);
             }
 
             this.context = new ContextMock(

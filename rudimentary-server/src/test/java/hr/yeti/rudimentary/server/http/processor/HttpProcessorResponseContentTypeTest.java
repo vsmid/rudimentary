@@ -156,7 +156,7 @@ public class HttpProcessorResponseContentTypeTest {
 
         then:
         assertEquals(302, response.statusCode());
-        assertEquals("redirected", response.headers().firstValue("location").get());
+        assertEquals("redirected", response.headers().firstValue("Location").get());
     }
 
     @Test

@@ -34,6 +34,7 @@ public class RegisterProvidersMojo extends AbstractMojo {
     }
 
     void deleteProviders() {
+        System.out.println("AAAAAAAA" + projectLayout.getServicesDir().toFile());
         for (File f : projectLayout.getServicesDir().toFile().listFiles()) {
             f.delete();
         }

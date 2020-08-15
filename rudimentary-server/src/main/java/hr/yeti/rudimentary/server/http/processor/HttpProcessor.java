@@ -9,32 +9,21 @@ import hr.yeti.rudimentary.exception.spi.ExceptionHandler;
 import hr.yeti.rudimentary.http.HttpEndpointUtils;
 import hr.yeti.rudimentary.http.HttpMethod;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
-import hr.yeti.rudimentary.http.MediaType;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.URIUtils;
-import hr.yeti.rudimentary.http.content.Empty;
-import hr.yeti.rudimentary.http.content.Html;
-import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
-import hr.yeti.rudimentary.http.content.StaticResource;
 import hr.yeti.rudimentary.http.content.ByteStream;
-import hr.yeti.rudimentary.http.content.Redirect;
-import hr.yeti.rudimentary.http.content.Text;
-import hr.yeti.rudimentary.http.content.View;
 import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
-import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.security.Identity;
 import hr.yeti.rudimentary.server.http.HttpEndpointContextProvider;
 import hr.yeti.rudimentary.validation.ConstraintViolations;
 import hr.yeti.rudimentary.validation.Constraints;
 import hr.yeti.rudimentary.validation.Validator;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -47,7 +36,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
 import javax.json.stream.JsonParsingException;
 
@@ -104,7 +92,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             .stream()
                             .filter(ch -> {
                                 try {
-                                    return ch.activateReader(httpEndpoint.getClass(), HttpEndpointUtils.getRequestBodyType(ch.getClass()), exchange);
+                                    return ch.activateReader(httpEndpoint.getClass(), HttpEndpointUtils.getGenericType(ch.getClass(), 0), exchange);
                                 } catch (ClassNotFoundException ex) {
                                     Logger.getLogger(HttpProcessor.class.getName()).log(Level.SEVERE, null, ex);
                                     return false;
@@ -116,6 +104,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             value = o.get().read(exchange, httpEndpoint.getClass());
                             constraintsList.add(((Model) value).constraints());
                         }
+                        // Handle if not present.
 
                     } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
@@ -218,71 +207,28 @@ public class HttpProcessor implements HttpHandler, Instance {
 
                     }
 
-                    byte[] responseTransformed = null;
+                    Optional<ContentHandler> o = Instance.providersOf(ContentHandler.class)
+                        .stream()
+                        .filter(ch -> {
+                            try {
+                                return ch.activateWriter(httpEndpoint.getClass(), HttpEndpointUtils.getGenericType(ch.getClass(), 0), exchange);
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(HttpProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                                return false;
+                            }
+                        })
+                        .findFirst();
 
-                    // Set http endpoint defined http headers
-                    //exchange.getResponseHeaders().putAll(httpEndpoint.responseHttpHeaders(request, (Model) response));
-                    if (response instanceof Empty) {
-                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.ALL));
-                        responseTransformed = "".getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof Json json) {
-                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-                        responseTransformed = json.get().toString().getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof Text text) {
-                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_PLAIN));
-                        responseTransformed = text.get().getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof Html html) {
-                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-                        responseTransformed = html.get().getBytes(StandardCharsets.UTF_8);
-                    } else if (response instanceof View view) {
-                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
-
-                        if (Objects.nonNull(Instance.of(ViewEngine.class))) {
-                            responseTransformed = view.get().getBytes(StandardCharsets.UTF_8);
-                        } else {
-                            respond(500, "Could not resolve view.".getBytes(StandardCharsets.UTF_8), exchange);
-                            return;
-                        }
-
-                    } else if (response instanceof StaticResource staticResource) {
-
-                        exchange.getResponseHeaders().put("Content-Type", List.of(staticResource.getMediaType()));
-
-                        try ( InputStream is = staticResource.get()) {
-                            responseTransformed = is.readAllBytes();
-                        }
-
-                    } else if (response instanceof ByteStream streamOut) {
-                        respondWithStream(request.getResponseHttpStatus() != 0
+                    if (o.isPresent()) {
+                        o.get().write(request.getResponseHttpStatus() != 0
                             ? request.getResponseHttpStatus()
                             : httpEndpoint.httpStatus(),
-                            streamOut,
-                            exchange
+                            httpEndpoint.response(request),
+                            exchange,
+                            httpEndpoint.getClass()
                         );
-                        return;
-                    } else if (response instanceof Redirect redirect) {
-                        if (Objects.nonNull(redirect)) {
-                            exchange.getResponseHeaders().add("location", redirect.get().toString());
-                            respond(request.getResponseHttpStatus() != 0
-                                ? request.getResponseHttpStatus()
-                                : redirect.getHttpStatus(),
-                                null,
-                                exchange
-                            );
-                            return;
-                        }
-                    } else {
-                        // POJO assumed
-                        exchange.getResponseHeaders().put("Content-Type", List.of(MediaType.APPLICATION_JSON));
-                        responseTransformed = JsonbBuilder.create().toJson((response)).getBytes(StandardCharsets.UTF_8);
                     }
-
-                    respond(request.getResponseHttpStatus() != 0
-                        ? request.getResponseHttpStatus()
-                        : httpEndpoint.httpStatus(),
-                        responseTransformed,
-                        exchange
-                    );
+                    // Handle if not present.
 
                 } else {
                     respond(404, null, exchange);
