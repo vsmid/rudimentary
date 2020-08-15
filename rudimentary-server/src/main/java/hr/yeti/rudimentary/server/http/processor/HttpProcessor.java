@@ -223,7 +223,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                         o.get().write(request.getResponseHttpStatus() != 0
                             ? request.getResponseHttpStatus()
                             : httpEndpoint.httpStatus(),
-                            httpEndpoint.response(request),
+                            (Model) response,
                             exchange,
                             httpEndpoint.getClass()
                         );
