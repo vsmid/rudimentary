@@ -1,11 +1,11 @@
 package hr.yeti.rudimentary.demo.model;
 
-import hr.yeti.rudimentary.http.content.Model;
+import hr.yeti.rudimentary.http.content.Pojo;
 import static hr.yeti.rudimentary.validation.Constraint.NOT_EMPTY;
 import static hr.yeti.rudimentary.validation.Constraint.NOT_NULL;
 import hr.yeti.rudimentary.validation.Constraints;
 
-public class OkModel extends Model {
+public class OkModel extends Pojo {
 
     private String name;
     private String description;

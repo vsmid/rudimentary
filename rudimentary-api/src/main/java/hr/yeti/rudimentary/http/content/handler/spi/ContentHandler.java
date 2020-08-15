@@ -33,19 +33,21 @@ public interface ContentHandler<T extends Model> extends Instance {
     /**
      *
      * @param httpExchange
+     * @param httpEndpoint
      * @return
      * @throws java.io.IOException
      */
-    T read(HttpExchange httpExchange) throws IOException;
+    T read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException;
 
     /**
      *
      * @param httpStatus
      * @param data
      * @param httpExchange
+     * @param httpEndpoint
      * @throws java.io.IOException
      */
-    void write(int httpStatus, T data, HttpExchange httpExchange) throws IOException;
+    void write(int httpStatus, T data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException;
 
     /**
      *
@@ -54,9 +56,9 @@ public interface ContentHandler<T extends Model> extends Instance {
      * @param httpExchange
      * @return
      */
-    default boolean activateReader(HttpEndpoint httpEndpoint, Class<T> model, HttpExchange httpExchange) {
+    default boolean activateReader(Class<HttpEndpoint> httpEndpoint, Class<T> model, HttpExchange httpExchange) {
         try {
-            return HttpEndpointUtils.getRequestBodyType(httpEndpoint.getClass()).isAssignableFrom(model);
+            return HttpEndpointUtils.getRequestBodyType(httpEndpoint).isAssignableFrom(model);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -70,9 +72,9 @@ public interface ContentHandler<T extends Model> extends Instance {
      * @param httpExchange
      * @return
      */
-    default boolean activateWriter(HttpEndpoint httpEndpoint, Class<T> model, HttpExchange httpExchange) {
+    default boolean activateWriter(Class<HttpEndpoint> httpEndpoint, Class<T> model, HttpExchange httpExchange) {
         try {
-            return HttpEndpointUtils.getResponseBodyType(httpEndpoint.getClass()).isAssignableFrom(model);
+            return HttpEndpointUtils.getResponseBodyType(httpEndpoint).isAssignableFrom(model);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
             return false;

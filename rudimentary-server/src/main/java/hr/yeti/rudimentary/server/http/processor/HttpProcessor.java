@@ -13,7 +13,6 @@ import hr.yeti.rudimentary.http.MediaType;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.content.Empty;
-import hr.yeti.rudimentary.http.content.Form;
 import hr.yeti.rudimentary.http.content.Html;
 import hr.yeti.rudimentary.http.content.Json;
 import hr.yeti.rudimentary.http.content.Model;
@@ -22,6 +21,7 @@ import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.content.Redirect;
 import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.View;
+import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
 import hr.yeti.rudimentary.interceptor.spi.BeforeInterceptor;
@@ -43,9 +43,10 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import javax.json.JsonValue;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbException;
 import javax.json.stream.JsonParsingException;
@@ -80,7 +81,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     HttpEndpoint httpEndpoint = httpEndpointMatchInfo.getHttpEndpoint();
 
                     // Request body
-                    Object value;
+                    Object value = null;
                     Class requestBodyModelType;
 
                     try {
@@ -99,30 +100,27 @@ public class HttpProcessor implements HttpHandler, Instance {
                     List<Constraints> constraintsList = new ArrayList<>();
 
                     try {
+                        Optional<ContentHandler> o = Instance.providersOf(ContentHandler.class)
+                            .stream()
+                            .filter(ch -> {
+                                try {
+                                    return ch.activateReader(httpEndpoint.getClass(), HttpEndpointUtils.getRequestBodyType(ch.getClass()), exchange);
+                                } catch (ClassNotFoundException ex) {
+                                    Logger.getLogger(HttpProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                                    return false;
+                                }
+                            })
+                            .findFirst();
 
-                        if (requestBodyModelType.isAssignableFrom(Empty.class)) {
-                            value = new Empty();
-                        } else if (requestBodyModelType.isAssignableFrom(Json.class)) {
-                            value = new Json(JsonbBuilder.create().fromJson(exchange.getRequestBody(), JsonValue.class));
-                        } else if (requestBodyModelType.isAssignableFrom(Text.class)) {
-                            value = new Text(new String(exchange.getRequestBody().readAllBytes()));
-                        } else if (requestBodyModelType.isAssignableFrom(Html.class)) {
-                            value = new Html(new String(exchange.getRequestBody().readAllBytes()));
-                        } else if (requestBodyModelType.isAssignableFrom(Form.class)) {
-                            String form = new String(exchange.getRequestBody().readAllBytes());
-                            value = new Form(HttpRequestUtils.parseQueryParameters(form));
-                        } else if (requestBodyModelType.isAssignableFrom(ByteStream.class)) {
-                            value = new ByteStream(exchange.getRequestBody());
-                        } else {
-                            // POJO assumed
-                            value = JsonbBuilder.create().fromJson(exchange.getRequestBody(), requestBodyModelType);
+                        if (o.isPresent()) {
+                            value = o.get().read(exchange, httpEndpoint.getClass());
+                            constraintsList.add(((Model) value).constraints());
                         }
+
                     } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
                         return;
                     }
-
-                    constraintsList.add(((Model) value).constraints());
 
                     // Construct request object
                     Request request = new Request(

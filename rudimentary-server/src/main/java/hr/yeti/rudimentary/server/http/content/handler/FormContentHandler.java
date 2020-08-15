@@ -4,12 +4,13 @@ import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.content.Form;
 import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
+import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.IOException;
 
 public class FormContentHandler implements ContentHandler<Form> {
 
     @Override
-    public Form read(HttpExchange httpExchange) throws IOException {
+    public Form read(HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
         byte[] data = httpExchange.getRequestBody().readAllBytes();
         return new Form(
             HttpRequestUtils.parseQueryParameters(new String(data))
@@ -17,7 +18,7 @@ public class FormContentHandler implements ContentHandler<Form> {
     }
 
     @Override
-    public void write(int httpStatus, Form data, HttpExchange httpExchange) throws IOException {
+    public void write(int httpStatus, Form data, HttpExchange httpExchange, Class<HttpEndpoint> httpEndpoint) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

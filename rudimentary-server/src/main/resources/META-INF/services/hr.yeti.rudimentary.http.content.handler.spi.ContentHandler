@@ -1,9 +1,10 @@
 hr.yeti.rudimentary.server.http.content.handler.EmptyContentHandler
 hr.yeti.rudimentary.server.http.content.handler.TextContentHandler
-hr.yeti.rudimentary.server.http.content.handler.ViewyContentHandler
+hr.yeti.rudimentary.server.http.content.handler.ViewContentHandler
 hr.yeti.rudimentary.server.http.content.handler.JsonContentHandler
 hr.yeti.rudimentary.server.http.content.handler.HtmlContentHandler
 hr.yeti.rudimentary.server.http.content.handler.FormContentHandler
 hr.yeti.rudimentary.server.http.content.handler.RedirectContentHandler
 hr.yeti.rudimentary.server.http.content.handler.StaticResourceContentHandler
 hr.yeti.rudimentary.server.http.content.handler.ByteStreamContentHandler
+hr.yeti.rudimentary.server.http.content.handler.JsonPojoContentHandler
