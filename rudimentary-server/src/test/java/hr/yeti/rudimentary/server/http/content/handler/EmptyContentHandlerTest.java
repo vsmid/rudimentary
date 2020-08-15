@@ -25,7 +25,8 @@ public class EmptyContentHandlerTest {
 
     @Test
     public void test_write_activate() {
-        
+        expect:
+        assertTrue(contentHandler.activateWriter(EmptyEndpoint.class, null));
     }
 
     public static class EmptyEndpoint implements HttpEndpoint<Empty, Empty> {
