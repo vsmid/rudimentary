@@ -1,9 +1,9 @@
 package hr.yeti.rudimentary.demo.model;
 
 import hr.yeti.rudimentary.events.Event;
-import hr.yeti.rudimentary.http.content.Model;
+import hr.yeti.rudimentary.http.content.Pojo;
 
-public class BlogPost extends Model implements Event {
+public class BlogPost extends Pojo implements Event {
 
     private String text;
 
