@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ViewContentHandler implements ContentHandler<View> {
+    
+    private ViewEngine viewEngine;
 
     @Override
     public View read(HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
@@ -38,4 +40,8 @@ public class ViewContentHandler implements ContentHandler<View> {
         }
     }
 
+    @Override
+    public Class[] dependsOn() {
+        return new Class[]{ ViewEngine.class };
+    }
 }
