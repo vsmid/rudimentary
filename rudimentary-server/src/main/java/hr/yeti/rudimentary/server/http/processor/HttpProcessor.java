@@ -11,7 +11,6 @@ import hr.yeti.rudimentary.http.HttpRequestUtils;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.URIUtils;
 import hr.yeti.rudimentary.http.content.Model;
-import hr.yeti.rudimentary.http.content.ByteStream;
 import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import hr.yeti.rudimentary.interceptor.spi.AfterInterceptor;
@@ -235,21 +234,6 @@ public class HttpProcessor implements HttpHandler, Instance {
             if (Objects.nonNull(message)) {
                 httpExchange.getResponseBody().write(message);
                 httpExchange.getResponseBody().flush();
-            }
-        }
-    }
-
-    private void respondWithStream(int httpStatus, ByteStream stream, HttpExchange httpExchange) throws IOException {
-        try (httpExchange) {
-            if (Objects.nonNull(stream)) {
-                httpExchange.sendResponseHeaders(httpStatus, 0);
-                stream.getStreamOutWriteDef().startStreaming(httpExchange.getResponseBody());
-                try {
-                    httpExchange.getResponseBody().flush();
-                    httpExchange.getResponseBody().close();
-                } catch (IOException ex) {
-                    //noop
-                }
             }
         }
     }
