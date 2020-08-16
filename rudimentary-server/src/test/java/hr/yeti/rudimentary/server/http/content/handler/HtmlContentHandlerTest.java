@@ -59,7 +59,7 @@ public class HtmlContentHandlerTest {
         then:
         assertEquals(httpExchange.getResponseCode(), 200);
         assertEquals(MediaType.TEXT_HTML, httpExchange.getResponseHeaders().get("Content-Type").get(0));
-        assertEquals(new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()), "<h1>ok</h1>");
+        assertEquals("<h1>ok</h1>", new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()));
     }
 
     public static class HtmlEndpoint implements HttpEndpoint<Html, Html> {

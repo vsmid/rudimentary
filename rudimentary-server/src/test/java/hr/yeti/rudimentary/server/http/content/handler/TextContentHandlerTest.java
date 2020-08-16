@@ -59,7 +59,7 @@ public class TextContentHandlerTest {
         then:
         assertEquals(httpExchange.getResponseCode(), 200);
         assertEquals(MediaType.TEXT_PLAIN, httpExchange.getResponseHeaders().get("Content-Type").get(0));
-        assertEquals(new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()), "ok");
+        assertEquals("ok", new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()));
     }
 
     public static class TextEndpoint implements HttpEndpoint<Text, Text> {

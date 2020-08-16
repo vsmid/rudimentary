@@ -60,7 +60,7 @@ public class ByteStreamContentHandlerTest {
         then:
         assertEquals(httpExchange.getResponseCode(), 200);
         assertEquals("chunked", httpExchange.getResponseHeaders().get("Transfer-Encoding").get(0));
-        assertEquals(new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()), "1");
+        assertEquals("1", new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()));
     }
 
     public static class ByteStreamEndpoint implements HttpEndpoint<ByteStream, ByteStream> {
