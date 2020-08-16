@@ -189,6 +189,7 @@ For now, you can not add additional, custom request body type. It is planned for
 * **Json** - use when you expect json in request body. This type offers mathods for easy type conversion for both json object and json array.
 * **Text** - use when you expect text in request body.
 * **ByteStream** - use when you expect stream in request body. This could be for example file upload. Multipart is not supported yet.
+* **Java class(POJO)** - any class extending `Pojo` abstract class
 
 ### Response content types
 For now, you can not add additional, custom response type. It is planned for next release.
@@ -199,6 +200,7 @@ For now, you can not add additional, custom response type. It is planned for nex
 * **StaticResource** - use when you want to send javascript, image etc. in a response. This is already used internally by static resource endpoint.
 * **Text** - use when you want to send text in a response.
 * **View** - use when you want to send processed view in a response. You can find more on this in [MVC](../mvc/README.md) section.
+* **Java class(POJO)** - any class extending `Pojo` abstract class
 
 ## API documentation
 You access the list and description of all registered `HttpEndpoint` and `ViewEndpoint` providers via `_/apidocs` uri.
@@ -245,6 +247,11 @@ public int order() {
 ```
 ### Registering http filter 
 You can register your custom http filter in `src/main/resources/META-INF/services/hr.yeti.rudimentary.http.filter.spi.HttpFilter` file of your application to make it eligible for Java `ServiceLoader`.
+This is already done automatically by `rudimentary-maven-plugin`.
+
+## Content handlers
+Request and response types are handled by Rudimentary's `hr.yeti.rudimentary.http.content.handler.spi.ContentHandler`. They basically perform reading of request body from the input stream and writing response body to the output stream. Each type mentioned above(Text, Html, Json, View...) has its own content handler implementation. You can create your own, custom content handler by implementing `hr.yeti.rudimentary.http.content.handler.spi.ContentHandler` interface. 
+You can register your custom content handler in `src/main/resources/META-INF/services/hr.yeti.rudimentary.http.content.handler.spi.ContentHandler` file of your application to make it eligible for Java `ServiceLoader`.
 This is already done automatically by `rudimentary-maven-plugin`.
 
 ## Examples
