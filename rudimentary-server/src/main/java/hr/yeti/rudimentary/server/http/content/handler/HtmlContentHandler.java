@@ -20,10 +20,10 @@ public class HtmlContentHandler implements ContentHandler<Html> {
 
     @Override
     public void write(int httpStatus, Html data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
         if (Objects.isNull(data)) {
             httpExchange.sendResponseHeaders(httpStatus, -1);
         } else {
+            httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
             byte[] response = data.get().getBytes(StandardCharsets.UTF_8);
             httpExchange.sendResponseHeaders(httpStatus, response.length);
             httpExchange.getResponseBody().write(response);

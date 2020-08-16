@@ -23,7 +23,6 @@ public class ViewContentHandler implements ContentHandler<View> {
 
     @Override
     public void write(int httpStatus, View data, HttpExchange httpExchange, Class<? extends HttpEndpoint> httpEndpoint) throws IOException {
-        httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
         if (Objects.isNull(data)) {
             httpExchange.sendResponseHeaders(httpStatus, -1);
         } else {
@@ -34,6 +33,7 @@ public class ViewContentHandler implements ContentHandler<View> {
                 response = "Could not resolve view.".getBytes();
                 httpStatus = 500;
             }
+            httpExchange.getResponseHeaders().put("Content-Type", List.of(MediaType.TEXT_HTML));
             httpExchange.sendResponseHeaders(httpStatus, response.length);
             httpExchange.getResponseBody().write(response);
             httpExchange.getResponseBody().flush();
