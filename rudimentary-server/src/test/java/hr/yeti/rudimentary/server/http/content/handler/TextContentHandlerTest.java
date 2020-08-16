@@ -3,47 +3,48 @@ package hr.yeti.rudimentary.server.http.content.handler;
 import hr.yeti.rudimentary.server.http.HttpExchangeImpl;
 import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.http.Request;
-import hr.yeti.rudimentary.http.content.Empty;
+import hr.yeti.rudimentary.http.content.Text;
 import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EmptyContentHandlerTest {
+public class TextContentHandlerTest {
 
-    static ContentHandler<Empty> contentHandler;
+    static ContentHandler<Text> contentHandler;
 
     @BeforeAll
     public static void beforeAll() {
-        contentHandler = new EmptyContentHandler();
+        contentHandler = new TextContentHandler();
     }
 
     @Test
     public void test_read_activate() {
         expect:
-        assertTrue(contentHandler.activateReader(EmptyEndpoint.class, null));
+        assertTrue(contentHandler.activateReader(TextEndpoint.class, null));
     }
 
     @Test
     public void test_write_activate() {
         expect:
-        assertTrue(contentHandler.activateWriter(EmptyEndpoint.class, null));
+        assertTrue(contentHandler.activateWriter(TextEndpoint.class, null));
     }
 
     @Test
     public void test_read() throws IOException {
         // setup:
         HttpExchange httpExchange = new HttpExchangeImpl(new ByteArrayInputStream("ok".getBytes()));
-        Empty empty;
+        Text text;
 
         when:
-        empty = contentHandler.read(httpExchange, EmptyEndpoint.class);
+        text = contentHandler.read(httpExchange, TextEndpoint.class);
 
         then:
-        assertEquals(Empty.INSTANCE, empty);
+        assertEquals("ok", text.get());
     }
 
     @Test
@@ -52,18 +53,18 @@ public class EmptyContentHandlerTest {
         HttpExchange httpExchange = new HttpExchangeImpl();
 
         when:
-        contentHandler.write(200, Empty.INSTANCE, httpExchange, EmptyEndpoint.class);
+        contentHandler.write(200, new Text("ok"), httpExchange, TextEndpoint.class);
 
         then:
         assertEquals(httpExchange.getResponseCode(), 200);
-        assertNull(httpExchange.getResponseBody());
+        assertEquals(new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()), "ok");
     }
 
-    public static class EmptyEndpoint implements HttpEndpoint<Empty, Empty> {
+    public static class TextEndpoint implements HttpEndpoint<Text, Text> {
 
         @Override
-        public Empty response(Request<Empty> request) {
-            return Empty.INSTANCE;
+        public Text response(Request<Text> request) {
+            return new Text(request.getBody().get() + "!");
         }
     }
 
