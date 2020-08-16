@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HttpExchangeImpl extends HttpExchange {
+public class TestHttpExchangeImpl extends HttpExchange {
 
     private InputStream is;
     private OutputStream os;
@@ -21,10 +21,10 @@ public class HttpExchangeImpl extends HttpExchange {
     private Headers respHeaders = new Headers();
     private int httpStatus;
 
-    public HttpExchangeImpl() {
+    public TestHttpExchangeImpl() {
     }
 
-    public HttpExchangeImpl(InputStream is) {
+    public TestHttpExchangeImpl(InputStream is) {
         this.is = is;
     }
 
@@ -59,7 +59,7 @@ public class HttpExchangeImpl extends HttpExchange {
             os.flush();
             os.close();
         } catch (IOException ex) {
-            Logger.getLogger(HttpExchangeImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TestHttpExchangeImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
