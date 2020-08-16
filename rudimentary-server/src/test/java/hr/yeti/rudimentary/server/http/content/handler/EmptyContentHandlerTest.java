@@ -1,9 +1,13 @@
 package hr.yeti.rudimentary.server.http.content.handler;
 
+import hr.yeti.rudimentary.server.http.HttpExchangeImpl;
+import com.sun.net.httpserver.HttpExchange;
 import hr.yeti.rudimentary.http.Request;
 import hr.yeti.rudimentary.http.content.Empty;
 import hr.yeti.rudimentary.http.content.handler.spi.ContentHandler;
 import hr.yeti.rudimentary.http.spi.HttpEndpoint;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,11 +33,37 @@ public class EmptyContentHandlerTest {
         assertTrue(contentHandler.activateWriter(EmptyEndpoint.class, null));
     }
 
+    @Test
+    public void test_read() throws IOException {
+        // setup:
+        HttpExchange httpExchange = new HttpExchangeImpl(new ByteArrayInputStream("ok".getBytes()));
+        Empty empty;
+
+        when:
+        empty = contentHandler.read(httpExchange, EmptyEndpoint.class);
+
+        then:
+        assertEquals(Empty.INSTANCE, empty);
+    }
+
+    @Test
+    public void test_write() throws IOException {
+        // setup:
+        HttpExchange httpExchange = new HttpExchangeImpl();
+
+        when:
+        contentHandler.write(200, Empty.INSTANCE, httpExchange, EmptyEndpoint.class);
+
+        then:
+        assertNull(httpExchange.getResponseBody());
+        assertEquals(httpExchange.getResponseCode(), 200);
+    }
+
     public static class EmptyEndpoint implements HttpEndpoint<Empty, Empty> {
 
         @Override
         public Empty response(Request<Empty> request) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return Empty.INSTANCE;
         }
     }
 
