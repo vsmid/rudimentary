@@ -20,13 +20,13 @@ import org.apache.maven.plugins.annotations.Parameter;
 public class CreateNewProjectMojo extends AbstractMojo {
 
     /**
-     * Projects name.
+     * Project name.
      */
     @Parameter(property = "name", required = true)
     String name;
 
     /**
-     * Projects location.
+     * Project location.
      */
     @Parameter(property = "location")
     String location;
@@ -38,7 +38,7 @@ public class CreateNewProjectMojo extends AbstractMojo {
     String pckg;
 
     /**
-     * Projects Maven group id.
+     * Project Maven group id.
      */
     @Parameter(property = "groupId")
     String group;

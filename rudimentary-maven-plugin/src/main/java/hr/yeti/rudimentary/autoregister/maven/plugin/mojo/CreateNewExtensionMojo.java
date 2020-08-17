@@ -17,7 +17,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author vedransmid@yeti-it.hr
  */
 @Mojo(name = "new-extension", requiresProject = false)
-public class CreateExtensionMojo extends AbstractMojo {
+public class CreateNewExtensionMojo extends AbstractMojo {
 
     /**
      * Extension name.
