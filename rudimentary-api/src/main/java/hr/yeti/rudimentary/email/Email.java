@@ -2,8 +2,6 @@ package hr.yeti.rudimentary.email;
 
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.email.spi.EmailSessionPool;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -36,10 +34,9 @@ public class Email {
         try {
             MimeMessage mimeMessage = new MimeMessage(email.getSession());
             message.compose(mimeMessage);
-
             Transport.send((Message) mimeMessage);
         } catch (MessagingException ex) {
-            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+            System.getLogger(Email.class.getName()).log(System.Logger.Level.ERROR, ex);
             throw new EmailException(ex.getMessage(), ex);
         }
     }

@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +27,8 @@ import java.util.stream.Collectors;
  * @author vedransmid@yeti-it.hr
  */
 public final class Sql {
+    
+    private static final System.Logger LOGGER = System.getLogger(Sql.class.getName());
 
     private Connection conn;
     private boolean tx = false;
@@ -40,7 +40,7 @@ public final class Sql {
             try {
                 this.conn = dataSource.getConnection();
             } catch (SQLException ex) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(System.Logger.Level.ERROR, ex);
             }
         }
 
@@ -122,7 +122,7 @@ public final class Sql {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(System.Logger.Level.ERROR, ex);
             }
         }
 
@@ -202,7 +202,7 @@ public final class Sql {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(System.Logger.Level.ERROR, ex);
             }
         }
 
@@ -237,7 +237,7 @@ public final class Sql {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(System.Logger.Level.ERROR, ex);
             }
         }
 
@@ -304,7 +304,7 @@ public final class Sql {
      * @param noRollbackOn Exceptions for which transaction will not be rolled back. Has greater priority than @param
      * rollbackOn.
      * @return Transaction result.
-     * @throws TxException 
+     * @throws TxException
      *
      * @see TxDef
      */
@@ -313,7 +313,7 @@ public final class Sql {
         TxDef<T> txDef,
         Class<? extends Exception>[] rollbackOn,
         Class<? extends Exception>[] noRollbackOn
-    ) throws TxException  {
+    ) throws TxException {
         Sql sql = new Sql(dataSourceId, true);
         try {
             sql.conn.setAutoCommit(false);
@@ -321,7 +321,7 @@ public final class Sql {
             sql.conn.commit();
             return result;
         } catch (Throwable ex) {
-            Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(System.Logger.Level.ERROR, ex);
             try {
 
                 if (Objects.nonNull(rollbackOn)) {
@@ -338,7 +338,7 @@ public final class Sql {
                     }
                 }
             } catch (SQLException ex1) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex1);
+                LOGGER.log(System.Logger.Level.ERROR, ex1);
                 throw new TxException(ex);
             }
             throw new TxException(ex);
@@ -346,7 +346,7 @@ public final class Sql {
             try {
                 sql.conn.close();
             } catch (Exception ex) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(System.Logger.Level.ERROR, ex);
                 throw new TxException(ex);
             }
         }
@@ -385,13 +385,13 @@ public final class Sql {
         try {
             return (T) sqlDef.execute(sql);
         } catch (Throwable ex) {
-            Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(System.Logger.Level.ERROR, ex);
             throw new SqlException(ex);
         } finally {
             try {
                 sql.conn.close();
             } catch (Exception ex) {
-                Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(System.Logger.Level.ERROR, ex);
                 throw new SqlException(ex);
             }
         }

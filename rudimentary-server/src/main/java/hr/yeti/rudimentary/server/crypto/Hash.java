@@ -3,11 +3,11 @@ package hr.yeti.rudimentary.server.crypto;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Hash {
 
+    private static final System.Logger LOGGER = System.getLogger(Hash.class.getName());
+        
     private static SecureRandom random = new SecureRandom();
 
     public static String generateRandomSHA256() {
@@ -18,7 +18,7 @@ public class Hash {
             return hexToString(digest);
         } catch (NoSuchAlgorithmException ex) {
             // Should not happen.
-            Logger.getLogger(Hash.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(System.Logger.Level.ERROR, ex);
             throw new IllegalArgumentException(ex);
         }
     }
@@ -30,7 +30,7 @@ public class Hash {
             return hexToString(digest);
         } catch (NoSuchAlgorithmException ex) {
             // Should not happen.
-            Logger.getLogger(Hash.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(System.Logger.Level.ERROR, ex);
             throw new IllegalArgumentException(ex);
         }
     }

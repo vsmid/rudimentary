@@ -10,8 +10,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TestHttpExchangeImpl extends HttpExchange {
 
@@ -59,7 +57,7 @@ public class TestHttpExchangeImpl extends HttpExchange {
             os.flush();
             os.close();
         } catch (IOException ex) {
-            Logger.getLogger(TestHttpExchangeImpl.class.getName()).log(Level.SEVERE, null, ex);
+            System.getLogger(TestHttpExchangeImpl.class.getName()).log(System.Logger.Level.ERROR, ex);
         }
     }
 

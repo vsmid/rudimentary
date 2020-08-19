@@ -25,8 +25,6 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
@@ -34,7 +32,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class Server {
 
-    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(Server.class.getName());
 
     private HttpServer httpServer;
 
@@ -71,7 +69,7 @@ public class Server {
             config.seal();
             context.initLogger();
 
-            LOGGER.log(Level.INFO, "Starting server[Java PID={0}]...", String.valueOf(ProcessHandle.current().pid()));
+            LOGGER.log(System.Logger.Level.INFO, "Starting server[Java PID={0}]...", String.valueOf(ProcessHandle.current().pid()));
 
             context.initialize();
 
@@ -126,7 +124,7 @@ public class Server {
 
             // ServerInfoConsolePrinter.printRegisteredUriInfo(LOGGER);
             // ServerInfoConsolePrinter.printConfigProperties(LOGGER);
-            LOGGER.log(Level.INFO, "Server started in {0} ms, listening on port {1}", new Object[]{
+            LOGGER.log(System.Logger.Level.INFO, "Server started in {0} ms, listening on port {1}", new Object[]{
                 (String.valueOf(System.currentTimeMillis() - start)), String.valueOf(port)
             });
 
@@ -137,12 +135,12 @@ public class Server {
     }
 
     public void stop() {
-        LOGGER.log(Level.INFO, "Stopping server...");
+        LOGGER.log(System.Logger.Level.INFO, "Stopping server...");
 
         this.httpServer.stop(stopDelay);
         this.context.destroy();
 
-        LOGGER.log(Level.INFO, "Server stopped.");
+        LOGGER.log(System.Logger.Level.INFO, "Server stopped.");
     }
 
     private HttpServer createHttpsServer() throws IOException, NoSuchAlgorithmException, GeneralSecurityException {
@@ -168,7 +166,7 @@ public class Server {
         KeyManagerFactory keyManagerFactory = null;
         if (keyStore.length() > 0) {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try (InputStream in = new FileInputStream(keyStore)) {
+            try ( InputStream in = new FileInputStream(keyStore)) {
                 keystore.load(in, keyStorePassword.toCharArray());
             }
             keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -180,7 +178,7 @@ public class Server {
 
         if (trustStore.length() > 0) {
             truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try (InputStream in = new FileInputStream(trustStore)) {
+            try ( InputStream in = new FileInputStream(trustStore)) {
                 truststore.load(in, trustStorePassword.toCharArray());
             }
             trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());

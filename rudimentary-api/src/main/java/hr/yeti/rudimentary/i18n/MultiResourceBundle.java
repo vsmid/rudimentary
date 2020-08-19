@@ -15,8 +15,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -81,7 +79,7 @@ public class MultiResourceBundle extends ResourceBundle {
                     ClassLoader loader = new URLClassLoader(urls);
                     resourceBundle = ResourceBundle.getBundle(bundlePath.getFileName().toString(), locale, loader);
                 } catch (MalformedURLException ex) {
-                    Logger.getLogger(MultiResourceBundle.class.getName()).log(Level.SEVERE, null, ex);
+                    System.getLogger(MultiResourceBundle.class.getName()).log(System.Logger.Level.ERROR, ex);
                     throw new IllegalStateException(ex.getMessage(), ex);
                 }
             }
