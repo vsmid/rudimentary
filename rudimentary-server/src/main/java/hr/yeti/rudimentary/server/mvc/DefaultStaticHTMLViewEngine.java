@@ -7,12 +7,8 @@ import hr.yeti.rudimentary.mvc.spi.ViewEngine;
 import hr.yeti.rudimentary.server.resources.ClasspathResource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DefaultStaticHTMLViewEngine implements ViewEngine {
-
-    private static final Logger LOGGER = Logger.getLogger(DefaultStaticHTMLViewEngine.class.getName());
 
     private ConfigProperty templatesDir = new ConfigProperty("mvc.templatesDir");
     private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
@@ -23,7 +19,7 @@ public class DefaultStaticHTMLViewEngine implements ViewEngine {
             InputStream html = new ClasspathResource(getTemplatesDirectory() + "/" + view.getTemplatePath()).get();
             return new String(html.readAllBytes());
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
             throw new ViewEngineException("Could not resolve view.");
         }
     }

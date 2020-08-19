@@ -17,12 +17,8 @@ import java.io.Writer;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PebbleViewEngine implements ViewEngine {
-
-    private static final Logger LOGGER = Logger.getLogger(PebbleViewEngine.class.getName());
 
     private ConfigProperty templatesDir = new ConfigProperty("mvc.templatesDir");
     private ConfigProperty staticResourcesDir = new ConfigProperty("mvc.staticResourcesDir");
@@ -47,7 +43,7 @@ public class PebbleViewEngine implements ViewEngine {
             compiledTemplate.evaluate(writer, view.getContext());
             return writer.toString();
         } catch (LoaderException | IOException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            logger().log(System.Logger.Level.ERROR, ex);
             throw new ViewEngineException("Could not render view.");
         }
     }

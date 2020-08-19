@@ -3,8 +3,6 @@ package hr.yeti.rudimentary.server;
 import hr.yeti.rudimentary.context.spi.Instance;
 import hr.yeti.rudimentary.events.spi.EventListener;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class _EventListeners {
 
@@ -18,7 +16,7 @@ public class _EventListeners {
                 event.text = event.text.toUpperCase();
                 Instance.of(_HttpEndpoints.BlogPostEventPublishingEndpoint.class).text = event.text;
             } catch (InterruptedException ex) {
-                Logger.getLogger(_EventListeners.class.getName()).log(Level.SEVERE, null, ex);
+                logger().log(System.Logger.Level.ERROR, ex);
             }
         }
 

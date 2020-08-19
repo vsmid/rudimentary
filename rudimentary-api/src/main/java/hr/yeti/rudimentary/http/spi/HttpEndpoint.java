@@ -125,18 +125,6 @@ public interface HttpEndpoint<I extends Model, O extends Model> extends Instance
     }
 
     /**
-     * Convenience method to have a logger available out-of-the box. By default, this logger will use standard Java
-     * logger unless a different provider is configured. In both cases, use this logger to log. In most cases, there
-     * should be no need to override this method whether you choose to log with custom logging provider or with default
-     * Java logging provider.
-     *
-     * @return System logger.
-     */
-    default System.Logger logger() {
-        return System.getLogger(this.getClass().getName());
-    }
-
-    /**
      * <pre>
      * Sets validation constraints for data received via incoming HTTP request. This goes for request
      * body, request parameters, URI path variables and HTTP headers.

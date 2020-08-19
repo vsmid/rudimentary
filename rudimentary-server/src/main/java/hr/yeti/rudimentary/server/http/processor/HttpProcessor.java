@@ -30,8 +30,6 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.json.bind.JsonbException;
@@ -39,8 +37,6 @@ import javax.json.stream.JsonParsingException;
 
 // TODO Cache content handler mapping to http endpoint
 public class HttpProcessor implements HttpHandler, Instance {
-
-    private static final Logger LOGGER = Logger.getLogger(HttpProcessor.class.getName());
 
     private ExceptionHandler globalExceptionHandler;
 
@@ -89,7 +85,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             body = o.get().read(exchange, httpEndpoint.getClass());
                             constraintsList.add(((Model) body).constraints());
                         } else {
-                            LOGGER.severe("No suitable request body content handler found.");
+                            logger().log(System.Logger.Level.ERROR, "No suitable request body content handler found.");
                             respond(500, "Internal Server Error".getBytes(), exchange);
                             return;
                         }
@@ -211,9 +207,8 @@ public class HttpProcessor implements HttpHandler, Instance {
                         );
                         exchange.close();
                     } else {
-                        LOGGER.severe("No suitable response body content handler found.");
+                        logger().log(System.Logger.Level.ERROR, "No suitable response body content handler found.");
                         respond(500, "Internal Server Error".getBytes(), exchange);
-                        return;
                     }
 
                 } else {
@@ -223,7 +218,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                 respond(500, null, exchange);
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            logger().log(System.Logger.Level.ERROR, e);
         }
 
     }

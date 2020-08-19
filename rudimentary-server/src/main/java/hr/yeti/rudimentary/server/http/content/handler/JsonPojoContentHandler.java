@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.json.bind.JsonbBuilder;
 
 public class JsonPojoContentHandler implements ContentHandler<Pojo> {
@@ -48,7 +46,7 @@ public class JsonPojoContentHandler implements ContentHandler<Pojo> {
                 && httpExchange.getRequestHeaders().get("Content-Type").get(0).equalsIgnoreCase(MediaType.APPLICATION_JSON
                 )) || (!httpExchange.getRequestHeaders().containsKey("Content-Type")));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
             return false;
         }
     }
@@ -62,7 +60,7 @@ public class JsonPojoContentHandler implements ContentHandler<Pojo> {
                 && httpExchange.getRequestHeaders().get("Accept").get(0).equalsIgnoreCase(MediaType.APPLICATION_JSON
                 )) || (!httpExchange.getRequestHeaders().containsKey("Accept")));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
             return false;
         }
     }

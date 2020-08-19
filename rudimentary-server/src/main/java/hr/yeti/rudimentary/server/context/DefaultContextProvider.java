@@ -26,9 +26,7 @@ import hr.yeti.rudimentary.sql.spi.BasicDataSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class DefaultContextProvider extends Context {
 
@@ -69,7 +67,7 @@ public class DefaultContextProvider extends Context {
 
             LogManager.getLogManager().readConfiguration(props);
         } catch (IOException | SecurityException ex) {
-            Logger.getLogger(DefaultContextProvider.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
         }
     }
 

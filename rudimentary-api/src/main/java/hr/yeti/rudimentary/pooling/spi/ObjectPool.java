@@ -6,8 +6,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import hr.yeti.rudimentary.context.spi.Instance;
 import java.sql.Connection;
 import java.util.Objects;
@@ -129,7 +127,7 @@ public abstract class ObjectPool<T> implements Instance {
             settings = null;
             pool = null;
         } catch (InterruptedException ex) {
-            Logger.getLogger(ObjectPool.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
         }
     }
 

@@ -9,8 +9,6 @@ import hr.yeti.rudimentary.mvc.spi.ViewEndpoint;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ServiceLoader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <pre>
@@ -61,7 +59,7 @@ public interface ContentHandler<T extends Model> extends Instance {
         try {
             return getGenericType(httpEndpoint, 0).isAssignableFrom(getGenericType(this.getClass(), 0));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
             return false;
         }
     }
@@ -78,7 +76,7 @@ public interface ContentHandler<T extends Model> extends Instance {
             Class<? extends Model> clazz = isViewEndpoint(httpEndpoint) ? View.class : getGenericType(httpEndpoint, 1);
             return clazz.isAssignableFrom(getGenericType(this.getClass(), 0));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ContentHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
             return false;
         }
     }

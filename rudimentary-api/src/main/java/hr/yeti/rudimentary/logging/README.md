@@ -24,11 +24,10 @@ Default value is set to `classpath:server-logging.properties`.
 If your configuration file resides in `src/main/resources` directory you must use `classpath:` prefix just like in a default setting.
 To load configuration file from file system use absolute path.
 
-## Logging inside HttpEndpoint
-To make things simpler `HttpEndpoint` provides simple way to access logger via `HttpEndpoint#logger` method. This logger is of type `java.lang.System.Logger` because it enables delegation to any underlying logging framework you choose to use. 
-
-## Logging oputside HttpEndpoint
-For now, logging outside `HttpEndpoint` is done in a classic Java way with static `Logger` declaration inside class.
+### Logging inside instances
+Convenient method for logger access is provided via `hr.yeti.rudimentary.context.spi.Instance#logger` method. 
+Any class implementing `hr.yeti.rudimentary.context.spi.Instance` automatically gains access to default logger.
+For more information about this logger check [System.Logger](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/System.Logger.html).
 
 ## Using another logging framework
-If you choose to use another logging framework then the above configuration instrcutions do not apply. You must use configuration specific to your new logging framework.
+If you choose to use another logging framework then the above configuration instructions do not apply. You must use configuration specific to your new logging framework.

@@ -133,3 +133,6 @@ public class B implements Instance {
     return false;
 }
 ```
+### Logging
+Any class implementing `hr.yeti.rudimentary.context.spi.Instance` automatically gains access to default logger via 
+`hr.yeti.rudimentary.context.spi.Instance#logger` method.

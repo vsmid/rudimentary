@@ -9,12 +9,8 @@ import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class InactiveHttpSessionFilter extends HttpFilter {
-
-    private static final Logger LOGGER = Logger.getLogger(InactiveHttpSessionFilter.class.getName());
 
     private ConfigProperty inactivityPeriodAllowed = new ConfigProperty("session.inactivityPeriodAllowed");
 
@@ -41,7 +37,7 @@ public class InactiveHttpSessionFilter extends HttpFilter {
                 long currentTime = System.currentTimeMillis();
 
                 if ((currentTime - lastAccessedTime) / 1_000 > inactivityPeriodAllowed.asInt()) {
-                    LOGGER.log(Level.WARNING, "Session with RSID={0} has expired after period of inactivity.", RSID);
+                    logger().log(System.Logger.Level.WARNING, "Session with RSID={0} has expired after period of inactivity.", RSID);
 
                     // Invalidate and remove session.
                     session.invalidate(exchange);

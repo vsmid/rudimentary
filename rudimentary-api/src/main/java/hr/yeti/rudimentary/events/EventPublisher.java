@@ -11,8 +11,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A little bit custom implementation of observer pattern.
@@ -108,7 +106,7 @@ public final class EventPublisher implements Instance {
                 LISTENERS.get(clazz).add(listener);
             }
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EventPublisher.class.getName()).log(Level.SEVERE, null, ex);
+           logger().log(System.Logger.Level.ERROR, ex);
         }
     }
 

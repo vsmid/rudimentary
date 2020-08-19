@@ -141,7 +141,7 @@ public void after(Request<Text> request, Text response) {
 }
 ```
 ### Logging inside http endpoint
-Convenient method for logger access is provided via `logger` method. For more information about this logger check
+Convenient method for logger access is provided via `hr.yeti.rudimentary.context.spi.Instance#logger` method. For more information about this logger check
 [System.Logger](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/System.Logger.html).
 ```java
 @Override

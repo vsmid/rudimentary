@@ -13,8 +13,6 @@ import hr.yeti.rudimentary.security.spi.AuthMechanism;
 import hr.yeti.rudimentary.security.spi.IdentityStore;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class LoginFormAuthMechanism extends AuthMechanism {
@@ -46,7 +44,7 @@ public class LoginFormAuthMechanism extends AuthMechanism {
                 new String(exchange.getRequestBody().readAllBytes())
             );
         } catch (IOException ex) {
-            Logger.getLogger(LoginFormAuthMechanism.class.getName()).log(Level.SEVERE, null, ex);
+            logger().log(System.Logger.Level.ERROR, ex);
         }
 
         if (formData.isEmpty()) {

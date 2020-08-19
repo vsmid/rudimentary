@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Class used for testing purposes to create mocked context on the fly.
@@ -34,7 +32,7 @@ public final class ContextMock extends Context {
             try {
                 this.instances.add(instance.getDeclaredConstructor().newInstance());
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                Logger.getLogger(ContextMock.class.getName()).log(Level.SEVERE, null, ex);
+                logger().log(System.Logger.Level.ERROR, ex);
             }
         }
 
