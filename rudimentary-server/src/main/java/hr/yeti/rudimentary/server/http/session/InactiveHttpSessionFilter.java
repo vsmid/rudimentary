@@ -42,7 +42,7 @@ public class InactiveHttpSessionFilter extends HttpFilter {
                     // Invalidate and remove session.
                     session.invalidate(exchange);
 
-                    exchange.sendResponseHeaders(440, 0);
+                    exchange.sendResponseHeaders(440, -1);
                     exchange.close();
 
                     return;
