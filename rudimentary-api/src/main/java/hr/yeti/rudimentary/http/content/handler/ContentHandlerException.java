@@ -6,6 +6,10 @@ public class ContentHandlerException extends RuntimeException {
         super(message);
     }
 
+    public ContentHandlerException(Throwable cause) {
+        super(cause);
+    }
+
     public ContentHandlerException(String message, Throwable cause) {
         super(message, cause);
     }
