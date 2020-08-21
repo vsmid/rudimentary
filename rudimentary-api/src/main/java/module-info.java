@@ -18,6 +18,7 @@ module hr.yeti.rudimentary.api {
     exports hr.yeti.rudimentary.http.session;
     exports hr.yeti.rudimentary.http.spi;
     exports hr.yeti.rudimentary.http.content;
+    exports hr.yeti.rudimentary.http.content.handler;
     exports hr.yeti.rudimentary.http.content.handler.spi;
     exports hr.yeti.rudimentary.http.stream;
     exports hr.yeti.rudimentary.http.value;
