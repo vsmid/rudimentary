@@ -48,7 +48,7 @@ public class XmlPojoContentHandlerTest {
     @Test
     public void test_read() throws IOException {
         // setup:
-        HttpExchange httpExchange = new TestHttpExchangeImpl(new ByteArrayInputStream("<inOut><name>Lena</name><inOut/>".getBytes()));
+        HttpExchange httpExchange = new TestHttpExchangeImpl(new ByteArrayInputStream("<inOut><name>Lena</name></inOut>".getBytes()));
         InOut inOut;
 
         when:
@@ -69,7 +69,7 @@ public class XmlPojoContentHandlerTest {
         then:
         assertEquals(httpExchange.getResponseCode(), 200);
         assertEquals(MediaType.APPLICATION_XML, httpExchange.getResponseHeaders().get("Content-Type").get(0));
-        assertEquals("<inOut><name>Lena</name><inOut/>", new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()));
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><inOut><name>Lena</name></inOut>", new String(((ByteArrayOutputStream) httpExchange.getResponseBody()).toByteArray()));
     }
 
     public static class XmlPojoEndpoint implements HttpEndpoint<InOut, InOut> {
