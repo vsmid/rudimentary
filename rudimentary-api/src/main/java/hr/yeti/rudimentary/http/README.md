@@ -189,7 +189,7 @@ For now, you can not add additional, custom request body type. It is planned for
 * **Json** - use when you expect json in request body. This type offers mathods for easy type conversion for both json object and json array.
 * **Text** - use when you expect text in request body.
 * **ByteStream** - use when you expect stream in request body. This could be for example file upload. Multipart is not supported yet.
-* **Java class(POJO)** - any class extending `Pojo` abstract class
+* **Java class(POJO)** - any class extending `Pojo` abstract class (JSON out-of-the-box and XML as extension).
 
 ### Response content types
 For now, you can not add additional, custom response type. It is planned for next release.
@@ -200,7 +200,29 @@ For now, you can not add additional, custom response type. It is planned for nex
 * **StaticResource** - use when you want to send javascript, image etc. in a response. This is already used internally by static resource endpoint.
 * **Text** - use when you want to send text in a response.
 * **View** - use when you want to send processed view in a response. You can find more on this in [MVC](../mvc/README.md) section.
-* **Java class(POJO)** - any class extending `Pojo` abstract class
+* **Java class(POJO)** - any class extending `Pojo` abstract class (JSON out-of-the-box and XML as extension).
+
+**Important!**
+When using POJO's to describe HttpEndpoint input and output you must send request http headers describing `Content-Type` and/or `Accept` in order to activate specific coontent handler. This is because the same HttpEndpoint declaring input and/or output as POJO can be used by different content handlers depending on request http headers.
+
+```java
+public class MultiContentHandlingEndpoint implements HttpEndpoint<InModel, OutModel> {
+    ...
+}
+```
+```script
+#Example calls which activate different content type handlers
+
+# JSON - sends JSON and expects JSON as response
+curl -H"Accept: application/json" -H"Content-Type:application/json" http://localhost:... -d '{"name":"Lena"}'
+
+# XML - sends XML and expects XML as response
+curl -H"Accept: application/xml" -H"Content-Type:application/xml" http://localhost:... -d "<data><name>Lena</name></data>"
+
+# JSON - sends JSON and expects XML as response
+curl -H"Accept: application/xml" -H"Content-Type:application/json" http://localhost:... -d '{"name":"Lena"}'
+```
+
 
 ## API documentation
 You access the list and description of all registered `HttpEndpoint` and `ViewEndpoint` providers via `_/apidocs` uri.
