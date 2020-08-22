@@ -86,7 +86,6 @@ public class CreateNewExtensionMojo extends AbstractMojo {
             + "        <artifactId>rudimentary-exts</artifactId>\n"
             + "        <version>1.0-SNAPSHOT</version>\n"
             + "    </parent>  \n"
-            + "    <groupId>" + groupId + "</groupId>\n"
             + "    <artifactId>" + projectName + "</artifactId>\n"
             + "    <version>1.0-SNAPSHOT</version>\n"
             + "    <packaging>jar</packaging>\n"
