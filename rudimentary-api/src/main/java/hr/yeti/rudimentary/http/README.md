@@ -213,13 +213,13 @@ public class MultiContentHandlingEndpoint implements HttpEndpoint<InModel, OutMo
 ```script
 #Example calls which activate different content type handlers
 
-# JSON - sends JSON and expects JSON as response
+# Sends JSON and expects JSON as response
 curl -H"Accept: application/json" -H"Content-Type:application/json" http://localhost:... -d '{"name":"Lena"}'
 
-# XML - sends XML and expects XML as response
+# Sends XML and expects XML as response
 curl -H"Accept: application/xml" -H"Content-Type:application/xml" http://localhost:... -d "<data><name>Lena</name></data>"
 
-# JSON - sends JSON and expects XML as response
+# Sends JSON and expects XML as response
 curl -H"Accept: application/xml" -H"Content-Type:application/json" http://localhost:... -d '{"name":"Lena"}'
 ```
 
