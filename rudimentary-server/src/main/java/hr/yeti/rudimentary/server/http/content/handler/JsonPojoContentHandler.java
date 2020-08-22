@@ -8,8 +8,11 @@ import hr.yeti.rudimentary.http.spi.HttpEndpoint;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbException;
+import javax.json.stream.JsonParsingException;
 
 public class JsonPojoContentHandler implements ContentHandler<Pojo> {
 
@@ -20,7 +23,7 @@ public class JsonPojoContentHandler implements ContentHandler<Pojo> {
                 httpExchange.getRequestBody(),
                 ContentHandler.getGenericType(httpEndpoint, 0)
             );
-        } catch (ClassNotFoundException ex) {
+        } catch (JsonbException | JsonParsingException | NoSuchElementException | ClassNotFoundException ex) {
             throw new IOException(ex);
         }
     }

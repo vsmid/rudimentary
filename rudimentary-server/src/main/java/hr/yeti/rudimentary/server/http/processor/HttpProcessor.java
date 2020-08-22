@@ -26,14 +26,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import javax.json.bind.JsonbException;
-import javax.json.stream.JsonParsingException;
 
 // TODO Cache content handler mapping to http endpoint
 public class HttpProcessor implements HttpHandler, Instance {
@@ -90,7 +87,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             return;
                         }
 
-                    } catch (JsonbException | JsonParsingException | NoSuchElementException ex) {
+                    } catch (IOException ex) {
                         respond(400, "Bad request.".getBytes(), exchange);
                         return;
                     }
@@ -219,6 +216,11 @@ public class HttpProcessor implements HttpHandler, Instance {
             }
         } catch (IOException e) {
             logger().log(System.Logger.Level.ERROR, e);
+            try {
+                respond(500, "Internal Server Error".getBytes(), exchange);
+            } catch (IOException ex) {
+                logger().log(System.Logger.Level.ERROR, e);
+            }
         }
 
     }
