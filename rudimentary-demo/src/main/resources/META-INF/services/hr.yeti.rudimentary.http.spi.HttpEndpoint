@@ -15,3 +15,4 @@ hr.yeti.rudimentary.demo.endpoint.FormEndpoint
 hr.yeti.rudimentary.demo.endpoint.TextEndpoint
 hr.yeti.rudimentary.demo.endpoint.StreamInEndpoint
 hr.yeti.rudimentary.demo.endpoint.EmptyEndpoint
+hr.yeti.rudimentary.demo.endpoint.XmlOkEndpoint

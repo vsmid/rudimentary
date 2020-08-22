@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>rudimentary-mvc-pebble-ext</module>
+        <module>rudimentary-http-xml-ext</module>
     </modules>
     <build>
         <plugins>

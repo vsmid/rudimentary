@@ -4,7 +4,9 @@ import hr.yeti.rudimentary.http.content.Pojo;
 import static hr.yeti.rudimentary.validation.Constraint.NOT_EMPTY;
 import static hr.yeti.rudimentary.validation.Constraint.NOT_NULL;
 import hr.yeti.rudimentary.validation.Constraints;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class OkModel extends Pojo {
 
     private String name;
