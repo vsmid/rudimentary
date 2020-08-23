@@ -23,6 +23,7 @@ A small, simple and opinionated Java based web services/applications framework e
   * [Internationalization (i18n)](rudimentary-api/src/main/java/hr/yeti/rudimentary/i18n/README.md) :white_check_mark:
 * Rudimentary extensions
   * [Pebble MVC extension](rudimentary-exts/rudimentary-mvc-pebble-ext/README.md) :white_check_mark:
+  * [XML content handling extension](rudimentary-exts/rudimentary-http-xml-ext/README.md) :white_check_mark:
 
 ## Introduction
 
