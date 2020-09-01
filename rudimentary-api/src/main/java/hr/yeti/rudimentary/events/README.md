@@ -24,8 +24,8 @@ public class BlogPost implements Event {
 ### Publishing event
 By implementing above mentioned interface BlogPost instances automatically gain access to  convenient `publish` method.
 ```java
-new BlogPost("This my first blog post event.").publish(EventPublisher.Type.SYNC); // Synchronous event
-new BlogPost("This my first blog post event.").publish(EventPublisher.Type.ASYNC); // Asynchronous event
+new BlogPost("This is my first blog post event.").publish(EventPublisher.Type.SYNC); // Synchronous event
+new BlogPost("This is my first blog post event.").publish(EventPublisher.Type.ASYNC); // Asynchronous event
 ```
 
 ### Reacting to event
