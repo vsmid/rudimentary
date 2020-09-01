@@ -25,7 +25,7 @@ import hr.yeti.rudimentary.context.spi.Instance;
  *
  * ...
  * // Publish event synchronously
- * new BlogPost("This my first blog post event.").publish(EventPublisher.Type.SYNC);
+ * new BlogPost("This is my first blog post event.").publish(EventPublisher.Type.SYNC);
  * </pre>
  *
  * @author vedransmid@yeti-it.hr
