@@ -56,9 +56,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                 if (httpEndpointMatchInfo.isPathMatchFound()) {
 
                     if (Objects.isNull(httpEndpointMatchInfo.getHttpEndpoint())) {
-                        try (exchange) {
-                            exchange.sendResponseHeaders(405, -1);
-                        }
+                        respond(405, exchange);
                         return;
                     }
 
@@ -85,12 +83,12 @@ public class HttpProcessor implements HttpHandler, Instance {
                             constraintsList.add(((Model) body).constraints());
                         } else {
                             logger().log(System.Logger.Level.ERROR, "No suitable request body content handler found.");
-                            respond(500, "Internal Server Error".getBytes(), exchange);
+                            respond(500, exchange);
                             return;
                         }
 
                     } catch (IOException ex) {
-                        respond(400, "Bad request.".getBytes(), exchange);
+                        respond(400, exchange);
                         return;
                     }
 
@@ -118,7 +116,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                             .map(vr -> vr.getReason().get())
                             .forEach(reason -> exchange.getResponseHeaders().add("Reason", reason));
 
-                        respond(400, "Bad request".getBytes(), exchange);
+                        respond(400, exchange);
                         return;
                     }
 
@@ -128,7 +126,7 @@ public class HttpProcessor implements HttpHandler, Instance {
                     if (authorizationChain.isPresent()) {
                         boolean authorized = authorizationChain.get().test(request);
                         if (!authorized) {
-                            respond(403, ("Not authorized.").getBytes(), exchange);
+                            respond(403, exchange);
                             return;
                         }
                     }
@@ -207,24 +205,30 @@ public class HttpProcessor implements HttpHandler, Instance {
                         exchange.close();
                     } else {
                         logger().log(System.Logger.Level.ERROR, "No suitable response body content handler found.");
-                        respond(500, "Internal Server Error".getBytes(), exchange);
+                        respond(500, exchange);
                     }
 
                 } else {
-                    respond(404, null, exchange);
+                    respond(404, exchange);
                 }
             } catch (NullPointerException e) {
-                respond(500, null, exchange);
+                respond(500, exchange);
             }
         } catch (IOException e) {
             logger().log(System.Logger.Level.ERROR, e);
             try {
-                respond(500, "Internal Server Error".getBytes(), exchange);
+                respond(500, exchange);
             } catch (IOException ex) {
                 logger().log(System.Logger.Level.ERROR, e);
             }
         }
 
+    }
+
+    private void respond(int httpStatus, HttpExchange httpExchange) throws IOException {
+        try (httpExchange) {
+            httpExchange.sendResponseHeaders(httpStatus, -1);
+        }
     }
 
     private void respond(int httpStatus, byte[] message, HttpExchange httpExchange) throws IOException {
