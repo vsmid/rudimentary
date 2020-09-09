@@ -56,7 +56,9 @@ public class HttpProcessor implements HttpHandler, Instance {
                 if (httpEndpointMatchInfo.isPathMatchFound()) {
 
                     if (Objects.isNull(httpEndpointMatchInfo.getHttpEndpoint())) {
-                        respond(405, ("Http method " + httpMethod + " is not supported.").getBytes(), exchange);
+                        try (exchange) {
+                            exchange.sendResponseHeaders(405, -1);
+                        }
                         return;
                     }
 
