@@ -101,7 +101,7 @@ In order to set which http headers to return, override *responseHttpHeaders* met
 The same can be achieved in `response` method by using `request.getHttpExchange().getResponseHeaders().add` method or 
 by using `Request.addResponseHttpHeader(java.lang.String, java.lang.String)` method. 
 Aside from verbosity difference, the latter two options are exactly the same.
-`Request.addResponseHttpHeader(java.lang.String, java.lang.String)` and `request.getHttpExchange().getResponseHeaders().add(java.lang.String, java.lang.String)` take precedence over *responseHttpHeaders* method.
+`Request.addResponseHttpHeader(java.lang.String, java.lang.String)` and `request.getHttpExchange().getResponseHeaders().add(java.lang.String, java.lang.String)` take precedence over *responseHttpHeaders* method. Do note that `Content-type` http header set this way will not override HttpEndpoint's response type, e.g. `Text.
 ```java
 @Override
 public Headers responseHttpHeaders(Request<I> request, O response) {
